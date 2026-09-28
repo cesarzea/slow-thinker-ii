@@ -39,7 +39,7 @@
     "knip": "6.38.0",
     "prettier": "3.9.9",
     "pyright": "1.1.408",
-    "typescript": "6.0.3",
+    "typescript": "7.0.2",
     "typescript-eslint": "8.70.1",
     "vitest": "5.0.2",
     "jsdom": "30.1.0"
