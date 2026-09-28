@@ -1,0 +1,31 @@
+[build-system]
+requires = ["hatchling>=1.27,<2"]
+build-backend = "hatchling.build"
+
+[project]
+license = "Apache-2.0"
+name = "slow-thinker-ii"
+version = "0.1.0.dev1"
+description = "Execution and observation of collaborative agent experiments."
+requires-python = ">=3.13,<3.14"
+authors = [{name = "Cesar Zea"}]
+dependencies = [
+  "fastapi>=0.115,<1",
+  "uvicorn>=0.34,<1",
+  "mcp==2.2.0",
+  "jsonschema>=4.26,<5",
+  "referencing>=0.37,<1",
+  "packaging>=25,<27",
+  "pydantic>=2.13,<3",
+  "httpx>=0.28,<1",
+  "anyio>=4,<5",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/slow_thinker_ii"]
+
+[tool.mutmut]
+source_paths = ["src"]
+only_mutate = ["src/slow_thinker_ii/accounting/*.py"]
+pytest_add_cli_args_test_selection = ["tests/unit"]
+use_setproctitle = false

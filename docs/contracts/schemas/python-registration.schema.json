@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:slow-thinker-ii:contracts:python-registration:0.1-draft",
+  "title": "Trusted Python component registration — proposal 0.1-draft",
+  "type": "object",
+  "properties": {
+    "schema_version": {"const":"0.1-draft"},
+    "type_id": {"type":"string","minLength":1},
+    "type_version": {"type":"string","minLength":1},
+    "descriptor": {"type":"string","pattern":"^[a-z][a-z0-9.-]*\\.component\\.json$"},
+    "distribution": {
+      "type": "object",
+      "properties": {"name":{"type":"string","minLength":1},"version":{"type":"string","minLength":1}},
+      "required": ["name","version"],
+      "additionalProperties": false
+    },
+    "entry_point": {"type":"string","pattern":"^[A-Za-z_][A-Za-z0-9_]*(?:\\.[A-Za-z_][A-Za-z0-9_]*)*:[A-Za-z_][A-Za-z0-9_]*$"},
+    "environment_profile": {"type":"string","minLength":1},
+    "base": {
+      "type": "object",
+      "properties": {
+        "type_id": {"type":"string","minLength":1},
+        "type_version": {"type":"string","minLength":1},
+        "distribution": {"type":"string","minLength":1},
+        "declared_requirement": {"type":"string","minLength":1},
+        "resolved_version": {"type":"string","minLength":1},
+        "entry_point": {"type":"string","pattern":"^[A-Za-z_][A-Za-z0-9_]*(?:\\.[A-Za-z_][A-Za-z0-9_]*)*:[A-Za-z_][A-Za-z0-9_]*$"}
+      },
+      "required": [
+        "type_id",
+        "type_version",
+        "distribution",
+        "declared_requirement",
+        "resolved_version",
+        "entry_point"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "schema_version",
+    "type_id",
+    "type_version",
+    "descriptor",
+    "distribution",
+    "entry_point",
+    "environment_profile"
+  ],
+  "additionalProperties": false
+}

@@ -1,0 +1,9 @@
+{
+  "status": "error",
+  "error": {
+    "code": "output_schema_mismatch",
+    "message": "Model output does not match the configured schema.",
+    "raw_output": "{\"summary\":42,\"citations\":[\"room-capacity\"]}",
+    "issues": [{"path":"/summary","message":"Expected a string; received a number."}]
+  }
+}

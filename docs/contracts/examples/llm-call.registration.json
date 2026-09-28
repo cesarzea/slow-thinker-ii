@@ -1,0 +1,9 @@
+{
+  "schema_version": "0.1-draft",
+  "type_id": "llm-call",
+  "type_version": "0.1.0-example",
+  "descriptor": "llm-call.component.json",
+  "distribution": {"name":"slow-thinker-llm-call","version":"0.1.0.dev1"},
+  "entry_point": "slow_thinker_llm_call:LLMCall",
+  "environment_profile": "illustrative-python-environment"
+}

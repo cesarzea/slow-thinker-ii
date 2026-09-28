@@ -1,0 +1,9 @@
+node_modules/
+.cache/
+.venv/
+coverage/
+dist/
+**/uv.lock
+package-lock.json
+docs/
+README.md

@@ -1,0 +1,15 @@
+[build-system]
+requires = ["hatchling>=1.27,<2"]
+build-backend = "hatchling.build"
+
+[project]
+license = "Apache-2.0"
+name = "slow-thinker-host"
+version = "0.1.0.dev1"
+description = "Typed MCP hosting for independent Slow Thinker II components."
+requires-python = ">=3.13,<3.14"
+authors = [{name = "Cesar Zea"}]
+dependencies = ["mcp==2.2.0", "jsonschema>=4.26,<5", "referencing>=0.37,<1"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/slow_thinker_host"]

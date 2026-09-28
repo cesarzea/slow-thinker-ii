@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:slow-thinker-ii:contracts:llm-call-config:0.1-draft",
+  "title": "LLMCall configuration — proposal 0.1-draft",
+  "type": "object",
+  "properties": {
+    "instructions": {"type":"string","minLength":1},
+    "input_schema": {"type":"object","properties":{"type":{"const":"object"}},"required":["type"]},
+    "parameters": {
+      "type": "object",
+      "description": "Supported native generation options; reserved routing/lifecycle fields are rejected semantically."
+    },
+    "output": {
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {"format":{"const":"text"}},
+          "required": ["format"],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {"format":{"const":"json"},"schema":{"type":"object"}},
+          "required": ["format","schema"],
+          "additionalProperties": false
+        }
+      ]
+    }
+  },
+  "required": ["instructions","input_schema","parameters","output"],
+  "additionalProperties": false
+}

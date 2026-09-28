@@ -1,0 +1,65 @@
+{
+  "schema_version": "1",
+  "revision": "local-1",
+  "limits": {
+    "revision": "illustrative-limits",
+    "run_seconds": 120,
+    "call_seconds": 60,
+    "startup_seconds": 20,
+    "shutdown_seconds": 5,
+    "max_calls": 100,
+    "max_depth": 8,
+    "max_payload_bytes": 1048576,
+    "run_budget": 100000000,
+    "session_budget": 1000000000,
+    "month_budget": 5000000000
+  },
+  "resources": {
+    "schema_version": "1",
+    "installations": [
+      {
+        "type_id": "example.sequence",
+        "type_version": "0.1.0-example",
+        "resolution_id": "00000000000000000000000000000000",
+        "host_adapter": "mcp"
+      },
+      {
+        "type_id": "llm-call",
+        "type_version": "0.1.0-example",
+        "resolution_id": "00000000000000000000000000000000",
+        "host_adapter": "openai-client"
+      },
+      {
+        "type_id": "example.model-resource",
+        "type_version": "0.1.0-example",
+        "resolution_id": "00000000000000000000000000000000",
+        "host_adapter": "openai-model"
+      }
+    ],
+    "providers": {
+      "illustrative-provider": {
+        "model": "gpt-6-luna",
+        "returned_models": ["gpt-6-luna"],
+        "credential_ref": "openai-local",
+        "default_output_tokens": 512,
+        "maximum_output_tokens": 1024,
+        "review_expires_at": 1,
+        "maximum_tariff_age_seconds": 86400
+      }
+    }
+  },
+  "installation_catalog": "../.local/components",
+  "descriptors": [
+    "../docs/contracts/examples/sequence.component.json",
+    "../docs/contracts/examples/llm-call.component.json",
+    "../docs/contracts/examples/model.component.json"
+  ],
+  "runtime_directory": "../.local/runs",
+  "gateway_url": "http://127.0.0.1:8000/v1",
+  "operator_origins": ["http://127.0.0.1:5173", "http://127.0.0.1:8000"],
+  "operator_hosts": ["127.0.0.1:8000", "127.0.0.1:5173"],
+  "operator_credential_env": "SLOW_THINKER_OPERATOR_TOKEN",
+  "provider_credentials": {"openai-local": "OPENAI_API_KEY"},
+  "preparation_seconds": 30,
+  "maximum_commands": 8
+}

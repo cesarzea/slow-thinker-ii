@@ -1,0 +1,153 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:slow-thinker-ii:contracts:component:0.1-draft",
+  "title": "Component contract \u2014 proposal 0.1-draft",
+  "description": "Review artifact only. Not an approved or implemented API.",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": "0.1-draft"
+    },
+    "type_id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_.-]*$"
+    },
+    "type_version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "roles": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[a-z][a-z0-9_.-]*$"
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "operations": {
+      "type": "object",
+      "minProperties": 1,
+      "propertyNames": {
+        "type": "string",
+        "pattern": "^[a-z][a-z0-9_.-]*$"
+      },
+      "additionalProperties": {
+        "$ref": "#/$defs/operation"
+      }
+    },
+    "config_schema": {
+      "type": "object"
+    },
+    "resource_slots": {
+      "type": "object",
+      "propertyNames": {
+        "type": "string",
+        "pattern": "^[a-z][a-z0-9_.-]*$"
+      },
+      "additionalProperties": {
+        "$ref": "#/$defs/slot"
+      }
+    },
+    "execution": {
+      "type": "object",
+      "properties": {
+        "state_scope": {
+          "enum": [
+            "none",
+            "run",
+            "instance",
+            "work_session"
+          ]
+        },
+        "concurrency": {
+          "enum": [
+            "independent",
+            "serialized",
+            "partitioned"
+          ]
+        }
+      },
+      "required": [
+        "state_scope",
+        "concurrency"
+      ],
+      "additionalProperties": false
+    },
+    "billing": {
+      "enum": [
+        "none",
+        "mediated",
+        "metered"
+      ]
+    },
+    "extensions": {
+      "type": "object",
+      "patternProperties": {
+        "^[a-z][a-z0-9.-]+:[A-Za-z0-9._-]+$": {}
+      },
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "schema_version",
+    "type_id",
+    "type_version",
+    "roles",
+    "operations",
+    "config_schema",
+    "resource_slots",
+    "execution",
+    "billing"
+  ],
+  "additionalProperties": false,
+  "$defs": {
+    "operation": {
+      "type": "object",
+      "properties": {
+        "mcp_tool": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_.-]*$"
+        },
+        "input_schema": {
+          "type": "object"
+        },
+        "output_schema": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "mcp_tool",
+        "input_schema",
+        "output_schema"
+      ],
+      "additionalProperties": false
+    },
+    "slot": {
+      "type": "object",
+      "properties": {
+        "role": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_.-]*$"
+        },
+        "required": {
+          "type": "boolean"
+        },
+        "operations": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_.-]*$"
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "role",
+        "required"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

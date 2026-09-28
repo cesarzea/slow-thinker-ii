@@ -1,0 +1,14 @@
+{
+  "$schema": "https://unpkg.com/knip@6/schema.json",
+  "workspaces": {
+    ".": {
+      "entry": ["*.config.{js,ts}"],
+      "project": ["*.config.{js,ts}"]
+    },
+    "frontend": {
+      "entry": ["tests/**/*.test.{ts,tsx}", "tests/journeys/**/*.spec.ts"],
+      "project": ["src/**/*.{ts,tsx}", "tests/**/*.{ts,tsx}"]
+    }
+  },
+  "ignoreBinaries": ["make"]
+}

@@ -1,0 +1,15 @@
+[build-system]
+requires = ["hatchling>=1.27,<2"]
+build-backend = "hatchling.build"
+
+[project]
+license = "Apache-2.0"
+name = "example-grounded-review"
+version = "0.1.0.dev1"
+description = "A derived LLMCall component that checks citations against supplied sources."
+requires-python = ">=3.13,<3.14"
+authors = [{name = "Cesar Zea"}]
+dependencies = ["slow-thinker-llm-call==0.1.0.dev1"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/example_grounded_review"]

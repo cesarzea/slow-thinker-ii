@@ -1,0 +1,49 @@
+{
+  "schema_version": "0.1-draft",
+  "graph_id": "single-agent",
+  "revision": "example-2",
+  "components": {
+    "proposer": {
+      "type_id": "llm-call",
+      "type_version": "0.1.0-example",
+      "config": {
+        "instructions": "Propose a solution to the supplied problem.",
+        "input_schema": {
+          "type": "object",
+          "properties": {
+            "problem": {"type": "string", "minLength": 1},
+            "proposal": {"type": "string"},
+            "review": {"type": "string"}
+          },
+          "required": ["problem"],
+          "additionalProperties": false
+        },
+        "parameters": {},
+        "output": {"format": "text"}
+      },
+      "resources": {"model": "model"}
+    },
+    "model": {
+      "type_id": "example.model-resource",
+      "type_version": "0.1.0-example",
+      "config": {"provider_profile": "illustrative-provider", "model": "illustrative-model"},
+      "resources": {}
+    },
+    "sequence": {
+      "type_id": "example.sequence",
+      "type_version": "0.1.0-example",
+      "config": {"steps": ["draft"]},
+      "resources": {}
+    }
+  },
+  "controller": {"component": "sequence", "operation": "next"},
+  "nodes": {
+    "draft": {
+      "component": "proposer",
+      "operation": "generate",
+      "inputs": {"problem": {"source": "run_input", "pointer": "/problem"}}
+    }
+  },
+  "permissions": [{"caller": "proposer", "target": "model", "operations": ["complete"]}],
+  "limits_profile": "illustrative-limits"
+}

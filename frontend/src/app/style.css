@@ -1,0 +1,139 @@
+:root {
+  font-family: system-ui, sans-serif;
+  color: #182638;
+  background: #f5f7fa;
+}
+body {
+  margin: 0;
+}
+main {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+header {
+  margin-bottom: 2rem;
+}
+header p {
+  color: #486278;
+}
+h1 {
+  margin: 0;
+  font-size: 2.2rem;
+}
+select {
+  font: inherit;
+  padding: 0.5rem;
+  margin-left: 0.5rem;
+}
+.graph {
+  height: 360px;
+  border: 1px solid #bccbd6;
+  border-radius: 0.5rem;
+  background: white;
+}
+li {
+  margin: 0.5rem 0;
+}
+[role='alert'] {
+  color: #941e28;
+}
+
+button,
+input,
+textarea {
+  font: inherit;
+  padding: 0.55rem 0.7rem;
+}
+button {
+  border: 1px solid #a5b9c9;
+  border-radius: 0.35rem;
+  background: white;
+  cursor: pointer;
+}
+button:disabled {
+  cursor: default;
+  opacity: 0.5;
+}
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible {
+  outline: 3px solid #458ed1;
+  outline-offset: 2px;
+}
+form,
+fieldset,
+.execution,
+.inspector {
+  margin-block: 1rem;
+}
+fieldset {
+  border: 1px solid #bccbd6;
+  border-radius: 0.5rem;
+  padding: 1rem;
+}
+label {
+  display: block;
+  margin-block: 0.75rem;
+}
+label input,
+label textarea {
+  display: block;
+  margin-top: 0.35rem;
+  box-sizing: border-box;
+  max-width: 100%;
+}
+textarea {
+  width: 100%;
+}
+.execution {
+  background: white;
+  padding: 1.25rem;
+  border: 1px solid #bccbd6;
+  border-radius: 0.5rem;
+}
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-block: 0.75rem;
+}
+pre {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  font-size: 0.9rem;
+  padding: 1rem;
+  background: #f5f7fa;
+}
+.inspector code {
+  overflow-wrap: anywhere;
+}
+.inspector > section {
+  border-top: 1px solid #d5dfe7;
+  margin-top: 1.5rem;
+  padding-top: 0.5rem;
+}
+.trace-table {
+  overflow-x: auto;
+}
+.trace-table table {
+  border-collapse: collapse;
+  width: 100%;
+}
+.trace-table th,
+.trace-table td {
+  padding: 0.6rem;
+  text-align: left;
+  border-bottom: 1px solid #d5dfe7;
+}
+.inspector button {
+  margin: 0.2rem;
+}
+@media (max-width: 600px) {
+  main {
+    padding: 1rem;
+  }
+  h1 {
+    font-size: 1.8rem;
+  }
+}

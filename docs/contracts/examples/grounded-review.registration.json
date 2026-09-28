@@ -1,0 +1,17 @@
+{
+  "schema_version": "0.1-draft",
+  "type_id": "example.grounded-review",
+  "type_version": "0.1.0-example",
+  "descriptor": "grounded-review.component.json",
+  "distribution": {"name":"example-grounded-review","version":"0.1.0.dev1"},
+  "entry_point": "example_grounded_review:GroundedReview",
+  "environment_profile": "illustrative-python-environment",
+  "base": {
+    "type_id": "llm-call",
+    "type_version": "0.1.0-example",
+    "distribution": "slow-thinker-llm-call",
+    "declared_requirement": "slow-thinker-llm-call==0.1.0.dev1",
+    "resolved_version": "0.1.0.dev1",
+    "entry_point": "slow_thinker_llm_call:LLMCall"
+  }
+}

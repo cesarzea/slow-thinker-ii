@@ -1,0 +1,281 @@
+{
+  "recorded_on": "2026-09-28",
+  "scope": "Temporary SDK feasibility probes; no Slow Thinker II implementation or provider request",
+  "python": "3.13.0",
+  "platform": "Darwin",
+  "server_script_sha256": "eca15f0ee5edf05e52738e974003635838cd063554981fa84f160fc079a66bdb",
+  "installed_versions": {
+    "mcp": "2.2.0",
+    "openai": "3.19.2",
+    "langchain-openai": "1.6.6",
+    "langchain-core": "1.6.5",
+    "langgraph": "1.2.12",
+    "httpx2": "2.13.1",
+    "pydantic": "2.13.5",
+    "uvicorn": "0.54.0",
+    "starlette": "1.7.0",
+    "anyio": "4.15.1"
+  },
+  "environment_freeze": [
+    "annotated-types==0.8.0",
+    "anyio==4.15.1",
+    "attrs==26.1.0",
+    "certifi==2026.7.22",
+    "cffi==2.1.1",
+    "charset-normalizer==3.5.1",
+    "click==8.5.0",
+    "cryptography==50.0.1",
+    "distro==1.9.0",
+    "h11==0.16.0",
+    "httpcore==1.0.9",
+    "httpcore2==2.13.1",
+    "httpx==0.28.1",
+    "httpx-sse==0.4.3",
+    "httpx2==2.13.1",
+    "idna==3.20",
+    "jiter==0.17.0",
+    "jsonpatch==1.33",
+    "jsonpointer==3.1.1",
+    "jsonschema==4.26.0",
+    "jsonschema-specifications==2025.9.1",
+    "langchain-core==1.6.5",
+    "langchain-openai==1.6.6",
+    "langchain-protocol==0.0.19",
+    "langgraph==1.2.12",
+    "langgraph-checkpoint==4.2.0",
+    "langgraph-prebuilt==1.1.0",
+    "langgraph-sdk==0.4.5",
+    "langsmith==0.14.1",
+    "mcp==2.2.0",
+    "mcp-types==2.2.0",
+    "openai==3.19.2",
+    "opentelemetry-api==1.45.0",
+    "orjson==3.12.0",
+    "ormsgpack==1.12.2",
+    "packaging==26.3",
+    "pycparser==3.0",
+    "pydantic==2.13.5",
+    "pydantic-settings==2.15.0",
+    "pydantic_core==2.46.5",
+    "PyJWT==2.15.0",
+    "python-dotenv==1.2.3",
+    "python-multipart==0.0.32",
+    "PyYAML==6.0.3",
+    "referencing==0.37.0",
+    "regex==2026.9.10",
+    "requests==2.34.2",
+    "requests-toolbelt==1.0.0",
+    "rpds-py==2026.6.3",
+    "sniffio==1.3.1",
+    "sse-starlette==3.4.11",
+    "starlette==1.7.0",
+    "tenacity==9.1.4",
+    "tiktoken==0.14.0",
+    "truststore==0.10.4",
+    "typing-inspection==0.4.4",
+    "typing_extensions==4.16.0",
+    "urllib3==2.8.0",
+    "uuid_utils==0.17.1",
+    "uvicorn==0.54.0",
+    "websockets==16.1.1",
+    "xxhash==4.0.1",
+    "zstandard==0.25.0"
+  ],
+  "pip_check": "No broken requirements found after removing incompatible adapter and restoring mcp==2.2.0",
+  "rejected_combination": {
+    "mcp": "2.2.0",
+    "langchain-mcp-adapters": "0.3.2",
+    "adapter_mcp_requirement": "mcp<2.0.0,>=1.24.0",
+    "resolver_result": "ResolutionImpossible"
+  },
+  "probes": {
+    "stdio": {
+      "script_sha256": "a17b0427f2b9a528be8e7f0a8a50a488bb45d91b7d015bad9f7cbe1af4077bb4",
+      "result": {
+        "protocol": "2026-07-28",
+        "discovery_before_explicit_probe": true,
+        "discovery_before": {
+          "ttl_ms": 0,
+          "cache_scope": "public",
+          "supported_versions": [
+            "2026-07-28"
+          ],
+          "capabilities": {},
+          "result_type": "complete"
+        },
+        "methods_before_explicit_probe": [],
+        "methods_after_discover_helper": [],
+        "request_methods": [
+          "server/discover",
+          "tools/list",
+          "tools/call",
+          "tools/call",
+          "tools/call"
+        ],
+        "discovered_versions": [
+          "2026-07-28"
+        ],
+        "schemas_present": true,
+        "structured_output": {
+          "value": 7
+        },
+        "invalid_input_is_error": true,
+        "metadata_preserved": {
+          "activation": "a1"
+        },
+        "capabilities": {
+          "prompts": {
+            "list_changed": true
+          },
+          "resources": {
+            "subscribe": true,
+            "list_changed": true
+          },
+          "tools": {
+            "list_changed": true
+          }
+        }
+      }
+    },
+    "http": {
+      "script_sha256": "cfae50c6654b69097578b88952be4a1f40f084d51cbf732f9f8c74c966f55e47",
+      "result": {
+        "transport": "real loopback HTTP",
+        "protocol": "2026-07-28",
+        "supported_versions": [
+          "2026-07-28"
+        ],
+        "unauthenticated_status": 401,
+        "revoked_probe_grant_status": 401,
+        "untrusted_origin_status": 403,
+        "metadata_preserved": {
+          "activation": "http-a1"
+        },
+        "request_methods": [
+          "server/discover",
+          "tools/call",
+          "tools/list",
+          "tools/call",
+          "tools/call"
+        ],
+        "protocol_request_meta": {
+          "example.review/activation": "http-a1",
+          "io.modelcontextprotocol/protocolVersion": "2026-07-28",
+          "io.modelcontextprotocol/clientInfo": {
+            "name": "mcp",
+            "version": "0.1.0"
+          },
+          "io.modelcontextprotocol/clientCapabilities": {}
+        }
+      }
+    },
+    "clients": {
+      "script_sha256": "c7d584043665db9325818ab7c7f4b0ba11055241c6e608a66649be12d1d9a53d",
+      "result": {
+        "versions": {
+          "mcp": "2.2.0",
+          "openai": "3.19.2",
+          "langchain-openai": "1.6.6",
+          "langchain-core": "1.6.5",
+          "langgraph": "1.2.12",
+          "httpx2": "2.13.1"
+        },
+        "openai_sync_async": true,
+        "langchain_invoke_ainvoke": true,
+        "langgraph_model_node": true,
+        "langchain_structured_tool_over_mcp2_stdio": true,
+        "server_error_request_count_with_retries_disabled": 1,
+        "model_requests": [
+          {
+            "path": "/v1/chat/completions",
+            "body": {
+              "messages": [
+                {
+                  "role": "user",
+                  "content": "test"
+                }
+              ],
+              "model": "probe-model"
+            }
+          },
+          {
+            "path": "/v1/chat/completions",
+            "body": {
+              "messages": [
+                {
+                  "role": "user",
+                  "content": "test"
+                }
+              ],
+              "model": "probe-model"
+            }
+          },
+          {
+            "path": "/v1/chat/completions",
+            "body": {
+              "messages": [
+                {
+                  "content": "test",
+                  "role": "user"
+                }
+              ],
+              "model": "probe-model",
+              "max_completion_tokens": 16,
+              "reasoning_effort": "none",
+              "stream": false
+            }
+          },
+          {
+            "path": "/v1/chat/completions",
+            "body": {
+              "messages": [
+                {
+                  "content": "test",
+                  "role": "user"
+                }
+              ],
+              "model": "probe-model",
+              "max_completion_tokens": 16,
+              "reasoning_effort": "none",
+              "stream": false
+            }
+          },
+          {
+            "path": "/v1/chat/completions",
+            "body": {
+              "messages": [
+                {
+                  "content": "test",
+                  "role": "user"
+                }
+              ],
+              "model": "probe-model",
+              "max_completion_tokens": 16,
+              "reasoning_effort": "none",
+              "stream": false
+            }
+          },
+          {
+            "path": "/v1/chat/completions",
+            "body": {
+              "messages": [
+                {
+                  "role": "user",
+                  "content": "test"
+                }
+              ],
+              "model": "probe-model"
+            }
+          }
+        ],
+        "external_model_requests": 0
+      }
+    }
+  },
+  "limitations": [
+    "Probe HTTP authorization is a synthetic wrapper, not platform authorization or OAuth conformance.",
+    "OpenAI-compatible model calls use MockTransport and a synthetic model.",
+    "No end-to-end orchestrator, per-instance schema publication, cancellation, accounting or provider charging was tested.",
+    "Temporary scripts are not the permanent verification suite or a dependency lock."
+  ]
+}

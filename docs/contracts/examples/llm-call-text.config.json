@@ -1,0 +1,15 @@
+{
+  "instructions": "Propose a solution to the supplied problem.",
+  "input_schema": {
+    "type": "object",
+    "properties": {
+      "problem": {"type":"string","minLength":1},
+      "proposal": {"type":"string"},
+      "review": {"type":"string"}
+    },
+    "required": ["problem"],
+    "additionalProperties": false
+  },
+  "parameters": {},
+  "output": {"format":"text"}
+}

@@ -1,0 +1,106 @@
+{
+  "schema_version": "0.1-draft",
+  "graph_id": "repeated-review",
+  "revision": "example-2",
+  "components": {
+    "proposer": {
+      "type_id": "llm-call",
+      "type_version": "0.1.0-example",
+      "config": {
+        "instructions": "Propose a solution. When a review is supplied, revise the supplied proposal to address it.",
+        "input_schema": {
+          "type": "object",
+          "properties": {
+            "problem": {"type": "string", "minLength": 1},
+            "proposal": {"type": "string"},
+            "review": {"type": "string"}
+          },
+          "required": ["problem"],
+          "additionalProperties": false
+        },
+        "parameters": {},
+        "output": {"format": "text"}
+      },
+      "resources": {"model": "model"}
+    },
+    "reviewer": {
+      "type_id": "llm-call",
+      "type_version": "0.1.0-example",
+      "config": {
+        "instructions": "Review the supplied proposal against the problem and identify useful improvements.",
+        "input_schema": {
+          "type": "object",
+          "properties": {
+            "problem": {"type": "string", "minLength": 1},
+            "proposal": {"type": "string"},
+            "review": {"type": "string"}
+          },
+          "required": ["problem"],
+          "additionalProperties": false
+        },
+        "parameters": {},
+        "output": {"format": "text"}
+      },
+      "resources": {"model": "model"}
+    },
+    "model": {
+      "type_id": "example.model-resource",
+      "type_version": "0.1.0-example",
+      "config": {"provider_profile": "illustrative-provider", "model": "illustrative-model"},
+      "resources": {}
+    },
+    "sequence": {
+      "type_id": "example.sequence",
+      "type_version": "0.1.0-example",
+      "config": {"steps": ["draft", "review-1", "revise-1", "review-2", "revise-2"]},
+      "resources": {}
+    }
+  },
+  "controller": {"component": "sequence", "operation": "next"},
+  "nodes": {
+    "draft": {
+      "component": "proposer",
+      "operation": "generate",
+      "inputs": {"problem": {"source": "run_input", "pointer": "/problem"}}
+    },
+    "review-1": {
+      "component": "reviewer",
+      "operation": "generate",
+      "inputs": {
+        "problem": {"source": "run_input", "pointer": "/problem"},
+        "proposal": {"source": "node_output", "node": "draft", "pointer": "/value"}
+      }
+    },
+    "revise-1": {
+      "component": "proposer",
+      "operation": "generate",
+      "inputs": {
+        "problem": {"source": "run_input", "pointer": "/problem"},
+        "proposal": {"source": "node_output", "node": "draft", "pointer": "/value"},
+        "review": {"source": "node_output", "node": "review-1", "pointer": "/value"}
+      }
+    },
+    "review-2": {
+      "component": "reviewer",
+      "operation": "generate",
+      "inputs": {
+        "problem": {"source": "run_input", "pointer": "/problem"},
+        "proposal": {"source": "node_output", "node": "revise-1", "pointer": "/value"}
+      }
+    },
+    "revise-2": {
+      "component": "proposer",
+      "operation": "generate",
+      "inputs": {
+        "problem": {"source": "run_input", "pointer": "/problem"},
+        "proposal": {"source": "node_output", "node": "revise-1", "pointer": "/value"},
+        "review": {"source": "node_output", "node": "review-2", "pointer": "/value"}
+      }
+    }
+  },
+  "permissions": [
+    {"caller": "proposer", "target": "model", "operations": ["complete"]},
+    {"caller": "reviewer", "target": "model", "operations": ["complete"]}
+  ],
+  "limits_profile": "illustrative-limits"
+}

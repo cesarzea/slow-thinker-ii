@@ -1,0 +1,31 @@
+{
+  "type_id": "example.grounded-review",
+  "type_version": "0.1.0-example",
+  "config": {
+    "instructions": "Review the proposal against the problem. Cite only identifiers from available_sources.",
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "problem": {"type":"string","minLength":1},
+        "proposal": {"type":"string","minLength":1},
+        "available_sources": {"type":"array","items":{"type":"string","minLength":1},"uniqueItems":true}
+      },
+      "required": ["problem","proposal","available_sources"],
+      "additionalProperties": false
+    },
+    "parameters": {},
+    "output": {
+      "format": "json",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "summary": {"type":"string","minLength":1},
+          "citations": {"type":"array","items":{"type":"string","minLength":1},"uniqueItems":true}
+        },
+        "required": ["summary","citations"],
+        "additionalProperties": false
+      }
+    }
+  },
+  "resources": {"model":"model"}
+}

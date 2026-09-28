@@ -1,0 +1,116 @@
+{
+  "schema_version": "0.1-draft",
+  "type_id": "example.grounded-review",
+  "type_version": "0.1.0-example",
+  "roles": [
+    "agent"
+  ],
+  "operations": {
+    "generate": {
+      "mcp_tool": "generate",
+      "input_schema": {
+        "type": "object"
+      },
+      "output_schema": {
+        "type": "object",
+        "$ref": "urn:slow-thinker-ii:contracts:llm-call-result:0.1-draft"
+      }
+    }
+  },
+  "config_schema": {
+    "allOf": [
+      {
+        "$ref": "urn:slow-thinker-ii:contracts:llm-call-config:0.1-draft"
+      },
+      {
+        "type": "object",
+        "properties": {
+          "instructions": {
+            "type": "string",
+            "minLength": 1
+          },
+          "input_schema": {
+            "const": {
+              "type": "object",
+              "properties": {
+                "problem": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "proposal": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "available_sources": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "uniqueItems": true
+                }
+              },
+              "required": [
+                "problem",
+                "proposal",
+                "available_sources"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "parameters": {
+            "type": "object"
+          },
+          "output": {
+            "const": {
+              "format": "json",
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "summary": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "citations": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "uniqueItems": true
+                  }
+                },
+                "required": [
+                  "summary",
+                  "citations"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "required": [
+          "instructions",
+          "input_schema",
+          "parameters",
+          "output"
+        ],
+        "additionalProperties": false
+      }
+    ]
+  },
+  "resource_slots": {
+    "model": {
+      "role": "resource",
+      "required": true,
+      "operations": [
+        "complete"
+      ]
+    }
+  },
+  "execution": {
+    "state_scope": "none",
+    "concurrency": "independent"
+  },
+  "billing": "mediated"
+}

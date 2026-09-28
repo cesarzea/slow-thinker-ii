@@ -1,0 +1,13 @@
+{
+  "schema_version": "0.1-draft",
+  "event_id": "example-event-1",
+  "run_id": "example-run-1",
+  "graph_id": "proposal-review",
+  "graph_revision": "example-2",
+  "sequence": 1,
+  "occurred_at": "2026-09-27T12:00:00Z",
+  "event_type": "run.started",
+  "actor": {"kind": "platform", "id": "runtime"},
+  "evidence": "observed",
+  "data": {"work_session_id": "example-session-1", "input_artifact": "problem.input.json"}
+}

@@ -1,0 +1,98 @@
+{
+  "schema_version": "0.1-draft",
+  "type_id": "example.sequence",
+  "type_version": "0.1.0-example",
+  "roles": [
+    "control"
+  ],
+  "operations": {
+    "next": {
+      "mcp_tool": "next",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "completed_nodes": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^[a-z][a-z0-9_.-]*$"
+            },
+            "uniqueItems": true
+          }
+        },
+        "required": [
+          "completed_nodes"
+        ],
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "oneOf": [
+          {
+            "type": "object",
+            "properties": {
+              "action": {
+                "const": "schedule"
+              },
+              "nodes": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "pattern": "^[a-z][a-z0-9_.-]*$"
+                },
+                "minItems": 1,
+                "maxItems": 1
+              }
+            },
+            "required": [
+              "action",
+              "nodes"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "action": {
+                "const": "complete"
+              },
+              "nodes": {
+                "type": "array",
+                "maxItems": 0
+              }
+            },
+            "required": [
+              "action",
+              "nodes"
+            ],
+            "additionalProperties": false
+          }
+        ],
+        "type": "object"
+      }
+    }
+  },
+  "config_schema": {
+    "type": "object",
+    "properties": {
+      "steps": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_.-]*$"
+        },
+        "minItems": 1,
+        "uniqueItems": true
+      }
+    },
+    "required": [
+      "steps"
+    ],
+    "additionalProperties": false
+  },
+  "resource_slots": {},
+  "execution": {
+    "state_scope": "none",
+    "concurrency": "independent"
+  },
+  "billing": "none"
+}

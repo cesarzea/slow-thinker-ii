@@ -1,0 +1,80 @@
+{
+  "schema_version": "0.1-draft",
+  "graph_id": "handoff",
+  "revision": "example-2",
+  "components": {
+    "proposer": {
+      "type_id": "llm-call",
+      "type_version": "0.1.0-example",
+      "config": {
+        "instructions": "Propose a solution to the supplied problem.",
+        "input_schema": {
+          "type": "object",
+          "properties": {
+            "problem": {"type": "string", "minLength": 1},
+            "proposal": {"type": "string"},
+            "review": {"type": "string"}
+          },
+          "required": ["problem"],
+          "additionalProperties": false
+        },
+        "parameters": {},
+        "output": {"format": "text"}
+      },
+      "resources": {"model": "model"}
+    },
+    "planner": {
+      "type_id": "llm-call",
+      "type_version": "0.1.0-example",
+      "config": {
+        "instructions": "Turn the supplied proposal into a concrete action plan that addresses the original problem.",
+        "input_schema": {
+          "type": "object",
+          "properties": {
+            "problem": {"type": "string", "minLength": 1},
+            "proposal": {"type": "string"},
+            "review": {"type": "string"}
+          },
+          "required": ["problem"],
+          "additionalProperties": false
+        },
+        "parameters": {},
+        "output": {"format": "text"}
+      },
+      "resources": {"model": "model"}
+    },
+    "model": {
+      "type_id": "example.model-resource",
+      "type_version": "0.1.0-example",
+      "config": {"provider_profile": "illustrative-provider", "model": "illustrative-model"},
+      "resources": {}
+    },
+    "sequence": {
+      "type_id": "example.sequence",
+      "type_version": "0.1.0-example",
+      "config": {"steps": ["draft", "plan"]},
+      "resources": {}
+    }
+  },
+  "controller": {"component": "sequence", "operation": "next"},
+  "nodes": {
+    "draft": {
+      "component": "proposer",
+      "operation": "generate",
+      "inputs": {"problem": {"source": "run_input", "pointer": "/problem"}}
+    },
+    "plan": {
+      "component": "planner",
+      "operation": "generate",
+      "inputs": {
+        "problem": {"source": "run_input", "pointer": "/problem"},
+        "proposal": {"source": "node_output", "node": "draft", "pointer": "/value"}
+      }
+    }
+  },
+  "permissions": [
+    {"caller": "proposer", "target": "model", "operations": ["complete"]},
+    {"caller": "planner", "target": "model", "operations": ["complete"]}
+  ],
+  "limits_profile": "illustrative-limits"
+}

@@ -1,0 +1,5 @@
+{
+  "problem": "Plan a technical workshop using only the supplied evidence.",
+  "proposal": "Reserve a room for 20 attendees and include a hands-on session.",
+  "available_sources": ["room-capacity","session-outline"]
+}

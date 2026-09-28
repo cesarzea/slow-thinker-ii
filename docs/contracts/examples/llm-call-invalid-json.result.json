@@ -1,0 +1,9 @@
+{
+  "status": "error",
+  "error": {
+    "code": "invalid_json",
+    "message": "Model output is not valid JSON.",
+    "raw_output": "{\"summary\":",
+    "issues": [{"path":"","message":"Unexpected end of JSON input."}]
+  }
+}
