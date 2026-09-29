@@ -72,8 +72,8 @@ def test_preparation_cli_uses_requested_destination(
 
 
 def test_missing_installer_is_reported_before_preparation(monkeypatch: pytest.MonkeyPatch) -> None:
-    def missing_tool(name: str) -> None:
-        del name
+    def missing_tool(_name: str) -> None:
+        return None
 
     monkeypatch.setattr(shutil, "which", missing_tool)
     monkeypatch.setattr(sys, "argv", ["prepare"])

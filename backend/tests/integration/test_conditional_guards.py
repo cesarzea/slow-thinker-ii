@@ -35,4 +35,5 @@ async def test_condition_limits_prevent_following_review(tmp_path: Path, mode: s
         events = transaction.events(run)
         assert not any(event.event == "activation.routed" for event in events)
     assert len(environment.proposer.calls) == (0 if mode == "budget" else 1)
-    assert not (await case.coordinator.close()).runs
+    cleanup = await case.coordinator.close()
+    assert not cleanup.runs

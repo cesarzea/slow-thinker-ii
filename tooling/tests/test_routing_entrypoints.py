@@ -5,7 +5,6 @@ import sys
 from pathlib import Path
 
 import pytest
-import slow_thinker_host
 from slow_thinker_bounded_flow import BoundedFlowHost
 from slow_thinker_host import HostedComponent, JsonObject, Operation, encode_json
 from slow_thinker_redirector import RedirectorHost
@@ -80,7 +79,7 @@ def test_entrypoint_validates_then_serves(
         assert version == "0.1.0" and len(component.operations()) == 1
         served.append(label)
 
-    monkeypatch.setattr(slow_thinker_host, "run_stdio", serve)
+    monkeypatch.setattr("slow_thinker_host.run_stdio", serve)
     if valid:
         runpy.run_module("slow_thinker_" + name, run_name="__main__")
         assert served == [name.replace("_", "-")]

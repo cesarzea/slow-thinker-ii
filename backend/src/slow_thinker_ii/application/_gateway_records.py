@@ -1,5 +1,6 @@
 """Public authenticated MCP gateway records contain no transport or SDK objects."""
 
+from abc import abstractmethod
 from dataclasses import dataclass
 from typing import Protocol
 
@@ -23,11 +24,24 @@ class GatewayTool:
 
 
 class RejectionRecorder(Protocol):
-    def reject(self, grant: str, requested_operation: str, reason: str) -> None: ...
+    @abstractmethod
+    def reject(self, grant: str, requested_operation: str, reason: str) -> None:
+        raise NotImplementedError
 
 
 class ManagedGatewayService(RejectionRecorder, Protocol):
-    def deadline(self, grant: str) -> float: ...
-    def tools(self, grant: str) -> tuple[GatewayTool, ...]: ...
-    async def invoke(self, grant: str, alias: str, arguments_json: str) -> ManagedResult: ...
-    def report(self, grant: str, report_json: str) -> None: ...
+    @abstractmethod
+    def deadline(self, grant: str) -> float:
+        raise NotImplementedError
+
+    @abstractmethod
+    def tools(self, grant: str) -> tuple[GatewayTool, ...]:
+        raise NotImplementedError
+
+    @abstractmethod
+    async def invoke(self, grant: str, alias: str, arguments_json: str) -> ManagedResult:
+        raise NotImplementedError
+
+    @abstractmethod
+    def report(self, grant: str, report_json: str) -> None:
+        raise NotImplementedError

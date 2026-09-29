@@ -1,5 +1,6 @@
 """Durable launch intentions and OS identity are separate from invocation authority."""
 
+from abc import abstractmethod
 from dataclasses import dataclass
 from typing import Protocol, runtime_checkable
 
@@ -29,15 +30,37 @@ class OwnedLaunch:
 
 
 class ProcessJournal(Protocol):
-    def prepare(self, launch: OwnedLaunch) -> None: ...
-    def started(self, identity: ProcessIdentity) -> None: ...
-    def stopped(self, marker: str, reason: str) -> None: ...
-    def unconfirmed(self, marker: str, reason: str) -> None: ...
-    def pending(self) -> tuple[OwnedLaunch, ...]: ...
-    def reconcile(self) -> None: ...
-    def diagnostic(self, marker: str, payload_json: str) -> None: ...
+    @abstractmethod
+    def prepare(self, launch: OwnedLaunch) -> None:
+        raise NotImplementedError
+
+    @abstractmethod
+    def started(self, identity: ProcessIdentity) -> None:
+        raise NotImplementedError
+
+    @abstractmethod
+    def stopped(self, marker: str, reason: str) -> None:
+        raise NotImplementedError
+
+    @abstractmethod
+    def unconfirmed(self, marker: str, reason: str) -> None:
+        raise NotImplementedError
+
+    @abstractmethod
+    def pending(self) -> tuple[OwnedLaunch, ...]:
+        raise NotImplementedError
+
+    @abstractmethod
+    def reconcile(self) -> None:
+        raise NotImplementedError
+
+    @abstractmethod
+    def diagnostic(self, marker: str, payload_json: str) -> None:
+        raise NotImplementedError
 
 
 @runtime_checkable
 class OwnedRunEnvironment(RunEnvironment, Protocol):
-    def bind_owner(self, run_id: str, runtime_id: str) -> None: ...
+    @abstractmethod
+    def bind_owner(self, run_id: str, runtime_id: str) -> None:
+        raise NotImplementedError

@@ -1,5 +1,6 @@
 """Read-only operator capabilities keep HTTP independent of database implementations."""
 
+from abc import abstractmethod
 from typing import Protocol
 
 from ._operator_records import CommandReceipt, CommandResult
@@ -19,7 +20,10 @@ class OperatorQueries(Protocol):
     def payload(self, run_id: str, payload_id: str) -> str | None: ...
     def activation(self, run_id: str, activation_id: str, cursor: str | None) -> str | None: ...
     def definition(self, run_id: str) -> str | None: ...
-    def execution(self, run_id: str, cursor: str | None) -> str | None: ...
+    @abstractmethod
+    def execution(self, run_id: str, cursor: str | None) -> str | None:
+        raise NotImplementedError
+
     def session_runs(self, session_id: str, cursor: str | None) -> str | None: ...
 
 

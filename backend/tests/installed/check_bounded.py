@@ -6,7 +6,8 @@ from pathlib import Path
 import pytest
 from fastapi import Request, Response
 from slow_thinker_ii.adapters.http import mcp_router
-from slow_thinker_ii.contracts import decode_json, encode_json, json_object
+from slow_thinker_ii.application import RunEvent
+from slow_thinker_ii.contracts import JsonObject, decode_json, encode_json, json_object
 from support.native_server import gateway_app, serve
 from support.upstream import Upstream
 
@@ -54,14 +55,19 @@ async def test_installed_bounded_feedback(
             assert run.state == ("failed" if exhaust else "completed")
             assert run.reason == ("activation_limit_reached" if exhaust else None)
             events = transaction.events(run.run_id)
-        routes = [
-            json_object(decode_json(event.payload_json))
-            for event in events
-            if event.event == "activation.routed"
-        ]
+        routes = recorded_routes(events)
         assert len(routes) == (6 if exhaust else 4)
         assert routes[1]["selected_port"] == "revise"
         assert len({str(item["activation_id"]) for item in routes}) == len(routes)
         assert len(upstream.requests) == len(routes)
-        assert not (await coordinator.close()).runs
+        cleanup = await coordinator.close()
+        assert not cleanup.runs
     assert not coordinator.failures()
+
+
+def recorded_routes(events: tuple[RunEvent, ...]) -> list[JsonObject]:
+    return [
+        json_object(decode_json(event.payload_json))
+        for event in events
+        if event.event == "activation.routed"
+    ]

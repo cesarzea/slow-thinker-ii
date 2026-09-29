@@ -1,5 +1,6 @@
 """Read-only experiment selection through an injected definition store."""
 
+from abc import abstractmethod
 from typing import Protocol
 
 from slow_thinker_ii.definitions import GraphSummary
@@ -7,7 +8,9 @@ from slow_thinker_ii.definitions import GraphSummary
 
 class DefinitionStore(Protocol):
     def summaries(self) -> tuple[GraphSummary, ...]: ...
-    def detail(self, graph_id: str, revision: str) -> str: ...
+    @abstractmethod
+    def detail(self, graph_id: str, revision: str) -> str:
+        raise NotImplementedError
 
 
 class ExperimentCatalog:

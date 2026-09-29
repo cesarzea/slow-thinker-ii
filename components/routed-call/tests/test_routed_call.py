@@ -97,5 +97,5 @@ async def test_cancellation_propagates_without_router_call(monkeypatch: pytest.M
     await asyncio.wait_for(fixture.started.wait(), 2)
     task.cancel()
     with pytest.raises(asyncio.CancelledError):
-        await task
+        await asyncio.wait_for(task, 2)
     assert len(fixture.calls) == 1 and all(client.is_closed for client in fixture.clients)

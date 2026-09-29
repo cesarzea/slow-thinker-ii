@@ -40,7 +40,8 @@ async def test_conditional_outcomes(
             json_object(sources["proposal"])["activation_id"]
             != json_object(sources["findings"])["activation_id"]
         )
-    assert not (await case.coordinator.close()).runs
+    cleanup = await case.coordinator.close()
+    assert not cleanup.runs
 
 
 async def test_stop_prevents_conditional_review(tmp_path: Path) -> None:
