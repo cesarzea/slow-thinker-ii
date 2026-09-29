@@ -1,34 +1,77 @@
-import {Background, Controls, MarkerType, Position, ReactFlow} from '@xyflow/react';
-import type {GraphSummary} from '../../api/index.ts';
+import {useState} from 'react';
 import type {ReactElement} from 'react';
+import {GraphControls} from './graph-controls.tsx';
+import {GraphList} from './graph-list.tsx';
+import {GraphCanvas} from './graph-canvas.tsx';
+import {graphStructure, structureModel} from './structure-model.ts';
+import {executionModel} from './execution-model.ts';
+import type {GraphViewProps, GraphLayers} from './types.ts';
 
-export function GraphView({graph}: Readonly<{graph: GraphSummary}>): ReactElement {
-  const nodes = graph.nodes.map((node, index) => ({
-    id: node.id,
-    position: {x: index * 240, y: 40},
-    sourcePosition: Position.Right,
-    targetPosition: Position.Left,
-    data: {label: `${node.id} · ${node.component}`},
-  }));
-  const edges = graph.nodes.flatMap((node, index) => {
-    const previous = graph.nodes[index - 1];
-    return previous === undefined
-      ? []
-      : [
-          {
-            id: `step-${String(index)}`,
-            source: previous.id,
-            target: node.id,
-            markerEnd: {type: MarkerType.ArrowClosed},
-          },
-        ];
-  });
+export function GraphView(props: GraphViewProps): ReactElement {
+  const settings = useGraphSettings(props.execution !== undefined);
   return (
-    <section className="graph" aria-label="Secuencia de activaciones">
-      <ReactFlow nodes={nodes} edges={edges} fitView nodesConnectable={false}>
-        <Background />
-        <Controls showInteractive={false} />
-      </ReactFlow>
+    <section aria-label="Grafo del experimento">
+      <GraphControls {...settings} />
+      <GraphContent {...props} settings={settings} />
     </section>
   );
+}
+function GraphContent(
+  props: GraphViewProps & {readonly settings: ReturnType<typeof useGraphSettings>},
+): ReactElement {
+  const {settings} = props;
+  const structure = graphStructure(props);
+  const page = settings.execution ? props.execution : undefined;
+  const base = structureModel(structure, settings.layers, settings.expanded);
+  const live = executionModel(page, structure, settings.expanded, settings.layers.observed);
+  return (
+    <>
+      {props.detail === undefined && (
+        <p>Estructura detallada no disponible. Se muestran los nodos del catálogo.</p>
+      )}
+      {settings.execution && page === undefined && (
+        <p>No hay activaciones registradas disponibles.</p>
+      )}
+      <GraphCanvas
+        key={`${String(settings.layout)}:${props.detail === undefined ? 'fallback' : 'definition'}`}
+        nodes={[...base.nodes, ...live.nodes]}
+        edges={[...base.edges, ...live.edges]}
+        onSelect={props.onSelect}
+      />
+      <GraphList structure={structure} execution={page} onSelect={props.onSelect} />
+    </>
+  );
+}
+interface GraphSettings {
+  execution: boolean;
+  expanded: boolean;
+  layout: number;
+  layers: GraphLayers;
+  onMode: (value: boolean) => void;
+  onExpand: (value: boolean) => void;
+  onLayers: (value: GraphLayers) => void;
+  onOrganize: () => void;
+}
+function useGraphSettings(initialExecution: boolean): GraphSettings {
+  const [execution, onMode] = useState(initialExecution);
+  const [expanded, onExpand] = useState(false);
+  const [layers, onLayers] = useState<GraphLayers>({
+    control: true,
+    permission: false,
+    binding: false,
+    observed: true,
+  });
+  const [layout, organize] = useState(0);
+  return {
+    execution,
+    expanded,
+    layers,
+    onMode,
+    onExpand,
+    onLayers,
+    layout,
+    onOrganize: () => {
+      organize(layout + 1);
+    },
+  };
 }

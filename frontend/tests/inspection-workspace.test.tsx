@@ -1,9 +1,19 @@
+import type * as ReactFlowModule from '@xyflow/react';
 import {afterEach, expect, it, vi} from 'vitest';
 import {cleanup, render} from '@testing-library/react';
 import {screen, within} from '@testing-library/dom';
 import userEvent from '@testing-library/user-event';
 import {ExecutionWorkspace} from '../src/app/execution-workspace.tsx';
 import {InspectionServer} from './support/inspection-server.ts';
+vi.mock('@xyflow/react', async (original) => {
+  const {Canvas, Empty} = await import('./support/graph-canvas.tsx');
+  return {
+    ...(await original<typeof ReactFlowModule>()),
+    ReactFlow: Canvas,
+    Background: Empty,
+    Controls: Empty,
+  };
+});
 import {graph, runRecord} from './support/operator-data.ts';
 
 afterEach(() => {

@@ -20,6 +20,9 @@ SCHEMAS = ROOT / "docs/contracts/schemas"
 STRINGS = TypeAdapter(tuple[str, ...])
 MANIFESTS = {
     "llm-call": "llm-call.component.json",
+    "routed-call": "routed-call.component.json",
+    "redirector": "redirector.component.json",
+    "bounded-flow": "bounded-flow.component.json",
     "example.model-resource": "model.component.json",
     "example.sequence": "sequence.component.json",
 }

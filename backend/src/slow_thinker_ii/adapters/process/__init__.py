@@ -8,9 +8,11 @@ from ._installed import HostSettings, InstalledProcess
 from ._launch import ProcessLaunch
 from ._operation import ProcessOperation
 from ._owned import ProcessOutcome
+from ._recovery import recover_processes
 from ._secrets import ProcessSecret
 
 __all__ = [
+    "recover_processes",
     "HostBinding",
     "HostLimits",
     "InstalledGraphEnvironment",

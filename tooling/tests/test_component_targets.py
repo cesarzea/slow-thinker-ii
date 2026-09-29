@@ -6,14 +6,14 @@ import sys
 from pathlib import Path
 
 import pytest
-from slow_thinker_ii.adapters.installations import Resolution
 
 from tooling.components import prepare
-from tooling.components.targets import target
-from tooling.tests.component_fixtures import offline_command, project
+from tooling.components.targets import TARGETS, target
+from tooling.tests.component_fixtures import offline_command, patch_preparation, project
 
 
 def projects(root: Path) -> None:
+    routing_projects(root)
     project(root, "host", "slow_thinker_host", "class Host: pass\n", "[]")
     project(
         root,
@@ -39,7 +39,24 @@ def projects(root: Path) -> None:
     )
 
 
-@pytest.mark.parametrize("name", ["llm-call", "openai-model", "grounded-review"])
+def routing_projects(root: Path) -> None:
+    for folder, class_name in [
+        ("redirector", "RedirectorHost"),
+        ("routed-call", "RoutedCallHost"),
+        ("bounded-flow", "BoundedFlowHost"),
+        ("sequence", "SequenceHost"),
+    ]:
+        project(
+            root,
+            folder,
+            "slow_thinker_" + folder.replace("-", "_"),
+            f"class {class_name}: pass\n",
+            '["slow-thinker-host==0.1.0.dev1"]',
+            version="0.1.0.dev1" if folder == "sequence" else "0.1.0",
+        )
+
+
+@pytest.mark.parametrize("name", TARGETS)
 def test_component_targets_use_separate_exact_production_closures(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch, name: str
 ) -> None:
@@ -70,21 +87,7 @@ def test_all_components_cli_retains_an_explicit_bundle(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
     projects(tmp_path)
-    project(
-        tmp_path,
-        "sequence",
-        "slow_thinker_sequence",
-        "class SequenceHost: pass\n",
-        '["slow-thinker-host==0.1.0.dev1"]',
-    )
-    original = prepare.prepare_component
-
-    def use_fixture(root: Path, destination: Path, uv: Path, python: Path, name: str) -> Resolution:
-        del root
-        return original(tmp_path, destination, uv, python, name)
-
-    monkeypatch.setattr(prepare, "prepare_component", use_fixture)
-    monkeypatch.setattr(prepare, "command", offline_command)
+    patch_preparation(tmp_path, monkeypatch)
     destination = tmp_path / "installed"
     monkeypatch.setattr(
         sys, "argv", ["prepare", "--component", "all", "--destination", str(destination)]
@@ -97,7 +100,15 @@ def assert_bundle(destination: Path) -> None:
     bundles = list((destination / "bundles").glob("*.json"))
     assert len(bundles) == 1
     record = json.loads(bundles[0].read_text())
-    assert set(record["resolutions"]) == {"sequence", "llm-call", "openai-model", "grounded-review"}
+    assert set(record["resolutions"]) == {
+        "sequence",
+        "llm-call",
+        "openai-model",
+        "grounded-review",
+        "redirector",
+        "routed-call",
+        "bounded-flow",
+    }
     assert all(
         (destination / "catalog" / f"{identity}.json").is_file()
         for identity in record["resolutions"].values()

@@ -35,6 +35,9 @@ class SyntheticSecrets:
 def resource_settings(selected: tuple[TypeInstallation, ...]) -> JsonObject:
     names = {
         "llm-call": "openai-client",
+        "redirector": "mcp",
+        "routed-call": "mcp",
+        "bounded-flow": "mcp",
         "example.sequence": "mcp",
         "example.model-resource": "openai-model",
         "example.grounded-review": "openai-client",

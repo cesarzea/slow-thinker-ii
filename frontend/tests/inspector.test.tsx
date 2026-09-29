@@ -102,3 +102,23 @@ it('pages call receipts and distinguishes unconfirmed spending and late response
   expect(await region.findByText('No hay respuestas registradas.')).toBeTruthy();
   expect(server.reads).toContain('/api/v1/runs/run/calls/child?cursor=next-receipt');
 });
+
+it('focuses selected evidence on repeated opening without stealing focus on refresh', async () => {
+  render(<Inspector credential="key" run="run" />);
+  expect(document.activeElement).toBe(
+    screen.getByRole('heading', {name: 'Inspector de ejecución'}),
+  );
+  const callButton = await screen.findByRole('button', {name: 'Ver llamada 3'});
+  for (const name of ['Ver llamada 3', 'Ver llamada 3', 'Ver contenido 1', 'Ver contenido 1']) {
+    await userEvent.click(screen.getByRole('button', {name}));
+    const heading = name.includes('llamada') ? 'Llamada child' : 'Contenido conservado';
+    expect(document.activeElement).toBe(screen.getByRole('heading', {name: heading}));
+  }
+  const payload = within(screen.getByRole('region', {name: 'Contenido conservado'}));
+  const refresh = payload.getByRole('button', {name: 'Actualizar evidencia'});
+  await userEvent.click(refresh);
+  await payload.findByText(/event:1 · Estado/);
+  expect(document.activeElement).toBe(refresh);
+  await userEvent.click(callButton);
+  expect(document.activeElement).toBe(screen.getByRole('heading', {name: 'Llamada child'}));
+});

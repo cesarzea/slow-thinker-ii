@@ -11,6 +11,7 @@ from slow_thinker_ii.definitions import (
     SequencePlan,
 )
 
+from ._graph_validation import validate_graph_input
 from ._models import GraphRecord, SequenceConfig
 from ._schemas import ContractSchemas
 from ._sequence_nodes import compile_nodes
@@ -30,6 +31,9 @@ class SequenceCompiler:
         )
         self._schemas.graph(value)
         graph = GraphRecord.model_validate(value)
+        if graph.execution_profile != "sequence":
+            raise ValueError("Sequence requires its finite execution profile")
+        validate_graph_input(graph, run_input, self._schemas)
         resolved = resolved_instances(graph, instances, self._schemas)
         controller = graph.controller
         operation(resolved, controller.component, controller.operation)

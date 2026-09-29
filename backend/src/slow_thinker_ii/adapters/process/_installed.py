@@ -11,6 +11,7 @@ from slow_thinker_ii.contracts import OperationContract
 
 from ._connection import ComponentConnection, ComponentProcess
 from ._launch import ProcessLaunch
+from ._ownership import LaunchOwnership
 from ._secrets import ProcessSecret
 
 
@@ -22,6 +23,7 @@ class HostSettings:
     shutdown_seconds: float
     max_message_bytes: int
     secrets: tuple[ProcessSecret, ...] = field(default=(), repr=False)
+    ownership: LaunchOwnership | None = None
 
 
 class InstalledProcess(ComponentProcess):
@@ -50,6 +52,7 @@ class InstalledProcess(ComponentProcess):
             settings.shutdown_seconds,
             settings.max_message_bytes,
             settings.secrets,
+            settings.ownership,
         )
         super().__init__(launch, operations)
 

@@ -26,6 +26,11 @@ def blocker(db: sqlite3.Connection, *, cache: bool = True) -> tuple[str, str] | 
     ).fetchone()
     if active is not None:
         return "active_run_exists", str(active[0])
+    pending = db.execute(
+        "SELECT run_id FROM process_ownership WHERE state!='stopped' LIMIT 1"
+    ).fetchone()
+    if pending is not None:
+        return "cleanup_unconfirmed", str(pending[0])
     rows = db.execute("SELECT run_id FROM operator_runs WHERE cleanup_confirmed=0").fetchall()
     for row in rows:
         event = db.execute(

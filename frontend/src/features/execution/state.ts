@@ -1,7 +1,9 @@
 import type {History, Run, Workspace} from '../../api/index.ts';
+import {emptyProjection} from './projection.ts';
+import type {ExecutionProjection} from './projection.ts';
 
 export const pendingKey = 'slow-thinker-ii.pending-command';
-export interface ExecutionState {
+export interface ExecutionState extends ExecutionProjection {
   readonly storageReady: boolean;
   readonly workspace: Workspace | null;
   readonly run: Run | null;
@@ -36,6 +38,7 @@ export class ExecutionStore {
 
   constructor(storage: IdentityStorage) {
     this.state = {
+      ...emptyProjection,
       workspace: null,
       run: null,
       sessionId: '',
@@ -71,6 +74,7 @@ export class ExecutionStore {
   selectSession(id: string): void {
     this.invalidate();
     this.update({
+      ...emptyProjection,
       sessionId: id,
       history: null,
       historyCursor: undefined,
@@ -91,7 +95,7 @@ export class ExecutionStore {
 
   selectRun(id: string): void {
     this.invalidate();
-    this.update({runId: id, run: null, stopRequested: false, stale: true});
+    this.update({...emptyProjection, runId: id, run: null, stopRequested: false, stale: true});
   }
 }
 

@@ -6,6 +6,8 @@ from dataclasses import dataclass
 
 from slow_thinker_ii.access import AccessDenied
 
+from ._dispatch_ports import ManagedResult
+from ._gateway_records import GatewayTool
 from ._native_records import NativeReply
 from ._operator_ports import PreparedWorkflow
 from ._run_ports import RunStore
@@ -91,3 +93,18 @@ class WorkflowOwners:
 
     async def complete(self, grant: str, request_json: str) -> NativeReply:
         return await self._gateway(grant).gateway.complete(grant, request_json)
+
+    def tools(self, grant: str) -> tuple[GatewayTool, ...]:
+        return self._gateway(grant).components.tools(grant)
+
+    async def invoke(self, grant: str, alias: str, arguments_json: str) -> ManagedResult:
+        return await self._gateway(grant).components.invoke(grant, alias, arguments_json)
+
+    def report(self, grant: str, report_json: str) -> None:
+        self._gateway(grant).components.report(grant, report_json)
+
+    def reject(self, grant: str, requested_operation: str, reason: str) -> None:
+        try:
+            self._gateway(grant).components.reject(grant, requested_operation, reason)
+        except AccessDenied:
+            return

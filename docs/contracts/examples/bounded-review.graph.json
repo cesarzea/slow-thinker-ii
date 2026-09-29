@@ -1,0 +1,465 @@
+{
+  "schema_version": "0.1-draft",
+  "graph_id": "bounded-review",
+  "revision": "example-1",
+  "execution_profile": "bounded-conditional",
+  "input_schema": {
+    "type": "object",
+    "properties": {
+      "problem": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "required": [
+      "problem"
+    ],
+    "additionalProperties": false
+  },
+  "components": {
+    "proposer": {
+      "type_id": "llm-call",
+      "type_version": "0.1.0-example",
+      "config": {
+        "instructions": "Propose a practical solution to the supplied problem. Keep the first draft very brief, at most three sentences. If a previous proposal and findings are supplied, revise the proposal to address every finding while preserving the original problem requirements. Return only the proposed solution.",
+        "input_schema": {
+          "type": "object",
+          "properties": {
+            "problem": {
+              "type": "string",
+              "minLength": 1
+            },
+            "proposal": {
+              "type": "string"
+            },
+            "findings": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          },
+          "required": [
+            "problem"
+          ],
+          "additionalProperties": false
+        },
+        "parameters": {
+          "max_completion_tokens": 256
+        },
+        "output": {
+          "format": "text"
+        }
+      },
+      "resources": {
+        "model": "proposer-model"
+      }
+    },
+    "reviewer": {
+      "type_id": "routed-call",
+      "type_version": "0.1.0",
+      "config": {
+        "input_schema": {
+          "type": "object",
+          "properties": {
+            "problem": {
+              "type": "string",
+              "minLength": 1
+            },
+            "proposal": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "problem",
+            "proposal"
+          ],
+          "additionalProperties": false
+        },
+        "worker_operation": "generate",
+        "worker_output_schema": {
+          "type": "object",
+          "oneOf": [
+            {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "const": "ok"
+                },
+                "format": {
+                  "const": "json"
+                },
+                "value": {
+                  "type": "object",
+                  "properties": {
+                    "accepted": {
+                      "type": "boolean"
+                    },
+                    "findings": {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "minLength": 1
+                      }
+                    }
+                  },
+                  "required": [
+                    "accepted",
+                    "findings"
+                  ],
+                  "additionalProperties": false,
+                  "$id": "urn:slow-thinker-ii:bounded-review:review",
+                  "allOf": [
+                    {
+                      "if": {
+                        "properties": {
+                          "accepted": {
+                            "const": false
+                          }
+                        }
+                      },
+                      "then": {
+                        "properties": {
+                          "findings": {
+                            "minItems": 1
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "status",
+                "format",
+                "value"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "const": "error"
+                },
+                "error": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "enum": [
+                        "invalid_json",
+                        "output_schema_mismatch",
+                        "output_validation_failed"
+                      ]
+                    },
+                    "message": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "raw_output": {
+                      "type": "string"
+                    },
+                    "issues": {
+                      "type": "array",
+                      "minItems": 1,
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "path": {
+                            "type": "string",
+                            "pattern": "^(?:/(?:[^~/]|~[01])*)*$"
+                          },
+                          "message": {
+                            "type": "string",
+                            "minLength": 1
+                          }
+                        },
+                        "required": [
+                          "path",
+                          "message"
+                        ],
+                        "additionalProperties": false
+                      }
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message",
+                    "raw_output",
+                    "issues"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "required": [
+                "status",
+                "error"
+              ],
+              "additionalProperties": false
+            }
+          ]
+        },
+        "router_input_pointer": "/value",
+        "outputs": [
+          "accept",
+          "revise"
+        ]
+      },
+      "resources": {
+        "worker": "review-worker",
+        "router": "review-router"
+      }
+    },
+    "review-worker": {
+      "type_id": "llm-call",
+      "type_version": "0.1.0-example",
+      "contained_by": "reviewer",
+      "config": {
+        "instructions": "Review the proposal against every explicit requirement in the original problem. Accept only if all requirements are concretely satisfied. Return the configured JSON object: accepted is true only on acceptance; findings is empty on acceptance, otherwise each finding names one unmet requirement and a concrete change needed. Do not repair the proposal yourself.",
+        "input_schema": {
+          "type": "object",
+          "properties": {
+            "problem": {
+              "type": "string",
+              "minLength": 1
+            },
+            "proposal": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "problem",
+            "proposal"
+          ],
+          "additionalProperties": false
+        },
+        "parameters": {
+          "max_completion_tokens": 512
+        },
+        "output": {
+          "format": "json",
+          "schema": {
+            "type": "object",
+            "properties": {
+              "accepted": {
+                "type": "boolean"
+              },
+              "findings": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              }
+            },
+            "required": [
+              "accepted",
+              "findings"
+            ],
+            "additionalProperties": false,
+            "$id": "urn:slow-thinker-ii:bounded-review:review",
+            "allOf": [
+              {
+                "if": {
+                  "properties": {
+                    "accepted": {
+                      "const": false
+                    }
+                  }
+                },
+                "then": {
+                  "properties": {
+                    "findings": {
+                      "minItems": 1
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        }
+      },
+      "resources": {
+        "model": "reviewer-model"
+      }
+    },
+    "review-router": {
+      "type_id": "redirector",
+      "type_version": "0.1.0",
+      "contained_by": "reviewer",
+      "config": {
+        "outputs": [
+          "accept",
+          "revise"
+        ],
+        "selector": "example_grounded_review:choose",
+        "input_schema": {
+          "type": "object",
+          "properties": {
+            "accepted": {
+              "type": "boolean"
+            },
+            "findings": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          },
+          "required": [
+            "accepted",
+            "findings"
+          ],
+          "additionalProperties": false,
+          "$id": "urn:slow-thinker-ii:bounded-review:review",
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "accepted": {
+                    "const": false
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "findings": {
+                    "minItems": 1
+                  }
+                }
+              }
+            }
+          ]
+        }
+      },
+      "resources": {}
+    },
+    "proposer-model": {
+      "type_id": "example.model-resource",
+      "type_version": "0.1.0-example",
+      "config": {
+        "provider_profile": "illustrative-provider",
+        "model": "illustrative-model"
+      },
+      "resources": {}
+    },
+    "reviewer-model": {
+      "type_id": "example.model-resource",
+      "type_version": "0.1.0-example",
+      "config": {
+        "provider_profile": "illustrative-provider",
+        "model": "illustrative-model"
+      },
+      "resources": {}
+    },
+    "flow": {
+      "type_id": "bounded-flow",
+      "type_version": "0.1.0",
+      "config": {
+        "entry": "propose",
+        "routes": {
+          "propose": {
+            "next": "review"
+          },
+          "review": {
+            "accept": null,
+            "revise": "propose"
+          }
+        },
+        "max_activations": 6
+      },
+      "resources": {}
+    }
+  },
+  "controller": {
+    "component": "flow",
+    "operation": "next"
+  },
+  "nodes": {
+    "propose": {
+      "component": "proposer",
+      "operation": "generate",
+      "inputs": {
+        "problem": {
+          "source": "run_input",
+          "pointer": "/problem"
+        },
+        "proposal": {
+          "source": "node_output",
+          "node": "propose",
+          "activation": "latest_completed",
+          "pointer": "/value",
+          "missing": "omit"
+        },
+        "findings": {
+          "source": "node_output",
+          "node": "review",
+          "activation": "latest_completed",
+          "pointer": "/value/value/findings",
+          "missing": "omit"
+        }
+      },
+      "output": {
+        "constant": "next"
+      }
+    },
+    "review": {
+      "component": "reviewer",
+      "operation": "invoke",
+      "inputs": {
+        "problem": {
+          "source": "run_input",
+          "pointer": "/problem"
+        },
+        "proposal": {
+          "source": "node_output",
+          "node": "propose",
+          "activation": "latest_completed",
+          "pointer": "/value"
+        }
+      },
+      "output": {
+        "pointer": "/port"
+      }
+    }
+  },
+  "result": {
+    "source": "node_output",
+    "node": "propose",
+    "activation": "latest_completed",
+    "pointer": "/value"
+  },
+  "permissions": [
+    {
+      "caller": "proposer",
+      "target": "proposer-model",
+      "operations": [
+        "complete"
+      ]
+    },
+    {
+      "caller": "reviewer",
+      "target": "review-worker",
+      "operations": [
+        "generate"
+      ]
+    },
+    {
+      "caller": "reviewer",
+      "target": "review-router",
+      "operations": [
+        "route"
+      ]
+    },
+    {
+      "caller": "review-worker",
+      "target": "reviewer-model",
+      "operations": [
+        "complete"
+      ]
+    }
+  ],
+  "limits_profile": "illustrative-limits"
+}

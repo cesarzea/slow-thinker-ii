@@ -1,6 +1,6 @@
 # Execution, accounting and evidence
 
-**Status: Proposed detailed semantics.** Limits, central mediation and recording are recorded requirements; lifecycle names and storage mechanics are not approved yet. References: R05, R11–R16, R23; [ADR 0006](../adr/0006-execution-and-accounting.md).
+**Status: Approved first-cycle contract.** Limits, central mediation, lifecycle and persistence semantics are part of the approved baseline. References: R05, R11–R16, R23; [ADR 0006](../adr/0006-execution-and-accounting.md).
 
 ## Admission and identity
 

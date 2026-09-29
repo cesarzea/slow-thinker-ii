@@ -7,7 +7,8 @@ from time import time
 
 from fastapi import FastAPI
 
-from slow_thinker_ii.adapters.sqlite import SqliteDatabase, SqliteRunStore
+from slow_thinker_ii.adapters.process import recover_processes
+from slow_thinker_ii.adapters.sqlite import SqliteDatabase, SqliteProcessJournal, SqliteRunStore
 from slow_thinker_ii.application import REFRESH_SECONDS, TariffRefresh, recover_runs
 
 from ._execution import ExecutionServices
@@ -38,6 +39,7 @@ class TariffLifetime:
         try:
             self._database.initialize()
             recover_runs(SqliteRunStore(self._database, 1_048_576))
+            await recover_processes(SqliteProcessJournal(self._database, 1_048_576), 5)
             if self._execution is not None:
                 self._execution.commands.configure(self._execution.configuration)
             await self._refresh.refresh_due(int(time()), startup=True)

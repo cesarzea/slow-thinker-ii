@@ -7,6 +7,7 @@ from slow_thinker_ii.contracts import JsonObject, decode_json
 
 from ._operator_cursors import OperatorCursors
 from ._trace_receipts import receipt_page
+from ._trace_reports import reports
 
 
 def call_details(
@@ -34,6 +35,7 @@ def call_details(
         "pricing_payload_id": None if row["charge_json"] is None else "pricing:" + call,
         "result_receipt_id": row["result_receipt_id"],
         "accounting": attempt_details(db, str(row["attempt_id"])),
+        "reports": reports(db, run, call),
         "receipts": receipt_page(db, run, call, cursor, cursors, size),
     }
 

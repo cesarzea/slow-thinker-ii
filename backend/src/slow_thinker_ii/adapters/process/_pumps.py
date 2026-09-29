@@ -37,8 +37,3 @@ async def send(
                 raise ValueError("Outgoing protocol frame exceeds byte limit")
             writer.write(encoded)
             await writer.drain()
-
-
-async def discard_diagnostics(reader: asyncio.StreamReader) -> None:
-    while await reader.read(8192):
-        pass

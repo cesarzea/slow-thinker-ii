@@ -13,7 +13,11 @@ def main() -> None:
     if len(sys.argv) != 2:
         raise ValueError("Expected one trusted bootstrap path")
     bootstrap = read_bootstrap(Path(sys.argv[1]))
-    if len(bootstrap.operations) != 1 or set(bootstrap.clients) != {"openai"}:
+    if (
+        len(bootstrap.operations) != 1
+        or "openai" not in bootstrap.clients
+        or set(bootstrap.clients) - {"openai", "mcp"}
+    ):
         raise ValueError("GroundedReview requires one operation and its managed OpenAI binding")
     endpoint = endpoint_from_record(json_object(bootstrap.clients["openai"]))
     host = LLMCallHost(

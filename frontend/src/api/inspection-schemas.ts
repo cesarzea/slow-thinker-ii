@@ -1,4 +1,5 @@
 import {z} from 'zod';
+import {reportSchema} from './report-schema.ts';
 
 const eventSchema = z.object({
   sequence: z.number().int().positive(),
@@ -25,6 +26,7 @@ const receiptSchema = z.object({
   source: z.string().nullable(),
 });
 export const callSchema = z.object({
+  reports: z.array(reportSchema).optional(),
   run_id: z.string(),
   call_id: z.string(),
   attempt_id: z.string(),
@@ -65,6 +67,7 @@ export type CallDetails = z.infer<typeof callSchema>;
 export type RetainedPayload = z.infer<typeof payloadSchema>;
 
 export const activationSchema = z.object({
+  reports: z.array(reportSchema).optional(),
   run_id: z.string(),
   activation_id: z.string(),
   node_id: z.string().nullable(),

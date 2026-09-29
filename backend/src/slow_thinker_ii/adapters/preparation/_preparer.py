@@ -17,12 +17,14 @@ from slow_thinker_ii.application import (
     ExecutionConfiguration,
     PreparationRejected,
     PreparedWorkflow,
+    ProcessJournal,
     StartIntent,
     TariffStore,
 )
 
 from ._endpoints import ServiceEndpoints
 from ._host_profiles import HostAdapter
+from ._mcp_bindings import bind_mcp
 from ._models import ResourceSettings
 from ._planning import HostPlanner
 from ._secrets import SecretSource
@@ -45,6 +47,7 @@ class InstalledWorkflowPreparer:
         workspace: Path,
         adapters: Mapping[str, HostAdapter],
         wall: Callable[[], float],
+        journal: ProcessJournal | None = None,
     ) -> None:
         if not workspace.is_absolute():
             raise ValueError("Preparation requires an absolute workspace")
@@ -52,6 +55,7 @@ class InstalledWorkflowPreparer:
         self._descriptors, self._configuration = descriptors, configuration
         self._tariffs, self._secrets, self._endpoints = tariffs, secrets, endpoints
         self._workspace, self._adapters, self._wall = workspace, dict(adapters), wall
+        self._journal = journal
 
     async def prepare(self, intent: StartIntent, runtime_id: str) -> PreparedWorkflow:
         worker = asyncio.create_task(asyncio.to_thread(self._prepare, intent, runtime_id))
@@ -97,5 +101,8 @@ class InstalledWorkflowPreparer:
             key: host.config_json for key, host in hosts.items() if host.config_json is not None
         }
         installed = compiler.compile(graph_json, intent.input_json, configs)
-        assembly = WorkflowAssembly(self._installations, self._workspace, installed, hosts, tariff)
+        hosts = bind_mcp(installed, hosts, self._endpoints.gateway, configuration.limits)
+        assembly = WorkflowAssembly(
+            self._installations, self._workspace, installed, hosts, tariff, self._journal
+        )
         return assembly.prepare(intent, configuration, runtime_id)

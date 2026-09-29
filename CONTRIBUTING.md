@@ -4,7 +4,7 @@ Use Node.js 24, Python 3.13 and uv 0.12.17. Install locked dependencies with
 `make setup`; run the same checks as CI with `make verify`.
 
 Start `make backend` and `make frontend` in separate terminals, then open
-`http://127.0.0.1:5173`. This initial application displays four bundled graphs;
+`http://127.0.0.1:5173`. The application displays five bundled graphs;
 execution controls appear when explicit operator configuration is supplied. The backend imports the public Vercel model
 catalogue on startup when missing or overdue, then every 24 hours while running.
 Validated rates for the initial OpenAI profile and refresh outcomes persist in
@@ -15,7 +15,7 @@ kernel lease beside the canonical database path; a second backend is refused
 before migration or recovery. Startup marks unfinished runs interrupted, releases
 only unsent reservations and never replays model calls.
 
-SQLite schema v4 includes run, call, ordered event and response receipt records.
+SQLite schema v5 includes run, call, ordered event, response receipt, pricing quarantine and owned-process records.
 Upgrades retain a verified `.v<version>.<identity>.backup` beside the database.
 Unfinished v2 runs must be recovered before the receipt-schema upgrade.
 `ManagedCalls` connects transactional admission to ready operations: validation,
@@ -28,18 +28,17 @@ cause, rejects late/incomplete success and retains final outputs atomically.
 `SequenceCompiler` validates JSON contracts, pinned type references, resource
 permissions and backward data bindings against supplied instance contracts.
 `SequenceProgram` executes those plans through the managed controller and node
-calls. Tests run all four bundled graphs with a real MCP controller and
+calls. Tests run all four finite bundled graphs with a real MCP controller and
 simulated agents. `InstalledGraphCompiler` additionally resolves selected installed
 classes and their effective contracts; `InstalledGraphEnvironment` starts the
 compiled instances with trusted host bindings. Operator command storage now admits runs with saved sessions, frozen configuration
-and durable receipts. Trusted application composition exposes authenticated commands, state, history and final results. Browser controls create sessions, start/stop runs and recover command receipts. Recovery of previously orphaned OS processes still
-requires stronger persisted process identity; a saved PID alone is not trusted.
+and durable receipts. Trusted application composition exposes authenticated commands, state, history and final results. Browser controls create sessions, start/stop runs and recover command receipts. Restart recovery checks persisted process identity before terminating owned processes. Unconfirmed cleanup blocks new admission; a saved PID alone is not trusted.
 
 The host SDK and sequence controller live in separate packages under
 `components/host` and `components/sequence`. Development setup installs them
 editably; subprocess tests exercise MCP calls, deadlines and process cleanup.
-Run `make components` to prepare the controller, LLMCall, OpenAI resource and
-derived reviewer in separate production environments.
+Run `make components` to prepare Sequence, LLMCall, the OpenAI resource,
+GroundedReview, Redirector, RoutedCall and BoundedFlow in separate production environments.
 This explicit preparation downloads production wheels, generates a hash-pinned
 lock, installs offline and publishes a new verified resolution under
 `.local/components`. Existing resolutions remain unchanged. uv 0.12.17 is pinned
@@ -49,14 +48,11 @@ IDs. Check those actual installations explicitly with:
 
 ```sh
 SLOW_THINKER_TEST_BUNDLE=/absolute/path/to/bundle.json \
-  uv run --locked pytest backend/tests/installed/check_bundle.py \
-    backend/tests/installed/check_graphs.py \
-    backend/tests/installed/check_coordinator.py \
-    backend/tests/installed/check_operator.py -q
+  uv run --locked pytest backend/tests/installed/check_*.py -q
 ```
 
 These additional checks run the installed controller, the agent/provider path
-including the inherited reviewer, and all four complete example graphs against
+including the inherited reviewer, and the bundled example graphs against
 local HTTP fixtures. They require no provider credential or paid call and run
 separately from the default offline suite,
 which tests preparation with synthetic local wheels. `InstalledProcess` retains
@@ -69,7 +65,14 @@ the production profile loader and HTTP composition are also exercised by the def
 validation, functional extension hooks and a fresh client and object per MCP
 invocation. `examples/grounded-review` is a separate package inheriting that
 implementation and checking citation identifiers. Tests use simulated responses
-and a real loopback HTTP endpoint; no provider key is needed. All four component targets now support production wheel preparation.
+and a real loopback HTTP endpoint; no provider key is needed. All seven component targets support production wheel preparation.
+
+The [bounded-review example](docs/contracts/examples/bounded-review.md) composes an
+ordinary reviewer with Redirector using managed MCP calls. A rejection passes the
+declared feedback to the next proposal; acceptance returns the final proposal.
+For a custom deterministic selector, prepare its trusted Python project with
+`uv run --locked python -m tooling.components --component redirector --selector-project /absolute/path/to/project`.
+Its callable and declared output ports belong to the component configuration.
 
 The native Chat Completions router now sends standard OpenAI client calls through
 invocation-scoped authorization, frozen model bindings and the managed budget and
@@ -80,7 +83,7 @@ launch credential outside recorded bootstrap data and removes it from its
 process environment on startup. It bounds response capture and timeouts, rejects
 redirects, disables inherited proxies and redacts reflected credentials.
 The OpenAI profile settles complete usage against the retained tariff; missing
-usage keeps its reservation. Installed checks exercise production route composition and complete example graphs; live account access has not been tested. Tests use synthetic credentials
+usage keeps its reservation. Installed checks exercise production route composition and complete example graphs. Automated tests use synthetic credentials
 and require no paid call.
 
 Browser tests automatically select available ports, so development servers can
@@ -88,6 +91,7 @@ remain running during verification.
 
 The [engineering standards](README.md#engineering-standards) are mandatory.
 Modules follow the [declared layout](docs/architecture/module-boundaries.md).
+Before implementing a milestone, prepare its [module documents and contracts](docs/architecture/module-boundaries.md#module-documents-and-implementation-workflow): `readme.md`, `specification.md` and a `todo.md` containing only pending work. Remove completed items and delete `todo.md` when empty.
 Public entry points define supported imports; implementation files and mutable
 state remain encapsulated. New source locations must declare a responsibility
 in `tooling/locations.json`.
@@ -97,12 +101,17 @@ in `tooling/locations.json`.
 Run `make components`, then copy `examples/local-execution.json` to
 `.local/execution.json`. Relative paths resolve against the configuration file;
 these two directories have the same depth. Replace each zero `resolution_id`
-with its corresponding `sequence`, `llm-call` or `openai-model` identity from the
+with its corresponding `sequence`, `llm-call`, `openai-model`, `redirector`,
+`routed-call` or `bounded-flow` identity from the
 bundle printed by component preparation. Set `review_expires_at` to the UTC Unix
 expiry of your reviewed provider profile; the template deliberately starts expired.
-Budget amounts are integer billionths of USD: the example caps are USD 0.10 per
-run, USD 1 per saved session and USD 5 per UTC month. Adjust them and the time limits
-before use. Change `revision` when changing an already activated configuration.
+Public budget amounts are decimal USD strings with at most nine fractional digits:
+the example caps are `"0.100000000"` per run, `"1.000000000"` per saved session and
+`"5.000000000"` per UTC month. Internal accounting uses integer billionths of USD.
+When migrating an earlier local configuration, convert its integer budget amounts
+to equivalent USD strings; do not reinterpret the integers as dollars. Adjust
+limits to the authorized allowance before use. Change `revision` when changing an
+already activated configuration; retained spending and obligations are not reset.
 
 Supply `SLOW_THINKER_OPERATOR_TOKEN` (32–128 URL-safe characters) and `OPENAI_API_KEY`
 through your environment. The JSON contains environment-variable names only.
@@ -146,13 +155,13 @@ receipts. Repeated command identities cannot create new work. Explicit trusted
 configuration activation preserves existing budget commitments, and admission
 remains closed while an earlier runtime lacks confirmed cleanup. These services
 are tested directly and through installed graph runs. Authenticated HTTP commands
-and initial state/history projections are implemented; browser execution controls and event/call/payload inspection are implemented; complete internal reporting and diagnostics remain pending.
+and initial state/history projections are implemented; browser execution controls and event/call/payload inspection are implemented; optional component reports retain their reported provenance and payload references.
 
 `ExecutionCoordinator` owns pending commands and accepted runtimes independently
 of HTTP request lifetimes. It checks stored receipts before preparation, bounds
 preparation/shutdown, routes native model requests with transient authority, and
 propagates Stop/withdrawal to live work. The additional installed coordinator
-checks cover all four example graphs plus cancellation during a simulated
+checks cover all four finite example graphs plus cancellation during a simulated
 provider request. These checks use the production `InstalledWorkflowPreparer`,
 including installed contracts, effective configuration and frozen tariff evidence.
 The application accepts an explicit `ExecutionSetup` for its lifespan, native

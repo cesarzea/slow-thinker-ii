@@ -1,0 +1,91 @@
+{
+  "schema_version": "0.1-draft",
+  "type_id": "routed-call",
+  "type_version": "0.1.0",
+  "roles": [
+    "agent"
+  ],
+  "operations": {
+    "invoke": {
+      "mcp_tool": "invoke",
+      "input_schema": {
+        "type": "object"
+      },
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "const": "succeeded"
+          },
+          "port": {
+            "type": "string",
+            "minLength": 1
+          },
+          "value": {
+            "type": "object"
+          }
+        },
+        "required": [
+          "status",
+          "port",
+          "value"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "config_schema": {
+    "type": "object",
+    "properties": {
+      "input_schema": {
+        "type": "object"
+      },
+      "worker_operation": {
+        "type": "string",
+        "minLength": 1
+      },
+      "worker_output_schema": {
+        "type": "object"
+      },
+      "router_input_pointer": {
+        "type": "string",
+        "pattern": "^(?:/(?:[^~/]|~[01])*)*$"
+      },
+      "outputs": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "minLength": 1
+        },
+        "minItems": 1,
+        "uniqueItems": true
+      }
+    },
+    "required": [
+      "input_schema",
+      "worker_operation",
+      "worker_output_schema",
+      "router_input_pointer",
+      "outputs"
+    ],
+    "additionalProperties": false
+  },
+  "resource_slots": {
+    "worker": {
+      "role": "agent",
+      "required": true
+    },
+    "router": {
+      "role": "resource",
+      "required": true,
+      "operations": [
+        "route"
+      ]
+    }
+  },
+  "execution": {
+    "state_scope": "none",
+    "concurrency": "independent"
+  },
+  "billing": "mediated"
+}

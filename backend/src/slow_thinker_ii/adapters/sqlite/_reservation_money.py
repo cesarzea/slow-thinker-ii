@@ -12,6 +12,7 @@ from slow_thinker_ii.contracts import encode_json
 
 from ._ledger import SqliteLedgerTransaction
 from ._operator_profiles import ensure_scope, period
+from ._pricing_quarantine import require_pricing
 from ._reservation_policy import ReservationPolicy, reservation_policy
 from ._run_events import append_event
 
@@ -40,6 +41,7 @@ def reserve_charge(
 ) -> None:
     if call.charge is None:
         return
+    require_pricing(db, call.charge)
     timestamp = wall()
     interval = admission_period(db, timestamp)
     policy = reservation_policy(db, run)

@@ -36,7 +36,7 @@ class InstalledPreparer:
         providers = json_object(settings["providers"])
         profile = json_object(providers["illustrative-provider"])
         profile["review_expires_at"] = int(time.time()) + 3600
-        profile["maximum_output_tokens"] = 32
+        profile["maximum_output_tokens"] = 1024
         providers["illustrative-provider"] = profile
         settings["providers"] = providers
         self.configuration = replace(
@@ -73,6 +73,9 @@ class InstalledPreparer:
 def selected_types(bundle: PreparedBundle) -> tuple[TypeInstallation, ...]:
     files = {
         "sequence": "sequence",
+        "redirector": "redirector",
+        "routed-call": "routed-call",
+        "bounded-flow": "bounded-flow",
         "llm-call": "llm-call",
         "openai-model": "model",
         "grounded-review": "grounded-review",

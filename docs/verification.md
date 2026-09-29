@@ -1,12 +1,66 @@
 # Verification record
 
-**Updated: 2026-09-28. First-cycle implementation is authorized and in progress.** The implementation evidence below supersedes earlier status descriptions. Subsequent sections retain the historical specification and feasibility checks; they do not claim the complete platform works.
+**Updated: 2026-09-29. First-cycle local delivery verified.** Current evidence below supersedes the historical implementation and feasibility notes.
 
-## Initial implementation
+## First-cycle delivery
+
+Five bundled graphs execute locally, including bounded proposer–reviewer feedback.
+Redirector runs a packaged synchronous Python selector; RoutedCall composes an
+ordinary worker and redirector through authenticated MCP. BoundedFlow retains
+separate activation identities and declared routes, including terminal acceptance
+and exhaustion. The UI shows exact definitions, optional internals, distinct
+relationship layers, live execution and linked evidence.
+
+The installed acceptance suite passed all 19 checks against seven independently
+prepared, hash-pinned production environments. A separate installed selector check
+also passed: a nonterminating selector that ignores termination reaches its deadline,
+is forcibly reaped and leaves confirmed ownership records and safe diagnostics.
+Accepted feedback takes four activations; exhaustion stops at six without scheduling
+a seventh. Settled charges and outstanding obligations remain inspectable.
+
+`make verify` passed with 1,266 Python/tooling/component tests, 119 frontend tests
+and seven browser journeys. Python line coverage is 97.03% and independent branch
+coverage is 90.58%; frontend coverage is 98.28% statements, 92.51% branches,
+99.05% functions and 98.87% lines. All 26 Python import contracts and the configured
+size, typing, lint, format, dependency, dead-code and build checks pass. The 200
+accounting mutations retain the reviewed baseline: 141 killed, one timeout and
+58 survivors. An earlier full run correctly rejected 89.19% Python branch coverage;
+18 additional composition/validation acceptance tests covered 25 missing branches.
+No threshold or source exclusion was weakened to close that gap. Dependencies and
+generated environments are excluded from source analysis, including nested virtual
+environments; first-party source remains subject to every gate.
+
+The gateway tests exercise permission-filtered MCP discovery, ordinary OpenAI and
+LangChain model invocation, a LangGraph node using a StructuredTool, preserved
+parent/activation identity, rejected authority, optional redacted reports, deadlines
+and no automatic retries. SQLite v5 tests cover migration, exact public budgets,
+pricing quarantine, durable process ownership and verified restart cleanup.
+
+Two live OpenAI runs used the reviewed low-cost GPT-6 Luna profile. The first was
+accepted immediately. The second began with a deliberately incomplete supplied
+candidate: the reviewer returned seven findings, all seven were preserved verbatim
+in the next proposal's input, and the revised proposal was accepted. Both runs
+confirmed cleanup and no outstanding cost. Their settled costs were USD 0.000165500
+and USD 0.000353700; including prior live usage, the retained total is USD 0.000953700
+against the owner's USD 3 allowance. These are usage-derived ledger amounts at the
+retained tariff, not a provider invoice. Credentials and detailed live evidence
+remain local and untracked.
+
+The first cycle supports trusted local components and the reviewed OpenAI provider
+adapter. It does not claim arbitrary provider conformance, hostile-code sandboxing,
+remote OAuth, graph editing, arbitrary dynamic/parallel scheduling, automatic
+collaboration analysis or optimization. Optional reasoning is component-reported
+evidence; unavailable reasoning is not reconstructed. The frontend production
+build has a non-blocking large-chunk warning; no bundle performance target is claimed.
+
+## Historical implementation checkpoints
+
+The following paragraphs describe earlier checkpoints. Their then-pending work and
+old counts are historical, not the current delivery status.
 
 `make verify` runs the configured Python/TypeScript type, lint, dependency, dead-code, size, coverage, build and browser checks. SQLite integration cases exercise competing reservations, all three budget scopes, restart persistence, duplicate/conflicting settlements and excess charges. Four browser journeys render the four bundled graphs and exercise saved sessions, Start, final results, reload/history recovery Stop, and linked event/call/activation/payload inspection through the actual backend with simulated operations.
 
-Latest complete local run: `make verify` exited successfully with 1008 Python/tooling/component tests, 64 frontend tests and four browser journeys. Python line coverage is 97.70% and branch coverage 91.62%; frontend coverage is 98.33% statements, 94.53% branches, 100% functions and 99.45% lines. All 23 Python import contracts passed. The browser tests select available ports independently of development servers. The graph, completed execution screen and call/activation inspectors were visually inspected. These results cover the implemented code, not the outstanding first-cycle capabilities.
+Earlier complete local run: `make verify` exited successfully with 1008 Python/tooling/component tests, 64 frontend tests and four browser journeys. Python line coverage is 97.70% and branch coverage 91.62%; frontend coverage is 98.33% statements, 94.53% branches, 100% functions and 99.45% lines. All 23 Python import contracts passed. The browser tests select available ports independently of development servers. The graph, completed execution screen and call/activation inspectors were visually inspected. These results cover the implemented code, not the outstanding first-cycle capabilities.
 
 The tariff importer downloads Vercel's public catalogue on missing/overdue startup and every 24 hours while the backend runs. It validates the initial OpenAI Standard text profile, stores immutable revisions and retains valid prices after failures. Tests cover cadence, restarts, invalid categories/capacities/bands, download failures, duplicate refresh requests and unchanged historic revisions. The real public endpoint was successfully imported on 2026-09-28 without credentials or model inference.
 

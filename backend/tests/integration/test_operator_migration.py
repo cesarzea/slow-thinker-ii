@@ -25,7 +25,7 @@ def test_v3_upgrade_retains_existing_active_run_and_backup(tmp_path: Path) -> No
     database.initialize()
     database.initialize()
     with database.transaction() as db:
-        assert db.execute("PRAGMA user_version").fetchone()[0] == 4
+        assert db.execute("PRAGMA user_version").fetchone()[0] == 5
         assert tuple(db.execute("SELECT settled,reserved FROM budget_scopes").fetchone()) == (
             37,
             100,

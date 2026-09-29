@@ -36,7 +36,13 @@ class RunAdmission:
         with self._unit() as transaction:
             self._run(transaction, "created")
 
-    def reserve(self, token: str, request_json: str, charge: ChargeBasis | None) -> PreparedCall:
+    def reserve(
+        self,
+        token: str,
+        request_json: str,
+        charge: ChargeBasis | None,
+        sources_json: str | None = None,
+    ) -> PreparedCall:
         denied: BudgetExceeded | AccessDenied | None = None
         with self._unit() as transaction:
             context = self._authority.context(token)
@@ -52,6 +58,8 @@ class RunAdmission:
                 denied = error
             else:
                 transaction.record_call(call)
+                if sources_json is not None:
+                    transaction.event(run.run_id, "activation.bound", context.call_id, sources_json)
         if denied is not None:
             self._authority.stop()
             raise denied
@@ -137,11 +145,3 @@ class RunAdmission:
         ):
             raise AccessDenied("run_closed")
         return run
-
-
-def recover_runs(store: RunStore) -> tuple[str, ...]:
-    with store.begin() as transaction:
-        runs = transaction.unfinished()
-        for run in runs:
-            transaction.stop(run.run_id, "backend_interrupted", "interrupted")
-        return tuple(run.run_id for run in runs)

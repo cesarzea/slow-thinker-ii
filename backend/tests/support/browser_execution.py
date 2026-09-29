@@ -17,16 +17,20 @@ from slow_thinker_ii.adapters.sqlite import (
 from slow_thinker_ii.application import (
     ChargeBasis,
     ChargeEvidence,
+    ConditionalProgram,
     ExecutionConfiguration,
     ExecutionCoordinator,
     LimitsProfile,
     PreparedStart,
     PreparedWorkflow,
     StartIntent,
+    sequence_access,
 )
 from slow_thinker_ii.bootstrap import ExecutionServices
 from slow_thinker_ii.contracts import OperationResult, decode_json, json_object
 
+from .browser_snapshot import browser_snapshot
+from .conditional import ConditionalEnvironment, conditional_plan
 from .coordinator import TARGET, Environment, Program
 from .managed_calls import FixtureOperation
 
@@ -39,6 +43,14 @@ class BrowserPreparation:
 
     async def prepare(self, intent: StartIntent, runtime_id: str) -> PreparedWorkflow:
         problem = json_object(decode_json(intent.input_json)).get("problem")
+        if intent.graph_id == "bounded-review":
+            plan = conditional_plan(str(problem))
+            return PreparedWorkflow(
+                PreparedStart(intent, self._configuration, runtime_id, browser_snapshot(intent)),
+                sequence_access(plan),
+                ConditionalEnvironment(plan, str(problem)),
+                ConditionalProgram(plan),
+            )
         if problem == "prepare-wait":
             await asyncio.sleep(0.5)
         operation = FixtureOperation(
@@ -50,7 +62,7 @@ class BrowserPreparation:
         if problem == "wait":
             operation.release.clear()
         return PreparedWorkflow(
-            PreparedStart(intent, self._configuration, runtime_id, '{"fixture":true}'),
+            PreparedStart(intent, self._configuration, runtime_id, browser_snapshot(intent)),
             AccessPolicy((TARGET,), (), (TARGET,)),
             Environment(operation),
             Program(),

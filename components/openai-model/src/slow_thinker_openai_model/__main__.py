@@ -17,7 +17,11 @@ def main() -> None:
         raise ValueError("Expected one trusted bootstrap path")
     credential = os.environ.pop("SLOW_THINKER_SECRET_OPENAI", "")
     bootstrap = read_bootstrap(Path(sys.argv[1]))
-    if len(bootstrap.operations) != 1 or set(bootstrap.clients) != {"provider"}:
+    if (
+        len(bootstrap.operations) != 1
+        or "provider" not in bootstrap.clients
+        or set(bootstrap.clients) - {"provider", "mcp"}
+    ):
         raise ValueError("The model resource requires one operation and one provider binding")
     endpoint = endpoint_from_record(json_object(bootstrap.clients["provider"]), credential)
     host = OpenAIModelHost(

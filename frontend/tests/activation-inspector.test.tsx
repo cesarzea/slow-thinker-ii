@@ -25,6 +25,7 @@ async function openActivation(): Promise<void> {
 it('navigates from a resource call to its activation, effective input and eligible output', async () => {
   await openActivation();
   expect(screen.queryByRole('region', {name: 'Detalle de llamada'})).toBeNull();
+  expect(document.activeElement).toBe(screen.getByRole('heading', {name: 'Activación activation'}));
   await userEvent.click(screen.getByRole('button', {name: 'Ver entrada efectiva'}));
   expect(await screen.findByText(/request:parent · Estado/)).toBeTruthy();
   await userEvent.click(screen.getByRole('button', {name: 'Ver salida publicada'}));

@@ -12,6 +12,7 @@ from slow_thinker_ii.application import (
     SequenceProgram,
 )
 from slow_thinker_ii.contracts import decode_json
+from slow_thinker_ii.definitions import SequencePlan
 from support.native_server import gateway_app, serve
 from support.run_admission import RunCase, outstanding
 from support.upstream import Upstream
@@ -26,6 +27,7 @@ async def test_complete_installed_graph(
     tmp_path: Path, prepared_bundle: PreparedBundle, name: str
 ) -> None:
     installed = await asyncio.to_thread(compile_graph, prepared_bundle, name)
+    assert isinstance(installed.plan, SequencePlan)
     case, upstream, router = admission(tmp_path, installed), Upstream(), RunRouter()
     gateway = NativeModelGateway(case.authority, router, model_bindings(installed))
     async with serve(upstream.app) as provider_port, serve(gateway_app(gateway)) as gateway_port:

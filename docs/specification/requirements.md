@@ -1,6 +1,6 @@
 # Requirements and scope
 
-**Status: First-cycle scope approved 2026-09-28; implementation in progress.**
+**Status: First-cycle scope approved 2026-09-28 and extended 2026-09-29; implementation in progress.**
 
 ## Purpose
 
@@ -28,7 +28,7 @@ Identifiers below describe requirements, not implementation completion. “Bound
 | R01 | Define experiments, run them, and inspect behavior and results. | First cycle |
 | R02 | Use independent, user-defined component types and configured instances, packaged separately and executed in local processes outside the backend. | Independent processes from the first cycle; detailed packaging contract pending |
 | R03 | Support agents, resources, memory/context providers, flow controllers, and collaboration techniques as extension roles. | Boundary now; expand implementations in cycles |
-| R04 | Define a graph per experiment; ultimately support arbitrary topology, conditions, parallelism, deliberate loops, and runtime changes. | Finite sequences first; no universal DAG restriction |
+| R04 | Define a graph per experiment; ultimately support arbitrary topology, conditions, parallelism, deliberate loops, and runtime changes. | Finite sequences and bounded conditional review loops in the first cycle; no universal DAG restriction |
 | R05 | Route managed component interactions through the platform, including access to model providers. | First cycle |
 | R06 | Expose component MCP capabilities through a platform proxy, filtered by graph permissions. | First cycle; precise profile pending |
 | R07 | Use the current stable MCP revision, with explicit compatibility and capability support. | Protocol contract before implementation |
@@ -54,6 +54,7 @@ Identifiers below describe requirements, not implementation completion. “Bound
 | R27 | Support optional component implementation inheritance through code, with an exact base version or a compatible range bounded by a major version; retain the exact dependency resolution used by each run. | Basic single inheritance in the first cycle; extension and packaging contract pending Q20 |
 | R28 | Export a complete supported graph as readable standalone Python code with direct calls and resolved component dependencies, removing platform logging, intermediation and supervision while retaining functional graph logic. | Later cycle; export direction selected; portability and generation details pending Q21 |
 | R29 | LLMCall supports text or schema-validated JSON output. On invalid output return a structured failure, retain the received response and make no implicit repair call. Further calls require explicit configuration and normal accounting. | First cycle; policy accepted in ADR 0010; detailed API proposed |
+| R30 | Provide a redirector component usable independently or inside another component. A user-authored deterministic Python script selects among explicitly declared outputs; the containing graph or agent binds their destinations. | First cycle, added by owner agreement 2026-09-29; detailed contract pending |
 
 Platform mediation, recording and supervisory requirements apply to platform-managed runs. R28 defines a separate future standalone profile that deliberately omits those services, including platform accounting, budget enforcement and watchdogs. Its build metadata identifies the source graph and dependencies without requiring runtime logging.
 
@@ -63,6 +64,8 @@ A configurable finite sequence uses two stateless LLM agent instances: one propo
 
 The executor must support other finite sequences and repeated use of components. It must not hardcode this example. The first UI offers [four bundled examples](../contracts/examples/README.md): single agent, handoff, review cycle and repeated review. Model access, costs, errors, and stops remain platform-managed.
 
+On 2026-09-29 the owner added a redirector and a bounded conditional review experiment to this cycle. Proposer and reviewer use independently configured `LLMCall` functionality. The reviewer contains the redirector, returning observations to the proposer for revision or selecting an accepted exit. The main graph presents agents and their outgoing routes. Iteration limits, deadlines and budgets prevent indefinite execution. This extends the scope beyond finite sequences; it is not yet implemented. The [closure register](open-questions.md#first-cycle-extension-review-with-conditional-routing) tracks the remaining contract decisions.
+
 The reference `LLMCall` component supports configurable instructions, model inputs/options and text/JSON output with explicit validation errors. Basic code inheritance lets a separately packaged component specialize its public extension points. Candidate [LLMCall and Python contracts](../contracts/llm-call.md), typed fixtures and a derived code specimen are ready for review; Q13 and Q20 must close the detailed implementation contracts.
 
 The owner selected a very inexpensive OpenAI model for the initial integration on 2026-09-28. The [provider profile](../contracts/openai-initial-profile.md) proposes GPT-6 Luna; models remain configurable and other providers can be added through resource adapters.
@@ -71,7 +74,7 @@ This cycle includes selection and validation of bundled JSON graphs, live graph 
 
 ## Deferred functional capabilities
 
-Graph editing tools and manual JSON upload, parallel and conditional execution, runtime graph mutation, reusable subgraphs, memory-provider implementations, interactive pause/resume, historical navigation during a live run, automatic influence analysis, variant comparison, automatic graph improvement, standalone Python export, server/container deployment, and multiple users remain later work. These are functional deferrals; the engineering requirements are not deferred.
+Graph editing tools and manual JSON upload, parallel execution and control profiles beyond the bounded conditional review loop, runtime graph mutation, reusable subgraphs, memory-provider implementations, interactive pause/resume, historical navigation during a live run, automatic influence analysis, variant comparison, automatic graph improvement, standalone Python export, server/container deployment, and multiple users remain later work. These are functional deferrals; the engineering requirements are not deferred.
 
 The owner clarified on 2026-09-28 that tools, memory and other resources must follow soon after the starting profile. Their extension boundaries belong in the initial design: components declare their own operations and bindings, managed calls remain mediated, and closing a run-owned process does not imply deleting persistent resource data. The first concrete additions and their acceptance examples remain to be selected; this clarification does not authorize application implementation or move every future capability into the first cycle.
 ## Evidence limits

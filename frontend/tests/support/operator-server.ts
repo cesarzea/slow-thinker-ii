@@ -1,4 +1,5 @@
 import {z} from 'zod';
+import {singleDetail, savedDefinition, executionPage} from './projection-data.ts';
 import type {Receipt, Run} from '../../src/api/index.ts';
 import {graph, reply, runRecord, workspace} from './operator-data.ts';
 
@@ -14,6 +15,10 @@ export class OperatorServer {
   readStatus = 200;
   historyCursor: string | null = null;
   resultStatus = 200;
+  detail: unknown = singleDetail;
+  definition: unknown = savedDefinition();
+  execution: unknown = executionPage;
+  projectionStatus = 200;
 
   readonly fetch = (input: string, init?: RequestInit): Promise<Response> =>
     Promise.resolve().then(() => {
@@ -27,7 +32,8 @@ export class OperatorServer {
     });
 
   private read(path: string): Response {
-    if (path === '/graphs') return reply([graph]);
+    const projection = this.projection(path);
+    if (projection !== null) return projection;
     if (path === '/workspace') return reply(this.workspace);
     if (path.startsWith('/commands/')) return this.command(path);
     if (path.startsWith('/sessions/'))
@@ -38,6 +44,14 @@ export class OperatorServer {
         this.resultStatus,
       );
     return this.run === null ? reply({}, 404) : reply(this.run);
+  }
+
+  private projection(path: string): Response | null {
+    if (path.includes('/revisions/')) return reply(this.detail);
+    if (path.endsWith('/definition')) return reply(this.definition, this.projectionStatus);
+    if (path.endsWith('/execution')) return reply(this.execution, this.projectionStatus);
+    if (path === '/graphs') return reply([graph]);
+    return null;
   }
 
   private command(path: string): Response {

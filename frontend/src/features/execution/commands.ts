@@ -1,6 +1,7 @@
 import type {OperatorClient} from '../../api/index.ts';
 import type {CommandBody, GraphSummary} from '../../api/index.ts';
 import {acceptReceipt, failureMessage} from './receipts.ts';
+import {compileInput, inputError, legacyInputSchema} from './input-schema.ts';
 import {canStart, pendingKey} from './state.ts';
 import type {IdentityStorage, ExecutionStore} from './state.ts';
 
@@ -17,15 +18,19 @@ export class ExecutionCommands {
     if (name.trim() !== '') await this.begin('session', '/sessions', {name});
   }
 
-  async start(graph: GraphSummary, text: string): Promise<void> {
+  async start(graph: GraphSummary, value: unknown): Promise<void> {
     const state = this.store.snapshot();
-    if (!canStart(state) || text.trim() === '') return;
+    const schema = compileInput(graph.input_schema ?? legacyInputSchema);
+    const input =
+      typeof value === 'string' && inputError(schema, value) !== null ? {problem: value} : value;
+    const error = inputError(schema, input);
+    if (!canStart(state) || error !== null) return;
     await this.begin('start', '/runs', {
       session_id: state.sessionId,
       graph_id: graph.graph_id,
       graph_revision: graph.revision,
       configuration_revision: state.workspace?.configuration_revision,
-      input: {problem: text},
+      input,
     });
   }
 

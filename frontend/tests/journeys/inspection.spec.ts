@@ -16,6 +16,7 @@ test('inspects retained events, call arguments and responses through the actual 
   await row.getByRole('button', {name: /Ver llamada/}).click();
   const call = page.getByRole('region', {name: 'Detalle de llamada'});
   await expect(call).toContainText('USD 0.00000239');
+  await checkNavigation(page);
   await call.getByRole('button', {name: 'Ver argumentos'}).click();
   await expect(page.getByRole('region', {name: 'Contenido conservado'})).toContainText('{}');
   await call.getByRole('button', {name: 'Ver respuesta', exact: true}).click();
@@ -32,9 +33,30 @@ async function inspectActivation(page: Page, info: TestInfo): Promise<void> {
   await page.getByRole('button', {name: 'Ver activación', exact: true}).click();
   const activation = page.getByRole('region', {name: 'Detalle de activación'});
   await expect(activation).toContainText('Agente: worker');
+  await expect(activation.getByRole('heading', {level: 3})).toBeFocused();
+  await expect(activation.getByRole('heading', {level: 3})).toBeInViewport();
   await activation.getByRole('button', {name: 'Ver salida publicada'}).click();
   await expect(page.getByRole('region', {name: 'Contenido conservado'})).toContainText(
     'Resultado de prueba',
   );
   await page.screenshot({path: info.outputPath('activation.png'), fullPage: true});
+}
+
+async function checkNavigation(page: Page): Promise<void> {
+  const call = page.getByRole('region', {name: 'Detalle de llamada'});
+  await expect(call.getByRole('heading', {level: 3})).toBeFocused();
+  await expect(call.getByRole('heading', {level: 3})).toBeInViewport();
+  const event = page.getByRole('region', {name: 'Eventos registrados'});
+  const row = event.getByRole('row').filter({hasText: 'call.requested'}).first();
+  await row.getByRole('button', {name: /Ver llamada/}).click();
+  await expect(call.getByRole('heading', {level: 3})).toBeFocused();
+  await expect(call.getByRole('heading', {level: 3})).toBeInViewport();
+  for (const attempt of [1, 2]) {
+    await test.step(`Open event content ${String(attempt)}`, async () => {
+      await row.getByRole('button', {name: /Ver contenido/}).click();
+      const heading = page.getByRole('heading', {name: 'Contenido conservado'});
+      await expect(heading).toBeFocused();
+      await expect(heading).toBeInViewport();
+    });
+  }
 }

@@ -21,7 +21,7 @@ it('creates a saved session, starts a graph and displays results and authoritati
   await userEvent.type(screen.getByLabelText('Nueva sesión'), 'New research');
   await userEvent.click(screen.getByRole('button', {name: 'Crear sesión'}));
   await tick();
-  await userEvent.type(screen.getByLabelText('Problema o tarea'), 'Solve this');
+  await userEvent.type(screen.getByLabelText(/Problema o tarea/), 'Solve this');
   await userEvent.click(screen.getByRole('button', {name: 'Iniciar ejecución'}));
   await tick();
   expect(screen.getByRole('heading', {name: 'Completada'})).toBeTruthy();
@@ -41,7 +41,7 @@ it('stops a running graph without displaying a successful final output', async (
   server.pending = true;
   executionView(server);
   await tick();
-  await userEvent.type(screen.getByLabelText('Problema o tarea'), 'Wait');
+  await userEvent.type(screen.getByLabelText(/Problema o tarea/), 'Wait');
   await userEvent.click(screen.getByRole('button', {name: 'Iniciar ejecución'}));
   await tick();
   await userEvent.click(screen.getByRole('button', {name: 'Detener ejecución'}));
@@ -66,7 +66,7 @@ it('reports disconnection while keeping execution unavailable', async () => {
   await tick();
   server.readStatus = 503;
   await tick();
-  await userEvent.type(screen.getByLabelText('Problema o tarea'), 'Task');
+  await userEvent.type(screen.getByLabelText(/Problema o tarea/), 'Task');
   expect(screen.getByRole('button', {name: 'Iniciar ejecución'}).hasAttribute('disabled')).toBe(
     true,
   );

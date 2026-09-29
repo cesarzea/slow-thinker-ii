@@ -1,11 +1,12 @@
 """Own commands independently of their HTTP waiters and hand each new receipt to one run task."""
 
 import asyncio
-import math
 from collections.abc import Callable
 from uuid import uuid4
 
 from ._command_jobs import CommandJobs
+from ._coordinator_bounds import require_bounds
+from ._gateway_records import ManagedGatewayService
 from ._native_records import NativeModelService
 from ._operator_ports import (
     CoordinatorShutdown,
@@ -31,13 +32,7 @@ class ExecutionCoordinator:
         shutdown_seconds: float,
         maximum_commands: int,
     ) -> None:
-        if any(
-            isinstance(value, bool) or not math.isfinite(value) or value <= 0
-            for value in (preparation_seconds, shutdown_seconds)
-        ):
-            raise ValueError("Finite preparation and shutdown bounds are required")
-        if type(maximum_commands) is not int or maximum_commands < 1:
-            raise ValueError("A positive pending-command bound is required")
+        require_bounds(preparation_seconds, shutdown_seconds, maximum_commands)
         self._store, self._shutdown = commands, shutdown_seconds
         self._runtime, self._closing = uuid4().hex, False
         self._jobs = CommandJobs(maximum_commands)
@@ -140,6 +135,10 @@ class ExecutionCoordinator:
 
     @property
     def gateway(self) -> NativeModelService:
+        return self._owners
+
+    @property
+    def components(self) -> ManagedGatewayService:
         return self._owners
 
     def failures(self) -> tuple[tuple[str, str], ...]:

@@ -9,6 +9,7 @@ from slow_thinker_ii.contracts import JsonObject, JsonValue, decode_json, encode
 from ._fleet import ProcessHost
 from ._graph_bindings import HostBinding, HostLimits
 from ._installed import HostSettings, InstalledProcess
+from ._ownership import GraphOwnership
 
 
 def bootstrap_record(config: ConfiguredInstance, binding: HostBinding) -> JsonObject:
@@ -45,8 +46,9 @@ def build_host(
     binding: HostBinding,
     workspace: Path,
     limits: HostLimits,
+    ownership: GraphOwnership | None = None,
 ) -> ProcessHost:
-    settings = host_settings(config, binding, workspace, limits)
+    settings = host_settings(config, binding, workspace, limits, ownership)
     registration = Resolution.model_validate_json(config.description.installation_json).registration
     process = InstalledProcess(
         catalog,
@@ -78,7 +80,11 @@ def write_bootstrap(
 
 
 def host_settings(
-    config: ConfiguredInstance, binding: HostBinding, workspace: Path, limits: HostLimits
+    config: ConfiguredInstance,
+    binding: HostBinding,
+    workspace: Path,
+    limits: HostLimits,
+    ownership: GraphOwnership | None = None,
 ) -> HostSettings:
     directory, path = write_bootstrap(config, binding, workspace)
     return HostSettings(
@@ -88,4 +94,5 @@ def host_settings(
         limits.shutdown_seconds,
         limits.max_message_bytes,
         binding.secrets,
+        None if ownership is None else ownership.host(config.instance_id, directory),
     )

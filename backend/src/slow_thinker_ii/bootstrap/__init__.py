@@ -9,6 +9,7 @@ from slow_thinker_ii.adapters.catalog import BundledDefinitionStore
 from slow_thinker_ii.adapters.http import (
     OperatorBoundary,
     catalog_router,
+    mcp_router,
     openai_router,
     operator_router,
     tariff_router,
@@ -67,6 +68,7 @@ def attach_execution(app: FastAPI, execution: ExecutionServices | None) -> None:
             )
         )
         app.include_router(openai_router(execution.coordinator.gateway, bound))
+        app.include_router(mcp_router(execution.coordinator.components, bound))
 
 
 def configured_app() -> FastAPI:

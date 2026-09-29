@@ -1,6 +1,6 @@
 # MCP integration profile
 
-**Status: Proposed profile, not implemented.** Requirement R07 selects current stable MCP; the concrete transport and optional-feature profile requires approval. The official versioning page identifies **2026-07-28** as current, rechecked on 2026-09-28. [Source](https://modelcontextprotocol.io/docs/2026-07-28/learn/versioning).
+**Status: Approved first-cycle contract.** Requirement R07 selects current stable MCP; the first-cycle transport and optional-feature profile is approved. The official versioning page identifies **2026-07-28** as current, rechecked on 2026-09-28. [Source](https://modelcontextprotocol.io/docs/2026-07-28/learn/versioning).
 
 ## Protocol basis
 
@@ -39,7 +39,7 @@ Late accounting observations must not be accepted as successful output that adva
 
 **Accepted requirement:** component processes must call LLMs and other managed capabilities through the orchestrator with familiar client interfaces from the first cycle. Compatibility applies to outgoing calls while a component handles an activation, as well as to external clients.
 
-**Proposed integration:** configure standard model clients to use the platform's compatible endpoint and expose authorized component operations as MCP tools or compatible LangChain tools. LangGraph nodes consume those configured clients and tools. The following call shapes illustrate the required developer experience; they are not an implemented API or a complete compatibility matrix.
+**First-cycle integration:** configure standard model clients to use the platform's compatible endpoint and expose authorized component operations as MCP tools or compatible LangChain tools. LangGraph nodes consume those configured clients and tools. The following call shapes illustrate the required developer experience; the tested option and error scope is recorded in the [verification record](../verification.md).
 
 | Consumer interface | Familiar call shape | Proposed platform routing |
 | --- | --- | --- |
@@ -58,9 +58,9 @@ The same authorization, routing, deadline, accounting and observation pipeline m
 
 ## SDK candidate and conformance work
 
-The official Python SDK release page identifies **`mcp==2.2.0`** as the latest release on 2026-09-28. Propose it as the first candidate, pending complete integration checks and a reproducible dependency lock. The release documents current-protocol behavior and lists gaps for the tasks extension, DPoP and the jwt-bearer grant; do not advertise those through this candidate. Subsequent [temporary SDK probes](sdk-compatibility.md) installed and exercised it without changing project dependencies or making model-provider requests. [Release evidence](https://github.com/modelcontextprotocol/python-sdk/releases/tag/v2.2.0).
+The official Python SDK release page identifies **`mcp==2.2.0`** as the latest release on 2026-09-28. The first-cycle dependency lock pins this version; repository integration tests exercise the supported profile. The release documents current-protocol behavior and lists gaps for the tasks extension, DPoP and the jwt-bearer grant; do not advertise those through this candidate. Subsequent [temporary SDK probes](sdk-compatibility.md) installed and exercised it without changing project dependencies or making model-provider requests. [Release evidence](https://github.com/modelcontextprotocol/python-sdk/releases/tag/v2.2.0).
 
-The SDK's default automatic mode can fall back to an older handshake. Its explicit `mode="2026-07-28"` pins the version but skips wire discovery. The probe also found a locally populated discovery placeholder: `session.discover()` did not send a request. Propose a pinned client plus an explicit typed `DiscoverRequest` through `session.send_request`, validating and retaining the actual response for readiness. This mechanism worked over stdio and loopback HTTP; full platform readiness is still unimplemented. [Protocol-mode documentation](https://py.sdk.modelcontextprotocol.io/protocol-versions/), [measured distinction](sdk-compatibility.md#pinned-mode-still-needs-a-real-discovery-request).
+The SDK's default automatic mode can fall back to an older handshake. Its explicit `mode="2026-07-28"` pins the version but skips wire discovery. The probe also found a locally populated discovery placeholder: `session.discover()` did not send a request. The implementation uses a pinned client plus an explicit typed `DiscoverRequest` through `session.send_request`, validating and retaining the actual response for readiness. This mechanism worked over stdio and loopback HTTP; repository readiness tests also check effective identity, capabilities and schemas. [Protocol-mode documentation](https://py.sdk.modelcontextprotocol.io/protocol-versions/), [measured distinction](sdk-compatibility.md#pinned-mode-still-needs-a-real-discovery-request).
 
 | Check | Required evidence before a compatibility claim |
 | --- | --- |

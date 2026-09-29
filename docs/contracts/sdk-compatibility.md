@@ -1,6 +1,17 @@
 # SDK feasibility review
 
-**Recorded: 2026-09-28. Status: limited executable evidence, not platform conformance.** Q04, Q06, Q17; CP01–CP07. Tests ran in a temporary environment with synthetic inputs and no model-provider requests. The repository still contains no application implementation or installed project dependencies. [Captured results and environment versions](../evidence/sdk-review-20260928.json).
+Current implementation evidence is maintained in the [verification record](../verification.md).
+Repository tests now exercise ordinary OpenAI and LangChain model calls through
+the managed native gateway, and a LangGraph node invoking a normal StructuredTool
+through the authenticated MCP gateway. The host SDK provides the narrow adapter;
+the incompatible `langchain-mcp-adapters` package remains excluded. Discovery,
+permission filtering, reports, identity, cancellation and no-retry behavior have
+repository tests. The first-cycle profile remains tools-only and loopback-local;
+these results do not claim arbitrary SDK options or remote OAuth conformance.
+
+## Historical feasibility evidence
+
+**Recorded: 2026-09-28. Status: limited executable evidence, not platform conformance.** Q04, Q06, Q17; CP01–CP07. Tests ran in a temporary environment with synthetic inputs and no model-provider requests. This section records the temporary feasibility environment before application implementation; current repository conformance evidence is recorded separately below. [Captured results and environment versions](../evidence/sdk-review-20260928.json).
 
 ## Tested environment
 

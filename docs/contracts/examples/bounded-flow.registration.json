@@ -1,0 +1,12 @@
+{
+  "schema_version": "0.1-draft",
+  "type_id": "bounded-flow",
+  "type_version": "0.1.0",
+  "descriptor": "bounded-flow.component.json",
+  "distribution": {
+    "name": "slow-thinker-bounded-flow",
+    "version": "0.1.0"
+  },
+  "entry_point": "slow_thinker_bounded_flow:BoundedFlowHost",
+  "environment_profile": "illustrative-python-environment"
+}

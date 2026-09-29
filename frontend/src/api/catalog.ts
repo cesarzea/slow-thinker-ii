@@ -1,8 +1,10 @@
 import {z} from 'zod';
+import {jsonObjectSchema} from './graph-schemas.ts';
 
 const graphSchema = z.object({
   graph_id: z.string(),
   revision: z.string(),
+  input_schema: jsonObjectSchema.optional(),
   participants: z.number().int().positive(),
   nodes: z.array(z.object({id: z.string(), component: z.string()})).min(1),
 });

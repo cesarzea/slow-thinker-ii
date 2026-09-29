@@ -31,6 +31,7 @@ def operator_router(
     router.add_api_route("/runs/{run_id}/result", reads.result, methods=["GET"])
     router.add_api_route("/runs/{run_id}/definition", reads.definition, methods=["GET"])
     router.add_api_route("/runs/{run_id}/events", reads.events, methods=["GET"])
+    router.add_api_route("/runs/{run_id}/execution", reads.execution, methods=["GET"])
     router.add_api_route("/runs/{run_id}/calls/{call_id}", reads.call, methods=["GET"])
     router.add_api_route("/runs/{run_id}/payloads/{payload_id}", reads.payload, methods=["GET"])
     router.add_api_route(

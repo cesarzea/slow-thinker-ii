@@ -7,6 +7,7 @@ from slow_thinker_ii.definitions import GraphSummary
 
 class DefinitionStore(Protocol):
     def summaries(self) -> tuple[GraphSummary, ...]: ...
+    def detail(self, graph_id: str, revision: str) -> str: ...
 
 
 class ExperimentCatalog:
@@ -15,3 +16,6 @@ class ExperimentCatalog:
 
     def list_graphs(self) -> tuple[GraphSummary, ...]:
         return self._store.summaries()
+
+    def graph(self, graph_id: str, revision: str) -> str:
+        return self._store.detail(graph_id, revision)

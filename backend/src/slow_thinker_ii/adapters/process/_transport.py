@@ -8,9 +8,10 @@ from anyio import create_memory_object_stream
 from anyio.streams.memory import MemoryObjectReceiveStream, MemoryObjectSendStream
 from mcp.shared.message import SessionMessage
 
+from ._diagnostics import capture_diagnostics
 from ._launch import ProcessLaunch
 from ._owned import OwnedProcess
-from ._pumps import discard_diagnostics, receive, send
+from ._pumps import receive, send
 
 type Streams = tuple[
     MemoryObjectReceiveStream[SessionMessage | Exception], MemoryObjectSendStream[SessionMessage]
@@ -21,14 +22,17 @@ type Streams = tuple[
 async def transport(owner: OwnedProcess, launch: ProcessLaunch) -> AsyncIterator[Streams]:
     process = await owner.start()
     try:
-        async with channels(process, launch.max_message_bytes) as streams:
+        async with channels(process, launch) as streams:
             yield streams
     finally:
         await owner.stop()
 
 
 @asynccontextmanager
-async def channels(process: asyncio.subprocess.Process, limit: int) -> AsyncIterator[Streams]:
+async def channels(
+    process: asyncio.subprocess.Process, launch: ProcessLaunch
+) -> AsyncIterator[Streams]:
+    limit = launch.max_message_bytes
     if process.stdout is None or process.stdin is None or process.stderr is None:
         raise RuntimeError("Component pipes are missing")
     incoming, read = create_memory_object_stream[SessionMessage | Exception](0)
@@ -37,7 +41,7 @@ async def channels(process: asyncio.subprocess.Process, limit: int) -> AsyncIter
         tasks = (
             group.create_task(receive(process.stdout, incoming, limit)),
             group.create_task(send(outgoing, process.stdin, limit)),
-            group.create_task(discard_diagnostics(process.stderr)),
+            group.create_task(capture_diagnostics(process.stderr, launch)),
         )
         try:
             yield read, write

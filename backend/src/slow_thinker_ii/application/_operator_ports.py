@@ -5,6 +5,7 @@ from typing import Protocol
 
 from slow_thinker_ii.access import AccessPolicy
 
+from ._gateway_records import GatewayOperation
 from ._native_records import ModelBinding
 from ._operator_records import CommandResult, PreparedStart, StartIntent
 from ._runtime_ports import RunEnvironment, RunProgram
@@ -26,6 +27,7 @@ class PreparedWorkflow:
     environment: RunEnvironment
     program: RunProgram
     models: tuple[ModelBinding, ...] = ()
+    operations: tuple[GatewayOperation, ...] = ()
 
     def require_identity(self, intent: StartIntent, runtime_id: str) -> None:
         if self.start.intent != intent or self.start.runtime_id != runtime_id:

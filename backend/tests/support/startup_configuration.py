@@ -2,8 +2,9 @@
 
 from pathlib import Path
 
+from slow_thinker_ii.accounting import display_amount
 from slow_thinker_ii.adapters.catalog import TypeInstallation
-from slow_thinker_ii.contracts import JsonObject, decode_json
+from slow_thinker_ii.contracts import JsonObject, decode_json, json_object
 
 from .operator_commands import operator_case
 from .operator_http import ORIGIN
@@ -20,10 +21,15 @@ def startup_record(directory: Path) -> JsonObject:
         TypeInstallation(f"{index:032x}", path.read_text())
         for index, path in enumerate(descriptors)
     )
+    limits = json_object(decode_json(profile.limits.to_json()))
+    for key in ("run_budget", "session_budget", "month_budget"):
+        value = limits[key]
+        assert isinstance(value, int)
+        limits[key] = display_amount(value)
     return {
         "schema_version": "1",
         "revision": "startup-1",
-        "limits": decode_json(profile.limits.to_json()),
+        "limits": limits,
         "resources": resource_settings(types),
         "installation_catalog": "installations",
         "descriptors": [str(path) for path in descriptors],

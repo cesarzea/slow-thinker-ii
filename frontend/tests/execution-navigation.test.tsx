@@ -57,7 +57,7 @@ it('retries a lost command response explicitly from the pending controls', async
   const server = executionView();
   server.loseReply = true;
   await tick();
-  await userEvent.type(screen.getByLabelText('Problema o tarea'), 'Private task');
+  await userEvent.type(screen.getByLabelText(/Problema o tarea/), 'Private task');
   await userEvent.click(screen.getByRole('button', {name: 'Iniciar ejecución'}));
   server.loseReply = false;
   await userEvent.click(await screen.findByRole('button', {name: 'Reenviar la misma orden'}));

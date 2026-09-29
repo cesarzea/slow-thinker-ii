@@ -5,6 +5,7 @@ import sqlite3
 from slow_thinker_ii.contracts import JsonObject, JsonValue, decode_json, json_object
 
 from ._operator_cursors import OperatorCursors
+from ._trace_reports import activation_reports
 
 
 def activation_details(
@@ -25,6 +26,7 @@ def activation_details(
     if len(roots) != 1:
         raise ValueError("An activation must have one originating call")
     result = activation_summary(roots[0], run, activation)
+    result["reports"] = activation_reports(db, run, activation)
     result["calls"] = activation_calls(db, run, activation, cursor, cursors, size)
     return result
 

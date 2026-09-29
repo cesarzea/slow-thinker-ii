@@ -1,6 +1,6 @@
 # Initial OpenAI model profile
 
-**Status: OpenAI and low cost selected by the owner on 2026-09-28; concrete adapter profile proposed.** R08, R13–R14, R29; Q03–Q04, Q07–Q08. No paid request or account-access check has been performed.
+**Status: Approved first-cycle contract.** R08, R13–R14, R29; Q03–Q04, Q07–Q08. Live low-cost execution and retained costs are recorded in the [verification record](../verification.md); automated tests remain provider-free.
 
 ## Model selection
 
@@ -123,7 +123,7 @@ The tradeoff is lower budget utilization: remaining allowance of USD 0.01 cannot
 
 Freeze the model capacity, pricing bands, endpoint/tier constraints and bound-policy version with each admitted attempt. This recommendation assumes the provider honors its published capacity and billing categories. It does not establish what an out-of-contract provider charge could be, nor guarantee a final invoice ceiling. Reject unsupported metered options before dispatch; a returned usage/cost outside the saved bound triggers the existing excess-charge policy. Changes to model capacity or billing semantics require review; compatible numeric rate updates follow the accepted daily import policy for new runs.
 
-Q04/Q07 must approve this conservative strategy and its user-visible tradeoff. It is an alternative to requiring an exact Chat Completions input counter for the first cycle. A future tighter bound requires independent evidence and a new bound-policy revision; successful sample calls alone cannot justify reducing it. The currency/calendar decision remains separately pending; daily automatic tariff updates are accepted under Q03.
+Q04/Q07 approved this conservative strategy and its user-visible tradeoff. It is an alternative to requiring an exact Chat Completions input counter for the first cycle. A future tighter bound requires independent evidence and a new bound-policy revision; successful sample calls alone cannot justify reducing it. USD and UTC calendar months are approved; daily automatic tariff updates are accepted under Q03.
 
 ## Acceptance cases
 

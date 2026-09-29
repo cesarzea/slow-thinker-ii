@@ -19,6 +19,7 @@ dependencies = [
   "pydantic>=2.13,<3",
   "httpx>=0.28,<1",
   "anyio>=4,<5",
+  "psutil>=7,<8",
 ]
 
 [tool.hatch.build.targets.wheel]

@@ -6,10 +6,13 @@ from dataclasses import dataclass
 from slow_thinker_ii.access import CallAuthority, CallLimits
 from slow_thinker_ii.contracts import encode_json
 
+from ._managed_gateway import ManagedGateway
 from ._managed_run import ManagedRun
 from ._native_gateway import NativeModelGateway
 from ._operator_ports import PreparedWorkflow
+from ._process_ownership import OwnedRunEnvironment
 from ._run_admission import RunAdmission
+from ._run_evidence import RunEvidence
 from ._run_finalization import RunFinalization
 from ._run_ports import RunStore
 from ._run_records import RunRecord
@@ -19,6 +22,7 @@ from ._run_records import RunRecord
 class WorkflowRuntime:
     run: ManagedRun
     gateway: NativeModelGateway
+    components: ManagedGateway
 
 
 def read_run(store: RunStore, identity: str) -> RunRecord:
@@ -30,6 +34,8 @@ def build_runtime(
     workflow: PreparedWorkflow, record: RunRecord, store: RunStore, clock: Callable[[], float]
 ) -> WorkflowRuntime:
     limits = workflow.start.configuration.limits
+    if isinstance(workflow.environment, OwnedRunEnvironment):
+        workflow.environment.bind_owner(record.run_id, record.runtime_id)
     authority = CallAuthority(
         record.run_id,
         record.graph_revision,
@@ -40,10 +46,20 @@ def build_runtime(
     )
     admission = RunAdmission(authority, store, record.run_id, record.runtime_id, clock)
     finish = RunFinalization(authority, store, record.run_id, record.runtime_id, clock)
+    evidence = RunEvidence(authority, store, limits.max_payload_bytes)
     runtime = ManagedRun(
-        authority, admission, finish, workflow.environment, record.deadline, limits.shutdown_seconds
+        authority,
+        admission,
+        finish,
+        workflow.environment,
+        record.deadline,
+        limits.shutdown_seconds,
+        evidence,
     )
-    return WorkflowRuntime(runtime, NativeModelGateway(authority, runtime, workflow.models))
+    components = ManagedGateway(authority, runtime, workflow.operations, evidence)
+    return WorkflowRuntime(
+        runtime, NativeModelGateway(authority, runtime, workflow.models, evidence), components
+    )
 
 
 def failed_before_launch(store: RunStore, record: RunRecord, now: float) -> None:

@@ -14,6 +14,10 @@ class GraphSummary:
     graph_id: str
     revision: str
     nodes: tuple[PlannedNode, ...]
+    input_schema_json: str = (
+        '{"type":"object","properties":{"problem":{"type":"string"}},'
+        '"required":["problem"],"additionalProperties":false}'
+    )
 
     @property
     def participant_count(self) -> int:

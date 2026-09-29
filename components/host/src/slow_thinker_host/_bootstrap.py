@@ -1,4 +1,4 @@
-"""Read a platform-written bootstrap record; it cannot select executable code."""
+"""Read trusted platform bootstrap; invocation arguments never supply host setup."""
 
 from dataclasses import dataclass, field
 from pathlib import Path

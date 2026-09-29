@@ -1,6 +1,6 @@
 # Architecture overview
 
-**Status: Draft for review.** This view follows [arc42](https://arc42.org/overview/). Architectural requirements are binding; mechanisms marked proposed remain subject to approval.
+**Status: Approved first-cycle architecture.** This view follows [arc42](https://arc42.org/overview/). Architectural requirements are binding; mechanisms marked proposed remain subject to approval.
 
 ## 1. Introduction and goals
 
@@ -10,7 +10,7 @@ The [requirements](../specification/requirements.md) identify stakeholders, func
 
 ## 2. Constraints
 
-- The application is not implemented. Specification closure precedes application code.
+- The local application implements the approved first cycle; later capabilities remain deferred.
 - Start locally, with one user, trusted components, and one active workflow.
 - Use Python/FastAPI for the backend and React/TypeScript/React Flow/Vite for the frontend.
 - Graph definitions are editable, versioned JSON, independent of React Flow serialization.
@@ -26,13 +26,13 @@ See the [C4 context and container views](views.md). The browser is an operator i
 
 Use a small orchestration core with extension contracts. Separate definitions, configured instances, activations, graph revisions, and recorded evidence. Centralize authorization, scheduling, deadlines, spending reservations, and event persistence. Keep provider integrations and visual layout outside the domain model.
 
-The first cycle uses a finite-sequence control policy. The contract proposal places policy-specific data under a versioned extension configuration rather than assuming that every future graph is a sequence or a DAG.
+The first cycle supports finite sequences and bounded conditional routing. Policy-specific data belongs to versioned controller configuration, preserving room for future scheduling mechanisms.
 
 Future [standalone Python export](../adr/0009-standalone-python-export.md) motivates keeping functional component logic independent of instrumentation, application services and client routing. The selected export profile generates direct calls and removes platform logging, intermediation and supervision. Export implementation is deferred; platform-managed execution retains its first-cycle process, mediation and supervision requirements.
 
 ## 5. Building block view
 
-These are proposed responsibilities, not a finalized source directory tree or independently deployed microservices.
+These are logical responsibilities. The source layout and enforced dependency direction are defined in the module-boundary contract; they do not imply independently deployed microservices.
 
 | Responsibility | Owns | Public interactions |
 | --- | --- | --- |
@@ -44,7 +44,7 @@ These are proposed responsibilities, not a finalized source directory tree or in
 | Integration adapters | MCP, model providers, compatibility APIs, persistence | Translate external formats at validated boundaries |
 | Browser features | Graph views, inspectors, session/run navigation | Use application APIs and status updates |
 
-Only public module APIs may be used across responsibilities. Domain code must not import web frameworks, provider SDKs, UI types, or storage implementations. A composition root wires implementations. The [source organization proposal](module-boundaries.md) specifies directories, dependency direction, public entry points and placement checks for Q14 review; no source scaffold has been created.
+Only public module APIs may be used across responsibilities. Domain code must not import web frameworks, provider SDKs, UI types, or storage implementations. A composition root wires implementations. The [module-boundary contract](module-boundaries.md) defines the implemented directories, dependency direction, public entry points and placement checks.
 
 ## 6. Runtime view
 

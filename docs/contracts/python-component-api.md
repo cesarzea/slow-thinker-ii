@@ -1,6 +1,6 @@
 # Python component interface
 
-**Status: First-cycle implementation in progress.** R02, R08, R27; Q13, Q17, Q20. The declarations below summarize the reference API; executable packages live under `components/`. See the [verification record](../verification.md) for tested behavior and remaining integration work.
+**Status: Approved first-cycle contract.** R02, R08, R27; Q13, Q17, Q20. The declarations below summarize the reference API; executable packages live under `components/`. See the [verification record](../verification.md) for tested behavior and remaining integration work.
 
 ## Public values
 

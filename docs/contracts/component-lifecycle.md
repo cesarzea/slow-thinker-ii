@@ -1,6 +1,6 @@
 # Component and invocation lifecycle
 
-**Status: Proposed first local profile, 2026-09-28.** R02, R05, R08–R16; Q05, Q08, Q17. This makes the initial per-run hosting proposal reviewable; it does not close those questions or implement a host.
+**Status: Approved first-cycle contract.** R02, R05, R08–R16; Q05, Q08, Q17. The local host implementation and its acceptance evidence are described in the [verification record](../verification.md).
 
 ## Independent lifetimes
 
