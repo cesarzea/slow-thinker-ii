@@ -19,7 +19,7 @@ Accepted feedback takes four activations; exhaustion stops at six without schedu
 a seventh. Settled charges and outstanding obligations remain inspectable.
 
 `make verify` passed with 1,266 Python/tooling/component tests, 119 frontend tests
-and seven browser journeys. Python line coverage is 97.03% and independent branch
+and seven browser journeys. Python line coverage is 96.86% and independent branch
 coverage is 90.58%; frontend coverage is 98.28% statements, 92.51% branches,
 99.05% functions and 98.87% lines. All 26 Python import contracts and the configured
 size, typing, lint, format, dependency, dead-code and build checks pass. The 200
@@ -29,6 +29,11 @@ accounting mutations retain the reviewed baseline: 141 killed, one timeout and
 No threshold or source exclusion was weakened to close that gap. Dependencies and
 generated environments are excluded from source analysis, including nested virtual
 environments; first-party source remains subject to every gate.
+
+The follow-up CodeQL review moved resource cleanup outside test assertions and
+made the new protocol methods explicitly abstract. Targeted tests, both installed
+bounded paths and the complete local gate pass after those corrections. Remote
+CodeQL reports no new alerts on the corrected source; no alert was suppressed.
 
 The gateway tests exercise permission-filtered MCP discovery, ordinary OpenAI and
 LangChain model invocation, a LangGraph node using a StructuredTool, preserved

@@ -167,7 +167,7 @@ make a delivery pass. No implementer makes paid provider calls.
 
 ## Delivery verification
 
-Final verification checkpoint: 2026-09-29 04:24:11 UTC. `make verify` passes with
+Initial full local verification checkpoint: 2026-09-29 04:24:11 UTC. `make verify` passes with
 1,266 Python tests, 119 frontend tests and seven browser journeys. Nineteen real
 installation checks plus the nonterminating-selector check pass. Two live OpenAI
 runs confirm immediate acceptance and rejection/correction/acceptance with exact
@@ -179,3 +179,8 @@ agent effort or proof of a causal speedup over earlier work. Testing corrections
 included fixture expectations/runtime selection, UI identity and viewport behavior,
 a protocol annotation and missing contract/validation branch tests. Implementation
 and verification evidence is consolidated in the [verification record](../verification.md).
+
+Remote review subsequently identified test-cleanup side effects and ambiguous
+protocol stubs. The focused corrections passed affected and installed tests, a
+complete local verification and CodeQL. These follow-up checks extend beyond the
+initial local checkpoint above; PR checks retain the remote delivery history.
