@@ -1,17 +1,17 @@
 # Sprint Status Report — S02
 
-| Document control         | Value                                                                         |
-| ------------------------ | ----------------------------------------------------------------------------- |
-| Report ID                | SPRINT-S02-001                                                                |
-| Report version           | **0.0.2.5** — V0.0, Sprint 2, Revision 5                                      |
-| Owner                    | Cesar Zea                                                                     |
-| Reporting date           | 2026-10-01, Europe/Lisbon                                                     |
-| Delivery date            | 2026-09-30                                                                    |
-| Sprint                   | S02 — Agent canvas and English presentation                                   |
-| Delivery status          | Functional scope delivered and verified locally                               |
-| Publication readiness    | Polling passed remotely; geometry correction verified locally, remote pending |
-| Acceptance status        | Owner-requested corrections delivered; final owner sign-off not recorded      |
-| Product package versions | Python: `0.1.0.dev1`; frontend: `0.1.0-dev.1`                                 |
+| Document control         | Value                                                                      |
+| ------------------------ | -------------------------------------------------------------------------- |
+| Report ID                | SPRINT-S02-001                                                             |
+| Report version           | **0.0.2.4** — V0.0, Sprint 2, Revision 4                                   |
+| Owner                    | Cesar Zea                                                                  |
+| Reporting date           | 2026-10-01, Europe/Lisbon                                                  |
+| Delivery date            | 2026-09-30                                                                 |
+| Sprint                   | S02 — Agent canvas and English presentation                                |
+| Delivery status          | Functional scope delivered and verified locally                            |
+| Publication readiness    | CI polling regression corrected and verified locally; remote rerun pending |
+| Acceptance status        | Owner-requested corrections delivered; final owner sign-off not recorded   |
+| Product package versions | Python: `0.1.0.dev1`; frontend: `0.1.0-dev.1`                              |
 
 The four-part report version identifies the report series, sprint and revision.
 It is a documentation identifier, not a product release version. The report is
@@ -82,20 +82,11 @@ ten browser journeys. The [verification record](../verification.md#browser-polli
 retains the diagnosis and limitations. Remote checks for the correction are pending
 at preparation; branch protection, release status and owner sign-off are unchanged.
 
-## Geometry readiness follow-up — 2026-10-01
-
-The next remote run passed polling but failed the narrow-viewport case during card
-initialization. Complete visible two-card samples and retrying condition assertions
-now establish meaningful geometry. The representative, 20 repeated geometry cases
-and the full shared local runner passed. The [verification record](../verification.md#browser-geometry-readiness-follow-up--2026-10-01)
-retains evidence and limits; remote checks for this correction are pending at
-preparation. Product code and acceptance scope are unchanged.
-
 ## Outstanding items and next delivery
 
 | Item                                    | Disposition                                                                                                                         |
 | --------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
-| Publication verification                | Full local verification passed; remote polling and CodeQL passed, and the geometry correction awaits its remote rerun.              |
+| Publication verification                | Shared local verification passed; remote CodeQL passed on the prior commit, and the corrected browser test awaits its remote rerun. |
 | Final owner sign-off                    | Not recorded; owner-requested corrections are implemented and locally verified.                                                     |
 | Marker hover/click inspection           | Intentionally deferred, not an unfulfilled S02 acceptance requirement.                                                              |
 | S03 — Personal experiment configuration | Next proposed sprint: import/edit JSON graphs, configure agents, save versions and create variants. Implementation has not started. |
@@ -114,12 +105,10 @@ records partial M05 application; it is distinct from this product progress repor
 | 0.0.2.2 | 2026-10-01 | Added owner-approved CodeQL cleanup and follow-up evidence; clarified the remaining shared-verification obligation. |
 | 0.0.2.3 | 2026-10-01 | Integrated the shared CodeQL gate, verified rejection and full local checks, and retained remote CI limitations.    |
 | 0.0.2.4 | 2026-10-01 | Recorded the remote polling failure, corrected test evidence and complete local verification; remote rerun pending. |
-| 0.0.2.5 | 2026-10-01 | Recorded remote polling success, a geometry readiness failure and corrected local evidence; remote rerun pending.   |
 
 The [original report, revision 0.0.2.1](sprint-02-status-report-0.0.2.1.md), is
 retained unchanged as a versioned snapshot, together with [revision 0.0.2.2](sprint-02-status-report-0.0.2.2.md)
-and [revision 0.0.2.3](sprint-02-status-report-0.0.2.3.md). [Revision 0.0.2.4](sprint-02-status-report-0.0.2.4.md)
-retains the polling-correction checkpoint before remote geometry verification.
+and [revision 0.0.2.3](sprint-02-status-report-0.0.2.3.md).
 
 Increment the final version segment for substantive updates to this report and
 append their date and purpose here. Reports for subsequent sprints use their own

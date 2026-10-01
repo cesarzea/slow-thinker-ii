@@ -12,7 +12,7 @@ release is recorded here yet.
 | -------------------- | ------------- | ------------------------------------------------------------- |
 | Python application   | `0.1.0.dev1`  | [pyproject.toml](pyproject.toml)                              |
 | Frontend application | `0.1.0-dev.1` | [package.json](package.json)                                  |
-| Latest sprint report | `0.0.2.4`     | [S02 status report](docs/progress/sprint-02-status-report.md) |
+| Latest sprint report | `0.0.2.5`     | [S02 status report](docs/progress/sprint-02-status-report.md) |
 
 The report identifier follows `<series-major>.<series-minor>.<sprint>.<revision>`:
 `0.0.2.1` means report series V0.0, Sprint 2, Revision 1. It does not change package
@@ -30,6 +30,8 @@ versions or identify a published software release.
   checks and verified failure behavior: [verification](docs/verification.md#shared-codeql-verification-and-commit-readiness--2026-10-01).
 - Corrected polling journey proves actual agent movement and reset after an
   escaped browser-test defect: [verification](docs/verification.md#browser-polling-regression-and-publication-follow-up--2026-10-01).
+- Complete visible-card geometry samples reject initialization/remount states in
+  viewport checks: [verification](docs/verification.md#browser-geometry-readiness-follow-up--2026-10-01).
 
 The [verification record](docs/verification.md) retains tested behavior, checkpoint
 chronology and publication prerequisites. Planned future work belongs in the
@@ -37,12 +39,13 @@ chronology and publication prerequisites. Planned future work belongs in the
 
 ## Sprint report version history
 
-| Version     | Recorded date | Sprint | Progress status                                                                                                 | Report and specification                                                                                                                       |
-| ----------- | ------------- | ------ | --------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
-| **0.0.2.4** | 2026-10-01    | S02    | Remote polling failure corrected; focused repetitions and full local verification passed; remote rerun pending. | [Status report](docs/progress/sprint-02-status-report.md) · [Sprint specification](docs/specification/agent-canvas-sprint.md)                  |
-| 0.0.2.3     | 2026-10-01    | S02    | Shared CodeQL rejection and full local verification passed; updated remote CI not yet run.                      | [Revision 3 snapshot](docs/progress/sprint-02-status-report-0.0.2.3.md) · [Sprint specification](docs/specification/agent-canvas-sprint.md)    |
-| 0.0.2.2     | 2026-10-01    | S02    | Approved CodeQL cleanup and follow-up tests verified; shared-verification integration remains open.             | [Revision 2 snapshot](docs/progress/sprint-02-status-report-0.0.2.2.md) · [Sprint specification](docs/specification/agent-canvas-sprint.md)    |
-| **0.0.2.1** | 2026-10-01    | S02    | Local delivery and owner-requested corrections verified; publication prerequisites remained open at recording.  | [Original status report](docs/progress/sprint-02-status-report-0.0.2.1.md) · [Sprint specification](docs/specification/agent-canvas-sprint.md) |
+| Version     | Recorded date | Sprint | Progress status                                                                                                         | Report and specification                                                                                                                       |
+| ----------- | ------------- | ------ | ----------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
+| **0.0.2.5** | 2026-10-01    | S02    | Remote polling passed; geometry readiness corrected with focused and complete local verification; remote rerun pending. | [Status report](docs/progress/sprint-02-status-report.md) · [Sprint specification](docs/specification/agent-canvas-sprint.md)                  |
+| 0.0.2.4     | 2026-10-01    | S02    | Remote polling failure corrected; focused repetitions and full local verification passed; remote rerun pending.         | [Revision 4 snapshot](docs/progress/sprint-02-status-report-0.0.2.4.md) · [Sprint specification](docs/specification/agent-canvas-sprint.md)    |
+| 0.0.2.3     | 2026-10-01    | S02    | Shared CodeQL rejection and full local verification passed; updated remote CI not yet run.                              | [Revision 3 snapshot](docs/progress/sprint-02-status-report-0.0.2.3.md) · [Sprint specification](docs/specification/agent-canvas-sprint.md)    |
+| 0.0.2.2     | 2026-10-01    | S02    | Approved CodeQL cleanup and follow-up tests verified; shared-verification integration remains open.                     | [Revision 2 snapshot](docs/progress/sprint-02-status-report-0.0.2.2.md) · [Sprint specification](docs/specification/agent-canvas-sprint.md)    |
+| **0.0.2.1** | 2026-10-01    | S02    | Local delivery and owner-requested corrections verified; publication prerequisites remained open at recording.          | [Original status report](docs/progress/sprint-02-status-report-0.0.2.1.md) · [Sprint specification](docs/specification/agent-canvas-sprint.md) |
 
 ## Maintenance
 

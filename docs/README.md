@@ -19,7 +19,7 @@ The [central version register](../CHANGELOG.md) records development package vers
 and the history of versioned sprint reports.
 
 The [S02 Sprint Status Report](progress/sprint-02-status-report.md), version
-`0.0.2.4`, consolidates delivered progress, verification, owner-review corrections
+`0.0.2.5`, consolidates delivered progress, verification, owner-review corrections
 and outstanding items, with links to the sprint specification.
 
 The [sprint roadmap](specification/sprint-roadmap.md) records delivered scopes and

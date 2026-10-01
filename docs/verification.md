@@ -2,6 +2,36 @@
 
 **Updated: 2026-10-01. The shared local verification runner passed, including CodeQL.** Dated sections retain earlier verification evidence.
 
+## Browser geometry readiness follow-up — 2026-10-01
+
+Commit `a72e2a6339bb8deab7bf12afab5f60960bc9644e` passed the corrected polling
+journey remotely. [CI run 36887588522](https://github.com/cesarzea/slow-thinker-ii/actions/runs/36887588522)
+instead failed the narrow-viewport geometry case with a null card bounding box;
+the other nine journeys passed. Shared CodeQL, 1,421 Python tests, 154 frontend
+tests and the build passed before that failure.
+
+Review identified readiness gaps in the geometry helper: an empty collection
+satisfied `every`, and hidden initialization was not rejected. Graph definition
+arrival and reorganization remount the canvas. The corrected helper samples the
+canvas and exactly two visible, positive-size cards in one DOM evaluation, refusing
+incomplete samples. Separation is checked with condition polling over complete
+samples. The original containment, strict non-overlap, delayed-definition,
+reciprocal-route, configuration, marker and narrow-overflow conditions are retained.
+Only the journey and its contract changed; retries, delays, timeouts and product
+behavior remain unchanged.
+
+After coordinator review, the narrow representative passed and both geometry cases
+passed ten repetitions each: 20 cases in 18.4 seconds. The full unchanged local
+`make verify` then passed, including CodeQL, 1,421 Python tests, 154 frontend tests,
+all ten browser journeys, build, static, mutation and independent coverage checks.
+Coverage and the retained mutation baseline are unchanged from the preceding
+checkpoint; CodeQL has no errors or warnings, 80 reviewed Python notes and no
+JavaScript/TypeScript findings. All calls used offline fixtures.
+
+Remote verification of this geometry correction is pending at document preparation.
+The preceding failed run remains evidence of an escaped test defect, not a full
+remote pass. Branch protection and owner sign-off remain unchanged.
+
 ## Browser polling regression and publication follow-up — 2026-10-01
 
 The published commit `d4581837016f33011c85c9cf08df312f2807ab48` passed local

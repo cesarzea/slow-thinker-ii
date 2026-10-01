@@ -44,8 +44,9 @@ S03 is the proposed next sprint. Later scopes remain provisional.
 S01/S02 identify the existing [execution](first-cycle-sprint.md) and
 [canvas](agent-canvas-sprint.md) deliveries. Their [verification record](../verification.md)
 remains authoritative; shared local verification passes. Remote CodeQL passed,
-but a browser polling test failed; its locally verified correction awaits remote CI.
-The [S02 status report](../progress/sprint-02-status-report.md), version `0.0.2.4`,
+and the corrected polling case passed. A separate geometry readiness correction
+is verified locally and awaits remote CI.
+The [S02 status report](../progress/sprint-02-status-report.md), version `0.0.2.5`,
 consolidates its delivered progress and outstanding items.
 Product sprint numbers are distinct from the process-improvement cycle numbers.
 Existing hosting, inheritance, package preparation, tariff updates and accounting

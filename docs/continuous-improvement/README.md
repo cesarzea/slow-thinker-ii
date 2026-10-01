@@ -114,3 +114,12 @@ then failed in remote CI. Corrected movement and reset assertions passed focused
 repetitions and the full local runner under M06. Remote validation of the correction
 is pending at recording. Earlier verification counts and audited cycle times remain
 unchanged; this follow-up supplies no measured productivity comparison.
+
+## Geometry readiness follow-up — 2026-10-01
+
+The [second browser follow-up](cycles/003-contract-closure/report.md#geometry-readiness-follow-up--2026-10-01)
+records remote polling success and a separate narrow-viewport readiness failure.
+Complete visible-card samples now support the original geometry assertions; the
+representative, 20 repetitions and full local runner pass. Remote verification is
+pending at preparation. Historical durations and conclusions remain unchanged;
+two escaped test defects limit any claim about the method's verification efficacy.

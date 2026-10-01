@@ -438,6 +438,27 @@
           "change": "Append dated browser CI regression follow-up; original measurements and checkpoint results retained."
         }
       ]
+    },
+    {
+      "recorded_on": "2026-10-01",
+      "timezone": "Europe/Lisbon",
+      "purpose": "Record remote polling success, escaped geometry readiness defect and M06 correction/verification; retain historical measurements.",
+      "previous_edition_retention": "Local ignored snapshot and sorted SHA-256 index before the geometry follow-up; previous published records retained in Git.",
+      "previous_edition_archive_sha256": "b7f76be82842824e88e9bf07ba204f8589f51fa9e16b450dc3c111993ab2d0e2",
+      "records": [
+        {
+          "file": "README.md",
+          "previous_edition_sha256": "93f80b723bd5622d3c57f12d9f3f9602ff5b0c1bbf6c3e420334a303de653bb8",
+          "current_sha256": "c7d145b14212f0bb2a6dfdec8d47b6e720f86535ff6ed106f861b3e40245ab59",
+          "change": "Append dated geometry readiness follow-up; original checkpoint figures and timing preserved."
+        },
+        {
+          "file": "cycles/003-contract-closure/report.md",
+          "previous_edition_sha256": "eb1bfc13b721c74442ff7f00f72af19a356b2a650ebb86afb8c367698823963d",
+          "current_sha256": "87a342c38576577189b59431bf0d4d761203481c04ba1268adecae25dc1251d0",
+          "change": "Append dated geometry readiness follow-up; original checkpoint figures and timing preserved."
+        }
+      ]
     }
   ]
 }

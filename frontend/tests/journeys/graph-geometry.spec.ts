@@ -2,6 +2,12 @@ import {expect, test} from '@playwright/test';
 import type {Locator, Page} from '@playwright/test';
 import {connect} from '../support/browser.ts';
 
+type Rectangle = Pick<DOMRect, 'left' | 'right' | 'top' | 'bottom' | 'width' | 'height'>;
+interface GeometrySample {
+  readonly bounds: Rectangle;
+  readonly cards: readonly Rectangle[];
+}
+
 test('fits arriving agent definitions, expanded configuration and separate reciprocal routes', async ({
   page,
 }, info) => {
@@ -51,19 +57,28 @@ test('keeps agent configuration within a narrow viewport after fitting', async (
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
 });
 async function allCardsInside(canvas: Locator): Promise<boolean> {
+  const sample = await sampleGeometry(canvas);
+  if (sample === null) return false;
+  return sample.cards.every(
+    (box) =>
+      box.left >= sample.bounds.left &&
+      box.right <= sample.bounds.right &&
+      box.top >= sample.bounds.top &&
+      box.bottom <= sample.bounds.bottom,
+  );
+}
+async function sampleGeometry(canvas: Locator): Promise<GeometrySample | null> {
   return await canvas.evaluate((element) => {
-    const bounds = element.getBoundingClientRect();
-    return [...element.querySelectorAll('.react-flow__node-agent')].every((node) => {
-      const box = node.getBoundingClientRect();
-      return (
-        box.width > 0 &&
-        box.height > 0 &&
-        box.left >= bounds.left &&
-        box.right <= bounds.right &&
-        box.top >= bounds.top &&
-        box.bottom <= bounds.bottom
-      );
+    const nodes = [...element.querySelectorAll('.react-flow__node-agent')];
+    if (nodes.length !== 2) return null;
+    if (nodes.some((node) => getComputedStyle(node).visibility !== 'visible')) return null;
+    const cards = nodes.map((node) => {
+      const {left, right, top, bottom, width, height} = node.getBoundingClientRect();
+      return {left, right, top, bottom, width, height};
     });
+    if (cards.some(({width, height}) => width <= 0 || height <= 0)) return null;
+    const {left, right, top, bottom, width, height} = element.getBoundingClientRect();
+    return {bounds: {left, right, top, bottom, width, height}, cards};
   });
 }
 async function expectSeparatedRoutes(canvas: Locator): Promise<void> {
@@ -78,9 +93,11 @@ async function expectSeparatedRoutes(canvas: Locator): Promise<void> {
   );
 }
 async function expectCardsSeparated(canvas: Locator): Promise<void> {
-  const cards = canvas.locator('.react-flow__node-agent');
-  const first = await cards.nth(0).boundingBox();
-  const second = await cards.nth(1).boundingBox();
-  if (first === null || second === null) throw new Error('Missing agent cards');
-  expect(first.x + first.width).toBeLessThan(second.x);
+  await expect
+    .poll(async () => {
+      const sample = await sampleGeometry(canvas);
+      const [first, second] = sample?.cards ?? [];
+      return first !== undefined && second !== undefined && first.right < second.left;
+    })
+    .toBe(true);
 }

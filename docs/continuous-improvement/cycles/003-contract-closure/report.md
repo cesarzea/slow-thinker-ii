@@ -176,3 +176,22 @@ evidence of the intended behavior rather than adding more broad test repetitions
 Remote checks for the correction remain pending at this checkpoint. This follow-up
 has no complete timing audit and establishes no comparative productivity gain;
 the original cycle measurements and method attribution remain unchanged.
+
+## Geometry readiness follow-up — 2026-10-01
+
+The next remote run passed the corrected polling journey but failed the narrow
+geometry case. The [verification record](../../../verification.md#browser-geometry-readiness-follow-up--2026-10-01)
+retains the null bounding-box failure and readiness gaps: the helper could accept
+empty or hidden card samples during initialization/remount. A complete visible
+two-card sample now precedes containment and separation assertions.
+
+The coordinator updated the module contract and assigned the same complete browser
+package. Review preceded testing; the narrow representative and 20 repeated geometry
+cases passed, followed by the unchanged complete local runner. No production change
+or verification relaxation was required. Remote verification of this correction is
+pending at recording.
+
+This is a second escaped browser-test defect despite local passes. It reinforces
+the need to prove fixture readiness and the intended interaction. It does not
+establish that M06 saved time, nor does it change the original C03 measurements;
+this follow-up has no complete timing audit.

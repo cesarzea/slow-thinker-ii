@@ -78,3 +78,8 @@ verify that the drag changes that transform. Compare node and viewport transform
 across a successful execution-poll response, then require Reorganize graph to
 restore the initial node transform. Comparing the entire inline style can accept
 transient visibility changes without proving movement or layout reset.
+
+Geometry checks must wait for both expected agent cards to be rendered and visible.
+An empty collection or hidden initialization state must not count as fitted.
+Observe containment and separation from stable DOM geometry, retrying condition
+checks through Playwright assertions across definition arrival and layout remounts.
