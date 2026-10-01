@@ -80,9 +80,94 @@ Component packages expose their own operations and extension hooks. A derived re
 
 - Every production file belongs to a declared package/capability in the repository's location manifest. A root-level source file or new catch-all directory fails verification until its responsibility and allowed dependencies are declared.
 - Keep files, functions and complexity within the mandatory README limits. Split by cohesive responsibility; moving pieces to an unrelated `utils`, `common`, `misc` or `helpers` package merely to satisfy a line limit is not acceptable.
-- Do not create empty placeholder packages for future features. The tree defines allowed responsibilities, not a requirement to create every directory before its first use.
+- Do not create empty placeholder packages for future features. For an agreed milestone, create and review the required public interfaces before their implementation; incomplete operations must fail explicitly.
 - Runtime code cannot import test/example/tooling modules or development-only dependencies. Build output, local stores, credentials and downloaded environments do not belong in source packages.
 - Generated code and integration adapters have no automatic exemption from the engineering rules. Generation must produce conforming units; a necessary exception requires the existing reviewed-ADR procedure.
+
+## Module documents and implementation workflow
+
+The current approved process is [M06](../continuous-improvement/methods/006-delivery-preparation.md).
+It adds precise dependency handoffs, acceptance evidence for review and shared test
+readiness to the phases below. Apply those requirements in the existing module
+documents and tickets; no additional documentation hierarchy is required.
+
+Each module owns its documents in its directory. A module is a declared capability,
+frontend feature or independently packaged component, not every organizational
+folder. Keep one set at its ownership boundary, alongside its public entry point
+or at the component package root.
+
+| File | Responsibility |
+| --- | --- |
+| `readme.md` | Brief purpose, boundaries and how to use the module. An existing `README.md` fulfils this role; do not create a second copy. |
+| `specification.md` | Responsibilities, public interfaces and types, dependencies, inputs/outputs, state, errors and acceptance criteria. Link shared contracts rather than copying them. |
+| `todo.md` | Current implementation ticket: concrete pending changes, constraints, affected interfaces and completion criteria. No completed tasks or work diary. |
+
+Define the complete sprint through delivery before launching development. Cover
+the agreed delivery objective end to end: affected modules, contracts, tasks,
+dependencies, owners, testing scope and acceptance criteria. Keep the final project
+objectives in view without extending the agreed sprint scope. Prepare documents
+across all affected modules, not one complete module at a time:
+
+1. Write or update all brief `readme.md` files to establish responsibilities.
+2. Write or update all `specification.md` files and reconcile their contracts.
+3. Write all needed `todo.md` tickets with concrete work and completion criteria.
+4. Review new public interface skeletons before launching their implementation.
+
+Distinguish intended behavior from implemented behavior. The local
+specification cannot silently override an accepted shared contract; resolve any
+disagreement in the owning contract before continuing dependent implementation.
+
+Keep the phases distinct:
+
+1. **Analysis, specification and tasks:** the coordinator resolves the complete
+   sprint's design and feasibility questions and prepares the documents above.
+   Specify observable behavior and public contracts; leave internal implementation
+   choices open where they do not affect those contracts. Include test ownership
+   and acceptance criteria before development starts.
+2. **Development and delivery:** assign one or more complete components or packages
+   to each implementer, grouping by cohesion, dependencies and workload. Delegate
+   independent assignments in parallel with exclusive ownership. Implementers work
+   against the prepared contracts
+   and report deliveries and unresolved issues. Do not repeatedly reopen the
+   architecture or alternate development with functional test implementation and
+   execution. Keep delivery receipts brief rather than reviewing the whole system
+   again for every completed module.
+3. **Review and corrections:** after the deliveries, review each implementation
+   against its specification, ticket and engineering rules, and review the whole
+   result's interactions and failure paths. Group necessary corrections into module
+   tickets, implement them in parallel where independent, and review the corrected
+   result. Repeat until the complete sprint appears ready for testing.
+4. **Testing:** finalize test tickets from the planned scope and implement module,
+   integration and end-to-end tests, in parallel where independent. Run verification,
+   analyze results together, write correction tickets, apply corrections and add
+   missing tests, then repeat relevant verification. Finish only when acceptance
+   criteria and all mandatory checks pass. Apparent coherence permits entering
+   this phase; it does not establish correctness or completion.
+
+The coordinator owns architecture, shared-contract decisions and whole-system
+review. Each implementer receives the common engineering rules, local module
+documents, relevant code, dependency contracts, and brief context about purpose
+and failure consequences. The full conversation history is unnecessary. Use whole
+components or packages as assignment units; their file boundaries record exclusive
+ownership. Give shared files an explicit owner. Non-overlapping deliveries require
+no separate merge phase. Whole-system review and subsequent
+integration tests must still verify that modules work together.
+
+Report ambiguities to the coordinator rather than inventing cross-module decisions.
+Resolve blocking contract issues before affected work continues. Update only the
+affected specifications and tickets; a local correction does not automatically
+reopen the whole sprint. Do not weaken verification gates or repeat broad
+verification without a relevant change or unresolved concern.
+
+Evaluate the method per sprint using elapsed time to verified functionality,
+rework, integration defects and available resource usage. Distinguish measurements
+from estimates; code volume and worker count do not demonstrate efficiency.
+
+Update `todo.md` as work advances. Remove an item only when its completion criteria
+are met; keep outstanding verification as pending work. Delete the file when no
+items remain. Its absence means no recorded pending ticket, not proof that the
+module implements every future capability. Keep `readme.md` and `specification.md`
+current; code, tests and affected documentation belong in the same completed change.
 
 ## Verification obligations
 

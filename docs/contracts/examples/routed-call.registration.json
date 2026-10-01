@@ -1,0 +1,12 @@
+{
+  "schema_version": "0.1-draft",
+  "type_id": "routed-call",
+  "type_version": "0.1.0",
+  "descriptor": "routed-call.component.json",
+  "distribution": {
+    "name": "slow-thinker-routed-call",
+    "version": "0.1.0"
+  },
+  "entry_point": "slow_thinker_routed_call:RoutedCallHost",
+  "environment_profile": "illustrative-python-environment"
+}

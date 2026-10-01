@@ -33,4 +33,5 @@ async def test_operator_command_owns_real_processes(tmp_path: Path, stop: bool) 
         assert transaction.run(result.receipt.target_id).state == (
             "cancelled" if stop else "completed"
         )
-    assert not (await case.coordinator.close()).runs
+    pending = await case.coordinator.close()
+    assert not pending.runs

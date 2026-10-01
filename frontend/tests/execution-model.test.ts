@@ -61,7 +61,7 @@ it('withdraws an unconfirmed Start instead of generating a new intention', async
   localStorage.setItem(pendingKey, 'start-unconfirmed');
   const model = createExecutionModel('key', localStorage);
   await model.polling.refresh(signal());
-  expect(model.store.snapshot().message).toContain('sin confirmar');
+  expect(model.store.snapshot().message).toContain('unconfirmed');
   await model.commands.start(graph, 'must not dispatch');
   expect(server.mutations).toHaveLength(0);
   await model.commands.withdraw();

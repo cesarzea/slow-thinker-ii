@@ -1,0 +1,12 @@
+{
+  "schema_version": "0.1-draft",
+  "type_id": "redirector",
+  "type_version": "0.1.0",
+  "descriptor": "redirector.component.json",
+  "distribution": {
+    "name": "slow-thinker-redirector",
+    "version": "0.1.0"
+  },
+  "entry_point": "slow_thinker_redirector:RedirectorHost",
+  "environment_profile": "illustrative-python-environment"
+}

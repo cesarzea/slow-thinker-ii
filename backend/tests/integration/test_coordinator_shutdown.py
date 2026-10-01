@@ -47,7 +47,8 @@ async def test_timeout_keeps_unresponsive_preparation_owned(tmp_path: Path) -> N
     assert closed.preparations == ("start",) and not closed.runs
     case.preparer.release.set()
     await eventually(lambda: not case.coordinator.pending().preparations)
-    assert not (await case.coordinator.close()).preparations
+    pending = await case.coordinator.close()
+    assert not pending.preparations
     assert not case.preparer.operation.calls
 
 

@@ -1,0 +1,756 @@
+{
+  "categories": {
+    "Communication and follow-up": 631.0853739310846,
+    "Analysis": 13841.502544826359,
+    "Documentation": 1753.6992550532511,
+    "Environment and operational integration": 429.97579147830396,
+    "Testing and verification": 8109.426999447641,
+    "Implementation": 6320.287364776076,
+    "Reanalysis due to inconsistencies": 750.3769991397858,
+    "Context compaction": 2170.6007038594794,
+    "Technical diagnosis": 1303.7969674021901,
+    "Unattributed active time": 968.6549997520449
+  },
+  "turns": [
+    {
+      "window": 1,
+      "turn": "01a0e547-f313-7fa0-a3f3-f03f49d2bba2",
+      "start": 1790553092.881,
+      "end": 1790553801,
+      "active_seconds": 707.9829999580384,
+      "duration_reported": 708.864,
+      "wall_seconds": 708.1189999580383,
+      "items": 51,
+      "classification_scale": 0.9998079418854627,
+      "categories": {
+        "Communication and follow-up": 21.722827151438466,
+        "Analysis": 319.3416566551139,
+        "Documentation": 366.2846380917728,
+        "Environment and operational integration": 0.6338780597130107
+      }
+    },
+    {
+      "window": 1,
+      "turn": "01a0e552-c41e-7f11-a773-01de4a428591",
+      "start": 1790553801,
+      "end": 1790554196,
+      "active_seconds": 394.399,
+      "duration_reported": 394.399,
+      "wall_seconds": 395,
+      "items": 29,
+      "classification_scale": 0.9984784810126582,
+      "categories": {
+        "Analysis": 183.9726553449184,
+        "Communication and follow-up": 9.452595787364622,
+        "Environment and operational integration": 0.8397204825184013,
+        "Documentation": 200.13402838519855
+      }
+    },
+    {
+      "window": 1,
+      "turn": "01a0e558-c8c1-72f3-852c-ec6ae06ebf1f",
+      "start": 1790554196,
+      "end": 1790555109,
+      "active_seconds": 913,
+      "duration_reported": 913.188,
+      "wall_seconds": 913,
+      "items": 94,
+      "classification_scale": 1,
+      "categories": {
+        "Analysis": 222.7010006904602,
+        "Communication and follow-up": 17.15499973297119,
+        "Environment and operational integration": 0.5029997825622559,
+        "Testing and verification": 194.17300009727478,
+        "Implementation": 114.79800009727478,
+        "Reanalysis due to inconsistencies": 188.01599979400635,
+        "Documentation": 175.65399980545044
+      }
+    },
+    {
+      "window": 1,
+      "turn": "01a0e566-b7d9-7bb3-87e6-cd7c1acbcebd",
+      "start": 1790555109,
+      "end": 1790555918,
+      "active_seconds": 809,
+      "duration_reported": 809.143,
+      "wall_seconds": 809,
+      "items": 55,
+      "classification_scale": 1,
+      "categories": {
+        "Reanalysis due to inconsistencies": 349.1449999809265,
+        "Communication and follow-up": 16.873000144958496,
+        "Environment and operational integration": 0.6419999599456787,
+        "Documentation": 233.27300000190735,
+        "Context compaction": 209.06699991226196
+      }
+    },
+    {
+      "window": 1,
+      "turn": "01a0e573-108b-75a0-aa4d-f20fec322dd7",
+      "start": 1790555918,
+      "end": 1790556233,
+      "active_seconds": 315,
+      "duration_reported": 315.288,
+      "wall_seconds": 315,
+      "items": 23,
+      "classification_scale": 1,
+      "categories": {
+        "Communication and follow-up": 12.2090003490448,
+        "Analysis": 150.98499989509583,
+        "Environment and operational integration": 0.013000011444091797,
+        "Documentation": 151.79299974441528
+      }
+    },
+    {
+      "window": 1,
+      "turn": "01a0e577-e02b-7121-9d7c-55e567092b95",
+      "start": 1790556233,
+      "end": 1790556964,
+      "active_seconds": 443.01,
+      "duration_reported": 443.01,
+      "wall_seconds": 731,
+      "items": 35,
+      "classification_scale": 0.9567589279746418,
+      "categories": {
+        "Analysis": 221.01035612877766,
+        "Communication and follow-up": 11.32611247404397,
+        "Environment and operational integration": 6.827431403448407,
+        "Implementation": 82.42765157689834,
+        "Testing and verification": 108.74426314613426,
+        "Documentation": 12.674185270697373
+      }
+    },
+    {
+      "window": 1,
+      "turn": "01a0e583-06e3-7002-841d-60bac46535df",
+      "start": 1790556964,
+      "end": 1790557256,
+      "active_seconds": 291.969,
+      "duration_reported": 291.969,
+      "wall_seconds": 292,
+      "items": 25,
+      "classification_scale": 0.9998938356164383,
+      "categories": {
+        "Analysis": 152.7837780345131,
+        "Communication and follow-up": 9.28401411112694,
+        "Environment and operational integration": 5.929370750348862,
+        "Documentation": 123.97183710401104
+      }
+    },
+    {
+      "window": 1,
+      "turn": "01a0e587-7b6d-77b3-b31f-bc65684655db",
+      "start": 1790557256,
+      "end": 1790557675,
+      "active_seconds": 418.914,
+      "duration_reported": 418.914,
+      "wall_seconds": 419,
+      "items": 23,
+      "classification_scale": 0.9997947494033412,
+      "categories": {
+        "Analysis": 183.16239837673572,
+        "Communication and follow-up": 8.134329999146427,
+        "Environment and operational integration": 6.033761160092592,
+        "Context compaction": 221.58351046402527
+      }
+    },
+    {
+      "window": 1,
+      "turn": "01a0e58d-dfd1-7af0-8847-fefbbc3e0cfc",
+      "start": 1790557675,
+      "end": 1790557762,
+      "active_seconds": 86.834,
+      "duration_reported": 86.834,
+      "wall_seconds": 87,
+      "items": 17,
+      "classification_scale": 0.9980919540229886,
+      "categories": {
+        "Communication and follow-up": 17.285954557435268,
+        "Analysis": 69.29552815725613,
+        "Environment and operational integration": 0.25251728530861867
+      }
+    },
+    {
+      "window": 1,
+      "turn": "01a0e58f-330a-7453-af7a-28bc43531f3e",
+      "start": 1790557762,
+      "end": 1790557790,
+      "active_seconds": 28,
+      "duration_reported": 28.172,
+      "wall_seconds": 28,
+      "items": 6,
+      "classification_scale": 1,
+      "categories": {
+        "Analysis": 17.15999984741211,
+        "Communication and follow-up": 7.881000280380249,
+        "Environment and operational integration": 2.9589998722076416
+      }
+    },
+    {
+      "window": 1,
+      "turn": "01a0e58f-a121-73d0-81d7-6059e026d908",
+      "start": 1790557790,
+      "end": 1790557810,
+      "active_seconds": 19.761,
+      "duration_reported": 19.761,
+      "wall_seconds": 20,
+      "items": 4,
+      "classification_scale": 0.98805,
+      "categories": {
+        "Analysis": 10.037599870848656,
+        "Communication and follow-up": 6.906469509422779,
+        "Environment and operational integration": 2.8169306197285655
+      }
+    },
+    {
+      "window": 1,
+      "turn": "01a0e59d-0ead-7bb0-a6e0-1c065f06da8f",
+      "start": 1790558670,
+      "end": 1790558718,
+      "active_seconds": 47.632,
+      "duration_reported": 47.632,
+      "wall_seconds": 48,
+      "items": 9,
+      "classification_scale": 0.9928918339641347,
+      "categories": {
+        "Communication and follow-up": 10.673587215114448,
+        "Analysis": 36.95841278488555
+      }
+    },
+    {
+      "window": 1,
+      "turn": "01a0e59f-65c1-7580-af12-8cbe8291cc32",
+      "start": 1790558823,
+      "end": 1790558948,
+      "active_seconds": 124.913,
+      "duration_reported": 124.913,
+      "wall_seconds": 125,
+      "items": 17,
+      "classification_scale": 0.999304,
+      "categories": {
+        "Communication and follow-up": 6.884205195007324,
+        "Analysis": 57.12221518891334,
+        "Environment and operational integration": 0.5406235917034149,
+        "Documentation": 60.36595602437591
+      }
+    },
+    {
+      "window": 1,
+      "turn": "01a0e5a1-4db9-74c3-ae71-8a15c7676d85",
+      "start": 1790558948,
+      "end": 1790562712,
+      "active_seconds": 3763.282,
+      "duration_reported": 3763.282,
+      "wall_seconds": 3764,
+      "items": 377,
+      "classification_scale": 0.9998150892684211,
+      "categories": {
+        "Communication and follow-up": 34.37064317884882,
+        "Analysis": 1551.6830250740147,
+        "Environment and operational integration": 139.44221032850132,
+        "Implementation": 780.9205720415258,
+        "Testing and verification": 956.5130980477904,
+        "Context compaction": 204.8201195973971,
+        "Technical diagnosis": 56.68251693408143,
+        "Documentation": 38.84981479784131
+      }
+    },
+    {
+      "window": 1,
+      "turn": "01a0e5e1-7926-7b33-8fa9-6a7d51fefc00",
+      "start": 1790563154,
+      "end": 1790563641,
+      "active_seconds": 486.827,
+      "duration_reported": 486.827,
+      "wall_seconds": 487,
+      "items": 39,
+      "classification_scale": 1,
+      "categories": {
+        "Communication and follow-up": 8.414999961853027,
+        "Analysis": 251.53300023078918,
+        "Environment and operational integration": 4.791999816894531,
+        "Implementation": 180.7150001525879,
+        "Testing and verification": 2.553999900817871,
+        "Unattributed active time": 38.81799993705749
+      }
+    },
+    {
+      "window": 1,
+      "turn": "01a0e5e9-1028-7570-a746-f9337733aa10",
+      "start": 1790563651,
+      "end": 1790591987,
+      "active_seconds": 2370.068,
+      "duration_reported": 2370.068,
+      "wall_seconds": 28336,
+      "items": 139,
+      "classification_scale": 1,
+      "categories": {
+        "Analysis": 511.57300066947937,
+        "Communication and follow-up": 20.693000078201294,
+        "Environment and operational integration": 61.652000188827515,
+        "Testing and verification": 417.8909993171692,
+        "Implementation": 198.3860001564026,
+        "Context compaction": 171.36800003051758,
+        "Technical diagnosis": 45.919999837875366,
+        "Documentation": 20.508999824523926,
+        "Unattributed active time": 922.0759998970034
+      }
+    },
+    {
+      "window": 1,
+      "turn": "01a0e799-70b7-77f0-b3f4-5856d020ddd7",
+      "start": 1790591987,
+      "end": 1790593542,
+      "active_seconds": 1554.734,
+      "duration_reported": 1554.734,
+      "wall_seconds": 1555,
+      "items": 118,
+      "classification_scale": 0.9998289389067524,
+      "categories": {
+        "Communication and follow-up": 22.82909434513202,
+        "Environment and operational integration": 48.98361971627661,
+        "Analysis": 742.7729185707999,
+        "Implementation": 306.9374864412747,
+        "Testing and verification": 318.5854922446227,
+        "Technical diagnosis": 85.46037869608134,
+        "Documentation": 29.165009985813068
+      }
+    },
+    {
+      "window": 1,
+      "turn": "01a0e7b1-29f8-79f2-9dd6-86ee973393b2",
+      "start": 1790593542,
+      "end": 1790595245,
+      "active_seconds": 1703,
+      "duration_reported": 1703.069,
+      "wall_seconds": 1703,
+      "items": 144,
+      "classification_scale": 1,
+      "categories": {
+        "Communication and follow-up": 27.006999492645264,
+        "Environment and operational integration": 16.830000162124634,
+        "Analysis": 615.7800006866455,
+        "Implementation": 345.9860005378723,
+        "Testing and verification": 423.08799934387207,
+        "Context compaction": 183.19299983978271,
+        "Technical diagnosis": 65.70600008964539,
+        "Documentation": 25.40999984741211
+      }
+    },
+    {
+      "window": 1,
+      "turn": "01a0e7cb-26a9-7a23-8d01-8522ad32c1b6",
+      "start": 1790595245,
+      "end": 1790595897,
+      "active_seconds": 652,
+      "duration_reported": 652.124,
+      "wall_seconds": 652,
+      "items": 56,
+      "classification_scale": 1,
+      "categories": {
+        "Communication and follow-up": 15.400999546051025,
+        "Environment and operational integration": 15.175000190734863,
+        "Analysis": 236.97900009155273,
+        "Implementation": 200.87099981307983,
+        "Testing and verification": 130.11400055885315,
+        "Technical diagnosis": 46.94399976730347,
+        "Documentation": 6.516000032424927
+      }
+    },
+    {
+      "window": 1,
+      "turn": "01a0e7d5-19dd-7303-b0a3-9f0cffc37a89",
+      "start": 1790595897,
+      "end": 1790596815,
+      "active_seconds": 917.781,
+      "duration_reported": 917.781,
+      "wall_seconds": 918,
+      "items": 64,
+      "classification_scale": 0.9997614379084967,
+      "categories": {
+        "Analysis": 389.15514008956876,
+        "Communication and follow-up": 16.901966768215683,
+        "Environment and operational integration": 4.040036098350107,
+        "Implementation": 266.5264016462159,
+        "Testing and verification": 203.09753697382854,
+        "Technical diagnosis": 19.32238945156764,
+        "Documentation": 18.7375289722533
+      }
+    },
+    {
+      "window": 1,
+      "turn": "01a0e7e3-1b0e-7170-bfd8-6d30c493df5a",
+      "start": 1790596815,
+      "end": 1790597565,
+      "active_seconds": 749.372,
+      "duration_reported": 749.372,
+      "wall_seconds": 750,
+      "items": 51,
+      "classification_scale": 0.9992692552855795,
+      "categories": {
+        "Analysis": 332.47286890691385,
+        "Communication and follow-up": 13.8898427437673,
+        "Environment and operational integration": 2.8908860813342017,
+        "Implementation": 227.46665876198952,
+        "Testing and verification": 108.88837214515658,
+        "Technical diagnosis": 46.23518946441956,
+        "Documentation": 17.52818189641897
+      }
+    },
+    {
+      "window": 1,
+      "turn": "01a0e7ee-8a52-7633-8a91-8e8650eb2c99",
+      "start": 1790597565,
+      "end": 1790598843,
+      "active_seconds": 1278,
+      "duration_reported": 1278.251,
+      "wall_seconds": 1278,
+      "items": 102,
+      "classification_scale": 1,
+      "categories": {
+        "Analysis": 572.1879994869232,
+        "Communication and follow-up": 16.391000032424927,
+        "Environment and operational integration": 3.1610002517700195,
+        "Implementation": 164.3510000705719,
+        "Testing and verification": 278.30999994277954,
+        "Context compaction": 182.21900010108948,
+        "Documentation": 44.15400052070618,
+        "Technical diagnosis": 17.22599959373474
+      }
+    },
+    {
+      "window": 1,
+      "turn": "01a0e802-0b8b-71d1-ba51-bf2d25da0f3d",
+      "start": 1790598843,
+      "end": 1790599936,
+      "active_seconds": 1093,
+      "duration_reported": 1093.607,
+      "wall_seconds": 1093,
+      "items": 85,
+      "classification_scale": 1,
+      "categories": {
+        "Communication and follow-up": 18.813000202178955,
+        "Environment and operational integration": 3.9149999618530273,
+        "Analysis": 473.8289999961853,
+        "Implementation": 229.106999874115,
+        "Testing and verification": 291.65499997138977,
+        "Documentation": 44.76600003242493,
+        "Technical diagnosis": 30.914999961853027
+      }
+    },
+    {
+      "window": 1,
+      "turn": "01a0e812-bb78-75e1-92e7-4bd0bf528d3d",
+      "start": 1790599936,
+      "end": 1790601001,
+      "active_seconds": 1064.293,
+      "duration_reported": 1064.293,
+      "wall_seconds": 1065,
+      "items": 76,
+      "classification_scale": 0.9993361502347416,
+      "categories": {
+        "Analysis": 523.9799248106403,
+        "Communication and follow-up": 19.61796776893172,
+        "Environment and operational integration": 7.736860578045822,
+        "Implementation": 234.09948974934406,
+        "Testing and verification": 271.8534104511625,
+        "Documentation": 5.19754729259182,
+        "Technical diagnosis": 1.8077993492836122
+      }
+    },
+    {
+      "window": 1,
+      "turn": "01a0e822-f8e1-78a2-a326-83e12f7f1975",
+      "start": 1790601001,
+      "end": 1790602631,
+      "active_seconds": 1630,
+      "duration_reported": 1630.401,
+      "wall_seconds": 1630,
+      "items": 119,
+      "classification_scale": 1,
+      "categories": {
+        "Communication and follow-up": 26.855000495910645,
+        "Analysis": 814.3079998493195,
+        "Environment and operational integration": 6.581000089645386,
+        "Implementation": 181.38899970054626,
+        "Testing and verification": 374.72900009155273,
+        "Context compaction": 200.83400011062622,
+        "Technical diagnosis": 10.859999895095825,
+        "Documentation": 14.443999767303467
+      }
+    },
+    {
+      "window": 1,
+      "turn": "01a0e83b-d9c3-7700-85f1-0d828553f6c9",
+      "start": 1790602631,
+      "end": 1790603498,
+      "active_seconds": 867,
+      "duration_reported": 867.135,
+      "wall_seconds": 867,
+      "items": 67,
+      "classification_scale": 1,
+      "categories": {
+        "Communication and follow-up": 14.029999732971191,
+        "Environment and operational integration": 6.115000009536743,
+        "Analysis": 337.0519998073578,
+        "Implementation": 167.18800020217896,
+        "Testing and verification": 303.6670000553131,
+        "Technical diagnosis": 25.466000080108643,
+        "Documentation": 13.48200011253357
+      }
+    },
+    {
+      "window": 1,
+      "turn": "01a0e849-150e-79d2-96e0-9d08d1837a91",
+      "start": 1790603498,
+      "end": 1790604463,
+      "active_seconds": 964.956,
+      "duration_reported": 964.956,
+      "wall_seconds": 965,
+      "items": 67,
+      "classification_scale": 0.9999544041450777,
+      "categories": {
+        "Analysis": 414.67709168052477,
+        "Communication and follow-up": 13.47638574116366,
+        "Environment and operational integration": 30.921590136648586,
+        "Implementation": 117.17065690153842,
+        "Technical diagnosis": 135.07184107177022,
+        "Testing and verification": 234.67829904569024,
+        "Documentation": 18.96013542266411
+      }
+    },
+    {
+      "window": 1,
+      "turn": "01a0e857-ce8a-7c72-bdd6-a793a000d021",
+      "start": 1790604463,
+      "end": 1790606376,
+      "active_seconds": 1912.679,
+      "duration_reported": 1912.679,
+      "wall_seconds": 1913,
+      "items": 171,
+      "classification_scale": 0.9998322007318349,
+      "categories": {
+        "Communication and follow-up": 29.398065837689746,
+        "Environment and operational integration": 20.278596521703474,
+        "Analysis": 853.2528011609634,
+        "Implementation": 193.68149491921747,
+        "Testing and verification": 575.7113787348268,
+        "Context compaction": 173.76383764462454,
+        "Technical diagnosis": 59.78496771093407,
+        "Documentation": 6.807857470039293
+      }
+    },
+    {
+      "window": 1,
+      "turn": "01a0e874-fded-75c0-a56d-48a16ba410c8",
+      "start": 1790606376,
+      "end": 1790607559,
+      "active_seconds": 1183,
+      "duration_reported": 1183.144,
+      "wall_seconds": 1183,
+      "items": 84,
+      "classification_scale": 1,
+      "categories": {
+        "Communication and follow-up": 22.51799988746643,
+        "Environment and operational integration": 5.36899995803833,
+        "Analysis": 443.17899990081787,
+        "Implementation": 458.8190002441406,
+        "Testing and verification": 186.63900017738342,
+        "Technical diagnosis": 59.835999727249146,
+        "Documentation": 6.640000104904175
+      }
+    },
+    {
+      "window": 1,
+      "turn": "01a0e887-0ba0-7043-97de-4026e929c2f3",
+      "start": 1790607559,
+      "end": 1790608699,
+      "active_seconds": 1139.87,
+      "duration_reported": 1139.87,
+      "wall_seconds": 1140,
+      "items": 75,
+      "classification_scale": 0.9998859649122807,
+      "categories": {
+        "Communication and follow-up": 17.668985366561955,
+        "Environment and operational integration": 3.3686160122239794,
+        "Analysis": 497.0453122127431,
+        "Implementation": 319.4745646914725,
+        "Testing and verification": 196.5195876094877,
+        "Technical diagnosis": 91.37357884208777,
+        "Documentation": 14.41935526542287
+      }
+    },
+    {
+      "window": 1,
+      "turn": "01a0e898-7061-7b71-9b82-7a8130fbf956",
+      "start": 1790608699,
+      "end": 1790610144,
+      "active_seconds": 1444.547,
+      "duration_reported": 1444.547,
+      "wall_seconds": 1445,
+      "items": 107,
+      "classification_scale": 0.9997162545202651,
+      "categories": {
+        "Communication and follow-up": 34.63317033119483,
+        "Environment and operational integration": 10.071141668166021,
+        "Analysis": 484.8103981513301,
+        "Implementation": 225.05612310319364,
+        "Context compaction": 178.85623601228852,
+        "Technical diagnosis": 55.08236600278362,
+        "Testing and verification": 445.58253195821663,
+        "Documentation": 10.455032772826446
+      }
+    },
+    {
+      "window": 1,
+      "turn": "01a0e8ae-7b44-7e73-aef3-89e7ce76f033",
+      "start": 1790610144,
+      "end": 1790611510,
+      "active_seconds": 1366,
+      "duration_reported": 1366.161,
+      "wall_seconds": 1366,
+      "items": 82,
+      "classification_scale": 1,
+      "categories": {
+        "Communication and follow-up": 15.303999662399292,
+        "Analysis": 576.8280000686646,
+        "Implementation": 381.9960000514984,
+        "Testing and verification": 360.19000005722046,
+        "Technical diagnosis": 14.920000076293945,
+        "Documentation": 16.76200008392334
+      }
+    },
+    {
+      "window": 1,
+      "turn": "01a0e8c3-53f3-7850-a804-637123853bc1",
+      "start": 1790611510,
+      "end": 1790613822,
+      "active_seconds": 2312,
+      "duration_reported": 2312.569,
+      "wall_seconds": 2312,
+      "items": 171,
+      "classification_scale": 1,
+      "categories": {
+        "Communication and follow-up": 25.18399977684021,
+        "Analysis": 745.7599992752075,
+        "Implementation": 569.1530001163483,
+        "Technical diagnosis": 214.54600048065186,
+        "Testing and verification": 529.835000038147,
+        "Context compaction": 180.05700016021729,
+        "Environment and operational integration": 4.490000247955322,
+        "Documentation": 42.97499990463257
+      }
+    },
+    {
+      "window": 1,
+      "turn": "01a0e8e6-9d90-7151-a02c-7791371d6c1b",
+      "start": 1790613822,
+      "end": 1790615014,
+      "active_seconds": 1191.636,
+      "duration_reported": 1191.636,
+      "wall_seconds": 1192,
+      "items": 107,
+      "classification_scale": 0.9996946308724832,
+      "categories": {
+        "Communication and follow-up": 20.714672402453104,
+        "Analysis": 407.70546194749136,
+        "Implementation": 118.62776347382838,
+        "Testing and verification": 506.2223679524012,
+        "Technical diagnosis": 117.26917850288768,
+        "Documentation": 21.09655572093813
+      }
+    },
+    {
+      "window": 1,
+      "turn": "01a0e8f8-cc60-7613-a6d5-46dc46c58311",
+      "start": 1790615014,
+      "end": 1790616067,
+      "active_seconds": 1052.966,
+      "duration_reported": 1052.966,
+      "wall_seconds": 1053,
+      "items": 100,
+      "classification_scale": 0.9999677113010446,
+      "categories": {
+        "Analysis": 371.5860018720459,
+        "Communication and follow-up": 15.98148407454323,
+        "Implementation": 170.32550032326068,
+        "Testing and verification": 413.10366109254704,
+        "Technical diagnosis": 69.29576183977879,
+        "Documentation": 12.673590797824168
+      }
+    },
+    {
+      "window": 1,
+      "turn": "01a0e908-dd8e-7702-9bdd-49ef0c708214",
+      "start": 1790616067,
+      "end": 1790616286,
+      "active_seconds": 219,
+      "duration_reported": 219.159,
+      "wall_seconds": 219,
+      "items": 16,
+      "classification_scale": 1,
+      "categories": {
+        "Reanalysis due to inconsistencies": 43.611000061035156,
+        "Communication and follow-up": 7.740999937057495,
+        "Context compaction": 167.1710000038147,
+        "Environment and operational integration": 0.47699999809265137
+      }
+    },
+    {
+      "window": 1,
+      "turn": "01a0e90c-35b0-7991-949a-9048ab2fac9c",
+      "start": 1790616286,
+      "end": 1790616925.784,
+      "active_seconds": 639.7839999198914,
+      "duration_reported": 1028.184,
+      "wall_seconds": 639.7839999198914,
+      "items": 90,
+      "classification_scale": 1,
+      "categories": {
+        "Communication and follow-up": 16.02500009536743,
+        "Reanalysis due to inconsistencies": 169.60499930381775,
+        "Implementation": 84.8140001296997,
+        "Testing and verification": 277.0820004940033,
+        "Technical diagnosis": 34.07200002670288,
+        "Environment and operational integration": 1.9690003395080566,
+        "Analysis": 56.216999530792236
+      }
+    },
+    {
+      "window": 2,
+      "turn": "01a0eacf-d770-7772-8794-d1a685a41122",
+      "start": 1790645958.071,
+      "end": 1790646081.268,
+      "active_seconds": 123.1969997882843,
+      "duration_reported": 237.098,
+      "wall_seconds": 123.1969997882843,
+      "items": 7,
+      "classification_scale": 1,
+      "categories": {
+        "Context compaction": 97.66799998283386,
+        "Analysis": 12.604999780654907,
+        "Communication and follow-up": 1.437999963760376,
+        "Environment and operational integration": 3.7250001430511475,
+        "Unattributed active time": 7.760999917984009
+      }
+    }
+  ],
+  "exceptions": [
+    {
+      "turn": "01a0e577-e02b-7121-9d7c-55e567092b95",
+      "scale": 0.9567589279746418,
+      "budget": 443.01,
+      "classified_before_scaling": 463.03200006484985
+    },
+    {
+      "turn": "01a0e58f-a121-73d0-81d7-6059e026d908",
+      "scale": 0.98805,
+      "budget": 19.761,
+      "classified_before_scaling": 20.0
+    }
+  ],
+  "windows": [
+    [1790553092.881, 1790616925.784],
+    [1790645958.071, 1790646081.268]
+  ]
+}

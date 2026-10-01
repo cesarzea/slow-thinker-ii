@@ -4,17 +4,20 @@ import {OperatorClient} from '../../api/index.ts';
 import {useRead} from './use-read.ts';
 import {ReadStatus, TracePages} from './read-status.tsx';
 import {ActivationSummary} from './activation-summary.tsx';
+import {ReportView} from './report-view.tsx';
+import {FocusHeading} from './focus-heading.tsx';
 import type {InspectionSource, InspectionLinks, Paging} from './types.ts';
 
-type Props = InspectionSource & InspectionLinks & {readonly id: string};
+type Props = InspectionSource &
+  InspectionLinks & {readonly id: string; readonly focusRequest: number | undefined};
 
 export function ActivationView(props: Props): ReactElement {
   const [cursor, onPage] = useState<string>();
   return (
-    <section aria-label="Detalle de activación">
-      <h3>
-        Activación <code>{props.id}</code>
-      </h3>
+    <section aria-label="Activation details">
+      <FocusHeading request={props.focusRequest}>
+        Activation <code>{props.id}</code>
+      </FocusHeading>
       <ActivationRead key={cursor ?? 'first'} {...props} cursor={cursor} onPage={onPage} />
     </section>
   );
@@ -33,6 +36,7 @@ function ActivationRead(props: Props & Paging): ReactElement {
       {data !== null && (
         <>
           <ActivationSummary activation={data} onCall={props.onCall} onPayload={props.onPayload} />
+          <ReportView reports={data.reports ?? []} onPayload={props.onPayload} />
           <TracePages cursor={cursor} next={data.calls.next_cursor} onPage={props.onPage} />
         </>
       )}

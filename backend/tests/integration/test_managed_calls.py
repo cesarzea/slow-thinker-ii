@@ -23,7 +23,8 @@ async def test_runner_records_and_settles_a_call_before_returning_it(tmp_path: P
         assert transaction.call(result.context.call_id).state == "completed"
         assert transaction.receipt(result.receipt_id) is not None
         assert all(scope.settled == 37 for scope in transaction.scopes(case.keys))
-    assert await runner.close(1) == ()
+    pending = await runner.close(1)
+    assert pending == ()
 
 
 async def test_nested_calls_progress_and_only_the_leaf_is_charged(tmp_path: Path) -> None:

@@ -22,7 +22,15 @@ def prepared_bundle() -> PreparedBundle:
     record = json_object(decode_json(path.read_text()))
     assert record["schema_version"] == "1" and isinstance(record["catalog_root"], str)
     identities = json_object(record["resolutions"])
-    assert set(identities) == {"sequence", "llm-call", "openai-model", "grounded-review"}
+    assert set(identities) == {
+        "sequence",
+        "llm-call",
+        "openai-model",
+        "grounded-review",
+        "redirector",
+        "routed-call",
+        "bounded-flow",
+    }
     assert all(isinstance(value, str) for value in identities.values())
     python = Path(sys.executable)
     catalog = InstallationCatalog(Path(record["catalog_root"]), python.with_name("uv"), python)

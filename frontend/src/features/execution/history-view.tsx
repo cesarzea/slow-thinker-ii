@@ -12,9 +12,9 @@ export function HistoryView({
 }): ReactElement | null {
   if (state.history === null) return null;
   return (
-    <section aria-label="Historial de la sesión">
-      <h2>Historial</h2>
-      {state.history.items.length === 0 && <p>Esta sesión aún no tiene ejecuciones.</p>}
+    <section aria-label="Session history">
+      <h2>History</h2>
+      {state.history.items.length === 0 && <p>This session has no runs yet.</p>}
       <HistoryItems history={state.history} store={store} />
       <PageControls
         kind="history"

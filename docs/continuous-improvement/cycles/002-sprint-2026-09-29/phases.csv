@@ -1,0 +1,6 @@
+phase,start_utc,end_utc,seconds
+Sprint preparation,02:53:47.687,03:14:04.496,1216.809
+Parallel development and individual review,03:14:04.496,03:40:51.161,1606.665
+Combined review and corrections,03:40:51.161,03:46:21.042,329.881
+"Testing, corrections and local demonstration",03:46:21.042,04:24:11.000,2269.958
+"Publication, CodeQL, corrections and final CI",04:24:11.000,04:47:13.562,1382.562

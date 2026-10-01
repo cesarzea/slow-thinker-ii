@@ -45,7 +45,8 @@ async def test_installed_coordinator(
         upstream.release.set()
         assert commands.command("start") == result.receipt
         assert_accounting(runs, identity, len(installed.plan.nodes), stop=stop)
-        assert not (await coordinator.close()).runs
+        pending = await coordinator.close()
+        assert not pending.runs
     assert len(upstream.requests) == (1 if stop else len(installed.plan.nodes))
     assert not coordinator.failures()
 

@@ -15,10 +15,11 @@ from slow_thinker_ii.adapters.preparation import (
     ResourceSettings,
     ServiceEndpoints,
 )
-from slow_thinker_ii.application import ExecutionConfiguration, LimitsProfile
+from slow_thinker_ii.application import ExecutionConfiguration
 from slow_thinker_ii.contracts import decode_json, encode_json
 
 from ._execution import ExecutionSetup
+from ._public_limits import PublicLimits
 
 Positive = Annotated[int, Field(gt=0)]
 
@@ -26,7 +27,7 @@ Positive = Annotated[int, Field(gt=0)]
 class StartupConfiguration(BaseModel, extra="forbid", strict=True, frozen=True):
     schema_version: Literal["1"]
     revision: str = Field(min_length=1)
-    limits: LimitsProfile
+    limits: PublicLimits
     resources: ResourceSettings
     installation_catalog: str
     descriptors: tuple[str, ...] = Field(min_length=1)
@@ -59,11 +60,12 @@ def load_execution_setup(path: Path) -> ExecutionSetup:
 
 
 def compose_setup(record: StartupConfiguration, directory: Path) -> ExecutionSetup:
+    limits = record.limits.internal()
     credential = EnvironmentSecrets({"operator": record.operator_credential_env}).resolve(
         "operator"
     )
     configuration = ExecutionConfiguration(
-        record.revision, record.limits, record.resources.model_dump_json()
+        record.revision, limits, record.resources.model_dump_json()
     )
     python = Path(sys.executable)
     return ExecutionSetup(

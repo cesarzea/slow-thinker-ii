@@ -1,6 +1,6 @@
 # Component contract
 
-**Status: Proposed detailed contract.** R02–R03, R05–R06, R08–R10; [ADR 0004](../adr/0004-component-packaging.md), [ADR 0005](../adr/0005-versioned-contracts.md). Independent local processes and familiar outgoing calls through the orchestrator are accepted requirements from the first cycle; the manifest and lifecycle details below remain under review.
+**Status: Approved first-cycle contract.** R02–R03, R05–R06, R08–R10; [ADR 0004](../adr/0004-component-packaging.md), [ADR 0005](../adr/0005-versioned-contracts.md). Independent local processes and familiar outgoing calls through the orchestrator are accepted requirements from the first cycle; the manifest and lifecycle details below form the approved first-cycle boundary.
 
 ## Identity and composition
 

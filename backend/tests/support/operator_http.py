@@ -37,7 +37,8 @@ class HttpCase:
     async def close(self) -> None:
         self.case.preparer.release.set()
         self.case.preparer.operation.release.set()
-        assert not (await self.case.coordinator.close()).runs
+        pending = await self.case.coordinator.close()
+        assert not pending.runs
         await self.client.aclose()
 
 

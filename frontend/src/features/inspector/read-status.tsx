@@ -13,9 +13,9 @@ export function ReadStatus({
   return (
     <div className="actions">
       {error !== null && <p role="alert">{error}</p>}
-      {loading && <p role="status">Cargando evidencia…</p>}
+      {loading && <p role="status">Loading evidence…</p>}
       <button disabled={loading} onClick={refresh}>
-        Actualizar evidencia
+        Refresh evidence
       </button>
     </div>
   );
@@ -36,7 +36,7 @@ export function TracePages({next, onPage, cursor}: PageProps): ReactElement {
             onPage(undefined);
           }}
         >
-          Volver al principio
+          Back to the beginning
         </ActionButton>
       )}
       {next !== null && (
@@ -45,7 +45,7 @@ export function TracePages({next, onPage, cursor}: PageProps): ReactElement {
             onPage(next);
           }}
         >
-          Página siguiente
+          Next page
         </ActionButton>
       )}
     </div>

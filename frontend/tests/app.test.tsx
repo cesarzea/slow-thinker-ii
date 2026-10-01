@@ -59,20 +59,21 @@ it('ignores a failed request after the view unmounts', async () => {
 it('selects a graph while retaining repeated participant identities', async () => {
   vi.stubGlobal('fetch', vi.fn().mockResolvedValue(new Response(JSON.stringify(examples))));
   render(<App />);
-  await userEvent.selectOptions(await screen.findByLabelText('Experimento'), 'review');
-  const ordered = within(screen.getByRole('list', {name: 'Orden de ejecución'}));
+  expect(await screen.findByText('1 agent · 1 declared node · 1')).toBeTruthy();
+  await userEvent.selectOptions(await screen.findByLabelText('Experiment'), 'review');
+  const ordered = within(screen.getByRole('list', {name: 'Experiment nodes'}));
   expect(ordered.getAllByRole('listitem').map((item) => item.textContent)).toEqual([
     'draft: proposer',
     'review: reviewer',
     'revise: proposer',
   ]);
-  expect(screen.getByText(/2 agentes · 3 activaciones/)).toBeTruthy();
+  expect(screen.getByText(/2 agents · 3 declared nodes/)).toBeTruthy();
 });
 
 it('exposes a catalogue failure without inventing an experiment', async () => {
   vi.stubGlobal('fetch', vi.fn().mockRejectedValue(new Error('offline')));
   render(<App />);
-  expect((await screen.findByRole('alert')).textContent).toContain('No se pudo cargar');
+  expect((await screen.findByRole('alert')).textContent).toContain('Could not load');
   expect(screen.queryByRole('combobox')).toBeNull();
 });
 
@@ -80,7 +81,7 @@ it('ignores a result after the view unmounts', async () => {
   const reply = Promise.withResolvers<Response>();
   vi.stubGlobal('fetch', vi.fn().mockReturnValue(reply.promise));
   const view = render(<App />);
-  expect(screen.getByRole('status').textContent).toContain('Cargando');
+  expect(screen.getByRole('status').textContent).toContain('Loading');
   view.unmount();
   reply.resolve(new Response(JSON.stringify(examples)));
   await reply.promise;
@@ -91,11 +92,11 @@ it('connects and disconnects without storing the operator credential', async () 
   localStorage.clear();
   vi.stubGlobal('fetch', new OperatorServer().fetch);
   render(<App />);
-  await userEvent.type(screen.getByLabelText('Clave de acceso'), 'private-operator-key');
-  await userEvent.click(screen.getByRole('button', {name: 'Conectar para ejecutar'}));
-  expect(await screen.findByRole('region', {name: 'Ejecución del experimento'})).toBeTruthy();
+  await userEvent.type(screen.getByLabelText('Access key'), 'private-operator-key');
+  await userEvent.click(screen.getByRole('button', {name: 'Connect operator access'}));
+  expect(await screen.findByRole('region', {name: 'Experiment execution'})).toBeTruthy();
   expect(JSON.stringify(localStorage)).not.toContain('private-operator-key');
-  await userEvent.click(screen.getByRole('button', {name: 'Desconectar acceso de operador'}));
-  expect(screen.queryByRole('region', {name: 'Ejecución del experimento'})).toBeNull();
-  expect(screen.getByLabelText<HTMLInputElement>('Clave de acceso').value).toBe('');
+  await userEvent.click(screen.getByRole('button', {name: 'Disconnect operator access'}));
+  expect(screen.queryByRole('region', {name: 'Experiment execution'})).toBeNull();
+  expect(screen.getByLabelText<HTMLInputElement>('Access key').value).toBe('');
 });

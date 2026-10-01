@@ -1,8 +1,8 @@
 import {expect, test} from '@playwright/test';
 import {connect, createSession} from '../support/browser.ts';
 
-const input = 'Problema o tarea';
-const start = 'Iniciar ejecución';
+const input = 'Task or problem';
+const start = 'Start run';
 
 test('creates a saved session, executes, inspects results and recovers history after reload', async ({
   page,
@@ -11,20 +11,16 @@ test('creates a saved session, executes, inspects results and recovers history a
   await createSession(page, 'Browser completion');
   await page.getByLabel(input).fill('A private task');
   await page.getByRole('button', {name: start, exact: true}).click();
-  await expect(page.getByRole('heading', {name: 'Completada', exact: true})).toBeVisible();
-  await expect(page.getByRole('region', {name: 'Resultado final'})).toContainText(
-    'Resultado de prueba',
-  );
-  await expect(page.getByRole('region', {name: 'Estado de ejecución'})).toContainText(
-    'USD 0.00000239',
-  );
+  await expect(page.getByRole('heading', {name: 'Completed', exact: true})).toBeVisible();
+  await expect(page.getByRole('region', {name: 'Final result'})).toContainText('Test result');
+  await expect(page.getByRole('region', {name: 'Run state'})).toContainText('USD 0.00000239');
   expect(await page.evaluate(() => JSON.stringify(localStorage))).not.toContain('A private task');
   await page.screenshot({path: info.outputPath('execution-result.png'), fullPage: true});
   await page.reload();
   await connect(page, false);
-  const history = page.getByRole('region', {name: 'Historial de la sesión'});
+  const history = page.getByRole('region', {name: 'Session history'});
   await history.getByRole('button').first().click();
-  await expect(page.getByRole('heading', {name: 'Completada', exact: true})).toBeVisible();
+  await expect(page.getByRole('heading', {name: 'Completed', exact: true})).toBeVisible();
 });
 
 test('Stop closes a running execution while preserving uncertain spending', async ({page}) => {
@@ -32,11 +28,9 @@ test('Stop closes a running execution while preserving uncertain spending', asyn
   await createSession(page, 'Browser stop');
   await page.getByLabel(input).fill('wait');
   await page.getByRole('button', {name: start, exact: true}).click();
-  await expect(page.getByRole('heading', {name: 'En curso', exact: true})).toBeVisible();
-  await page.getByRole('button', {name: 'Detener ejecución', exact: true}).click();
-  await expect(page.getByRole('heading', {name: 'Cancelada', exact: true})).toBeVisible();
-  await expect(page.getByRole('region', {name: 'Estado de ejecución'})).toContainText(
-    'USD 0.000003 pendiente',
-  );
-  await expect(page.getByRole('region', {name: 'Resultado final'})).toHaveCount(0);
+  await expect(page.getByRole('heading', {name: 'Running', exact: true})).toBeVisible();
+  await page.getByRole('button', {name: 'Stop run', exact: true}).click();
+  await expect(page.getByRole('heading', {name: 'Cancelled', exact: true})).toBeVisible();
+  await expect(page.getByRole('region', {name: 'Run state'})).toContainText('USD 0.000003 pending');
+  await expect(page.getByRole('region', {name: 'Final result'})).toHaveCount(0);
 });

@@ -18,6 +18,7 @@ from slow_thinker_ii.adapters.sqlite import (
     SqliteDatabase,
     SqliteOperatorQueries,
     SqliteOperatorStore,
+    SqliteProcessJournal,
     SqliteRunStore,
     SqliteTariffStore,
 )
@@ -90,4 +91,5 @@ class ExecutionSetup:
             self.workspace,
             standard_host_adapters(),
             time.time,
+            SqliteProcessJournal(database, self.configuration.limits.max_payload_bytes),
         )

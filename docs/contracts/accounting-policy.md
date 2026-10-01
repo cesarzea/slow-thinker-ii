@@ -1,6 +1,6 @@
 # Accounting policy proposal
 
-**Status: First-cycle baseline approved on 2026-09-28; implementation in progress.** R13–R16, R23; Q03, Q07–Q09. Only Slow Thinker II is in scope. Daily tariff imports and the SQLite ledger have implementation tests; execution integration remains pending. See the [verification record](../verification.md#initial-implementation).
+**Status: Approved first-cycle contract.** R13–R16, R23; Q03, Q07–Q09. Only Slow Thinker II is in scope. Daily tariff imports, the SQLite ledger and managed execution have implementation tests. See the [verification record](../verification.md#first-cycle-delivery).
 
 ## Currency, periods and policy changes
 

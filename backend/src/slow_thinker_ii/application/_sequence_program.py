@@ -2,7 +2,7 @@
 
 from slow_thinker_ii.access import AccessPolicy, OperationAddress, Permission
 from slow_thinker_ii.contracts import JsonObject, decode_json, encode_json, json_object
-from slow_thinker_ii.definitions import SequencePlan, node_arguments
+from slow_thinker_ii.definitions import ConditionalPlan, SequencePlan, node_arguments
 from slow_thinker_ii.execution import require_sequence_decision
 
 from ._call_runner import ManagedCalls
@@ -43,7 +43,7 @@ class SequenceProgram:
         require_sequence_decision(json_object(decode_json(result.result.payload_json)), expected)
 
 
-def sequence_access(plan: SequencePlan) -> AccessPolicy:
+def sequence_access(plan: SequencePlan | ConditionalPlan) -> AccessPolicy:
     operations = tuple(
         OperationAddress(instance.instance_id, operation.name)
         for instance in plan.instances

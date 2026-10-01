@@ -11,8 +11,11 @@ package = false
 [dependency-groups]
 dev = [
   "slow-thinker-ii",
-  "slow-thinker-host",
+  "slow-thinker-host[langchain]",
   "slow-thinker-sequence",
+  "slow-thinker-redirector",
+  "slow-thinker-routed-call",
+  "slow-thinker-bounded-flow",
   "slow-thinker-llm-call",
   "slow-thinker-openai-model",
   "example-grounded-review",
@@ -20,6 +23,7 @@ dev = [
   "pip>=25,<27",
   "uv==0.12.17",
   "types-jsonschema>=4,<5",
+  "types-psutil>=7,<8",
   "pytest>=8.3,<10",
   "pytest-asyncio>=1,<2",
   "pytest-cov>=6,<8",
@@ -29,12 +33,17 @@ dev = [
   "mypy>=1.15,<3",
   "mutmut>=3,<4",
   "httpx>=0.28,<1",
+  "langchain-openai==1.6.6",
+  "langgraph==1.2.12",
 ]
 
 [tool.uv.sources]
 slow-thinker-ii = { path = "backend", editable = true }
 slow-thinker-host = { path = "components/host", editable = true }
 slow-thinker-sequence = { path = "components/sequence", editable = true }
+slow-thinker-redirector = { path = "components/redirector", editable = true }
+slow-thinker-routed-call = { path = "components/routed-call", editable = true }
+slow-thinker-bounded-flow = { path = "components/bounded-flow", editable = true }
 slow-thinker-llm-call = { path = "components/llm-call", editable = true }
 
 slow-thinker-openai-model = { path = "components/openai-model", editable = true }
@@ -43,14 +52,14 @@ example-grounded-review = { path = "examples/grounded-review", editable = true }
 
 [tool.pytest.ini_options]
 addopts = "-ra --strict-markers --strict-config"
-testpaths = ["backend/tests", "tooling/tests", "components/host/tests", "components/sequence/tests", "components/llm-call/tests", "components/openai-model/tests", "examples/grounded-review/tests"]
+testpaths = ["backend/tests", "tooling/tests", "components/host/tests", "components/sequence/tests", "components/redirector/tests", "components/routed-call/tests", "components/bounded-flow/tests", "components/llm-call/tests", "components/openai-model/tests", "examples/grounded-review/tests"]
 pythonpath = ["backend/tests"]
 asyncio_mode = "auto"
 filterwarnings = ["error"]
 
 [tool.coverage.run]
 branch = true
-source = ["backend/src/slow_thinker_ii", "tooling/quality", "tooling/components", "components/host/src/slow_thinker_host", "components/sequence/src/slow_thinker_sequence", "components/llm-call/src/slow_thinker_llm_call", "components/openai-model/src/slow_thinker_openai_model", "examples/grounded-review/src/example_grounded_review"]
+source = ["backend/src/slow_thinker_ii", "tooling/quality", "tooling/components", "components/host/src/slow_thinker_host", "components/sequence/src/slow_thinker_sequence", "components/redirector/src/slow_thinker_redirector", "components/routed-call/src/slow_thinker_routed_call", "components/bounded-flow/src/slow_thinker_bounded_flow", "components/llm-call/src/slow_thinker_llm_call", "components/openai-model/src/slow_thinker_openai_model", "examples/grounded-review/src/example_grounded_review"]
 
 [tool.coverage.report]
 fail_under = 90
@@ -73,7 +82,7 @@ pythonVersion = "3.13"
 typeCheckingMode = "strict"
 include = ["backend/src", "backend/tests", "tooling", "components", "examples"]
 extraPaths = ["backend/tests"]
-exclude = [".cache", ".venv", "docs"]
+exclude = ["**/.cache", "**/.venv", "**/__pycache__", "**/node_modules", "**/site-packages", "**/dist", "**/build", "**/mutants", "docs"]
 venvPath = "."
 venv = ".venv"
 
@@ -89,11 +98,12 @@ warn_unused_ignores = true
 
 [tool.vulture]
 paths = ["backend/src", "backend/tests", "tooling", "components", "examples"]
+exclude = ["*/.cache/*", "*/.venv/*", "*/__pycache__/*", "*/node_modules/*", "*/site-packages/*", "*/dist/*", "*/build/*", "*/mutants/*"]
 min_confidence = 60
 sort_by_size = true
 
 [tool.importlinter]
-root_packages = ["slow_thinker_ii", "slow_thinker_host", "slow_thinker_sequence", "slow_thinker_llm_call", "slow_thinker_openai_model", "example_grounded_review"]
+root_packages = ["slow_thinker_ii", "slow_thinker_host", "slow_thinker_sequence", "slow_thinker_redirector", "slow_thinker_routed_call", "slow_thinker_bounded_flow", "slow_thinker_llm_call", "slow_thinker_openai_model", "example_grounded_review"]
 include_external_packages = true
 
 [[tool.importlinter.contracts]]
@@ -159,14 +169,14 @@ allowed_importers = ["slow_thinker_ii.adapters.tariffs"]
 [[tool.importlinter.contracts]]
 name = "Component packages cannot import the application"
 type = "forbidden"
-source_modules = ["slow_thinker_host", "slow_thinker_sequence", "slow_thinker_llm_call", "slow_thinker_openai_model", "example_grounded_review"]
+source_modules = ["slow_thinker_host", "slow_thinker_sequence", "slow_thinker_redirector", "slow_thinker_routed_call", "slow_thinker_bounded_flow", "slow_thinker_llm_call", "slow_thinker_openai_model", "example_grounded_review"]
 forbidden_modules = ["slow_thinker_ii"]
 
 [[tool.importlinter.contracts]]
 name = "Backend never imports component implementations"
 type = "forbidden"
 source_modules = ["slow_thinker_ii"]
-forbidden_modules = ["slow_thinker_sequence", "slow_thinker_llm_call", "slow_thinker_openai_model", "example_grounded_review"]
+forbidden_modules = ["slow_thinker_sequence", "slow_thinker_redirector", "slow_thinker_routed_call", "slow_thinker_bounded_flow", "slow_thinker_llm_call", "slow_thinker_openai_model", "example_grounded_review"]
 
 [[tool.importlinter.contracts]]
 name = "Host SDK internals are private"
@@ -233,3 +243,21 @@ name = "Preparation adapter internals are private"
 type = "protected"
 protected_modules = ["slow_thinker_ii.adapters.preparation.*"]
 allowed_importers = ["slow_thinker_ii.adapters.preparation"]
+
+[[tool.importlinter.contracts]]
+name = "Redirector internals are private"
+type = "protected"
+protected_modules = ["slow_thinker_redirector.*"]
+allowed_importers = ["slow_thinker_redirector"]
+
+[[tool.importlinter.contracts]]
+name = "RoutedCall internals are private"
+type = "protected"
+protected_modules = ["slow_thinker_routed_call.*"]
+allowed_importers = ["slow_thinker_routed_call"]
+
+[[tool.importlinter.contracts]]
+name = "BoundedFlow internals are private"
+type = "protected"
+protected_modules = ["slow_thinker_bounded_flow.*"]
+allowed_importers = ["slow_thinker_bounded_flow"]

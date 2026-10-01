@@ -1,5 +1,6 @@
 import {afterEach, beforeEach, expect, it, vi} from 'vitest';
 import {createRoot} from 'react-dom/client';
+import documentHtml from '../index.html?raw';
 
 vi.mock('react-dom/client', () => ({createRoot: vi.fn(() => ({render: vi.fn()}))}));
 
@@ -11,6 +12,11 @@ afterEach(() => {
   document.body.replaceChildren();
 });
 
+it('declares English as the document language', () => {
+  const page = new DOMParser().parseFromString(documentHtml, 'text/html');
+  expect(page.documentElement.lang).toBe('en');
+});
+
 it('mounts the application in the document container', async () => {
   const container = document.createElement('div');
   container.id = 'root';
@@ -20,6 +26,6 @@ it('mounts the application in the document container', async () => {
 });
 
 it('reports a missing mount point', async () => {
-  await expect(import('../src/main.tsx')).rejects.toThrow('Falta el contenedor');
+  await expect(import('../src/main.tsx')).rejects.toThrow('The application container is missing');
   expect(createRoot).not.toHaveBeenCalled();
 });

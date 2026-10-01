@@ -2,7 +2,7 @@
 
 - Status: Accepted
 - Recorded: 2026-09-27
-- Decision-maker: César Zea
+- Decision-maker: Cesar Zea
 - Requirements: R02–R03, R05–R06, R08, R10
 - Decision: Q01 closed by owner approval on 2026-09-27
 - Remaining details: Q04, Q05, Q06, Q17

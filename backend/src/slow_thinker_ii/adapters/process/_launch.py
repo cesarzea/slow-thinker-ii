@@ -5,6 +5,7 @@ import re
 from dataclasses import dataclass, field
 from pathlib import Path
 
+from ._ownership import LaunchOwnership
 from ._secrets import ProcessSecret, secret_environment
 
 
@@ -18,6 +19,7 @@ class ProcessLaunch:
     shutdown_seconds: float
     max_message_bytes: int
     secrets: tuple[ProcessSecret, ...] = field(default=(), repr=False)
+    ownership: LaunchOwnership | None = None
 
     def __post_init__(self) -> None:
         secret_environment(self.secrets)

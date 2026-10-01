@@ -1,6 +1,6 @@
 # Graph contract
 
-**Status: Proposed.** R01–R04, R09–R10, R16–R19, R24; [ADR 0005](../adr/0005-versioned-contracts.md).
+**Status: Approved first-cycle contract.** R01–R04, R09–R10, R16–R19, R24; [ADR 0005](../adr/0005-versioned-contracts.md).
 
 ## Proposed domain structure
 
@@ -24,7 +24,9 @@ The [initial example set](examples/README.md) also includes a single agent, a tw
 
 The illustrative controller is a component exposing `next`. Its configuration contains an ordered `steps` list. The proposed request contains completed node IDs; its output is either `schedule` with one eligible node or `complete` with no nodes. Platform validation constrains the controller's choices and retains sole dispatch authority.
 
-This is the **initial sequence profile**, not a universal workflow language. It must reject branching, repeated node IDs, cycles, parallel scheduling and mutation requests in this cycle. Reusing a component in distinct nodes remains valid. A later controller profile can support different topology without imposing this sequence rule on the entire platform.
+This is the **initial sequence profile**, not a universal workflow language. It must reject branching, repeated node IDs, cycles, parallel scheduling and mutation requests under this profile. Reusing a component in distinct nodes remains valid. Other controller profiles can support different topology without imposing this sequence rule on the entire platform.
+
+The owner added a separate bounded conditional review profile to the first cycle on 2026-09-29. It combines ordinary LLMCall agents with a redirector usable independently or embedded in an agent. Declared outputs and a user-authored Python script determine routing. The [conditional routing contract](conditional-routing.md) defines the delivery sprint's composition, repeated-activation bindings and stop/error behavior. This scope addition does not change Sequence semantics or claim that cycles are already executable.
 
 The semantic model of arbitrary transitions, events, joins, and dynamic mutation remains future-cycle Q16. Q13 must approve the initial generic boundary and finite-sequence contract without implementing those later mechanisms. The candidate schema does not claim future control behaviors are implemented by accepting extension metadata.
 

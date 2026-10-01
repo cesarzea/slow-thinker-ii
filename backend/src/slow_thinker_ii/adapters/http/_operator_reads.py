@@ -55,6 +55,9 @@ class OperatorReads:
             request, lambda: self._queries.activation(run_id, activation_id, cursor(request))
         )
 
+    async def execution(self, request: Request, run_id: str) -> Response:
+        return await self._read(request, lambda: self._queries.execution(run_id, cursor(request)))
+
     async def definition(self, request: Request, run_id: str) -> Response:
         return await self._read(request, lambda: self._queries.definition(run_id))
 

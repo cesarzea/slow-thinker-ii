@@ -7,6 +7,8 @@ from slow_thinker_ii.adapters.installations import InstallationCatalog, Resoluti
 from slow_thinker_ii.contracts import decode_json, encode_json, json_object
 from slow_thinker_ii.definitions import ResolvedInstance
 
+from ._composition_contracts import validate_compositions
+from ._conditional_compiler import ConditionalCompiler
 from ._installed_records import ConfiguredInstance, InstalledPlan, TypeInstallation
 from ._installed_types import installed_types, resolved_instance
 from ._models import ComponentRecord, GraphRecord
@@ -25,6 +27,7 @@ class InstalledGraphCompiler:
         self._catalog = catalog
         self._schemas = ContractSchemas(schema_directory)
         self._compiler = SequenceCompiler(schema_directory)
+        self._conditional = ConditionalCompiler(schema_directory)
         self._types = installed_types(
             types, self._schemas, (schema_directory / "component.schema.json").read_text()
         )
@@ -45,7 +48,13 @@ class InstalledGraphCompiler:
             instance, config = self._resolve(identity, spec, overrides.get(identity))
             resolved.append(instance)
             configurations.append(config)
-        plan = self._compiler.compile(graph_json, input_json, tuple(resolved))
+        compiler = (
+            self._conditional
+            if graph.execution_profile == "bounded-conditional"
+            else self._compiler
+        )
+        plan = compiler.compile(graph_json, input_json, tuple(resolved))
+        validate_compositions(graph, {instance.instance_id: instance for instance in resolved})
         return InstalledPlan(plan, tuple(configurations))
 
     def _resolve(

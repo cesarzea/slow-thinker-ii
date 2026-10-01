@@ -6,11 +6,10 @@ import sys
 from pathlib import Path
 
 import pytest
-from slow_thinker_ii.adapters.installations import Resolution
 
 from tooling.components import prepare
 from tooling.components.build import command, verify_built_wheels, wheel_hashes
-from tooling.tests.component_fixtures import offline_command, project
+from tooling.tests.component_fixtures import offline_command, patch_preparation, project
 
 
 def test_prepare_builds_production_wheels_and_publishes_verified_environment(
@@ -65,14 +64,7 @@ def test_preparation_cli_uses_requested_destination(
         "class SequenceHost: pass\n",
         '["slow-thinker-host==0.1.0.dev1"]',
     )
-    original = prepare.prepare_sequence
-
-    def use_fixture(root: Path, destination: Path, uv: Path, python: Path) -> Resolution:
-        del root
-        return original(tmp_path, destination, uv, python)
-
-    monkeypatch.setattr(prepare, "prepare_sequence", use_fixture)
-    monkeypatch.setattr(prepare, "command", offline_command)
+    patch_preparation(tmp_path, monkeypatch)
     destination = tmp_path / "requested"
     monkeypatch.setattr(sys, "argv", ["prepare", "--destination", str(destination)])
     runpy.run_module("tooling.components", run_name="__main__")
@@ -80,8 +72,8 @@ def test_preparation_cli_uses_requested_destination(
 
 
 def test_missing_installer_is_reported_before_preparation(monkeypatch: pytest.MonkeyPatch) -> None:
-    def missing_tool(name: str) -> None:
-        del name
+    def missing_tool(_name: str) -> None:
+        return None
 
     monkeypatch.setattr(shutil, "which", missing_tool)
     monkeypatch.setattr(sys, "argv", ["prepare"])

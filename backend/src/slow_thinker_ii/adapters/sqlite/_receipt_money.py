@@ -6,6 +6,7 @@ from slow_thinker_ii.accounting import ScopeKeys, SettlementOutcome
 from slow_thinker_ii.application import CallReceipt, StoredCall
 
 from ._ledger import SqliteLedgerTransaction
+from ._pricing_quarantine import quarantine
 from ._rows import attempt, text
 
 
@@ -24,5 +25,8 @@ def settle_receipt(
     scopes = ledger.scopes(
         ScopeKeys(text(row, "run_id"), text(row, "session_id"), text(row, "month_id"))
     )
-    overrun = any(scope.settled + scope.outstanding > scope.cap for scope in scopes)
+    above_bound = receipt.amount > int(row["bound"])
+    if above_bound and outcome == "applied":
+        quarantine(connection, call.prepared, receipt.amount)
+    overrun = above_bound or any(scope.settled + scope.outstanding > scope.cap for scope in scopes)
     return outcome, overrun

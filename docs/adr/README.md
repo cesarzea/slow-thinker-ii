@@ -2,7 +2,7 @@
 
 These records follow [MADR](https://adr.github.io/madr/). Each contains context, drivers, options, an outcome or proposal, consequences, and a confirmation method. The project owner decides acceptance.
 
-Accepted records capture principles already agreed in the conversation. Proposed records are recommendations only. Alternatives documented now do not imply that the owner previously selected between those exact alternatives. No record claims implementation or completed verification.
+Accepted records capture principles already agreed in the conversation. Proposed records are recommendations only. Alternatives documented now do not imply that the owner previously selected between those exact alternatives. Acceptance alone does not establish implementation or verification; dated confirmation sections identify observed evidence.
 
 | ADR | Decision | Status |
 | --- | --- | --- |
@@ -17,6 +17,7 @@ Accepted records capture principles already agreed in the conversation. Proposed
 | [0009](0009-standalone-python-export.md) | Future standalone Python export with explicit portability and verified optimization | Proposed |
 | [0010](0010-llm-output-validation.md) | Text/JSON validation with retained invalid output and no implicit repair call | Accepted |
 | [0011](0011-local-persistence.md) | Local SQLite storage, transactional dispatch and explicit crash recovery | Detailed profile proposed; SQLite and backend storage boundary selected |
+| [0012](0012-single-maintainer-review.md) | Single-maintainer owner review with mandatory PRs and checks; no external approval count | Accepted; remote setting verified |
 
 ## Change procedure
 

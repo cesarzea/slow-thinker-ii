@@ -16,7 +16,7 @@ export function App(): ReactElement {
   return (
     <main>
       <header>
-        <p>Laboratorio de colaboración entre agentes</p>
+        <p>Agent collaboration lab</p>
         <h1>Slow Thinker II</h1>
       </header>
       <AccessPanel

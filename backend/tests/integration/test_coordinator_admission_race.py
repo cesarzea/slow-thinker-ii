@@ -35,4 +35,5 @@ async def test_shutdown_during_admission_cannot_orphan_a_committed_run(
     )
     with case.runs.begin() as transaction:
         assert transaction.run(receipt.target_id).reason == "runtime_shutdown"
-    assert not (await case.coordinator.close()).commands
+    pending = await case.coordinator.close()
+    assert not pending.commands

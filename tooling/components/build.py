@@ -42,6 +42,8 @@ def source_hash(project: Path) -> str:
 def build_wheels(projects: tuple[Path, ...], wheels: Path, python: Path) -> dict[str, str]:
     sources: dict[str, str] = {}
     for project in projects:
+        if project.name in sources:
+            raise ValueError("Source project names must be unique within one preparation")
         checksum = source_hash(project)
         command(
             [str(python), "-B", "-I", "-m", "hatchling", "build", "-t", "wheel", "-d", str(wheels)],

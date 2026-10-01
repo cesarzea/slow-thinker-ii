@@ -1,6 +1,6 @@
 # Slow Thinker II
 
-> **Early stage, non-functional.** The first development cycle is in progress; no usable release is available.
+> **Early-stage experimental software.** Local execution is available; no stable release is available.
 
 **A new implementation of Slow Thinker with customizable agents, components, and collaboration graphs.**
 
@@ -26,12 +26,15 @@
 
 - [Architecture and specification](docs/README.md)
 - [Architecture decisions](docs/adr/README.md)
-- [Proposed contracts and examples](docs/contracts/README.md)
+- [Contracts and examples](docs/contracts/README.md)
+- [Engineering process improvement](docs/continuous-improvement/README.md)
 - [Open questions](docs/specification/open-questions.md)
 
 ## Current Status
 
-Early stage, non-functional.
+The local prototype runs five bundled graphs, including a proposer–reviewer loop
+with conditional feedback. It records calls, results and costs, with configurable
+execution limits. Graph editing and collaboration analysis are future work.
 
 ## Engineering standards
 
@@ -70,7 +73,7 @@ Early stage, non-functional.
 
 | Standard | Requirement |
 | --- | --- |
-| Protected `main`: pull requests only, required checks and review, linear history, and squash merges. | Required |
+| Protected `main`: pull requests only, required checks, owner review under [ADR 0012](docs/adr/0012-single-maintainer-review.md), linear history, and squash merges. | Required |
 | Code review following [Google's engineering practices](https://google.github.io/eng-practices/review/), with a documented definition of done. | Required |
 | [Conventional Commits](https://www.conventionalcommits.org) through validated pull request titles and squash commit messages. | Required |
 | One verification command locally and in CI; each automated gate must fail on a deliberate violation when introduced. | Required |
@@ -89,10 +92,12 @@ Rules must not be weakened merely to make a change pass. Exceptions require a do
 ## Development
 
 Technology stack: **Python + FastAPI** for the backend; **React + TypeScript, React Flow,
-and Vite** for the browser interface. MCP and OpenAI-compatible interfaces will
+and Vite** for the browser interface. MCP and OpenAI-compatible interfaces
 support integration with agent tooling, including LangChain and LangGraph.
 
-The first-cycle [specification](docs/README.md) is approved and implementation is in progress. See [development instructions](CONTRIBUTING.md). Local execution and inspection of the four example graphs are tested with simulated providers. The complete platform remains under development.
+See the [development instructions](CONTRIBUTING.md) and [verification record](docs/verification.md) for setup, tested behavior and current limitations. The complete platform remains under development.
+
+The [Changelog](CHANGELOG.md) records development progress and sprint report versions.
 
 ## License
 

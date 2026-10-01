@@ -3,16 +3,17 @@
 from dataclasses import replace
 
 from slow_thinker_ii.access import OperationAddress
-from slow_thinker_ii.adapters.catalog import InstalledGraphCompiler, InstalledPlan, TypeInstallation
+from slow_thinker_ii.adapters.catalog import InstalledGraphCompiler, InstalledPlan
 from slow_thinker_ii.adapters.openai import OpenAIPricePolicy
 from slow_thinker_ii.adapters.process import HostBinding, ProcessSecret
 from slow_thinker_ii.application import ManagedResult, ManagedRun, ModelBinding
 from slow_thinker_ii.contracts import JsonObject, decode_json, encode_json, json_object
 from support.native_model import profile
 from support.provider_process import SECRET
-from support.sequence_plans import EXAMPLES, SCHEMAS, graph_value
+from support.sequence_plans import SCHEMAS, graph_value
 
 from .conftest import PreparedBundle
+from .coordinator_fixture import selected_types
 
 
 class RunRouter:
@@ -25,26 +26,23 @@ class RunRouter:
 
 
 def compile_graph(bundle: PreparedBundle, name: str) -> InstalledPlan:
-    files = {
-        "sequence": "sequence",
-        "llm-call": "llm-call",
-        "openai-model": "model",
-        "grounded-review": "grounded-review",
-    }
-    types = tuple(
-        TypeInstallation(bundle.identities[key], (EXAMPLES / f"{value}.component.json").read_text())
-        for key, value in files.items()
-    )
+    types = selected_types(bundle)
     graph = graph_value(name)
-    model = json_object(json_object(json_object(graph["components"])["model"])["config"])
-    configured: JsonObject = {
-        "model_alias": model["model"],
-        "model": profile().revision.tariff.model,
-        "default_output_tokens": 8,
-        "maximum_output_tokens": 32,
-    }
+    configs: dict[str, str] = {}
+    for identity, value in json_object(graph["components"]).items():
+        component = json_object(value)
+        if component["type_id"] == "example.model-resource":
+            model = json_object(component["config"])
+            configs[identity] = encode_json(
+                {
+                    "model_alias": model["model"],
+                    "model": profile().revision.tariff.model,
+                    "default_output_tokens": 8,
+                    "maximum_output_tokens": 1024,
+                }
+            )
     return InstalledGraphCompiler(bundle.catalog, SCHEMAS, types).compile(
-        encode_json(graph), '{"problem":"Design a workshop"}', {"model": encode_json(configured)}
+        encode_json(graph), '{"problem":"Design a workshop"}', configs
     )
 
 

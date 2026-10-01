@@ -2,7 +2,7 @@
 
 - Status: Proposed
 - Recorded: 2026-09-27
-- Decision-maker: César Zea
+- Decision-maker: Cesar Zea
 - Requirements: R05–R08, R11, R13
 - Open questions: Q04, Q06
 

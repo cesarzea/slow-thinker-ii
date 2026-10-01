@@ -69,7 +69,7 @@ it('makes unavailable results explicit and preserves arbitrary valid JSON', asyn
     .mockResolvedValueOnce(reply({status: 'recorded', content: ['value', null]}));
   vi.stubGlobal('fetch', fetcher);
   const client = new OperatorClient('key');
-  expect(await client.result('run', signal())).toContain('No hay resultado');
+  expect(await client.result('run', signal())).toContain('No final result');
   expect(JSON.parse(await client.result('run', signal())) as unknown).toEqual(['value', null]);
 });
 

@@ -9,26 +9,24 @@ export function ActivationSummary({activation, onCall, onPayload}: Props): React
   return (
     <>
       <p>
-        Agente: {activation.target.instance} · Nodo: {activation.node_id ?? 'No registrado'}
+        Agent: {activation.target.instance} · Node: {activation.node_id ?? 'Not recorded'}
       </p>
       <p>
-        Estado: {activation.state}
+        State: {activation.state}
         {activation.reason !== null && ` · ${activation.reason}`}
       </p>
       <EvidenceLink identity={activation.input_payload_id} select={onPayload}>
-        Ver entrada efectiva
+        View effective input
       </EvidenceLink>
       <EvidenceLink identity={activation.output_payload_id} select={onPayload}>
-        Ver salida publicada
+        View published output
       </EvidenceLink>
-      {activation.output_payload_id === null && (
-        <p>No hay salida publicada para esta activación.</p>
-      )}
+      {activation.output_payload_id === null && <p>No output was published for this activation.</p>}
       <EvidenceLink identity={activation.bindings_payload_id} select={onPayload}>
-        Ver procedencia de entradas
+        View input provenance
       </EvidenceLink>
       <EvidenceLink identity={activation.root_call_id} select={onCall}>
-        Ver llamada principal
+        View root call
       </EvidenceLink>
       <ActivationCalls calls={activation.calls.items} onCall={onCall} />
     </>
@@ -43,14 +41,14 @@ function ActivationCalls({
 }): ReactElement {
   return (
     <>
-      <h4>Llamadas de esta activación</h4>
+      <h4>Calls for this activation</h4>
       <ul>
         {calls.map((call) => (
           <li key={call.call_id}>
-            {call.caller ?? 'Orquestador'} → {call.target.instance}.{call.target.operation} ·{' '}
+            {call.caller ?? 'Orchestrator'} → {call.target.instance}.{call.target.operation} ·{' '}
             {call.state}{' '}
             <EvidenceLink identity={call.call_id} select={onCall}>
-              Abrir llamada
+              View call
             </EvidenceLink>
           </li>
         ))}

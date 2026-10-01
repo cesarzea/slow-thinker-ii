@@ -1,6 +1,5 @@
 import type {ReactElement} from 'react';
 import type {GraphSummary} from '../api/index.ts';
-import {GraphView} from '../features/graph-view/index.ts';
 
 interface PanelProps {
   readonly graphs: GraphSummary[];
@@ -11,7 +10,7 @@ interface PanelProps {
 function ExperimentSelector({graphs, graph, onSelect}: PanelProps): ReactElement {
   return (
     <label>
-      Experimento
+      Experiment
       <select
         value={graph.graph_id}
         onChange={(event) => {
@@ -30,14 +29,15 @@ function ExperimentSelector({graphs, graph, onSelect}: PanelProps): ReactElement
 
 export function ExperimentPanel(props: PanelProps): ReactElement {
   const {graph} = props;
+  const agents = graph.participants === 1 ? 'agent' : 'agents';
+  const nodes = graph.nodes.length === 1 ? 'declared node' : 'declared nodes';
   return (
     <>
       <ExperimentSelector {...props} />
       <p>
-        {graph.participants} agentes · {graph.nodes.length} activaciones · {graph.revision}
+        {graph.participants} {agents} · {graph.nodes.length} {nodes} · {graph.revision}
       </p>
-      <GraphView key={graph.graph_id} graph={graph} />
-      <ol aria-label="Orden de ejecución">
+      <ol aria-label="Experiment nodes">
         {graph.nodes.map((node) => (
           <li key={node.id}>
             {node.id}: {node.component}

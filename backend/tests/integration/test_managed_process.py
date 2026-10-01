@@ -47,7 +47,8 @@ async def test_real_process_response_and_usage_are_recorded(tmp_path: Path, *, f
                 assert "private" not in (saved.receipt.usage_json or "")
             else:
                 assert saved.receipt.amount == 37
-        assert await runner.close(1) == ()
+        pending = await runner.close(1)
+        assert pending == ()
     assert_reaped(process, forced=False)
 
 

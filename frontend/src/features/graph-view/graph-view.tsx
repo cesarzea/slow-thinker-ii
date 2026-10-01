@@ -1,34 +1,41 @@
-import {Background, Controls, MarkerType, Position, ReactFlow} from '@xyflow/react';
-import type {GraphSummary} from '../../api/index.ts';
 import type {ReactElement} from 'react';
+import {GraphControls} from './graph-controls.tsx';
+import {GraphList} from './graph-list.tsx';
+import {GraphCanvas} from './graph-canvas.tsx';
+import {Resources} from './resources.tsx';
+import {graphStructure, structureModel} from './structure-model.ts';
+import {useGraphSettings} from './graph-settings.ts';
+import type {GraphSettings} from './graph-settings.ts';
+import type {GraphViewProps} from './types.ts';
+import './graph-view.css';
 
-export function GraphView({graph}: Readonly<{graph: GraphSummary}>): ReactElement {
-  const nodes = graph.nodes.map((node, index) => ({
-    id: node.id,
-    position: {x: index * 240, y: 40},
-    sourcePosition: Position.Right,
-    targetPosition: Position.Left,
-    data: {label: `${node.id} · ${node.component}`},
-  }));
-  const edges = graph.nodes.flatMap((node, index) => {
-    const previous = graph.nodes[index - 1];
-    return previous === undefined
-      ? []
-      : [
-          {
-            id: `step-${String(index)}`,
-            source: previous.id,
-            target: node.id,
-            markerEnd: {type: MarkerType.ArrowClosed},
-          },
-        ];
-  });
+export function GraphView(props: GraphViewProps): ReactElement {
+  const settings = useGraphSettings(props.execution !== undefined);
   return (
-    <section className="graph" aria-label="Secuencia de activaciones">
-      <ReactFlow nodes={nodes} edges={edges} fitView nodesConnectable={false}>
-        <Background />
-        <Controls showInteractive={false} />
-      </ReactFlow>
+    <section
+      aria-label="Experiment graph"
+      className={settings.configuration ? 'agent-graph configuration-visible' : 'agent-graph'}
+    >
+      <GraphControls {...settings} />
+      <GraphContent {...props} settings={settings} />
     </section>
+  );
+}
+function GraphContent(props: GraphViewProps & {readonly settings: GraphSettings}): ReactElement {
+  const {settings} = props;
+  const structure = graphStructure(props);
+  const visual = structureModel(props, settings);
+  const definition = props.detail === undefined ? 'fallback' : 'definition';
+  const identity = `${props.graph.graph_id}:${props.graph.revision}:${definition}:${String(settings.layout)}`;
+  return (
+    <>
+      {props.detail === undefined && <p>Detailed structure unavailable. Showing catalog steps.</p>}
+      {settings.execution && props.execution === undefined && (
+        <p>No recorded activations available.</p>
+      )}
+      <GraphCanvas key={identity} {...visual} onSelect={props.onSelect} />
+      <Resources structure={structure} onSelect={props.onSelect} />
+      <GraphList structure={structure} execution={props.execution} onSelect={props.onSelect} />
+    </>
   );
 }

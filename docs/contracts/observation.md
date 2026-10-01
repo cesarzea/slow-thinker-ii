@@ -1,6 +1,6 @@
 # Observation and evidence proposal
 
-**Status: Proposed first-cycle contract.** R11–R12, R16, R18–R19, R25–R26; Q10–Q11, Q18. This defines the semantic record needed for inspection and later analysis. The [event envelope](schemas/event.schema.json) exists as a review fixture; per-event payload schemas and numeric limits still require completion.
+**Status: Approved first-cycle contract.** R11–R12, R16, R18–R19, R25–R26; Q10–Q11, Q18. This defines the semantic record needed for inspection and later analysis. The [event envelope](schemas/event.schema.json) defines the common record; concrete projections and configured capture limits are covered by the [verification record](../verification.md).
 
 ## What observation means
 

@@ -1,7 +1,7 @@
 /** Keep positive calculated costs visible at the ledger's nanodollar precision. */
 export function moneyLabel(amount: string | null): string {
-  if (amount === null) return 'Coste pendiente';
-  if (!/^\d+(?:[.]\d{1,9})?$/.test(amount)) throw new Error('Importe inválido');
+  if (amount === null) return 'Cost pending';
+  if (!/^\d+(?:[.]\d{1,9})?$/.test(amount)) throw new Error('Invalid amount');
   const separator = amount.indexOf('.');
   if (separator < 0) return `USD ${amount}`;
   const integer = amount.slice(0, separator);

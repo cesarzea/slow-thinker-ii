@@ -4,18 +4,23 @@ from dataclasses import dataclass
 from pathlib import Path
 from uuid import uuid4
 
+from slow_thinker_ii.access import OperationAddress
 from slow_thinker_ii.adapters.catalog import InstalledPlan
 from slow_thinker_ii.adapters.installations import InstallationCatalog
 from slow_thinker_ii.adapters.process import HostLimits, InstalledGraphEnvironment
 from slow_thinker_ii.application import (
+    ConditionalProgram,
     ExecutionConfiguration,
+    GatewayOperation,
     PreparationRejected,
     PreparedStart,
     PreparedWorkflow,
+    ProcessJournal,
     SequenceProgram,
     StartIntent,
     sequence_access,
 )
+from slow_thinker_ii.definitions import ConditionalPlan
 
 from ._host_profiles import HostProfile
 from ._snapshots import snapshot
@@ -29,6 +34,7 @@ class WorkflowAssembly:
     installed: InstalledPlan
     hosts: dict[str, HostProfile]
     tariff: SelectedTariff | None
+    journal: ProcessJournal | None = None
 
     def prepare(
         self, intent: StartIntent, configuration: ExecutionConfiguration, runtime_id: str
@@ -50,8 +56,15 @@ class WorkflowAssembly:
             prepared,
             sequence_access(self.installed.plan),
             self.environment(configuration),
-            SequenceProgram(self.installed.plan),
+            ConditionalProgram(self.installed.plan)
+            if isinstance(self.installed.plan, ConditionalPlan)
+            else SequenceProgram(self.installed.plan),
             tuple(model for host in self.hosts.values() for model in host.models),
+            tuple(
+                GatewayOperation(OperationAddress(instance.instance_id, operation.name), operation)
+                for instance in self.installed.plan.instances
+                for operation in instance.operations
+            ),
         )
 
     def environment(self, configuration: ExecutionConfiguration) -> InstalledGraphEnvironment:
@@ -62,4 +75,5 @@ class WorkflowAssembly:
             self.workspace / uuid4().hex,
             {key: host.binding for key, host in self.hosts.items()},
             HostLimits(limits.startup_seconds, limits.shutdown_seconds, limits.max_payload_bytes),
+            self.journal,
         )

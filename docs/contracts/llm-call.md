@@ -1,10 +1,10 @@
 # LLMCall contract
 
-**Status: Proposed detailed contract.** The owner accepted text or schema-validated JSON output and a structured failure retaining invalid output, with no implicit repair call. References: R02, R08, R11–R14, R27, R29; Q13, Q20.
+**Status: Approved first-cycle contract.** The owner accepted text or schema-validated JSON output and a structured failure retaining invalid output, with no implicit repair call. References: R02, R08, R11–R14, R27, R29; Q13, Q20.
 
 ## Responsibility and identity
 
-`LLMCall`, type ID `llm-call`, performs one logical model invocation per activation through its bound model resource. Instructions and inputs determine its role. Proposer, planner and reviewer are configured instances of this type, not separate implementations. The example release `0.1.0-example` is a review fixture, not an installed package.
+`LLMCall`, type ID `llm-call`, performs one logical model invocation per activation through its bound model resource. Instructions and inputs determine its role. Proposer, planner and reviewer are configured instances of this type, not separate implementations. The descriptor type version is `0.1.0-example`; its independently installed distribution has its own pinned package version.
 
 The [descriptor](examples/llm-call.component.json) exposes `generate`. The [Python interface](python-component-api.md) defines the proposed code extension points. The component is stateless: input history is supplied explicitly, no conversation is retained, and the instance configuration is immutable during a run.
 

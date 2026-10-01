@@ -7,12 +7,15 @@ from slow_thinker_ii.contracts import JsonObject, decode_json
 from ._receipt_rows import RECEIPT
 from ._run_rows import CHARGE
 from ._trace_bindings import binding_payload, run_input_payload
+from ._trace_reports import report_payload
 
 
 def payload_details(db: sqlite3.Connection, run: str, identity: str) -> JsonObject | None:
     kind, separator, key = identity.partition(":")
     if not separator or not key:
         return None
+    if kind == "report":
+        return captured_report(db, run, identity, key)
     if kind == "bindings":
         value = binding_payload(db, run, key)
         return None if value is None else captured(run, identity, value)
@@ -20,12 +23,7 @@ def payload_details(db: sqlite3.Connection, run: str, identity: str) -> JsonObje
         found, value = run_input_payload(db, run)
         return captured(run, identity, value) if found else None
     if kind == "event":
-        if not key.isascii() or not key.isdecimal() or len(key) > 19 or int(key) > 2**63 - 1:
-            return None
-        row = db.execute(
-            "SELECT payload_json FROM run_events WHERE run_id=? AND sequence=?", (run, int(key))
-        ).fetchone()
-        return None if row is None else captured(run, identity, str(row[0]))
+        return event_payload(db, run, identity, key)
     if kind in ("request", "pricing"):
         return call_payload(db, run, identity, kind, key)
     if kind in ("response", "usage"):
@@ -79,3 +77,22 @@ def captured(run: str, identity: str, value: str | None) -> JsonObject:
         "size_bytes": None if value is None else len(value.encode("utf-8")),
         "content": None if value is None else decode_json(value),
     }
+
+
+def captured_report(db: sqlite3.Connection, run: str, identity: str, key: str) -> JsonObject | None:
+    report = report_payload(db, run, key)
+    if report is None:
+        return None
+    result = captured(run, identity, report[0])
+    result["status"] = report[1]
+    result["reason"] = "authentication_material" if report[1] == "redacted" else None
+    return result
+
+
+def event_payload(db: sqlite3.Connection, run: str, identity: str, key: str) -> JsonObject | None:
+    if not key.isascii() or not key.isdecimal() or len(key) > 19 or int(key) > 2**63 - 1:
+        return None
+    row = db.execute(
+        "SELECT payload_json FROM run_events WHERE run_id=? AND sequence=?", (run, int(key))
+    ).fetchone()
+    return None if row is None else captured(run, identity, str(row[0]))

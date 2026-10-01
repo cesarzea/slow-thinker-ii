@@ -2,7 +2,7 @@
 
 - Status: Proposed
 - Recorded: 2026-09-28
-- Decision-maker: César Zea
+- Decision-maker: Cesar Zea
 - Accepted scope, 2026-09-28: local SQLite, backend-mediated storage, transactional reservations/state/evidence and no automatic paid replay. Detailed settings and recovery mechanics below remain proposed.
 - Requirements: R11–R16, R20, R22
 - Open questions: Q07–Q10, Q18

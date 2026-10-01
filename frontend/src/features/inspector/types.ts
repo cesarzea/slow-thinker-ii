@@ -10,3 +10,8 @@ export interface Paging {
   readonly cursor: string | undefined;
   readonly onPage: (cursor: string | undefined) => void;
 }
+
+export type InspectionSelection =
+  | Readonly<{kind: 'call'; id: string}>
+  | Readonly<{kind: 'activation'; id: string}>
+  | Readonly<{kind: 'payload'; id: string}>;

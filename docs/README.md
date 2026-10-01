@@ -1,29 +1,46 @@
-# Architecture and specification
+# Project documentation
 
-**Status: Draft for review. Application implementation has not started.**
+**Status: First-cycle specification approved; local implementation available.**
 
-This documentation formalizes the project requirements and proposes the contracts needed for the first functional cycle. It does not declare the specification closed.
+This documentation records the approved first-cycle requirements, architecture and contracts, and keeps later capabilities explicitly deferred. The [delivery sprint](specification/first-cycle-sprint.md) identifies the implemented scope.
 
 ## Reading order
 
 1. [Requirements and scope](specification/requirements.md): the purpose, recorded commitments, and delivery boundaries.
 2. [Architecture, organized with arc42](architecture/README.md): structure, behavior, constraints, and quality requirements.
 3. [Architectural decisions](adr/README.md): accepted principles and proposed implementation choices.
-4. [Component and graph contracts](contracts/README.md): candidate formats and review examples.
-5. [Open questions](specification/open-questions.md): decisions required before implementation.
+4. [Component and graph contracts](contracts/README.md): versioned formats and bundled examples.
+5. [Open questions](specification/open-questions.md): closed first-cycle decisions and unresolved future work.
+6. [Engineering process improvement](continuous-improvement/README.md): versioned working methods, cycle evaluations, measurements and approved improvement decisions.
 
-The [verification record](verification.md) identifies the checks performed on this review package and their limits.
+The [verification record](verification.md) identifies the implementation checks, live execution evidence and their limits.
+
+The [central version register](../CHANGELOG.md) records development package versions
+and the history of versioned sprint reports.
+
+The [S02 Sprint Status Report](progress/sprint-02-status-report.md), version
+`0.0.2.5`, consolidates delivered progress, verification, owner-review corrections
+and outstanding items, with links to the sprint specification.
+
+The [sprint roadmap](specification/sprint-roadmap.md) records delivered scopes and
+proposes subsequent sprint scopes, delivery order, dependencies and milestones.
+Its future sprint scopes remain proposals until approved; planning does not activate
+implementation.
+
+The process-improvement record is part of the project documentation. It evaluates
+how development is organized; product requirements and architecture retain their
+own specifications and decision records. All maintained documents are in English.
 
 ## Document states
 
-| State | Meaning |
-| --- | --- |
-| Recorded requirement | A requirement stated or accepted in the design conversation. Its detailed implementation can still be open. |
-| Accepted ADR | An architectural principle already agreed with the project owner. This does not mean it has been implemented. |
-| Proposed ADR or contract | A concrete recommendation for review. Examples and schemas do not make it an approved decision. |
-| Deferred capability | Part of the intended evolution, excluded from the first functional cycle. Its extension boundary still matters now. |
+| State                    | Meaning                                                                                                             |
+| ------------------------ | ------------------------------------------------------------------------------------------------------------------- |
+| Recorded requirement     | A requirement stated or accepted in the design conversation. Its detailed implementation can still be open.         |
+| Accepted ADR             | An architectural principle already agreed with the project owner. This does not mean it has been implemented.       |
+| Proposed ADR or contract | A concrete recommendation for review. Examples and schemas do not make it an approved decision.                     |
+| Deferred capability      | Part of the intended evolution, excluded from the first functional cycle. Its extension boundary still matters now. |
 
-The project owner is César Zea. Dates record documentation, not a claim that all decisions were made on that date. No proposed decision becomes accepted through omission, elapsed time, or a successful schema check.
+The project owner is Cesar Zea. Dates record documentation, not a claim that all decisions were made on that date. No proposed decision becomes accepted through omission, elapsed time, or a successful schema check.
 
 ## Review and change procedure
 
@@ -42,4 +59,4 @@ Specification closure and implementation verification are separate gates. Before
 
 Similarly, Q14 requires agreement on source boundaries and the verification entry point during specification review. Installing and demonstrating the quality gates belongs to the first approved implementation setup, before application code is accepted. A selected technology or passing temporary probe does not authorize skipping owner approval of the specification.
 
-Current state: **this gate has not been passed**. The review package contains concrete proposals, not a runnable system.
+Current state: **the first-cycle specification was approved on 2026-09-28**, with bounded conditional review added on 2026-09-29. Approval does not extend to deferred capabilities; the verification record tracks implementation delivery separately.

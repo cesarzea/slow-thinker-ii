@@ -3,7 +3,7 @@
 from dataclasses import dataclass
 
 from slow_thinker_ii.adapters.installations import InstalledDescription
-from slow_thinker_ii.definitions import SequencePlan
+from slow_thinker_ii.definitions import ConditionalPlan, SequencePlan
 
 
 @dataclass(frozen=True)
@@ -22,5 +22,5 @@ class ConfiguredInstance:
 
 @dataclass(frozen=True)
 class InstalledPlan:
-    plan: SequencePlan
+    plan: SequencePlan | ConditionalPlan
     configurations: tuple[ConfiguredInstance, ...]

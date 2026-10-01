@@ -5,11 +5,13 @@ import math
 from collections.abc import Mapping
 
 from slow_thinker_ii.access import CallAuthority, CallContext, InvocationLease, OperationAddress
+from slow_thinker_ii.contracts import JsonObject
 
 from ._call_delivery import deliver
 from ._call_tasks import CallTasks
 from ._dispatch_ports import ManagedResult, OperationPort
 from ._run_admission import RunAdmission
+from ._run_evidence import RunEvidence
 
 
 class ManagedCalls:
@@ -18,10 +20,12 @@ class ManagedCalls:
         authority: CallAuthority,
         admission: RunAdmission,
         operations: Mapping[OperationAddress, OperationPort],
+        evidence: RunEvidence | None = None,
     ) -> None:
         self._authority, self._admission = authority, admission
         self._operations = dict(operations)
         self._tasks = CallTasks()
+        self._evidence = evidence
 
     async def schedule(
         self,
@@ -30,17 +34,22 @@ class ManagedCalls:
         *,
         activation: bool = True,
         node_id: str | None = None,
+        sources_json: str | None = None,
     ) -> ManagedResult:
         return await self._dispatch(
-            self._authority.schedule(target, activation=activation, node_id=node_id), arguments_json
+            self._authority.schedule(target, activation=activation, node_id=node_id),
+            arguments_json,
+            sources_json,
         )
 
     async def invoke(self, grant: str, alias: str, arguments_json: str) -> ManagedResult:
         return await self._dispatch(self._authority.invoke(grant, alias), arguments_json)
 
-    async def _dispatch(self, lease: InvocationLease, arguments_json: str) -> ManagedResult:
+    async def _dispatch(
+        self, lease: InvocationLease, arguments_json: str, sources_json: str | None = None
+    ) -> ManagedResult:
         try:
-            operation = self._prepare(lease, arguments_json)
+            operation = self._prepare(lease, arguments_json, sources_json)
             task = self._tasks.start(lease, deliver(self._admission, lease, operation))
             return await task
         except asyncio.CancelledError:
@@ -51,7 +60,9 @@ class ManagedCalls:
             self._tasks.forget(lease.context.call_id)
             self._tasks.cancel_revoked(self._authority, lease.context.call_id)
 
-    def _prepare(self, lease: InvocationLease, arguments_json: str) -> OperationPort:
+    def _prepare(
+        self, lease: InvocationLease, arguments_json: str, sources_json: str | None
+    ) -> OperationPort:
         operation = self._operations.get(lease.context.target)
         try:
             if operation is None:
@@ -65,8 +76,13 @@ class ManagedCalls:
             )
             self._admission.reject(lease.token, arguments_json, reason)
             raise
-        self._admission.reserve(lease.token, prepared.arguments_json, prepared.charge)
+        self._admission.reserve(lease.token, prepared.arguments_json, prepared.charge, sources_json)
         return operation
+
+    def record(self, context: CallContext, event: str, payload: JsonObject) -> None:
+        if self._evidence is None:
+            raise RuntimeError("This execution requires an evidence recorder")
+        self._evidence.record(context, event, payload)
 
     def stop(self, reason: str) -> tuple[str, ...]:
         try:

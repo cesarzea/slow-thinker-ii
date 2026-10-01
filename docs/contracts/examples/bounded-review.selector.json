@@ -1,0 +1,46 @@
+{
+  "outputs": [
+    "accept",
+    "revise"
+  ],
+  "selector": "example_grounded_review:choose",
+  "input_schema": {
+    "type": "object",
+    "properties": {
+      "accepted": {
+        "type": "boolean"
+      },
+      "findings": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "required": [
+      "accepted",
+      "findings"
+    ],
+    "additionalProperties": false,
+    "$id": "urn:slow-thinker-ii:bounded-review:review",
+    "allOf": [
+      {
+        "if": {
+          "properties": {
+            "accepted": {
+              "const": false
+            }
+          }
+        },
+        "then": {
+          "properties": {
+            "findings": {
+              "minItems": 1
+            }
+          }
+        }
+      }
+    ]
+  }
+}

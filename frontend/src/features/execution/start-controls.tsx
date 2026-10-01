@@ -1,6 +1,7 @@
-import {useState} from 'react';
 import type {ReactElement} from 'react';
 import type {GraphSummary} from '../../api/index.ts';
+import {RunInput} from './run-input.tsx';
+import {legacyInputSchema} from './input-schema.ts';
 import type {ExecutionCommands} from './commands.ts';
 import {canStart, canStop} from './state.ts';
 import type {ExecutionState} from './state.ts';
@@ -9,26 +10,22 @@ interface Props {
   readonly state: ExecutionState;
   readonly commands: ExecutionCommands;
   readonly graph: GraphSummary;
+  readonly inputUnavailable?: boolean;
 }
 
-export function StartControls({state, commands, graph}: Props): ReactElement {
-  const [problem, setProblem] = useState('');
+export function StartControls(props: Props): ReactElement {
+  const {state, graph} = props;
   return (
-    <section aria-label="Controles de ejecución">
-      <label>
-        Problema o tarea
-        <textarea
-          value={problem}
-          onChange={(event) => {
-            setProblem(event.target.value);
-          }}
-          rows={4}
-        />
-      </label>
-      <RunButtons state={state} commands={commands} graph={graph} problem={problem} />
-      {state.stale && <p role="status">Estado sin confirmar. Se está consultando al servidor.</p>}
+    <section aria-label="Run controls">
+      <RunInput
+        key={`${graph.graph_id}:${graph.revision}`}
+        schema={graph.input_schema ?? legacyInputSchema}
+      >
+        {(input, valid) => <RunButtons {...props} input={input} valid={valid} />}
+      </RunInput>
+      {state.stale && <p role="status">State unconfirmed. Checking with the server.</p>}
       {state.stopRequested && (
-        <p role="status">Parada solicitada; esperando confirmación del estado final.</p>
+        <p role="status">Stop requested; waiting for confirmation of the final state.</p>
       )}
     </section>
   );
@@ -38,17 +35,19 @@ function RunButtons({
   state,
   commands,
   graph,
-  problem,
-}: Props & {readonly problem: string}): ReactElement {
+  input,
+  valid,
+  inputUnavailable,
+}: Props & {readonly input: unknown; readonly valid: boolean}): ReactElement {
   return (
     <div className="actions">
       <button
-        disabled={!canStart(state) || problem.trim() === ''}
+        disabled={!canStart(state) || !valid || inputUnavailable === true}
         onClick={() => {
-          void commands.start(graph, problem);
+          void commands.start(graph, input);
         }}
       >
-        Iniciar ejecución
+        Start run
       </button>
       <button
         disabled={!canStop(state)}
@@ -56,7 +55,7 @@ function RunButtons({
           void commands.stop();
         }}
       >
-        Detener ejecución
+        Stop run
       </button>
     </div>
   );

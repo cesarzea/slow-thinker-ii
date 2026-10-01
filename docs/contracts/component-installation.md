@@ -1,6 +1,6 @@
 # Component registration and installation
 
-**Status: Proposed first Python profile, not an implemented loader.** R02, R06, R08, R27; Q04, Q05, Q06, Q17, Q20. Code inheritance and separate local processes are accepted; these detailed records and steps are for review.
+**Status: Approved first-cycle contract.** R02, R06, R08, R27; Q04, Q05, Q06, Q17, Q20. Code inheritance, separate local processes and these records form the approved first-cycle installation profile.
 
 ## Separate declarations
 
@@ -89,4 +89,4 @@ Automatic removal of historical artifacts is outside the first profile. Never re
 
 Review checks validate schema structure, descriptor/type mappings and declared version constraints. The offline packaging probe additionally exercised ordinary subclass imports in separately installed synthetic packages, exact pins, a compatible update, unchanged old locks, a rejected major-version conflict and rejection of a valid ZIP wheel whose bytes failed the recorded hash. The probe used local wheels and no provider calls; it did not execute a platform host or real component.
 
-QA19 and Q17/Q20 still require real registration/ancestry validation, immutable resolution publication, failed-update rollback, active-environment protection, discovery/readiness and mediated inherited calls. The example distributions remain unimplemented. The installer/lock/runtime recommendations above await approval; catalog/resolution schemas, exact production runtime pins and bootstrap wire fields remain to be finalized. No component was installed into this repository.
+Repository tests now cover registration/ancestry validation, immutable resolutions, rejected updates, integrity, readiness and mediated inherited calls. Seven actual component environments were prepared and exercised separately from synthetic installation fixtures. Exact evidence and limitations are recorded in the [verification record](../verification.md).

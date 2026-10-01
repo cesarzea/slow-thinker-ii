@@ -1,4 +1,3 @@
-import type {z} from 'zod';
 import {
   resultSchema,
   historySchema,
@@ -11,27 +10,43 @@ import {eventsSchema, callSchema, payloadSchema, activationSchema} from './inspe
 import type {EventPage, CallDetails, RetainedPayload} from './inspection-schemas.ts';
 import type {ActivationDetails} from './inspection-schemas.ts';
 
-export type CommandBody = Readonly<Record<string, unknown>>;
+import {OperatorTransport, readError} from './transport.ts';
+import type {CommandBody} from './transport.ts';
+import {graphDetailSchema} from './graph-schemas.ts';
+import type {GraphDetail} from './graph-schemas.ts';
+import {executionPageSchema} from './execution-schemas.ts';
+import type {ExecutionPage} from './execution-schemas.ts';
+import {definitionSchema} from './definition-schema.ts';
+export type {CommandBody} from './transport.ts';
 
-export class OperatorClient {
-  constructor(private readonly credential: string) {}
-
-  private async request(path: string, signal?: AbortSignal, body?: CommandBody): Promise<Response> {
-    return await fetch(`/api/v1${path}`, {
-      method: body === undefined ? 'GET' : 'POST',
-      credentials: 'omit',
-      cache: 'no-store',
-      headers: {authorization: `Bearer ${this.credential}`, 'content-type': 'application/json'},
-      signal: requestSignal(signal),
-      ...(body === undefined ? {} : {body: JSON.stringify(body)}),
-    });
+export class OperatorClient extends OperatorTransport {
+  async graph(id: string, revision: string, signal: AbortSignal): Promise<GraphDetail> {
+    const path = `/graphs/${encodeURIComponent(id)}/revisions/${encodeURIComponent(revision)}`;
+    const detail = await this.read(path, graphDetailSchema, signal);
+    if (detail.graph_id !== id || detail.revision !== revision)
+      throw new Error('Incorrect revision.');
+    return detail;
   }
 
-  private async read<T>(path: string, schema: z.ZodType<T>, signal: AbortSignal): Promise<T> {
-    const response = await this.request(path, signal);
-    if (!response.ok) throw new Error(readError(response.status));
-    const value: unknown = await response.json();
-    return schema.parse(value);
+  async definition(run: string, signal: AbortSignal): Promise<GraphDetail> {
+    const detail = await this.read(
+      `/runs/${encodeURIComponent(run)}/definition`,
+      definitionSchema,
+      signal,
+    );
+    if (detail.run_id !== run) throw new Error('Definition belongs to another run.');
+    return detail;
+  }
+
+  async execution(run: string, signal: AbortSignal, cursor?: string): Promise<ExecutionPage> {
+    const suffix = cursor === undefined ? '' : `?cursor=${encodeURIComponent(cursor)}`;
+    const page = await this.read(
+      `/runs/${encodeURIComponent(run)}/execution${suffix}`,
+      executionPageSchema,
+      signal,
+    );
+    if (page.run_id !== run) throw new Error('Projection belongs to another run.');
+    return page;
   }
 
   async workspace(signal: AbortSignal, cursor?: string): Promise<Workspace> {
@@ -40,7 +55,9 @@ export class OperatorClient {
   }
 
   async run(id: string, signal: AbortSignal): Promise<Run> {
-    return await this.read(`/runs/${encodeURIComponent(id)}`, runSchema, signal);
+    const run = await this.read(`/runs/${encodeURIComponent(id)}`, runSchema, signal);
+    if (run.run_id !== id) throw new Error('State belongs to another run.');
+    return run;
   }
 
   async history(session: string, signal: AbortSignal, cursor?: string): Promise<History> {
@@ -56,7 +73,7 @@ export class OperatorClient {
     const reply = await this.read(`/runs/${encodeURIComponent(id)}/result`, resultSchema, signal);
     return reply.status === 'recorded'
       ? JSON.stringify(reply.content, null, 2)
-      : 'No hay resultado final disponible.';
+      : 'No final result is available.';
   }
 
   async command(id: string, signal: AbortSignal): Promise<Receipt | null> {
@@ -105,15 +122,4 @@ export class OperatorClient {
     if (receipt.success) return receipt.data;
     throw new Error(readError(response.status));
   }
-}
-
-function readError(status: number): string {
-  if (status === 401 || status === 403) return 'Acceso rechazado. Comprueba la clave de acceso.';
-  if (status === 404) return 'La ejecución no está habilitada o el registro no existe.';
-  return 'No se pudo confirmar el estado del servidor. Vuelve a consultar antes de enviar otra orden.';
-}
-
-function requestSignal(signal: AbortSignal | undefined): AbortSignal {
-  const timeout = AbortSignal.timeout(signal === undefined ? 65_000 : 10_000);
-  return signal === undefined ? timeout : AbortSignal.any([signal, timeout]);
 }

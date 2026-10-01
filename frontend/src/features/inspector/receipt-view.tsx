@@ -9,22 +9,22 @@ type ReceiptProps = Pick<InspectionLinks, 'onPayload'> & {readonly call: CallDet
 export function ReceiptView({call, onPayload}: ReceiptProps): ReactElement {
   return (
     <>
-      <h4>Respuestas conservadas</h4>
-      {call.receipts.items.length === 0 && <p>No hay respuestas registradas.</p>}
+      <h4>Retained responses</h4>
+      {call.receipts.items.length === 0 && <p>No responses recorded.</p>}
       <ul>
         {call.receipts.items.map((receipt) => (
           <li key={receipt.receipt_id}>
             <p>
-              <time>{receipt.received_at}</time> · {receipt.succeeded ? 'Correcta' : 'Error'} ·{' '}
-              {receipt.publish ? 'Aceptada para continuar' : 'No publicada como resultado'}
+              <time>{receipt.received_at}</time> · {receipt.succeeded ? 'Succeeded' : 'Error'} ·{' '}
+              {receipt.publish ? 'Accepted for continuation' : 'Not published as the result'}
             </p>
-            {receipt.reason !== null && <p>Motivo: {receipt.reason}</p>}
-            {receipt.amount !== null && <p>Importe comunicado: {moneyLabel(receipt.amount)}</p>}
+            {receipt.reason !== null && <p>Reason: {receipt.reason}</p>}
+            {receipt.amount !== null && <p>Reported amount: {moneyLabel(receipt.amount)}</p>}
             <EvidenceLink identity={receipt.response_payload_id} select={onPayload}>
-              Ver respuesta
+              View response
             </EvidenceLink>
             <EvidenceLink identity={receipt.usage_payload_id} select={onPayload}>
-              Ver uso comunicado
+              View reported usage
             </EvidenceLink>
           </li>
         ))}

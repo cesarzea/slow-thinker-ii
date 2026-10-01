@@ -15,7 +15,7 @@ def test_bundled_catalog_over_http(tmp_path: Path) -> None:
         response = client.get("/api/v1/graphs")
     assert response.status_code == 200
     body = TypeAdapter(list[GraphReply]).validate_json(response.content)
-    assert [len(graph.nodes) for graph in body] == [1, 2, 3, 5]
+    assert [len(graph.nodes) for graph in body] == [1, 2, 3, 5, 2]
     review = body[2]
     assert review.participants == 2
     assert [node.component for node in review.nodes] == ["proposer", "reviewer", "proposer"]

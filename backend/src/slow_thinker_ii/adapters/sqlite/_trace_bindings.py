@@ -14,6 +14,20 @@ def binding_payload(db: sqlite3.Connection, run: str, call: str) -> str | None:
     ).fetchone()
     if row is None:
         return None
+    routed = db.execute(
+        "SELECT payload_json FROM run_events WHERE run_id=? AND call_id=? "
+        "AND event='activation.bound' ORDER BY sequence DESC LIMIT 1",
+        (run, call),
+    ).fetchone()
+    if routed is not None:
+        sources = json_object(decode_json(str(routed[0])))
+        return encode_json(
+            {"status": "present", "source": "recorded_activations", "inputs": sources}
+        )
+    return definition_bindings(db, run, row)
+
+
+def definition_bindings(db: sqlite3.Connection, run: str, row: sqlite3.Row) -> str:
     context = json_object(decode_json(str(row["context_json"])))
     snapshot = json_object(decode_json(str(row["snapshot_json"])))
     execution = json_object(snapshot.get("execution", {}))

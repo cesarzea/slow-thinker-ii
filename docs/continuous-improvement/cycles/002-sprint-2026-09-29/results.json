@@ -1,0 +1,146 @@
+{
+  "Coordinator": {
+    "active_seconds": 6805.888,
+    "categories": {
+      "Analysis": 3626.060926078861,
+      "Communication and follow-up": 334.5006379795986,
+      "Environment and operational integration": 236.59245287909724,
+      "Documentation": 646.3712345262185,
+      "Implementation": 138.93426563351517,
+      "Context compaction": 351.5786716228734,
+      "Testing and verification": 984.6528812958034,
+      "Technical diagnosis": 220.21642000260954,
+      "Unattributed active time": 266.98050998142224
+    },
+    "turns": [
+      {
+        "turn": "01a0eb15-2920-7902-9583-64ec8223a4a9",
+        "start": 1790650427.687,
+        "end": 1790657233.562,
+        "active_seconds": 6805.888,
+        "reported_seconds": 6805.888
+      }
+    ]
+  },
+  "Backend": {
+    "active_seconds": 3760.151,
+    "categories": {
+      "Analysis": 1412.7762192475075,
+      "Communication and follow-up": 123.79090164658567,
+      "Implementation": 981.036070498333,
+      "Testing and verification": 721.4276058264586,
+      "Unattributed active time": 34.40425692527883,
+      "Documentation": 72.51026710035853,
+      "Context compaction": 117.72223015588246,
+      "Technical diagnosis": 296.4834485995953
+    },
+    "turns": [
+      {
+        "turn": "01a0eb27-ba42-7e11-ad54-8cff61d74da8",
+        "start": 1790651644.496,
+        "end": 1790653251.161,
+        "active_seconds": 1606.653,
+        "reported_seconds": 1606.653
+      },
+      {
+        "turn": "01a0eb45-46e5-7e12-ad31-2a5098d40478",
+        "start": 1790653581.042,
+        "end": 1790655164.636,
+        "active_seconds": 1583.624,
+        "reported_seconds": 1583.624
+      },
+      {
+        "turn": "01a0eb60-8bee-7b11-a531-d9cd27feeade",
+        "start": 1790655368.198,
+        "end": 1790655636.977,
+        "active_seconds": 268.814,
+        "reported_seconds": 268.814
+      },
+      {
+        "turn": "01a0eb6e-2fe5-7f43-ac29-6908561b4ef2",
+        "start": 1790656262.127,
+        "end": 1790656563.185,
+        "active_seconds": 301.06,
+        "reported_seconds": 301.06
+      }
+    ]
+  },
+  "Components": {
+    "active_seconds": 2206.174,
+    "categories": {
+      "Analysis": 655.4837137491564,
+      "Communication and follow-up": 111.29526033099523,
+      "Environment and operational integration": 106.86726508265612,
+      "Implementation": 567.7497389668346,
+      "Documentation": 169.96851689371894,
+      "Unattributed active time": 0.6070044973010768,
+      "Testing and verification": 561.1554795111002,
+      "Technical diagnosis": 33.04702096823787
+    },
+    "turns": [
+      {
+        "turn": "01a0eb27-fa0c-7271-89e6-2257a5556ec5",
+        "start": 1790651660.82,
+        "end": 1790652625.709,
+        "active_seconds": 964.88,
+        "reported_seconds": 964.88
+      },
+      {
+        "turn": "01a0eb41-ac0e-7213-a45e-dcd36fa5983a",
+        "start": 1790653344.801,
+        "end": 1790653513.082,
+        "active_seconds": 168.28,
+        "reported_seconds": 168.28
+      },
+      {
+        "turn": "01a0eb45-6ec2-7e32-8295-85e68343d672",
+        "start": 1790653591.248,
+        "end": 1790654562.271,
+        "active_seconds": 971.053,
+        "reported_seconds": 971.053
+      },
+      {
+        "turn": "01a0eb6e-53ee-7863-912d-39fa522619ae",
+        "start": 1790656271.35,
+        "end": 1790656373.311,
+        "active_seconds": 101.961,
+        "reported_seconds": 101.961
+      }
+    ]
+  },
+  "Frontend": {
+    "active_seconds": 2571.672,
+    "categories": {
+      "Analysis": 987.0713444375274,
+      "Communication and follow-up": 120.51045005560965,
+      "Technical diagnosis": 81.28963391842943,
+      "Implementation": 874.2080291608817,
+      "Testing and verification": 417.334212369318,
+      "Documentation": 90.84932849583761,
+      "Unattributed active time": 0.4090015623957836
+    },
+    "turns": [
+      {
+        "turn": "01a0eb28-3171-7f23-9e03-ebfbd52a3f10",
+        "start": 1790651675.003,
+        "end": 1790652807.685,
+        "active_seconds": 1132.673,
+        "reported_seconds": 1132.673
+      },
+      {
+        "turn": "01a0eb41-cd97-7683-aedc-ae4ea7179274",
+        "start": 1790653353.381,
+        "end": 1790653419.594,
+        "active_seconds": 66.212,
+        "reported_seconds": 66.212
+      },
+      {
+        "turn": "01a0eb45-9585-7022-b456-e5b8185e643f",
+        "start": 1790653601.169,
+        "end": 1790654973.925,
+        "active_seconds": 1372.787,
+        "reported_seconds": 1372.787
+      }
+    ]
+  }
+}

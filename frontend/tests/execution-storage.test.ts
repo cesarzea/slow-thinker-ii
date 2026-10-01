@@ -29,7 +29,7 @@ it('blocks mutation when previous command tracking cannot be read', async () => 
   await model.commands.createSession('Research');
   await model.commands.start(graph, 'Task');
   expect(server.mutations).toHaveLength(0);
-  expect(model.store.snapshot().message).toContain('No se puede leer');
+  expect(model.store.snapshot().message).toContain('Could not read');
 });
 
 it('does not dispatch a command whose identity could not be persisted', async () => {
@@ -44,7 +44,7 @@ it('does not dispatch a command whose identity could not be persisted', async ()
   await model.commands.createSession('Research');
   expect(server.mutations).toHaveLength(0);
   expect(model.store.snapshot().pending).toBeNull();
-  expect(model.store.snapshot().message).toContain('No se ha enviado');
+  expect(model.store.snapshot().message).toContain('The command was not sent');
 });
 
 it('keeps a committed receipt recoverable when local deletion fails', async () => {
@@ -59,7 +59,7 @@ it('keeps a committed receipt recoverable when local deletion fails', async () =
   await model.commands.createSession('Research');
   expect(model.store.snapshot().pending).toMatch(/^session-/);
   model.commands.forgetNonStart();
-  expect(model.store.snapshot().message).toContain('No se pudo eliminar');
+  expect(model.store.snapshot().message).toContain('Could not remove');
   storage.removeItem.mockImplementation(localStorage.removeItem.bind(localStorage));
   await model.polling.refresh(signal());
   expect(model.store.snapshot().sessionId).toBe('new-session');

@@ -1,6 +1,6 @@
 # Operator API proposal
 
-**Status: Approved first-cycle contract; command HTTP routes, runtime coordination and initial read projections are implemented; browser execution controls and detailed trace endpoints remain pending.** R01, R13–R20; Q06, Q08–Q11, Q18. This is the browser/backend boundary. It neither replaces MCP nor gives components operator authority.
+**Status: Approved first-cycle contract.** R01, R13–R20; Q06, Q08–Q11, Q18. This is the browser/backend boundary. It neither replaces MCP nor gives components operator authority.
 
 ## Scope and routes
 
@@ -112,7 +112,7 @@ T1 compares the canonical intention, rechecks the active configuration and saved
 
 The initial trusted configuration has independent limits and resource-reference JSON under one immutable configuration revision. Explicit activation preserves settled/reserved amounts and refuses caps below commitments; it changes saved-session caps and the current UTC month cap, while existing run caps and old-month caps remain unchanged. The preparation adapter validates provider/installation selections; the JSON startup loader supplies the trusted profile; a configuration editor remains outside this cycle. Resource-reference JSON must contain references rather than credentials.
 
-Stop closes the durable admission gate in the receipt transaction. `ExecutionCoordinator` then revokes transient authority and cancels owned work. The authenticated HTTP command routes now use that coordinator. Terminal runs continue blocking admission until their recorded cleanup confirms no pending calls and all hosts stopped or never started. Backend restart does not replay work or infer process exit from a saved PID. OS orphan reconciliation is still required to resolve unconfirmed cleanup.
+Stop closes the durable admission gate in the receipt transaction. `ExecutionCoordinator` then revokes transient authority and cancels owned work. The authenticated HTTP command routes now use that coordinator. Terminal runs continue blocking admission until their recorded cleanup confirms no pending calls and all hosts stopped or never started. Backend restart does not replay work or infer process exit from a saved PID. Startup reconciles durable owned-process identities; unverifiable ownership remains unconfirmed and blocks admission.
 
 Schema version 4 adds these records to the existing store, retaining a verified pre-migration backup. Tests cover duplicate/conflicting Starts, concurrent Start/withdrawal, durable rejections, lost-reply recovery through receipt reads, rollback of session/Start/Stop/withdrawal writes, configuration changes, shared monthly balances and migration from existing data. This evidence does not establish authenticated HTTP routes, paginated projections or browser execution controls.
 

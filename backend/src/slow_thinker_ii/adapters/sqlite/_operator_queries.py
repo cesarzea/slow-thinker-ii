@@ -7,6 +7,8 @@ from uuid import uuid4
 from slow_thinker_ii.contracts import decode_json, encode_json, json_object
 
 from ._database import SqliteDatabase
+from ._definition_projection import saved_definition
+from ._execution_projection import execution_page
 from ._operator_cleanup import blocker
 from ._operator_cursors import OperatorCursors
 from ._operator_pages import RUN_SELECT, OperatorPages
@@ -73,13 +75,7 @@ class SqliteOperatorQueries:
             if row is None:
                 return None
             snapshot = json_object(decode_json(str(row["snapshot_json"])))
-            return encode_json(
-                {
-                    "schema_version": "0.1-draft",
-                    "run_id": run_id,
-                    "execution": snapshot.get("execution", {}),
-                }
-            )
+            return encode_json(saved_definition(snapshot, run_id))
 
     def session_runs(self, session_id: str, cursor: str | None = None) -> str | None:
         with self._database.transaction() as db:
@@ -118,4 +114,9 @@ class SqliteOperatorQueries:
     def activation(self, run_id: str, activation_id: str, cursor: str | None = None) -> str | None:
         with self._database.transaction() as db:
             value = activation_details(db, run_id, activation_id, cursor, self._cursors, self._size)
+            return None if value is None else encode_json(value)
+
+    def execution(self, run_id: str, cursor: str | None = None) -> str | None:
+        with self._database.transaction() as db:
+            value = execution_page(db, run_id, cursor, self._cursors, self._size, self._generation)
             return None if value is None else encode_json(value)

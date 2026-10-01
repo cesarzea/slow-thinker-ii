@@ -32,6 +32,8 @@ def compile_nodes(
     result: list[PlanNode] = []
     for identity in steps:
         node = graph.nodes[identity]
+        if node.output is not None:
+            raise ValueError("Sequence nodes cannot declare conditional selectors")
         contract = operation(instances, node.component, node.operation)
         bindings = tuple(
             binding(name, value, run_input, earlier) for name, value in node.inputs.items()
@@ -48,6 +50,8 @@ def compile_nodes(
 def binding(
     name: str, value: BindingRecord, run_input: JsonObject, earlier: set[str]
 ) -> StaticArgument | OutputArgument:
+    if value.activation is not None or value.missing is not None:
+        raise ValueError("Sequence bindings cannot select repeated activations")
     if value.source == "literal":
         return StaticArgument(name, encode_json(value.value))
     pointer_tokens(value.pointer)
