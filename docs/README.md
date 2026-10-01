@@ -15,6 +15,11 @@ This documentation records the approved first-cycle requirements, architecture a
 
 The [verification record](verification.md) identifies the implementation checks, live execution evidence and their limits.
 
+For development, start with the [contributing guide](../CONTRIBUTING.md).
+The [local development guide](development.md) covers running the application,
+preparing components and enabling model execution. Full verification requires
+the pinned [CodeQL bundle](../tooling/quality/codeql/readme.md#installation).
+
 The [central version register](../CHANGELOG.md) records development package versions
 and the history of versioned sprint reports.
 
