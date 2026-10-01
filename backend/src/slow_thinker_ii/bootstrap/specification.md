@@ -41,3 +41,9 @@ Startup tests verify exact decimal USD conversion and rejection before credentia
 ## Implemented behavior
 
 Public startup limits require decimal USD strings under run_budget, session_budget and month_budget. PublicLimits converts them through parse_limit before loading credentials. Composition attaches /mcp and recovery of durable owned-process records before admission.
+
+## October 2026 maintenance: Generator typing compatibility
+
+The decorated `TariffLifetime.lifespan` implementation uses
+`AsyncGenerator[None]` for Pyright 1.1.414. Its yielded value remains `None`;
+preserve startup, recovery and bounded shutdown behavior.

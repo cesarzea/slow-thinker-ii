@@ -1,7 +1,7 @@
 """Transport context owns pipes, pumps and the component process together."""
 
 import asyncio
-from collections.abc import AsyncIterator
+from collections.abc import AsyncGenerator
 from contextlib import asynccontextmanager
 
 from anyio import create_memory_object_stream
@@ -19,7 +19,7 @@ type Streams = tuple[
 
 
 @asynccontextmanager
-async def transport(owner: OwnedProcess, launch: ProcessLaunch) -> AsyncIterator[Streams]:
+async def transport(owner: OwnedProcess, launch: ProcessLaunch) -> AsyncGenerator[Streams]:
     process = await owner.start()
     try:
         async with channels(process, launch) as streams:
@@ -31,7 +31,7 @@ async def transport(owner: OwnedProcess, launch: ProcessLaunch) -> AsyncIterator
 @asynccontextmanager
 async def channels(
     process: asyncio.subprocess.Process, launch: ProcessLaunch
-) -> AsyncIterator[Streams]:
+) -> AsyncGenerator[Streams]:
     limit = launch.max_message_bytes
     if process.stdout is None or process.stdin is None or process.stderr is None:
         raise RuntimeError("Component pipes are missing")

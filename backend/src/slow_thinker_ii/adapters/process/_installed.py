@@ -1,7 +1,7 @@
 """Only the verified registered environment may host an admitted installed component."""
 
 import asyncio
-from collections.abc import AsyncIterator
+from collections.abc import AsyncGenerator
 from contextlib import AsyncExitStack, asynccontextmanager
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -64,7 +64,7 @@ class InstalledProcess(ComponentProcess):
             raise ValueError("The admitted installation record changed")
 
     @asynccontextmanager
-    async def connect(self) -> AsyncIterator[ComponentConnection]:
+    async def connect(self) -> AsyncGenerator[ComponentConnection]:
         try:
             async with AsyncExitStack() as stack:
                 async with asyncio.timeout(self._settings.startup_seconds):

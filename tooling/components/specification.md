@@ -41,3 +41,7 @@ Redirector entry in `all`). Its static src-layout Hatchling distribution is buil
 source-hashed and added as an exact requirement before normal dependency locking
 and offline installation. Without it, Redirector includes the packaged example
 selector. New routed-call and bounded-flow recipes use the same installation path.
+
+## October 2026 maintenance: Preparation compatibility
+
+Preparation continues to record the actual pinned uv executable version for new bundles. Production artifact hashes, explicit preparation boundaries and existing resolution identity remain unchanged; the selected development pin is uv 0.12.19.

@@ -2,7 +2,7 @@
 
 import sqlite3
 import time
-from collections.abc import Callable, Iterator
+from collections.abc import Callable, Generator
 from contextlib import contextmanager
 
 from slow_thinker_ii.application import RecordingError, RunTransaction
@@ -24,7 +24,7 @@ class SqliteRunStore:
         self._wall = wall
 
     @contextmanager
-    def begin(self) -> Iterator[RunTransaction]:
+    def begin(self) -> Generator[RunTransaction]:
         try:
             with self._database.transaction() as connection:
                 yield SqliteRunTransaction(connection, self._limit, self._wall)

@@ -3,7 +3,7 @@
 import subprocess
 from pathlib import Path
 
-UV_VERSION = "uv 0.12.17"
+UV_VERSION = "uv 0.12.19"
 
 
 def run(arguments: list[str], directory: Path, timeout: float = 120) -> str:

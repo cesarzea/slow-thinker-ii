@@ -1,6 +1,6 @@
 """Repeated MCP calls receive fresh objects, grants and clients, even after failure."""
 
-from collections.abc import AsyncIterator
+from collections.abc import AsyncGenerator
 from contextlib import asynccontextmanager
 
 import pytest
@@ -18,7 +18,7 @@ class Clients:
         self.created: list[AsyncOpenAI] = []
 
     @asynccontextmanager
-    async def open(self, context: Invocation) -> AsyncIterator[AsyncOpenAI]:
+    async def open(self, context: Invocation) -> AsyncGenerator[AsyncOpenAI]:
         async with self.stub.client(context.grant) as client:
             self.created.append(client)
             yield client

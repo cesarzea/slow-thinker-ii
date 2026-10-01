@@ -35,7 +35,7 @@ def test_prepare_builds_production_wheels_and_publishes_verified_environment(
     }
     assert record.provenance["source.host"]
     assert record.provenance["source.sequence"]
-    assert record.provenance["uv"].startswith("uv 0.12.17")
+    assert record.provenance["uv"].startswith("uv 0.12.19")
 
 
 def test_build_failure_has_a_bounded_diagnostic(tmp_path: Path) -> None:

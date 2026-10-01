@@ -1,6 +1,6 @@
 """Compose actual installed hosts without changing their immutable environments."""
 
-from collections.abc import AsyncIterator, Mapping
+from collections.abc import AsyncGenerator, Mapping
 from contextlib import asynccontextmanager
 from pathlib import Path
 
@@ -84,7 +84,7 @@ class InstalledEnvironment:
     @asynccontextmanager
     async def open(
         self, deadline: float
-    ) -> AsyncIterator[Mapping[OperationAddress, OperationPort]]:
+    ) -> AsyncGenerator[Mapping[OperationAddress, OperationPort]]:
         model_config = ModelConfig("bound-model", "gpt-6-luna", 8, 32)
         operation = model_operation(model_config)
         path = self.directory / "model.json"

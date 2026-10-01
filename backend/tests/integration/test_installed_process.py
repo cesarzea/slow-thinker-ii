@@ -1,7 +1,7 @@
 """Real artifact verification surrounds a controlled process-context boundary."""
 
 import json
-from collections.abc import AsyncIterator
+from collections.abc import AsyncGenerator
 from contextlib import asynccontextmanager
 from pathlib import Path
 
@@ -39,7 +39,7 @@ def connected(monkeypatch: pytest.MonkeyPatch) -> list[bool]:
     entered: list[bool] = []
 
     @asynccontextmanager
-    async def controlled(owner: ComponentProcess) -> AsyncIterator[ComponentConnection]:
+    async def controlled(owner: ComponentProcess) -> AsyncGenerator[ComponentConnection]:
         assert isinstance(owner, InstalledProcess)
         entered.append(True)
         yield ComponentConnection(Client("http://127.0.0.1:1"), ())

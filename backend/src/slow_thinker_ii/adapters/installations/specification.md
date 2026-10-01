@@ -29,3 +29,7 @@ Public component registration contracts and explicit uv/Python executables.
 
 - [component-installation](../../../../../docs/contracts/component-installation.md)
 - [0008-component-inheritance-and-versions](../../../../../docs/adr/0008-component-inheritance-and-versions.md)
+
+## October 2026 maintenance: uv installation pin
+
+Set the exact new-installation uv version to `uv 0.12.19` in `_commands.py`. Keep mismatch rejection, offline/hash/binary requirements and public records unchanged. Saved historical resolutions must not be rewritten or rejected merely for recording their original uv version.

@@ -46,6 +46,7 @@ does not activate a new sprint or cycle. See the
 | [C01 — Baseline](cycles/001-baseline-2026-09-28/report.md)                           | M01                    | 10 h 04 min 39 s             | 10 h 04 min 39 s for the audited principal work | Execution, observation and control foundations; objective remained open |
 | [C02 — Sprint through delivery](cycles/002-sprint-2026-09-29/report.md)              | M02                    | 1 h 53 min 26 s              | 4 h 15 min 44 s across four participants        | First local cycle verified; PR #8 checks completed                      |
 | [C03 — Agent canvas and English presentation](cycles/003-contract-closure/report.md) | M05, partially applied | 36 min to initial handoff    | 1 h 03 min 50 s across three participants       | Initial delivery audited; subsequent input/output correction verified   |
+| [C04 — Dependency maintenance](cycles/004-dependency-maintenance/report.md) | M06 | Not audited; checkpoint span recorded | Not audited | Selected updates locally verified; remote publication pending |
 
 C01 covers the audited windows on 2026-09-28 and the brief reactivation on
 2026-09-29. C02 covers 03:53:47–05:47:13 Europe/Lisbon on 2026-09-29. The initial C03

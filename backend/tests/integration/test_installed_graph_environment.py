@@ -1,6 +1,6 @@
 """Graph startup seals host bootstraps and rejects incomplete billing before starting work."""
 
-from collections.abc import AsyncIterator, Mapping
+from collections.abc import AsyncGenerator, Mapping
 from contextlib import asynccontextmanager
 from dataclasses import replace
 from pathlib import Path
@@ -41,7 +41,7 @@ async def test_environment_freezes_config_and_is_single_use(
     @asynccontextmanager
     async def controlled(
         fleet: ProcessFleet, deadline: float
-    ) -> AsyncIterator[Mapping[OperationAddress, OperationPort]]:
+    ) -> AsyncGenerator[Mapping[OperationAddress, OperationPort]]:
         assert deadline > 0 and "not_started" in fleet.report()
         yield {}
 

@@ -37,6 +37,17 @@ The [verification record](docs/verification.md) retains tested behavior, checkpo
 chronology and publication prerequisites. Planned future work belongs in the
 [sprint roadmap](docs/specification/sprint-roadmap.md).
 
+## Publication and dependency maintenance — 2026-10-01
+
+- [PR #8](https://github.com/cesarzea/slow-thinker-ii/pull/8) was merged after
+  all required remote checks passed on `2a4726e`; main records `e47e6ae`.
+- Node 26 type declarations (#3) and TypeScript 7 (#5) were declined because the
+  runtime and lint-toolchain compatibility targets remain Node 24 and TypeScript 6.
+- The [maintenance plan](docs/progress/dependency-maintenance-plan.md) combines
+  setup-uv 10.2.0, uv 0.12.19, Pyright 1.1.414, Vite 8.3.1 and jsdom 30.1.1.
+  Exact installation pins and decorated generator annotations are adapted; all
+  local mandatory gates pass. Replacement PR remote verification remains pending.
+
 ## Sprint report version history
 
 | Version     | Recorded date | Sprint | Progress status                                                                                                         | Report and specification                                                                                                                       |

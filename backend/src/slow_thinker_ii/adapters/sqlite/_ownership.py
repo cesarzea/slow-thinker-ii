@@ -1,13 +1,13 @@
 """The local POSIX backend holds one kernel lease per canonical store path."""
 
 import fcntl
-from collections.abc import Iterator
+from collections.abc import Generator
 from contextlib import contextmanager
 from pathlib import Path
 
 
 @contextmanager
-def own_store(path: Path) -> Iterator[None]:
+def own_store(path: Path) -> Generator[None]:
     canonical = path.resolve()
     canonical.parent.mkdir(parents=True, exist_ok=True)
     lease = canonical.with_name(f"{canonical.name}.owner")

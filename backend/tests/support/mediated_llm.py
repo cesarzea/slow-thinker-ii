@@ -1,6 +1,6 @@
 """The actual LLMCall process reaches a fixture model only through the platform gateway."""
 
-from collections.abc import AsyncIterator, Mapping
+from collections.abc import AsyncGenerator, Mapping
 from contextlib import asynccontextmanager
 from pathlib import Path
 
@@ -22,7 +22,7 @@ class MediatedEnvironment:
     @asynccontextmanager
     async def open(
         self, deadline: float
-    ) -> AsyncIterator[Mapping[OperationAddress, OperationPort]]:
+    ) -> AsyncGenerator[Mapping[OperationAddress, OperationPort]]:
         del deadline
         assert self.port is not None
         self.process = llm_process(self.directory, self.port)

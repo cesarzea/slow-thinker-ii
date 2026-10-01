@@ -1,6 +1,6 @@
 """Invalid control and unavailable prior outputs stop the graph without downstream calls."""
 
-from collections.abc import AsyncIterator, Mapping
+from collections.abc import AsyncGenerator, Mapping
 from contextlib import asynccontextmanager
 from pathlib import Path
 
@@ -24,7 +24,7 @@ class ReplacedController:
     @asynccontextmanager
     async def open(
         self, deadline: float
-    ) -> AsyncIterator[Mapping[OperationAddress, OperationPort]]:
+    ) -> AsyncGenerator[Mapping[OperationAddress, OperationPort]]:
         async with self.environment.open(deadline) as operations:
             yield {**operations, OperationAddress("sequence", "next"): self.operation}
 

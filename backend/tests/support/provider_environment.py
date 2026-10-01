@@ -1,6 +1,6 @@
 """Two independent managed processes exercise the entire agent-to-provider path."""
 
-from collections.abc import AsyncIterator, Mapping
+from collections.abc import AsyncGenerator, Mapping
 from contextlib import asynccontextmanager
 from pathlib import Path
 
@@ -24,7 +24,7 @@ class ProviderEnvironment:
     @asynccontextmanager
     async def open(
         self, deadline: float
-    ) -> AsyncIterator[Mapping[OperationAddress, OperationPort]]:
+    ) -> AsyncGenerator[Mapping[OperationAddress, OperationPort]]:
         assert self.gateway_port is not None
         agent = llm_process(self.directory, self.gateway_port)
         provider = provider_process(self.directory, self.provider_port)

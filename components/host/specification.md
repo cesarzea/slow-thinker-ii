@@ -44,3 +44,9 @@ The public SDK also exports `McpEndpoint`, `McpResource`,
 `managed_langchain_tools`. MCP endpoint bindings are immutable records; clients
 and credentials are scoped to one invocation. The optional LangChain dependency
 uses the existing pinned compatibility candidate and is imported only when used.
+
+## October 2026 maintenance: Generator typing compatibility
+
+The decorated `managed_mcp_client` implementation uses
+`AsyncGenerator[Client]` for Pyright 1.1.414. It yields the same managed MCP
+`Client`; keep ordinary async iterator interfaces and invocation authority unchanged.

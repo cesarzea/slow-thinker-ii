@@ -3,7 +3,7 @@
 import asyncio
 import math
 import time
-from collections.abc import AsyncIterator
+from collections.abc import AsyncGenerator
 from contextlib import asynccontextmanager
 from dataclasses import dataclass
 from urllib.parse import urlsplit
@@ -38,7 +38,7 @@ class OpenAIEndpoint:
                 raise ValueError("Client timeouts must be finite and positive")
 
     @asynccontextmanager
-    async def client(self, invocation: Invocation) -> AsyncIterator[AsyncOpenAI]:
+    async def client(self, invocation: Invocation) -> AsyncGenerator[AsyncOpenAI]:
         if not invocation.grant:
             raise ValueError("Invocation authority is required")
         timeout = self.timeout_seconds

@@ -32,3 +32,9 @@ Public host SDK and model-client dependencies; provider access is mediated by th
 
 - [llm-call](../../docs/contracts/llm-call.md)
 - [python-component-api](../../docs/contracts/python-component-api.md)
+
+## October 2026 maintenance: Generator typing compatibility
+
+The decorated `OpenAIEndpoint.client` implementation uses
+`AsyncGenerator[AsyncOpenAI]` for Pyright 1.1.414. It yields the same
+`AsyncOpenAI` client; retain managed client/context behavior and no hidden provider calls.

@@ -3,7 +3,7 @@
 import asyncio
 import math
 import time
-from collections.abc import AsyncIterator
+from collections.abc import AsyncGenerator
 from contextlib import AsyncExitStack, asynccontextmanager
 
 import httpx2
@@ -60,7 +60,7 @@ async def _discover(client: Client) -> None:
 @asynccontextmanager
 async def managed_mcp_client(
     endpoint: McpEndpoint, invocation: Invocation
-) -> AsyncIterator[Client]:
+) -> AsyncGenerator[Client]:
     end = _deadline(endpoint, invocation)
     stack = AsyncExitStack()
     try:
