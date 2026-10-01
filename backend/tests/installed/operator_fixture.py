@@ -1,7 +1,7 @@
 """Serve the actual application with an explicitly selected installed bundle and local provider."""
 
 import asyncio
-from collections.abc import AsyncIterator
+from collections.abc import AsyncGenerator
 from contextlib import asynccontextmanager
 from pathlib import Path
 
@@ -22,7 +22,7 @@ from .graph_helpers import compile_graph
 @asynccontextmanager
 async def operator_application(
     directory: Path, bundle: PreparedBundle, name: str, provider: int
-) -> AsyncIterator[tuple[httpx.AsyncClient, int]]:
+) -> AsyncGenerator[tuple[httpx.AsyncClient, int]]:
     installed = await asyncio.to_thread(compile_graph, bundle, name)
     prepared = InstalledPreparer(bundle, installed, directory)
     outer = FastAPI()

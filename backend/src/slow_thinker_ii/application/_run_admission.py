@@ -1,7 +1,7 @@
 """T2 and T3 coordinate current authority, saved requests and all budget scopes."""
 
 import json
-from collections.abc import Callable, Iterator
+from collections.abc import Callable, Generator
 from contextlib import contextmanager
 from threading import RLock
 
@@ -127,7 +127,7 @@ class RunAdmission:
             return cancelled
 
     @contextmanager
-    def _unit(self) -> Iterator[RunTransaction]:
+    def _unit(self) -> Generator[RunTransaction]:
         with self._lock:
             try:
                 with self._store.begin() as transaction:

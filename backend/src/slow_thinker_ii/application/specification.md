@@ -49,3 +49,9 @@ The backend suite verifies conditional acceptance, exhaustion, Stop, deadlines a
 ## Implemented behavior
 
 ManagedGatewayService exposes deadline, filtered tools, invoke, report and rejection recording. ConditionalProgram validates each bounded controller decision and records activation sources before dispatch. RunEvidence accepts the closed report vocabulary with bounded redaction; reports are limited to 100 per activation (or non-activation call). ProcessJournal and OwnedRunEnvironment carry restart-safe ownership.
+
+## October 2026 maintenance: generator typing
+
+Decorated synchronous context-manager implementations use
+`Generator[YieldedType]` for Pyright 1.1.414. Preserve all run admission,
+locking, transaction and exception behavior; ordinary iterator ports are unchanged.

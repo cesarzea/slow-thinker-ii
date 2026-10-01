@@ -2,7 +2,7 @@
 
 import asyncio
 import socket
-from collections.abc import AsyncIterator
+from collections.abc import AsyncGenerator
 from contextlib import asynccontextmanager
 
 import uvicorn
@@ -20,7 +20,7 @@ def gateway_app(gateway: NativeModelService, *, limit: int = 1_048_576) -> FastA
 
 
 @asynccontextmanager
-async def serve(app: FastAPI) -> AsyncIterator[int]:
+async def serve(app: FastAPI) -> AsyncGenerator[int]:
     listener = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     listener.bind(("127.0.0.1", 0))
     listener.listen()

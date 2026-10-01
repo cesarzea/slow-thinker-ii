@@ -1,7 +1,7 @@
 """Real command/run stores with controlled preparation and business operations."""
 
 import asyncio
-from collections.abc import AsyncIterator, Callable, Mapping
+from collections.abc import AsyncGenerator, Callable, Mapping
 from contextlib import asynccontextmanager
 from dataclasses import dataclass
 from pathlib import Path
@@ -34,7 +34,7 @@ class Environment:
     @asynccontextmanager
     async def open(
         self, deadline: float
-    ) -> AsyncIterator[Mapping[OperationAddress, OperationPort]]:
+    ) -> AsyncGenerator[Mapping[OperationAddress, OperationPort]]:
         assert deadline > 0
         self.opened += 1
         try:

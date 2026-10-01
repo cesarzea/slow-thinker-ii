@@ -1,6 +1,6 @@
 """Expose typed ledger operations without exposing SQLite to the application."""
 
-from collections.abc import Iterator
+from collections.abc import Generator
 from contextlib import contextmanager
 
 from slow_thinker_ii.accounting import BudgetScope
@@ -22,6 +22,6 @@ class SqliteLedgerStore:
             )
 
     @contextmanager
-    def begin(self) -> Iterator[LedgerTransaction]:
+    def begin(self) -> Generator[LedgerTransaction]:
         with self._database.transaction() as connection:
             yield SqliteLedgerTransaction(connection)

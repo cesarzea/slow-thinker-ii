@@ -35,7 +35,7 @@ def test_verified_environment_uses_wheels_and_survives_failed_update(
     assert python != Path(sys.executable)
     assert resolution.inspection.packages == {"sample-agent": "1.0"}
     assert resolution.registration.type_version == "1"
-    assert resolution.schema_version == "1" and resolution.uv_version == "uv 0.12.17"
+    assert resolution.schema_version == "1" and resolution.uv_version == "uv 0.12.19"
     assert resolution.inspection.base_entry_point is None
     assert not any("editable" in file for file in resolution.files)
     before = dict(resolution.files)

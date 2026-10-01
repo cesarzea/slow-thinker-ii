@@ -1,7 +1,7 @@
 """A real sequence process drives fixture agents through the ordinary transactional runner."""
 
 import sys
-from collections.abc import AsyncIterator, Mapping
+from collections.abc import AsyncGenerator, Mapping
 from contextlib import asynccontextmanager
 from pathlib import Path
 
@@ -93,7 +93,7 @@ class SequenceEnvironment:
     @asynccontextmanager
     async def open(
         self, deadline: float
-    ) -> AsyncIterator[Mapping[OperationAddress, OperationPort]]:
+    ) -> AsyncGenerator[Mapping[OperationAddress, OperationPort]]:
         async with self.fleet.open(deadline) as controller:
             yield {**controller, **self.agents}
 

@@ -3,7 +3,7 @@
 import asyncio
 import math
 import time
-from collections.abc import AsyncIterator
+from collections.abc import AsyncGenerator
 from contextlib import AsyncExitStack, asynccontextmanager
 
 from jsonschema import Draft202012Validator, validate
@@ -87,7 +87,7 @@ class ComponentProcess:
         return self._owner.outcome()
 
     @asynccontextmanager
-    async def connect(self) -> AsyncIterator[ComponentConnection]:
+    async def connect(self) -> AsyncGenerator[ComponentConnection]:
         client = Client(
             transport(self._owner, self._launch),
             mode=PROTOCOL_VERSION,

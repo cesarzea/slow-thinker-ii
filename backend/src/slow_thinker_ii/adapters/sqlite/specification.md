@@ -47,3 +47,11 @@ Storage tests verify schema-v5 backups, over-reservation charges and persistent 
 ## Implemented behavior
 
 Schema migration v5 adds durable process ownership and pricing quarantine. A first charge above its reservation is retained, recorded and quarantines its frozen tariff revision even with aggregate headroom. Projections retain conditional source references, reported payloads and fixed event-boundary call states. Any pending ownership record blocks admission until verified stopped.
+
+## October 2026 maintenance: Generator typing compatibility
+
+The `@contextmanager` implementations use `Generator[YieldedType]`
+for Pyright 1.1.414. `SqliteDatabase.transaction` and `SqliteOperatorStore._unit`
+yield `sqlite3.Connection`; `SqliteRunStore.begin` yields `RunTransaction`;
+`SqliteLedgerStore.begin` yields `LedgerTransaction`; `own_store` yields `None`.
+Preserve transaction/ownership semantics and ordinary iterator interfaces.

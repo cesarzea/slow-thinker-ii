@@ -1,6 +1,6 @@
 # Development
 
-Use Node.js 24, Python 3.13 and uv 0.12.17. Install locked dependencies with
+Use Node.js 24, Python 3.13 and uv 0.12.19. Install locked dependencies with
 `make setup`; run the same checks as CI with `make verify`.
 
 ## CodeQL prerequisite
@@ -61,7 +61,7 @@ Run `make components` to prepare Sequence, LLMCall, the OpenAI resource,
 GroundedReview, Redirector, RoutedCall and BoundedFlow in separate production environments.
 This explicit preparation downloads production wheels, generates a hash-pinned
 lock, installs offline and publishes a new verified resolution under
-`.local/components`. Existing resolutions remain unchanged. uv 0.12.17 is pinned
+`.local/components`. Existing resolutions remain unchanged. uv 0.12.19 is pinned
 inside the development environment; pip is used only to fetch locked wheels.
 The command prints an immutable bundle file containing the selected resolution
 IDs. Check those actual installations explicitly with:

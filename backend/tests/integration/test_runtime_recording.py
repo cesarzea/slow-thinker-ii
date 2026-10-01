@@ -1,7 +1,7 @@
 """Terminal success, failed process cleanup and failed recording are separate facts."""
 
 import json
-from collections.abc import AsyncIterator, Mapping
+from collections.abc import AsyncGenerator, Mapping
 from contextlib import asynccontextmanager
 from pathlib import Path
 
@@ -26,7 +26,7 @@ class FixtureEnvironment:
     @asynccontextmanager
     async def open(
         self, deadline: float
-    ) -> AsyncIterator[Mapping[OperationAddress, OperationPort]]:
+    ) -> AsyncGenerator[Mapping[OperationAddress, OperationPort]]:
         del deadline
         try:
             yield {}

@@ -4,7 +4,7 @@ import asyncio
 import os
 import subprocess
 import sys
-from collections.abc import AsyncIterator
+from collections.abc import AsyncGenerator
 from contextlib import asynccontextmanager
 from pathlib import Path
 
@@ -12,8 +12,24 @@ import psutil
 from slow_thinker_ii.application import ProcessIdentity
 
 
+def _process_identity(pid: int, marker: str, directory: Path) -> ProcessIdentity:
+    child = psutil.Process(pid)
+    return ProcessIdentity(
+        pid,
+        child.create_time(),
+        child.exe(),
+        tuple(child.cmdline()),
+        marker,
+        str(directory),
+        os.getpgid(pid),
+        os.getsid(pid),
+    )
+
+
 @asynccontextmanager
-async def owned_child(directory: Path, *, stubborn: bool = False) -> AsyncIterator[ProcessIdentity]:
+async def owned_child(
+    directory: Path, *, stubborn: bool = False
+) -> AsyncGenerator[ProcessIdentity]:
     marker = "test-owned-process"
     script = "import time,pathlib; pathlib.Path('ready').touch(); time.sleep(30)"
     if stubborn:
@@ -28,17 +44,7 @@ async def owned_child(directory: Path, *, stubborn: bool = False) -> AsyncIterat
         async with asyncio.timeout(5):
             while not (directory / "ready").exists():
                 await asyncio.sleep(0.005)
-        child = psutil.Process(process.pid)
-        yield ProcessIdentity(
-            process.pid,
-            child.create_time(),
-            child.exe(),
-            tuple(child.cmdline()),
-            marker,
-            str(directory),
-            os.getpgid(process.pid),
-            os.getsid(process.pid),
-        )
+        yield _process_identity(process.pid, marker, directory)
     finally:
         if process.poll() is None:
             process.kill()

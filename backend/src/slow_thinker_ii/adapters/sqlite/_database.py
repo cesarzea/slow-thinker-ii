@@ -1,7 +1,7 @@
 """Backend-owned SQLite connections with explicit durability and transactions."""
 
 import sqlite3
-from collections.abc import Iterator
+from collections.abc import Generator
 from contextlib import AbstractContextManager, closing, contextmanager
 from pathlib import Path
 
@@ -44,7 +44,7 @@ class SqliteDatabase:
             raise RuntimeError("SQLite durability settings were not applied")
 
     @contextmanager
-    def transaction(self) -> Iterator[sqlite3.Connection]:
+    def transaction(self) -> Generator[sqlite3.Connection]:
         with closing(self._connect()) as connection:
             connection.execute("BEGIN IMMEDIATE")
             with connection:

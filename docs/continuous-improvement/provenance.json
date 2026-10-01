@@ -459,6 +459,21 @@
           "change": "Append dated geometry readiness follow-up; original checkpoint figures and timing preserved."
         }
       ]
+    },
+    {
+      "recorded_on": "2026-10-01",
+      "timezone": "Europe/Lisbon",
+      "purpose": "Append the separately evaluated C04 dependency maintenance cycle without changing historical method versions, observations or measurements.",
+      "previous_edition_retention": "Previous edition retained in main commit e47e6ae and an ignored local snapshot.",
+      "previous_edition_archive_sha256": "c7d145b14212f0bb2a6dfdec8d47b6e720f86535ff6ed106f861b3e40245ab59",
+      "records": [
+        {
+          "file": "README.md",
+          "previous_edition_sha256": "c7d145b14212f0bb2a6dfdec8d47b6e720f86535ff6ed106f861b3e40245ab59",
+          "current_sha256": "9388d30d47efb24952677366b00432812ac417e2dfa7519ef55b93958e5c67c8",
+          "change": "Add C04 cycle register row; all existing cycle data and historical follow-up entries are preserved."
+        }
+      ]
     }
   ]
 }

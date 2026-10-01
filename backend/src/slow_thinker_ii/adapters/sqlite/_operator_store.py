@@ -2,7 +2,7 @@
 
 import sqlite3
 import time
-from collections.abc import Callable, Iterator
+from collections.abc import Callable, Generator
 from contextlib import contextmanager
 
 from slow_thinker_ii.application import (
@@ -38,7 +38,7 @@ class SqliteOperatorStore:
         self._clock, self._wall = clock, wall
 
     @contextmanager
-    def _unit(self) -> Iterator[sqlite3.Connection]:
+    def _unit(self) -> Generator[sqlite3.Connection]:
         try:
             with self._database.transaction() as db:
                 yield db

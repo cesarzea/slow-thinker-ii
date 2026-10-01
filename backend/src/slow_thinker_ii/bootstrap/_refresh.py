@@ -1,7 +1,7 @@
 """Own and cancel the backend's single tariff refresh task."""
 
 import asyncio
-from collections.abc import AsyncIterator
+from collections.abc import AsyncGenerator
 from contextlib import ExitStack, asynccontextmanager, suppress
 from time import time
 
@@ -32,7 +32,7 @@ class TariffLifetime:
         self._lease = ExitStack()
 
     @asynccontextmanager
-    async def lifespan(self, app: FastAPI) -> AsyncIterator[None]:
+    async def lifespan(self, app: FastAPI) -> AsyncGenerator[None]:
         del app
         self._lease.enter_context(self._database.ownership())
         task: asyncio.Task[None] | None = None

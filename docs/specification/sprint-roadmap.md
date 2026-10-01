@@ -26,7 +26,7 @@ S03 is the proposed next sprint. Later scopes remain provisional.
 | Sprint | Scope                                                                                                                            | Prerequisites                                                | State                |
 | ------ | -------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------ | -------------------- |
 | S01    | Local execution, mediated component calls, bounded proposer/reviewer collaboration, history, budgets and costs.                  | Initial foundations                                          | Delivered            |
-| S02    | Agent-focused canvas, visible input/output, optional configuration/system markers, evidence inspection and English presentation. | S01                                                          | Delivered locally    |
+| S02    | Agent-focused canvas, visible input/output, optional configuration/system markers, evidence inspection and English presentation. | S01                                                          | Delivered            |
 | S03    | Import/edit JSON graphs; configure agents, save immutable versions and create manual variants.                                   | S01–S02                                                      | Next proposed sprint |
 | S04    | Provider-neutral model selection, a second provider, supported reasoning options and unified cost/error handling.                | S03; existing gateway                                        | Proposed             |
 | S05    | External user components, one tool and simple private/shared memory using existing installation and MCP boundaries.              | S03; existing component SDK                                  | Proposed             |
@@ -43,9 +43,9 @@ S03 is the proposed next sprint. Later scopes remain provisional.
 
 S01/S02 identify the existing [execution](first-cycle-sprint.md) and
 [canvas](agent-canvas-sprint.md) deliveries. Their [verification record](../verification.md)
-remains authoritative; shared local verification passes. Remote CodeQL passed,
-and the corrected polling case passed. A separate geometry readiness correction
-is verified locally and awaits remote CI.
+remains authoritative. All required remote checks passed on `2a4726e`, including
+the polling and geometry corrections. [PR #8](https://github.com/cesarzea/slow-thinker-ii/pull/8)
+was merged on 2026-10-01 as `e47e6ae`.
 The [S02 status report](../progress/sprint-02-status-report.md), version `0.0.2.5`,
 consolidates its delivered progress and outstanding items.
 Product sprint numbers are distinct from the process-improvement cycle numbers.

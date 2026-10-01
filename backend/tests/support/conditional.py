@@ -1,6 +1,6 @@
 """Deterministic bounded operations exercise production compilation, scheduling and evidence."""
 
-from collections.abc import AsyncIterator, Mapping
+from collections.abc import AsyncGenerator, Mapping
 from contextlib import asynccontextmanager
 
 from slow_thinker_bounded_flow import BoundedFlow, CompletedStep, parse_config
@@ -93,7 +93,7 @@ class ConditionalEnvironment:
     @asynccontextmanager
     async def open(
         self, deadline: float
-    ) -> AsyncIterator[Mapping[OperationAddress, OperationPort]]:
+    ) -> AsyncGenerator[Mapping[OperationAddress, OperationPort]]:
         assert deadline > 0
         yield self.operations
 

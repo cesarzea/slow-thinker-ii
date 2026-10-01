@@ -2,7 +2,7 @@
 
 import asyncio
 import re
-from collections.abc import AsyncIterator, Mapping
+from collections.abc import AsyncGenerator, Mapping
 from contextlib import asynccontextmanager
 from pathlib import Path
 
@@ -56,7 +56,7 @@ class InstalledGraphEnvironment:
     @asynccontextmanager
     async def open(
         self, deadline: float
-    ) -> AsyncIterator[Mapping[OperationAddress, OperationPort]]:
+    ) -> AsyncGenerator[Mapping[OperationAddress, OperationPort]]:
         if self._used:
             raise RuntimeError("A graph environment cannot be reused")
         self._used = True

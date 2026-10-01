@@ -43,3 +43,12 @@ Process tests verify retained launch intentions, PID and fingerprint mismatches,
 ## Implemented behavior
 
 Every production launch persists an intention before spawning, then records PID, creation instant, executable, command, workspace, process group/session and private ownership marker. Recovery signals only a completely matching identity; uncertain ownership remains unconfirmed. Process stderr contributes bounded diagnostic metadata, with raw text unavailable because it can contain unknown invocation credentials.
+
+## October 2026 maintenance: Generator typing compatibility
+
+The `@asynccontextmanager` implementations use `AsyncGenerator[YieldedType]`
+for Pyright 1.1.414. `ComponentProcess.connect` and `InstalledProcess.connect`
+yield `ComponentConnection`; `ProcessFleet.open` and `InstalledGraphEnvironment.open`
+yield `Mapping[OperationAddress, OperationPort]`; `transport` and `channels` yield
+the existing `Streams` tuple. Preserve all yielded values, cleanup and runtime
+behavior; leave ordinary iterator contracts unchanged.
