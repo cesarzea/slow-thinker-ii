@@ -1,57 +1,46 @@
 import type {ReactElement} from 'react';
-import type {GraphLayers} from './types.ts';
+import type {GraphSettings} from './graph-settings.ts';
 
-interface Props {
-  readonly execution: boolean;
-  readonly expanded: boolean;
-  readonly layers: GraphLayers;
-  readonly onMode: (execution: boolean) => void;
-  readonly onExpand: (expanded: boolean) => void;
-  readonly onLayers: (layers: GraphLayers) => void;
-  readonly onOrganize: () => void;
-}
-const layerNames = {
-  control: 'Control',
-  permission: 'Permisos',
-  binding: 'Recursos',
-  observed: 'Llamadas observadas',
-};
-export function GraphControls(props: Props): ReactElement {
+export function GraphControls(props: GraphSettings): ReactElement {
   return (
-    <fieldset>
-      <legend>Vista del grafo</legend>
+    <fieldset className="graph-controls">
+      <legend>Graph view</legend>
       <ModeButtons {...props} />
-      <label>
-        <input
-          type="checkbox"
-          checked={props.expanded}
-          onChange={(event) => {
-            props.onExpand(event.target.checked);
-          }}
-        />{' '}
-        Mostrar componentes internos
-      </label>
-      <div className="actions">{layerEntries(props)}</div>
+      <div className="graph-options">
+        <DisplayOption
+          label="Show configuration"
+          checked={props.configuration}
+          onChange={props.onConfiguration}
+        />
+        <DisplayOption
+          label="Show system elements"
+          checked={props.system}
+          onChange={props.onSystem}
+        />
+      </div>
     </fieldset>
   );
 }
-function layerEntries(props: Props): ReactElement[] {
-  return (['control', 'permission', 'binding', 'observed'] as const).map((layer) => (
-    <label key={layer}>
+interface OptionProps {
+  readonly label: string;
+  readonly checked: boolean;
+  readonly onChange: (value: boolean) => void;
+}
+function DisplayOption({label, checked, onChange}: OptionProps): ReactElement {
+  return (
+    <label>
       <input
         type="checkbox"
-        checked={props.layers[layer]}
-        disabled={layer === 'observed' && !props.execution}
+        checked={checked}
         onChange={(event) => {
-          props.onLayers({...props.layers, [layer]: event.target.checked});
+          onChange(event.target.checked);
         }}
-      />{' '}
-      {layerNames[layer]}
+      />
+      {label}
     </label>
-  ));
+  );
 }
-
-function ModeButtons(props: Props): ReactElement {
+function ModeButtons(props: GraphSettings): ReactElement {
   return (
     <div className="actions">
       <button
@@ -60,7 +49,7 @@ function ModeButtons(props: Props): ReactElement {
           props.onMode(false);
         }}
       >
-        Estructura
+        Structure
       </button>
       <button
         aria-pressed={props.execution}
@@ -68,9 +57,9 @@ function ModeButtons(props: Props): ReactElement {
           props.onMode(true);
         }}
       >
-        Ejecución
+        Execution
       </button>
-      <button onClick={props.onOrganize}>Reorganizar grafo</button>
+      <button onClick={props.onOrganize}>Reorganize graph</button>
     </div>
   );
 }

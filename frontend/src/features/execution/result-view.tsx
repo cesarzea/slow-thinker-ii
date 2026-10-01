@@ -21,7 +21,7 @@ function ResultView({
   readonly credential: string;
   readonly id: string;
 }): ReactElement {
-  const [text, setText] = useState('Cargando resultado…');
+  const [text, setText] = useState('Loading result…');
   useEffect(() => {
     const controller = new AbortController();
     void new OperatorClient(credential).result(id, controller.signal).then(
@@ -29,7 +29,7 @@ function ResultView({
         if (!controller.signal.aborted) setText(result);
       },
       () => {
-        if (!controller.signal.aborted) setText('No se pudo cargar el resultado.');
+        if (!controller.signal.aborted) setText('Could not load the result.');
       },
     );
     return () => {
@@ -37,8 +37,8 @@ function ResultView({
     };
   }, [credential, id]);
   return (
-    <section aria-label="Resultado final">
-      <h2>Resultado final</h2>
+    <section aria-label="Final result">
+      <h2>Final result</h2>
       <pre>{text}</pre>
     </section>
   );

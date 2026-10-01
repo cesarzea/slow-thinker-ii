@@ -17,12 +17,12 @@ it('keeps selected evidence visible through asynchronous reflow without stealing
   const view = render(
     <Inspector credential="key" run="run" selection={{kind: 'call', id: 'child'}} />,
   );
-  const heading = await screen.findByRole('heading', {name: 'Llamada child'});
+  const heading = await screen.findByRole('heading', {name: 'Call child'});
   heading.scrollIntoView = scroll;
   expect(document.activeElement).toBe(heading);
   for (const callback of callbacks) callback();
   expect(scroll).toHaveBeenCalledWith({block: 'nearest'});
-  const refresh = screen.getAllByRole('button', {name: 'Actualizar evidencia'}).at(-1);
+  const refresh = screen.getAllByRole('button', {name: 'Refresh evidence'}).at(-1);
   if (refresh === undefined) throw new Error('Expected a call refresh control');
   await userEvent.click(refresh);
   await screen.findByText('agent → model.complete');

@@ -75,7 +75,7 @@ class LLMCall:
         return decode_json(response.text) if self._config.format == "json" else response.text
 
     def validate_result(self, value: JsonValue, arguments: JsonObject) -> None:
-        del value, arguments
+        return None
 
     def _interpret(self, response: ModelResponse, arguments: JsonObject) -> CallResult:
         try:

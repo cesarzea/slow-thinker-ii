@@ -23,15 +23,16 @@ const graphStructureSchema = z
     nodes: z.array(plannedNodeSchema).readonly(),
     edges: z.array(relationshipSchema).readonly(),
   })
-  .refine(validStructure, 'La estructura contiene identidades o relaciones inválidas.');
+  .refine(validStructure, 'The structure contains invalid identities or relationships.');
 export const graphDetailSchema = z
   .object({
     graph_id: z.string().min(1),
     revision: z.string().min(1),
     input_schema: jsonObjectSchema,
+    execution: jsonObjectSchema.optional(),
     definition: jsonObjectSchema.refine(
       validDefinition,
-      'La definición no cumple el contrato del grafo.',
+      'The definition does not conform to the graph contract.',
     ),
     structure: graphStructureSchema,
   })
@@ -39,7 +40,7 @@ export const graphDetailSchema = z
     (detail) =>
       detail.definition['graph_id'] === detail.graph_id &&
       detail.definition['revision'] === detail.revision,
-    'La definición no corresponde a su identidad.',
+    'The definition does not match its identity.',
   );
 
 export type ComponentView = Readonly<z.infer<typeof componentSchema>>;

@@ -129,7 +129,7 @@ function readPending(
     return {
       pending: null,
       storageReady: false,
-      message: 'No se puede leer el seguimiento local. La ejecución está deshabilitada.',
+      message: 'Could not read local tracking. Execution is disabled.',
     };
   }
 }

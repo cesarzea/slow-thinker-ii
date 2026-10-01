@@ -1,0 +1,203 @@
+{
+  "audit_recorded_on": "2026-10-01",
+  "record_timezone": "Europe/Lisbon",
+  "period_timezone": "UTC",
+  "scope": "C03 application through the initial completed handoff, excluding subsequent owner review",
+  "start_utc": "2026-09-30T15:36:03.706000+00:00",
+  "end_utc": "2026-09-30T16:12:03.527000+00:00",
+  "elapsed_seconds": 2159.8209998607635,
+  "accumulated_active_seconds": 3830.018000190735,
+  "participants": {
+    "Coordinator": {
+      "active_seconds": 2159.7969999923707,
+      "categories": {
+        "Communication and follow-up": 188.34090707319007,
+        "Environment and operational integration": 45.58449278369909,
+        "Analysis": 1106.6647036366703,
+        "Context compaction": 195.81982405831042,
+        "Documentation": 219.18656450787893,
+        "Technical diagnosis": 182.5679716975234,
+        "Testing and verification": 221.6325362350991
+      },
+      "turns": [
+        {
+          "turn": "01a0f2f5-6573-73f0-be42-85c421ef911f",
+          "start_utc": "2026-09-30T15:36:03.706000+00:00",
+          "end_utc": "2026-09-30T16:12:03.527000+00:00",
+          "reported_active_seconds": 2163.014,
+          "audited_active_seconds": 2159.7969999923707,
+          "elapsed_seconds": 2159.8209998607635,
+          "classification_scale": 0.9999888880289642,
+          "categories": {
+            "Communication and follow-up": 188.34090707319007,
+            "Environment and operational integration": 45.58449278369909,
+            "Analysis": 1106.6647036366703,
+            "Context compaction": 195.81982405831042,
+            "Documentation": 219.18656450787893,
+            "Technical diagnosis": 182.5679716975234,
+            "Testing and verification": 221.6325362350991
+          }
+        }
+      ]
+    },
+    "Graph presentation": {
+      "active_seconds": 1023.7809999027253,
+      "categories": {
+        "Analysis": 296.2624761153108,
+        "Communication and follow-up": 49.4702072134183,
+        "Implementation": 305.9292985969832,
+        "Testing and verification": 323.83506768355073,
+        "Documentation": 46.630953991996094,
+        "Unattributed active time": 1.652996301466254
+      },
+      "turns": [
+        {
+          "turn": "01a0f2fc-dff0-71b1-a771-95ae025b05b9",
+          "start_utc": "2026-09-30T15:44:13.819000+00:00",
+          "end_utc": "2026-09-30T16:00:34.407000+00:00",
+          "reported_active_seconds": 980.566,
+          "audited_active_seconds": 980.566,
+          "elapsed_seconds": 980.5880000591278,
+          "classification_scale": 0.9999775644214222,
+          "categories": {
+            "Analysis": 290.7894760657197,
+            "Communication and follow-up": 35.33320737189027,
+            "Implementation": 298.69329854036147,
+            "Testing and verification": 308.9490677677887,
+            "Documentation": 46.630953991996094,
+            "Unattributed active time": 0.16999626224387537
+          }
+        },
+        {
+          "turn": "01a0f30c-d531-7d23-99ac-77454e8d3dc2",
+          "start_utc": "2026-09-30T16:01:39.641000+00:00",
+          "end_utc": "2026-09-30T16:01:58.404000+00:00",
+          "reported_active_seconds": 18.763,
+          "audited_active_seconds": 18.763,
+          "elapsed_seconds": 18.763000011444092,
+          "classification_scale": 0.9999999993900714,
+          "categories": {
+            "Communication and follow-up": 6.519999976949779,
+            "Implementation": 7.236000056621712,
+            "Testing and verification": 3.642999885244461,
+            "Unattributed active time": 1.3640000811840487
+          }
+        },
+        {
+          "turn": "01a0f312-3654-7942-9cae-2264287067b4",
+          "start_utc": "2026-09-30T16:07:32.194000+00:00",
+          "end_utc": "2026-09-30T16:07:56.646000+00:00",
+          "reported_active_seconds": 24.452,
+          "audited_active_seconds": 24.45199990272522,
+          "elapsed_seconds": 24.45199990272522,
+          "classification_scale": 1.0,
+          "categories": {
+            "Communication and follow-up": 7.616999864578247,
+            "Testing and verification": 11.243000030517578,
+            "Analysis": 5.4730000495910645,
+            "Unattributed active time": 0.11899995803833008
+          }
+        }
+      ]
+    },
+    "English product": {
+      "active_seconds": 646.440000295639,
+      "categories": {
+        "Analysis": 223.52999997138977,
+        "Communication and follow-up": 48.32100009918213,
+        "Implementation": 122.45499992370605,
+        "Documentation": 19.26900005340576,
+        "Testing and verification": 225.66000032424927,
+        "Environment and operational integration": 6.92799973487854,
+        "Unattributed active time": 0.27700018882751465
+      },
+      "turns": [
+        {
+          "turn": "01a0f2fd-1c27-74f3-9dd5-a094fa8e1d6c",
+          "start_utc": "2026-09-30T15:44:29.231000+00:00",
+          "end_utc": "2026-09-30T15:48:28.255000+00:00",
+          "reported_active_seconds": 239.027,
+          "audited_active_seconds": 239.02400016784668,
+          "elapsed_seconds": 239.02400016784668,
+          "classification_scale": 1.0,
+          "categories": {
+            "Analysis": 76.23099994659424,
+            "Communication and follow-up": 14.371999979019165,
+            "Implementation": 107.76300001144409,
+            "Documentation": 19.26900005340576,
+            "Testing and verification": 14.998000144958496,
+            "Environment and operational integration": 6.251999855041504,
+            "Unattributed active time": 0.13900017738342285
+          }
+        },
+        {
+          "turn": "01a0f304-3a59-7770-a5a4-aed684550098",
+          "start_utc": "2026-09-30T15:52:15.718000+00:00",
+          "end_utc": "2026-09-30T15:59:03.134000+00:00",
+          "reported_active_seconds": 407.418,
+          "audited_active_seconds": 407.41600012779236,
+          "elapsed_seconds": 407.41600012779236,
+          "classification_scale": 1.0,
+          "categories": {
+            "Analysis": 147.29900002479553,
+            "Communication and follow-up": 33.949000120162964,
+            "Implementation": 14.691999912261963,
+            "Testing and verification": 210.66200017929077,
+            "Environment and operational integration": 0.6759998798370361,
+            "Unattributed active time": 0.1380000114440918
+          }
+        }
+      ]
+    }
+  },
+  "categories": {
+    "Communication and follow-up": 286.1321143857905,
+    "Environment and operational integration": 52.51249251857763,
+    "Analysis": 1626.457179723371,
+    "Context compaction": 195.81982405831042,
+    "Documentation": 285.08651855328077,
+    "Technical diagnosis": 182.5679716975234,
+    "Testing and verification": 771.1276042428991,
+    "Implementation": 428.38429852068924,
+    "Unattributed active time": 1.9299964902937687
+  },
+  "measurement_basis": "Reported active turn durations clipped to the initial final-answer completion; task categories are retrospective estimates.",
+  "classification_adjustments": [
+    "Same attribution and foreground precedence as C02.",
+    "Direct test/static-check executable names normalized to the same purpose as npm/npx wrappers.",
+    "Browser MCP inspection classified by the same purpose as the C02 browser extension.",
+    "Six coordinator document-write commands and the English translation script classified by their actual destinations."
+  ],
+  "sources": [
+    {
+      "actor": "Coordinator",
+      "session_file_identifier": "rollout-2026-09-29T03-48-08-01a0db47-babd-7391-a076-6a69b6979e77_01a0eb0f-fc0c-7683-8e0c-e7a1b3c86cc9.jsonl",
+      "source_sha256_at_audit": "9e0d770a40f4806f8db6ceba335f4c60dfc5ba37b6ed7403921124b09bd8152f",
+      "source_bytes_hashed_at_audit": 38085703,
+      "source_lines_hashed_at_audit": 5229,
+      "events_selected": 260,
+      "original_commands_published": false,
+      "reasoning_content_used": false
+    },
+    {
+      "actor": "Graph presentation",
+      "session_file_identifier": "rollout-2026-09-30T16-44-13-01a0f2fc-dfc9-7ae0-952d-513ea5d48950.jsonl",
+      "source_sha256_at_audit": "3dce6bbf21daecf5d32ea8745cbc9b45d0aa2528385f947a4dc7f65d24f6de91",
+      "source_bytes_hashed_at_audit": 1419957,
+      "source_lines_hashed_at_audit": 311,
+      "events_selected": 82,
+      "original_commands_published": false,
+      "reasoning_content_used": false
+    },
+    {
+      "actor": "English product",
+      "session_file_identifier": "rollout-2026-09-30T16-44-29-01a0f2fd-1c01-7f21-bc14-38c2da68d014.jsonl",
+      "source_sha256_at_audit": "cd4747b2946858062a501a38c92e697f950fbc8c232aeb063dac5225306cdae5",
+      "source_bytes_hashed_at_audit": 1934402,
+      "source_lines_hashed_at_audit": 333,
+      "events_selected": 84,
+      "original_commands_published": false,
+      "reasoning_content_used": false
+    }
+  ]
+}

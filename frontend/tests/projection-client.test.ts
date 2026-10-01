@@ -29,6 +29,50 @@ it('validates full definitions and encodes exact identities and snapshot cursors
     '/api/v1/runs/run/execution?cursor=a%2Fb%2B',
   ]);
 });
+it('retains optional execution metadata in catalog and saved definitions', async () => {
+  const execution = {instances: {model: {config: {model: 'saved-model'}}}};
+  const detail = {...singleDetail, execution};
+  vi.stubGlobal(
+    'fetch',
+    vi
+      .fn()
+      .mockResolvedValueOnce(reply(detail))
+      .mockResolvedValueOnce(reply(savedDefinition(detail))),
+  );
+  const client = new OperatorClient('key');
+  expect((await client.graph(detail.graph_id, detail.revision, signal())).execution).toEqual(
+    execution,
+  );
+  expect((await client.definition('run', signal())).execution).toEqual(execution);
+});
+it.each([null, [], 'invalid'])(
+  'rejects non-object execution metadata in catalog and saved definitions',
+  async (execution) => {
+    const response = {...singleDetail, schema_version: '0.1-draft', run_id: 'run', execution};
+    vi.stubGlobal(
+      'fetch',
+      vi.fn(() => Promise.resolve(reply(response))),
+    );
+    const client = new OperatorClient('key');
+    await expect(
+      client.graph(singleDetail.graph_id, singleDetail.revision, signal()),
+    ).rejects.toThrow();
+    await expect(client.definition('run', signal())).rejects.toThrow();
+  },
+);
+it('still requires execution metadata in saved definition responses', async () => {
+  vi.stubGlobal(
+    'fetch',
+    vi.fn().mockResolvedValue(
+      reply({
+        ...singleDetail,
+        schema_version: '0.1-draft',
+        run_id: 'run',
+      }),
+    ),
+  );
+  await expect(new OperatorClient('key').definition('run', signal())).rejects.toThrow();
+});
 it('rejects state, saved definition and execution records belonging to another run', async () => {
   vi.stubGlobal(
     'fetch',
@@ -39,9 +83,9 @@ it('rejects state, saved definition and execution records belonging to another r
       .mockResolvedValueOnce(reply({...executionPage, run_id: 'other'})),
   );
   const client = new OperatorClient('key');
-  await expect(client.run('run', signal())).rejects.toThrow('otra ejecución');
-  await expect(client.definition('run', signal())).rejects.toThrow('otra ejecución');
-  await expect(client.execution('run', signal())).rejects.toThrow('otra ejecución');
+  await expect(client.run('run', signal())).rejects.toThrow('another run');
+  await expect(client.definition('run', signal())).rejects.toThrow('another run');
+  await expect(client.execution('run', signal())).rejects.toThrow('another run');
 });
 it.each(['another', 'example-9'])(
   'rejects a catalog definition with mismatched requested identity %s',

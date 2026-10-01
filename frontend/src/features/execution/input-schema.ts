@@ -19,19 +19,19 @@ export function compileInput(schema: Readonly<Record<string, unknown>>): InputVa
   } catch {
     return {
       validate: null,
-      error: 'Esquema de entrada no compatible. No se puede iniciar esta definición.',
+      error: 'Unsupported input schema. This definition cannot be started.',
     };
   }
 }
 
 export function inputError(validation: InputValidation, value: unknown): string | null {
   if (validation.validate === null) return validation.error;
-  if (objectRecord(value) === null) return 'La entrada de ejecución debe ser un objeto JSON.';
+  if (objectRecord(value) === null) return 'Run input must be a JSON object.';
   if (validation.validate(value)) return null;
   return (
     validation.validate.errors
       ?.map((error) => `${error.instancePath || '/'}: ${error.message ?? error.keyword}`)
-      .join('; ') ?? 'Entrada inválida.'
+      .join('; ') ?? 'Invalid input.'
   );
 }
 

@@ -18,8 +18,23 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           persist-credentials: false
+      - name: Resolve pinned CodeQL bundle
+        id: codeql-bundle
+        run: |
+          python3 - <<'PY'
+          import json, os, re
+          from pathlib import Path
+          policy = json.loads(Path("tooling/quality/codeql/policy.json").read_text())
+          version = policy["bundle_version"]
+          if not isinstance(version, str) or not re.fullmatch(r"[0-9]+\.[0-9]+\.[0-9]+", version):
+              raise SystemExit("Invalid CodeQL bundle version")
+          url = f"https://github.com/github/codeql-action/releases/download/codeql-bundle-v{version}/codeql-bundle-linux64.tar.gz"
+          with open(os.environ["GITHUB_OUTPUT"], "a") as output:
+              output.write(f"url={url}\n")
+          PY
       - uses: github/codeql-action/init@2892aa5e19bbd11bc0cff5427e3b750a04d9e3c2
         with:
+          tools: ${{ steps.codeql-bundle.outputs.url }}
           languages: ${{ matrix.language }}
           build-mode: none
           queries: security-and-quality

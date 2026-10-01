@@ -13,11 +13,11 @@ export function PendingControls({state, commands, refresh}: Props): ReactElement
   if (state.pending === null) return null;
   const start = state.pending.startsWith('start-');
   return (
-    <aside aria-label="Solicitud pendiente">
-      <p>Solicitud pendiente de confirmación. No se enviará otro inicio.</p>
-      <button onClick={refresh}>Consultar recibo</button>
+    <aside aria-label="Pending request">
+      <p>Request awaiting confirmation. No other start request will be sent.</p>
+      <button onClick={refresh}>Check receipt</button>
       <PendingActions state={state} commands={commands} start={start} />
-      {!start && <p>Dejar de seguirla no cancela una solicitud que llegue al servidor.</p>}
+      {!start && <p>Stopping tracking does not cancel a request that reaches the server.</p>}
     </aside>
   );
 }
@@ -31,11 +31,11 @@ function PendingActions({
     <div className="actions">
       {commands.canRetry() && (
         <ActionButton disabled={state.busy} action={() => commands.retry()}>
-          Reenviar la misma orden
+          Resend the same command
         </ActionButton>
       )}
       {start && (
-        <ActionButton action={() => commands.withdraw()}>Retirar inicio pendiente</ActionButton>
+        <ActionButton action={() => commands.withdraw()}>Withdraw pending start</ActionButton>
       )}
       {!start && (
         <ActionButton
@@ -44,7 +44,7 @@ function PendingActions({
             commands.forgetNonStart();
           }}
         >
-          Dejar de seguir esta solicitud
+          Stop tracking this request
         </ActionButton>
       )}
     </div>

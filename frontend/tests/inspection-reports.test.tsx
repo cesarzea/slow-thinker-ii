@@ -17,19 +17,19 @@ it('opens external evidence visibly and repeats focus without overriding interna
   const view = render(
     <Inspector credential="key" run="run" selection={{kind: 'activation', id: 'activation'}} />,
   );
-  const heading = await screen.findByRole('heading', {name: 'Activación activation'});
+  const heading = await screen.findByRole('heading', {name: 'Activation activation'});
   expect(document.activeElement).toBe(heading);
-  await userEvent.click(await screen.findByRole('button', {name: 'Ver entrada efectiva'}));
-  expect(document.activeElement).toBe(screen.getByRole('heading', {name: 'Contenido conservado'}));
+  await userEvent.click(await screen.findByRole('button', {name: 'View effective input'}));
+  expect(document.activeElement).toBe(screen.getByRole('heading', {name: 'Retained content'}));
   view.rerender(
     <Inspector credential="key" run="run" selection={{kind: 'activation', id: 'activation'}} />,
   );
   expect(document.activeElement).toBe(heading);
-  expect(screen.queryByRole('region', {name: 'Contenido conservado'})).toBeNull();
+  expect(screen.queryByRole('region', {name: 'Retained content'})).toBeNull();
   view.rerender(
     <Inspector credential="key" run="run" selection={{kind: 'payload', id: 'direct'}} />,
   );
-  expect(await screen.findByText(/direct · Estado/)).toBeTruthy();
+  expect(await screen.findByText(/direct · Capture state/)).toBeTruthy();
 });
 it('labels reported information, source timestamps and unavailable payloads without inventing reasoning', async () => {
   server.call.reports = [
@@ -51,20 +51,20 @@ it('labels reported information, source timestamps and unavailable payloads with
     },
   ];
   render(<Inspector credential="key" run="run" selection={{kind: 'call', id: 'child'}} />);
-  expect(await screen.findByText(/reasoning · Declarado/)).toBeTruthy();
-  expect(screen.getByText(/Marca temporal de origen: 20/)).toBeTruthy();
-  expect(screen.getByText('Contenido del informe no disponible.')).toBeTruthy();
-  await userEvent.click(screen.getByRole('button', {name: 'Abrir informe'}));
-  expect(await screen.findByText(/report · Estado/)).toBeTruthy();
+  expect(await screen.findByText(/reasoning · Reported/)).toBeTruthy();
+  expect(screen.getByText(/Source timestamp: 20/)).toBeTruthy();
+  expect(screen.getByText('Report content unavailable.')).toBeTruthy();
+  await userEvent.click(screen.getByRole('button', {name: 'View report'}));
+  expect(await screen.findByText(/report · Capture state/)).toBeTruthy();
 });
 it('makes absent reasoning explicit for both calls and activations', async () => {
   const view = render(
     <Inspector credential="key" run="run" selection={{kind: 'call', id: 'child'}} />,
   );
-  expect(await screen.findByText(/Razonamiento no disponible/)).toBeTruthy();
+  expect(await screen.findByText(/Reasoning unavailable/)).toBeTruthy();
   view.rerender(
     <Inspector credential="key" run="run" selection={{kind: 'activation', id: 'activation'}} />,
   );
-  const region = within(await screen.findByRole('region', {name: 'Detalle de activación'}));
-  expect(await region.findByText(/Razonamiento no disponible/)).toBeTruthy();
+  const region = within(await screen.findByRole('region', {name: 'Activation details'}));
+  expect(await region.findByText(/Reasoning unavailable/)).toBeTruthy();
 });

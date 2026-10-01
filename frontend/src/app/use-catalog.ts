@@ -18,7 +18,7 @@ export function useCatalog(credential?: string): CatalogState {
       },
       () => {
         if (!controller.signal.aborted) {
-          setState({graphs: [], error: 'No se pudo cargar el catálogo.', loading: false});
+          setState({graphs: [], error: 'Could not load the catalog.', loading: false});
         }
       },
     );

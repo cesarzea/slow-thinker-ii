@@ -12,8 +12,8 @@ type Props = InspectionSource & InspectionLinks;
 export function EventView(props: Props): ReactElement {
   const [cursor, onPage] = useState<string>();
   return (
-    <section aria-label="Eventos registrados">
-      <h3>Eventos registrados</h3>
+    <section aria-label="Recorded events">
+      <h3>Recorded events</h3>
       <EventRead key={cursor ?? 'first'} {...props} cursor={cursor} onPage={onPage} />
     </section>
   );
@@ -32,8 +32,8 @@ function EventRead(props: Props & Paging): ReactElement {
       {data !== null && (
         <>
           <p>
-            Lectura hasta el evento {data.through_sequence}. Vuelve al principio para ver nuevos
-            eventos.
+            Reading through event {data.through_sequence}. Return to the beginning to see new
+            events.
           </p>
           <EventTable page={data} onCall={props.onCall} onPayload={props.onPayload} />
           <TracePages cursor={cursor} next={data.next_cursor} onPage={props.onPage} />
@@ -53,10 +53,10 @@ function EventTable({
       <table>
         <thead>
           <tr>
-            <th>Orden</th>
-            <th>Evento</th>
-            <th>Registrado</th>
-            <th>Evidencia</th>
+            <th>Sequence</th>
+            <th>Event</th>
+            <th>Recorded</th>
+            <th>Evidence</th>
           </tr>
         </thead>
         <tbody>
@@ -65,7 +65,7 @@ function EventTable({
           ))}
         </tbody>
       </table>
-      {page.items.length === 0 && <p>No hay eventos registrados.</p>}
+      {page.items.length === 0 && <p>No events recorded.</p>}
     </div>
   );
 }
@@ -86,10 +86,10 @@ function EventRow({
       </td>
       <td>
         <EvidenceLink identity={event.call_id} select={onCall}>
-          Ver llamada {event.sequence}
+          View call {event.sequence}
         </EvidenceLink>
         <EvidenceLink identity={event.payload_id} select={onPayload}>
-          Ver contenido {event.sequence}
+          View content {event.sequence}
         </EvidenceLink>
       </td>
     </tr>

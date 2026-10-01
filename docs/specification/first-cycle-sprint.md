@@ -15,6 +15,10 @@ This completes the agreed first cycle. Graph editing/upload, automatic influence
 analysis, memory-provider implementations, arbitrary parallel/dynamic scheduling,
 standalone export and server deployment remain outside this delivery.
 
+Presentation update: the subsequent [agent canvas sprint](agent-canvas-sprint.md)
+supersedes the original canvas-layer and expanded-internal presentation below.
+The execution and evidence contracts remain unchanged.
+
 ## Preparation baseline
 
 The current implementation already has isolated component installation, finite

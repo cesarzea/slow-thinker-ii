@@ -1,77 +1,41 @@
-import {useState} from 'react';
 import type {ReactElement} from 'react';
 import {GraphControls} from './graph-controls.tsx';
 import {GraphList} from './graph-list.tsx';
 import {GraphCanvas} from './graph-canvas.tsx';
+import {Resources} from './resources.tsx';
 import {graphStructure, structureModel} from './structure-model.ts';
-import {executionModel} from './execution-model.ts';
-import type {GraphViewProps, GraphLayers} from './types.ts';
+import {useGraphSettings} from './graph-settings.ts';
+import type {GraphSettings} from './graph-settings.ts';
+import type {GraphViewProps} from './types.ts';
+import './graph-view.css';
 
 export function GraphView(props: GraphViewProps): ReactElement {
   const settings = useGraphSettings(props.execution !== undefined);
   return (
-    <section aria-label="Grafo del experimento">
+    <section
+      aria-label="Experiment graph"
+      className={settings.configuration ? 'agent-graph configuration-visible' : 'agent-graph'}
+    >
       <GraphControls {...settings} />
       <GraphContent {...props} settings={settings} />
     </section>
   );
 }
-function GraphContent(
-  props: GraphViewProps & {readonly settings: ReturnType<typeof useGraphSettings>},
-): ReactElement {
+function GraphContent(props: GraphViewProps & {readonly settings: GraphSettings}): ReactElement {
   const {settings} = props;
   const structure = graphStructure(props);
-  const page = settings.execution ? props.execution : undefined;
-  const base = structureModel(structure, settings.layers, settings.expanded);
-  const live = executionModel(page, structure, settings.expanded, settings.layers.observed);
+  const visual = structureModel(props, settings);
+  const definition = props.detail === undefined ? 'fallback' : 'definition';
+  const identity = `${props.graph.graph_id}:${props.graph.revision}:${definition}:${String(settings.layout)}`;
   return (
     <>
-      {props.detail === undefined && (
-        <p>Estructura detallada no disponible. Se muestran los nodos del catálogo.</p>
+      {props.detail === undefined && <p>Detailed structure unavailable. Showing catalog steps.</p>}
+      {settings.execution && props.execution === undefined && (
+        <p>No recorded activations available.</p>
       )}
-      {settings.execution && page === undefined && (
-        <p>No hay activaciones registradas disponibles.</p>
-      )}
-      <GraphCanvas
-        key={`${String(settings.layout)}:${props.detail === undefined ? 'fallback' : 'definition'}`}
-        nodes={[...base.nodes, ...live.nodes]}
-        edges={[...base.edges, ...live.edges]}
-        onSelect={props.onSelect}
-      />
-      <GraphList structure={structure} execution={page} onSelect={props.onSelect} />
+      <GraphCanvas key={identity} {...visual} onSelect={props.onSelect} />
+      <Resources structure={structure} onSelect={props.onSelect} />
+      <GraphList structure={structure} execution={props.execution} onSelect={props.onSelect} />
     </>
   );
-}
-interface GraphSettings {
-  execution: boolean;
-  expanded: boolean;
-  layout: number;
-  layers: GraphLayers;
-  onMode: (value: boolean) => void;
-  onExpand: (value: boolean) => void;
-  onLayers: (value: GraphLayers) => void;
-  onOrganize: () => void;
-}
-function useGraphSettings(initialExecution: boolean): GraphSettings {
-  const [execution, onMode] = useState(initialExecution);
-  const [expanded, onExpand] = useState(false);
-  const [layers, onLayers] = useState<GraphLayers>({
-    control: true,
-    permission: false,
-    binding: false,
-    observed: true,
-  });
-  const [layout, organize] = useState(0);
-  return {
-    execution,
-    expanded,
-    layers,
-    onMode,
-    onExpand,
-    onLayers,
-    layout,
-    onOrganize: () => {
-      organize(layout + 1);
-    },
-  };
 }

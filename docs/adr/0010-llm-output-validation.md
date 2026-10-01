@@ -2,7 +2,7 @@
 
 - Status: Accepted
 - Recorded: 2026-09-27
-- Decision-maker: César Zea
+- Decision-maker: Cesar Zea
 - Requirements: R08, R11–R14, R29
 - Remaining details: Q04, Q08, Q10, Q13
 

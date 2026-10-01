@@ -1,70 +1,71 @@
-# Graph visualization: specification
+# Agent collaboration canvas: specification
 
-Renders experiment structure, recorded activations and communication layers with selection callbacks.
+## Boundary and data
 
-## Public boundary
+`index.ts` exports `GraphView` and `GraphSelection`. GraphView accepts `graph` and
+optional `detail`, `execution` and `onSelect`. Selection retains a component,
+planned node, activation or call identity; the caller owns inspection.
 
-The [public entry point](index.ts) is authoritative for exported names and signatures.
+Use only public API records and local React Flow presentation. Domain records
+remain separate from geometry. Missing detail shows catalog steps and an explicit
+unavailable message. Missing execution differs from a recorded empty page.
 
-- GraphView accepts a GraphSummary fallback and optional typed detail, execution and selection callbacks.
+## Implemented presentation
 
-## Required behavior
+- One card per declared step, keyed by its planned node ID. Built-in LLMCall and
+  RoutedCall cards use an accessible AI icon; unknown types preserve their type
+  with a generic icon. Display names capitalize the first character only.
+- Control routes connect cards. Terminal anchors are invisible, nonselectable and
+  nonfocusable. Returning routes use separate lower handles and curved lanes.
+- Agent cards show their left input and right output connectors independently of
+  system elements. Geometry-only return and boundary handles remain hidden.
+- An incoming arrow starts in empty space and reaches the declared entry step.
+  Resolve the entry from the built-in bounded-flow controller's `config.entry` or
+  sequence controller's first `config.steps` item, using saved configuration when
+  available. Unsupported, missing or invalid entry metadata creates no invented
+  entry. Invisible boundary anchors add no visible boxes or selectable records.
+- Entry and terminal arrows extend 112 canvas units horizontally from the card's
+  current connector, including after configuration changes or dragging. System
+  elements add the entry route's midpoint marker; terminal routes retain their
+  midpoint and endpoint markers. These presentation routes do not imply calls.
+- Structure and Execution modes share the cards. Execution mode shows the latest
+  recorded status by ordinal and the number of recorded activations for that step.
+  It never adds invocation cards or interprets a route as an observed call.
+- Configuration and system elements start off. Optional configuration is limited
+  to model and reasoning effort, with Saved configuration or Graph configuration
+  provenance per value. LLMCall follows its model binding; RoutedCall follows
+  worker bindings with cycle protection. Saved instance config takes precedence.
+  Only explicit worker parameters or the saved model complete operation's
+  request-schema constant identify effort; absent effort is Not specified.
+- Unsupported or missing model information is Unavailable. Malformed optional
+  metadata cannot expose arbitrary config fields or credentials.
+- System mediation appears as small black circles at route midpoints and terminal
+  endpoints. These markers have no inspection action and assert no observed call.
+- Resources lists declared resource roles. Explore graph and evidence provides
+  keyboard-accessible component, step, activation and exact call selections,
+  including internal calls. Evidence stays available in either display mode.
 
-- Keep graph data independent of React Flow representation.
-- Distinguish component instance identity from repeated activation identity.
-- Structure and execution projections retain separate configured and recorded identities.
+## Geometry and state
 
-## Dependencies and ownership
+Cards have a fixed width with wrapping content and horizontal spacing sufficient
+for inline configuration. The canvas supports pan, zoom, fit and narrow containers.
+Dragged positions and viewport remain stable during polling. Reorganize graph,
+changed graph identity and the arrival of a detailed definition remount the canvas
+with initial positions and fit. Configuration changes increase canvas height.
+Controlled nodes process React Flow dimension and position changes, retaining
+measured geometry while current graph props update presentation data.
 
-React Flow and public API types; selection coordination belongs to the app.
+Local state holds mode, display options, layout generation and dragged positions.
+All product-authored text is English; API identifiers and recorded evidence remain
+unchanged. No mutations, provider calls or protocol changes occur here.
 
-## Acceptance criteria
+## Acceptance and verification
 
-- Existing finite graphs render without implying that repeated activations are different agents.
-- The full target distinguishes structure, control flow, permissions and observed communications.
-
-## Shared contracts
-
-- [visual-model](../../../../docs/architecture/visual-model.md)
-
-## Sprint additions
-
-- [inspection-projections](../../../../docs/contracts/inspection-projections.md) defines the implemented cross-package boundary; existing supported behavior remains compatible.
-- [conditional-routing](../../../../docs/contracts/conditional-routing.md) defines the implemented cross-package boundary; existing supported behavior remains compatible.
-
-## Structure and execution views
-
-GraphView keeps its `graph` fallback and accepts optional `detail`, `execution`
-and `onSelect`. Its GraphSelection identifies a component, planned node,
-activation or call. Consumers coordinate evidence through callbacks.
-
-Control, permission, resource-binding and observed-call layers can be toggled
-independently. Planned nodes and configured components have distinct renderer
-identities. Recorded activations use run-scoped IDs and ordinals; call selection
-retains the exact call ID. Terminal exits and return edges come from the supplied
-relationships. Contained components expand without granting relationships or
-changing their recorded identities. A keyboard-accessible list always exposes
-components and evidence, including calls inside a collapsed composition.
-
-Status changes preserve generated and user-positioned coordinates. Reorganize
-explicitly restores layout. Missing definition or execution detail is labeled.
-The graph never derives permissions or calls from visual containment.
-
-## Verification
-
-The frontend feature/API suites pass with 119 tests and the mandatory coverage
-thresholds (2026-09-29). Browser journeys verify all five catalog graphs, retained
-execution/inspection, bounded rejection then acceptance, exhaustion and responsive
-keyboard selection against the simulated-provider backend. Type, lint, formatting,
-dead-code and dependency-boundary checks pass. Sprint-wide final verification is
-coordinated separately in the shared verification record.
-
-Agent, resource and control roles have explicit canvas/list text and solid, dashed
-and double border treatments. Unknown extension role labels remain visible with
-the generic treatment; missing roles keep the generic component fallback.
-
-Initial arrival of an exact definition fits its complete collapsed canvas once.
-Routine status/cost changes preserve the viewport; explicit Reorganize restores
-layout and fit. Reciprocal control-return routes use a separate curved lane so
-forward and return labels remain distinct. The browser geometry journey checks
-all initial component/terminal bounds, reorganization and label separation.
+Follow the complete acceptance cases in the
+[approved sprint](../../../../docs/specification/agent-canvas-sprint.md).
+Frontend unit and browser checks cover card rendering, declared entry resolution,
+configuration provenance and malformed data, visible connectors, exterior arrows
+after expansion/dragging, polling state and exact inspector selection. Frontend
+typing, ESLint, formatting, boundaries, dead-code checks and build pass.
+See the [verification record](../../../../docs/verification.md) for coverage,
+corrections, exact command scope and remaining publication limitations.

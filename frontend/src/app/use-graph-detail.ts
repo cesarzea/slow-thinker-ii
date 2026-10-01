@@ -20,7 +20,7 @@ export function useGraphDetail(graph: GraphSummary, credential: string | undefin
           if (!controller.signal.aborted)
             setState({
               detail: null,
-              error: 'No se pudo cargar la definición exacta del experimento.',
+              error: 'Could not load the exact experiment definition.',
             });
         },
       );

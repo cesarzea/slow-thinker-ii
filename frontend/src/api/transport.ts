@@ -29,9 +29,9 @@ export class OperatorTransport {
 }
 
 export function readError(status: number): string {
-  if (status === 401 || status === 403) return 'Acceso rechazado. Comprueba la clave de acceso.';
-  if (status === 404) return 'La ejecución no está habilitada o el registro no existe.';
-  return 'No se pudo confirmar el estado del servidor. Vuelve a consultar antes de enviar otra orden.';
+  if (status === 401 || status === 403) return 'Access denied. Check the access key.';
+  if (status === 404) return 'Execution is not enabled or the record does not exist.';
+  return 'Could not confirm the server state. Check again before sending another command.';
 }
 
 function requestSignal(signal: AbortSignal | undefined): AbortSignal {

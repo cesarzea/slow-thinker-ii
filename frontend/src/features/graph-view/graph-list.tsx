@@ -1,50 +1,28 @@
 import type {ReactElement} from 'react';
-import type {ExecutionPage, GraphStructure} from '../../api/index.ts';
+import type {ExecutionPage, GraphStructure, ComponentView} from '../../api/index.ts';
 import {componentRole} from './component-role.ts';
-import type {GraphSelection} from './types.ts';
+import {EvidenceList} from './evidence-list.tsx';
+import type {GraphViewProps} from './types.ts';
 
-interface Props {
+interface Props extends Pick<GraphViewProps, 'onSelect'> {
   readonly structure: GraphStructure;
   readonly execution: ExecutionPage | undefined;
-  readonly onSelect: ((selection: GraphSelection) => void) | undefined;
 }
 export function GraphList({structure, execution, onSelect}: Props): ReactElement {
   return (
-    <details>
-      <summary>Explorar componentes, nodos y evidencia en lista</summary>
+    <details className="graph-evidence">
+      <summary>Explore graph and evidence</summary>
       <Objects structure={structure} onSelect={onSelect} />
-      <ExecutionList execution={execution} onSelect={onSelect} />
+      <EvidenceList execution={execution} onSelect={onSelect} />
     </details>
   );
 }
-function ExecutionList({execution, onSelect}: Omit<Props, 'structure'>): ReactElement | null {
-  if (execution === undefined) return null;
-  return (
-    <>
-      <ol aria-label="Activaciones registradas">
-        {execution.activations.map((item) => (
-          <li key={item.id}>
-            <button
-              onClick={() => {
-                onSelect?.({kind: 'activation', id: item.id});
-              }}
-            >
-              Activación #{item.ordinal}: {item.node}
-            </button>{' '}
-            · {item.id} · {item.component} · {item.state} · Puerto:{' '}
-            {item.selected_port ?? 'Sin selección registrada'}
-          </li>
-        ))}
-      </ol>
-      <CallItems execution={execution} onSelect={onSelect} />
-    </>
-  );
-}
-
 function Objects({structure, onSelect}: Omit<Props, 'execution'>): ReactElement {
   return (
-    <ul aria-label="Objetos del grafo">
-      <ComponentItems structure={structure} onSelect={onSelect} />
+    <ul aria-label="Graph objects">
+      {structure.components.map((item) => (
+        <ComponentItem key={item.id} item={item} onSelect={onSelect} />
+      ))}
       {structure.nodes.map((item) => (
         <li key={`node:${item.id}`}>
           <button
@@ -52,53 +30,31 @@ function Objects({structure, onSelect}: Omit<Props, 'execution'>): ReactElement 
               onSelect?.({kind: 'node', id: item.id});
             }}
           >
-            Nodo {item.id}
-          </button>{' '}
-          · {item.component}
-        </li>
-      ))}
-    </ul>
-  );
-}
-
-function ComponentItems({structure, onSelect}: Omit<Props, 'execution'>): ReactElement {
-  return (
-    <>
-      {structure.components.map((item) => (
-        <li key={`component:${item.id}`}>
-          <button
-            onClick={() => {
-              onSelect?.({kind: 'component', id: item.id});
-            }}
-          >
-            Componente {item.id}
+            Step {item.id}
           </button>
           {' · '}
-          {componentRole(item)}
-          {item.contained_by !== null && ` · Dentro de ${item.contained_by}`}
-        </li>
-      ))}
-    </>
-  );
-}
-
-function CallItems({execution, onSelect}: Omit<Props, 'structure'>): ReactElement {
-  return (
-    <ul aria-label="Comunicaciones observadas">
-      {execution?.calls.map((item) => (
-        <li key={item.id}>
-          <button
-            onClick={() => {
-              onSelect?.({kind: 'call', id: item.id});
-            }}
-          >
-            Llamada {item.id}
-          </button>{' '}
-          · {item.caller || 'Orquestador'} → {item.target}.{item.operation} · {item.state} ·
-          Activación: {item.activation_id ?? 'No aplicable'} · Origen:{' '}
-          {item.parent_call_id ?? 'Raíz'}
+          {item.component}
         </li>
       ))}
     </ul>
+  );
+}
+function ComponentItem({
+  item,
+  onSelect,
+}: Pick<Props, 'onSelect'> & {readonly item: ComponentView}): ReactElement {
+  return (
+    <li>
+      <button
+        onClick={() => {
+          onSelect?.({kind: 'component', id: item.id});
+        }}
+      >
+        Component {item.id}
+      </button>
+      {' · '}
+      {componentRole(item)}
+      {item.contained_by !== null && ` · Inside ${item.contained_by}`}
+    </li>
   );
 }

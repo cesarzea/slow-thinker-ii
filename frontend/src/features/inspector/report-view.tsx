@@ -10,10 +10,10 @@ export function ReportView({
   readonly onPayload: (id: string) => void;
 }): ReactElement {
   return (
-    <section aria-label="Informes del componente">
-      <h4>Información declarada por el componente</h4>
+    <section aria-label="Component reports">
+      <h4>Information reported by the component</h4>
       {reports.length === 0 ? (
-        <p>Razonamiento no disponible: el componente no aportó informes.</p>
+        <p>Reasoning unavailable: the component supplied no reports.</p>
       ) : (
         <ul>
           {reports.map((report) => (
@@ -33,14 +33,13 @@ function ReportItem({
 }): ReactElement {
   return (
     <li>
-      {report.kind} · Declarado (reported) · Esquema {report.schema_version} · Evento{' '}
-      {report.event_sequence}
+      {report.kind} · Reported · Schema {report.schema_version} · Event {report.event_sequence}
       {report.source_occurred_at !== null &&
-        ` · Marca temporal de origen: ${String(report.source_occurred_at)}`}
+        ` · Source timestamp: ${String(report.source_occurred_at)}`}
       <EvidenceLink identity={report.payload_id} select={onPayload}>
-        Abrir informe
+        View report
       </EvidenceLink>
-      {report.payload_id === null && <p>Contenido del informe no disponible.</p>}
+      {report.payload_id === null && <p>Report content unavailable.</p>}
     </li>
   );
 }

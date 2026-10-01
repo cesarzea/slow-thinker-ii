@@ -3,6 +3,26 @@
 Use Node.js 24, Python 3.13 and uv 0.12.17. Install locked dependencies with
 `make setup`; run the same checks as CI with `make verify`.
 
+## CodeQL prerequisite
+
+`make verify` includes the same mandatory CodeQL gate locally and in CI. Install
+the official [CodeQL bundle](https://docs.github.com/en/code-security/how-tos/find-and-fix-code-vulnerabilities/scan-from-the-command-line/set-up-codeql-cli)
+at the version in [policy.json](tooling/quality/codeql/policy.json), then set
+`CODEQL_EXECUTABLE` to its `codeql` executable or put it on PATH. The documented
+project-cache alternative is `.cache/codeql-bundle/<version>/codeql/codeql`.
+When using that cache inside this ES-module project, give the cache directory its
+own `package.json` with `{"private":true,"type":"commonjs"}` so Node does not apply
+the application's module mode to CodeQL's tools.
+
+The runner validates the CLI and bundled queries, checks extraction completeness,
+retains SARIF/logs under `.local/verification/codeql`, and rejects errors or warnings.
+Notes remain visible. Missing tools and failed/incomplete analysis stop verification;
+the gate does not download tools or repeat model calls. CI initializes the same
+policy version with the SHA-pinned CodeQL action and passes its public CLI path to
+`make verify`. The independent remote CodeQL matrix remains required.
+
+## Local application
+
 Start `make backend` and `make frontend` in separate terminals, then open
 `http://127.0.0.1:5173`. The application displays five bundled graphs;
 execution controls appear when explicit operator configuration is supplied. The backend imports the public Vercel model
@@ -124,8 +144,8 @@ SLOW_THINKER_CONFIGURATION="$PWD/.local/execution.json" make backend
 Start `make frontend`, open `http://127.0.0.1:5173`, enter the operator token,
 create a saved session, select a graph and supply its task. The interface supports
 Start, Stop, history, recorded results and authoritative budget balances.
-Use **Inspeccionar ejecución** to follow events to their calls, arguments, responses
-and usage. **Ver activación** opens that intervention’s effective input, published
+Use **Inspect run** to follow events to their calls, arguments, responses
+and usage. **View activation** opens that intervention’s effective input, published
 output, input provenance and calls. Evidence pages refresh explicitly and preserve
 their paging boundary. It keeps
 only unresolved command identities in browser storage; credentials and task text

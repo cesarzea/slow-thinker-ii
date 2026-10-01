@@ -6,3 +6,4 @@ Use the [public entry point](index.ts); private implementation files are not an 
 
 See [specification.md](specification.md) for contracts and acceptance criteria.
 
+Evidence navigation and accessible labels are English. Recorded evidence remains in its original language.

@@ -27,3 +27,13 @@ React and standard browser facilities; no feature imports.
 ## Shared contracts
 
 - [accounting-policy](../../../docs/contracts/accounting-policy.md)
+
+## Agent canvas and English delivery
+
+Follow the approved [sprint contract](../../../docs/specification/agent-canvas-sprint.md) for presentation,
+configuration provenance, identity, ownership and acceptance tests. It supersedes
+earlier canvas-layer and separate activation-card presentation requirements.
+
+## English presentation contract
+
+Monetary labels and validation errors are English. Decimal precision, validation behavior and public signatures remain unchanged.

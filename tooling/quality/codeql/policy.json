@@ -1,0 +1,7 @@
+{
+  "bundle_version": "2.27.1",
+  "packs": {
+    "python": "1.8.11",
+    "javascript": "2.4.6"
+  }
+}

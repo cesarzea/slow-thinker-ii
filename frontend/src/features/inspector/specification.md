@@ -50,13 +50,19 @@ provider attempts or inferred reasoning.
 
 ## Verification
 
-The frontend feature/API suites pass with 119 tests and the mandatory coverage
-thresholds (2026-09-29). Browser journeys verify all five catalog graphs, retained
-execution/inspection, bounded rejection then acceptance, exhaustion and responsive
-keyboard selection against the simulated-provider backend. Type, lint, formatting,
-dead-code and dependency-boundary checks pass. Sprint-wide final verification is
-coordinated separately in the shared verification record.
+Current local gate results are recorded in the shared verification record.
+The 2026-09-30 delivery preserves the module acceptance criteria above.
 
 A focused evidence heading stays visible when asynchronous content changes the
 inspector height. Visibility tracking ends on unmount and never restores focus
 after the operator moves to another control.
+
+## Agent canvas and English delivery
+
+Follow the approved [sprint contract](../../../../docs/specification/agent-canvas-sprint.md) for presentation,
+configuration provenance, identity, ownership and acceptance tests. It supersedes
+earlier canvas-layer and separate activation-card presentation requirements.
+
+## English presentation contract
+
+Product-authored headings, links, capture-state descriptions and loading/error text are English. Evidence content, identifiers, declared report kinds and protocol state values are preserved verbatim. Selection, paging and focus behavior remain unchanged.

@@ -22,20 +22,20 @@ it('navigates session and execution pages while preserving the selected session'
   server.historyCursor = 'next-run';
   executionView(server);
   await tick();
-  await userEvent.selectOptions(screen.getByLabelText('Sesión guardada'), 'session');
+  await userEvent.selectOptions(screen.getByLabelText('Saved session'), 'session');
   await tick();
-  await userEvent.click(screen.getByRole('button', {name: 'Más sesiones'}));
+  await userEvent.click(screen.getByRole('button', {name: 'More sessions'}));
   server.workspace.sessions.items = [];
   await tick();
-  expect(screen.getByRole('option', {name: 'Sesión seleccionada'})).toBeTruthy();
-  await userEvent.click(screen.getByRole('button', {name: 'Primeras sesiones'}));
+  expect(screen.getByRole('option', {name: 'Selected session'})).toBeTruthy();
+  await userEvent.click(screen.getByRole('button', {name: 'First sessions'}));
   await tick();
-  expect(screen.queryByRole('button', {name: 'Primeras sesiones'})).toBeNull();
-  await userEvent.click(screen.getByRole('button', {name: 'Más ejecuciones'}));
+  expect(screen.queryByRole('button', {name: 'First sessions'})).toBeNull();
+  await userEvent.click(screen.getByRole('button', {name: 'More runs'}));
   await tick();
-  await userEvent.click(screen.getByRole('button', {name: 'Primeras ejecuciones'}));
+  await userEvent.click(screen.getByRole('button', {name: 'First runs'}));
   await tick();
-  expect(screen.queryByRole('button', {name: 'Primeras ejecuciones'})).toBeNull();
+  expect(screen.queryByRole('button', {name: 'First runs'})).toBeNull();
 });
 
 it('opens the blocking run and reports a result retrieval failure explicitly', async () => {
@@ -47,20 +47,20 @@ it('opens the blocking run and reports a result retrieval failure explicitly', a
   server.resultStatus = 503;
   executionView(server);
   await tick();
-  await userEvent.click(screen.getByRole('button', {name: 'Ver ejecución que bloquea el inicio'}));
+  await userEvent.click(screen.getByRole('button', {name: 'View the run blocking new starts'}));
   await tick();
-  expect(screen.getByText('No se pudo cargar el resultado.')).toBeTruthy();
-  expect(screen.getByText('Motivo: recorded-reason')).toBeTruthy();
+  expect(screen.getByText('Could not load the result.')).toBeTruthy();
+  expect(screen.getByText('Reason: recorded-reason')).toBeTruthy();
 });
 
 it('retries a lost command response explicitly from the pending controls', async () => {
   const server = executionView();
   server.loseReply = true;
   await tick();
-  await userEvent.type(screen.getByLabelText(/Problema o tarea/), 'Private task');
-  await userEvent.click(screen.getByRole('button', {name: 'Iniciar ejecución'}));
+  await userEvent.type(screen.getByLabelText(/Task or problem/), 'Private task');
+  await userEvent.click(screen.getByRole('button', {name: 'Start run'}));
   server.loseReply = false;
-  await userEvent.click(await screen.findByRole('button', {name: 'Reenviar la misma orden'}));
+  await userEvent.click(await screen.findByRole('button', {name: 'Resend the same command'}));
   expect(server.mutations[0]).toEqual(server.mutations[1]);
-  expect(screen.queryByRole('complementary', {name: 'Solicitud pendiente'})).toBeNull();
+  expect(screen.queryByRole('complementary', {name: 'Pending request'})).toBeNull();
 });

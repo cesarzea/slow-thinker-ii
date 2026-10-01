@@ -5,3 +5,5 @@ Provides small presentation primitives and exact monetary labels for browser fea
 Use the [public entry point](index.ts); private implementation files are not an integration API.
 
 See [specification.md](specification.md) for contracts and acceptance criteria.
+
+Product-authored presentation text is English, including pending-cost labels and invalid-amount errors.

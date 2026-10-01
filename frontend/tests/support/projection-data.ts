@@ -1,6 +1,7 @@
 import single from '../../../docs/contracts/examples/single-agent.graph.json';
 import bounded from '../../../docs/contracts/examples/bounded-review.graph.json';
 import type {GraphDetail, ExecutionPage, GraphSummary} from '../../src/api/index.ts';
+import {fixtureRoles} from './projection-roles.ts';
 
 const inputSchema = {
   type: 'object',
@@ -18,11 +19,12 @@ export const singleDetail: GraphDetail = {
       id,
       type_id: item.type_id,
       type_version: item.type_version,
-      roles: [],
+      roles: fixtureRoles(item.type_id),
       contained_by: null,
     })),
     nodes: [{id: 'draft', component: 'proposer'}],
     edges: [
+      {id: 'exit', kind: 'control', source: 'draft', target: null, label: 'next'},
       {id: 'model', kind: 'permission', source: 'proposer', target: 'model', label: 'complete'},
     ],
   },
@@ -37,7 +39,7 @@ export const boundedDetail: GraphDetail = {
       id,
       type_id: item.type_id,
       type_version: item.type_version,
-      roles: [],
+      roles: fixtureRoles(item.type_id),
       contained_by: 'contained_by' in item ? item.contained_by : null,
     })),
     nodes: [
@@ -137,10 +139,10 @@ export function summary(detail: GraphDetail): GraphSummary {
     graph_id: detail.graph_id,
     revision: detail.revision,
     nodes: [...detail.structure.nodes],
-    participants: 2,
+    participants: detail.structure.components.filter((item) => item.roles.includes('agent')).length,
     input_schema: detail.input_schema,
   };
 }
 export function savedDefinition(detail: GraphDetail = singleDetail, run = 'run'): unknown {
-  return {...detail, schema_version: '0.1-draft', run_id: run, execution: {}};
+  return {...detail, schema_version: '0.1-draft', run_id: run, execution: detail.execution ?? {}};
 }

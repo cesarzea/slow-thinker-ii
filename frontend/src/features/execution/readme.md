@@ -6,3 +6,4 @@ Use the [public entry point](index.ts); private implementation files are not an 
 
 See [specification.md](specification.md) for contracts and acceptance criteria.
 
+Controls, state labels and validation messages are English. User-entered session names, input and recorded results retain their original language.

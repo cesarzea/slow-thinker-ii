@@ -27,6 +27,7 @@
 - [Architecture and specification](docs/README.md)
 - [Architecture decisions](docs/adr/README.md)
 - [Contracts and examples](docs/contracts/README.md)
+- [Engineering process improvement](docs/continuous-improvement/README.md)
 - [Open questions](docs/specification/open-questions.md)
 
 ## Current Status
@@ -95,6 +96,8 @@ and Vite** for the browser interface. MCP and OpenAI-compatible interfaces
 support integration with agent tooling, including LangChain and LangGraph.
 
 See the [development instructions](CONTRIBUTING.md) and [verification record](docs/verification.md) for setup, tested behavior and current limitations. The complete platform remains under development.
+
+The [Changelog](CHANGELOG.md) records development progress and sprint report versions.
 
 ## License
 

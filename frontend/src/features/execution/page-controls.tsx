@@ -9,7 +9,7 @@ interface Props {
 }
 
 export function PageControls({kind, current, next, store}: Props): ReactElement {
-  const label = kind === 'workspace' ? 'sesiones' : 'ejecuciones';
+  const label = kind === 'workspace' ? 'sessions' : 'runs';
   return (
     <div className="actions">
       {current !== undefined && (
@@ -18,7 +18,7 @@ export function PageControls({kind, current, next, store}: Props): ReactElement 
             store.page(kind, undefined);
           }}
         >
-          Primeras {label}
+          First {label}
         </button>
       )}
       {next !== null && (
@@ -27,7 +27,7 @@ export function PageControls({kind, current, next, store}: Props): ReactElement 
             store.page(kind, next);
           }}
         >
-          Más {label}
+          More {label}
         </button>
       )}
     </div>

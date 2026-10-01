@@ -54,7 +54,7 @@ function InspectionPanel({
 }): ReactElement {
   return (
     <>
-      <button onClick={onClose}>Cerrar inspector</button>
+      <button onClick={onClose}>Close inspector</button>
       <Inspector
         key={inspection.run}
         credential={credential}

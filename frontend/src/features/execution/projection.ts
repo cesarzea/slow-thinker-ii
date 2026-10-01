@@ -53,7 +53,7 @@ export class ProjectionReader {
       page.backend_generation === visible.backend_generation &&
       page.through_sequence < visible.through_sequence
     ) {
-      throw new Error('La instantánea es anterior a la evidencia ya mostrada.');
+      throw new Error('The snapshot is older than the evidence already displayed.');
     }
   }
   private publish(): ExecutionPage | null {
@@ -69,7 +69,7 @@ export class ProjectionReader {
   }
   private checkCursor(cursor: string | null): void {
     if (cursor === null) return;
-    if (this.cursors.has(cursor)) throw new Error('El servidor repite una página de ejecución.');
+    if (this.cursors.has(cursor)) throw new Error('The server repeated an execution page.');
     this.cursors.add(cursor);
   }
 }
@@ -79,7 +79,7 @@ function appendPage(previous: ExecutionPage | null, page: ExecutionPage): Execut
     previous.through_sequence !== page.through_sequence ||
     previous.backend_generation !== page.backend_generation
   ) {
-    throw new Error('La página pertenece a otra instantánea.');
+    throw new Error('The page belongs to another snapshot.');
   }
   const activations = [...previous.activations, ...page.activations];
   const calls = [...previous.calls, ...page.calls];
@@ -87,7 +87,7 @@ function appendPage(previous: ExecutionPage | null, page: ExecutionPage): Execut
     new Set(activations.map((item) => item.id)).size !== activations.length ||
     new Set(calls.map((item) => item.id)).size !== calls.length
   )
-    throw new Error('La instantánea contiene identidades repetidas.');
+    throw new Error('The snapshot contains duplicate identities.');
   return {...page, activations, calls};
 }
 
@@ -96,12 +96,12 @@ function validatePageRun(page: ExecutionPage, run: Run): void {
     page.graph_revision !== run.graph_revision ||
     page.backend_generation !== run.backend_generation
   ) {
-    throw new Error('La proyección corresponde a otra revisión o servidor.');
+    throw new Error('The projection belongs to another revision or server.');
   }
 }
 
 function validateDefinitionRun(definition: GraphDetail, run: Run): void {
   if (definition.graph_id !== run.graph_id || definition.revision !== run.graph_revision) {
-    throw new Error('Definición incompatible con la ejecución.');
+    throw new Error('The definition is incompatible with the run.');
   }
 }

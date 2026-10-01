@@ -1,4 +1,4 @@
-# Architecture and specification
+# Project documentation
 
 **Status: First-cycle specification approved; local implementation available.**
 
@@ -11,19 +11,36 @@ This documentation records the approved first-cycle requirements, architecture a
 3. [Architectural decisions](adr/README.md): accepted principles and proposed implementation choices.
 4. [Component and graph contracts](contracts/README.md): versioned formats and bundled examples.
 5. [Open questions](specification/open-questions.md): closed first-cycle decisions and unresolved future work.
+6. [Engineering process improvement](continuous-improvement/README.md): versioned working methods, cycle evaluations, measurements and approved improvement decisions.
 
 The [verification record](verification.md) identifies the implementation checks, live execution evidence and their limits.
 
+The [central version register](../CHANGELOG.md) records development package versions
+and the history of versioned sprint reports.
+
+The [S02 Sprint Status Report](progress/sprint-02-status-report.md), version
+`0.0.2.3`, consolidates delivered progress, verification, owner-review corrections
+and outstanding items, with links to the sprint specification.
+
+The [sprint roadmap](specification/sprint-roadmap.md) records delivered scopes and
+proposes subsequent sprint scopes, delivery order, dependencies and milestones.
+Its future sprint scopes remain proposals until approved; planning does not activate
+implementation.
+
+The process-improvement record is part of the project documentation. It evaluates
+how development is organized; product requirements and architecture retain their
+own specifications and decision records. All maintained documents are in English.
+
 ## Document states
 
-| State | Meaning |
-| --- | --- |
-| Recorded requirement | A requirement stated or accepted in the design conversation. Its detailed implementation can still be open. |
-| Accepted ADR | An architectural principle already agreed with the project owner. This does not mean it has been implemented. |
-| Proposed ADR or contract | A concrete recommendation for review. Examples and schemas do not make it an approved decision. |
-| Deferred capability | Part of the intended evolution, excluded from the first functional cycle. Its extension boundary still matters now. |
+| State                    | Meaning                                                                                                             |
+| ------------------------ | ------------------------------------------------------------------------------------------------------------------- |
+| Recorded requirement     | A requirement stated or accepted in the design conversation. Its detailed implementation can still be open.         |
+| Accepted ADR             | An architectural principle already agreed with the project owner. This does not mean it has been implemented.       |
+| Proposed ADR or contract | A concrete recommendation for review. Examples and schemas do not make it an approved decision.                     |
+| Deferred capability      | Part of the intended evolution, excluded from the first functional cycle. Its extension boundary still matters now. |
 
-The project owner is César Zea. Dates record documentation, not a claim that all decisions were made on that date. No proposed decision becomes accepted through omission, elapsed time, or a successful schema check.
+The project owner is Cesar Zea. Dates record documentation, not a claim that all decisions were made on that date. No proposed decision becomes accepted through omission, elapsed time, or a successful schema check.
 
 ## Review and change procedure
 

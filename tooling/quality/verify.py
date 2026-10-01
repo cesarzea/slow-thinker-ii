@@ -32,6 +32,7 @@ COMMANDS = (
     ("npm", "run", "format:check"),
     ("npm", "run", "boundaries"),
     ("npm", "run", "deadcode"),
+    ("uv", "run", "--locked", "python", "-m", "tooling.quality.codeql"),
     ("uv", "run", "--locked", "pytest", "--cov", "--cov-report=json:coverage/python.json"),
     ("npm", "test"),
     ("npm", "run", "build"),

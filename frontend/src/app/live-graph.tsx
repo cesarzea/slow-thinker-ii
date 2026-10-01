@@ -15,18 +15,18 @@ export function LiveGraph(props: Props): ReactElement | null {
   const {run, detail, projectionError, stale} = props.observation;
   if (run === null) return null;
   return (
-    <section aria-label="Grafo de la ejecución seleccionada">
-      <h2>Ejecución {run.run_id}</h2>
+    <section aria-label="Selected run graph">
+      <h2>Run {run.run_id}</h2>
       <p>
-        Definición guardada: {run.graph_id} · {run.graph_revision}
+        Saved definition: {run.graph_id} · {run.graph_revision}
       </p>
       {(stale || projectionError !== null) && (
         <p role="status">
-          {projectionError ?? 'Conexión sin confirmar. Estado visual pendiente de actualización.'}
+          {projectionError ?? 'Connection unconfirmed. Waiting for the visual state to refresh.'}
         </p>
       )}
       {detail === null ? (
-        <p>Esperando la definición guardada.</p>
+        <p>Waiting for the saved definition.</p>
       ) : (
         <SelectedGraph key={run.run_id} {...props} />
       )}
@@ -73,8 +73,8 @@ function SnapshotGraph({detail, execution, onSelect}: SnapshotProps): ReactEleme
     <>
       {execution !== null && (
         <p>
-          Instantánea hasta evento {execution.through_sequence}
-          {execution.next_cursor !== null && ' · Cargando más evidencia…'}
+          Snapshot through event {execution.through_sequence}
+          {execution.next_cursor !== null && ' · Loading more evidence…'}
         </p>
       )}
       <GraphView

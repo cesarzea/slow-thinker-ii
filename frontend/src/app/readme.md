@@ -6,3 +6,4 @@ Use the [public entry point](app.tsx); private implementation files are not an i
 
 See [specification.md](specification.md) for contracts and acceptance criteria.
 
+Product-authored interface text and accessible labels are English. User content and saved evidence retain their original language.

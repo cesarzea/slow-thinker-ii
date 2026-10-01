@@ -24,7 +24,7 @@ export class OperatorClient extends OperatorTransport {
     const path = `/graphs/${encodeURIComponent(id)}/revisions/${encodeURIComponent(revision)}`;
     const detail = await this.read(path, graphDetailSchema, signal);
     if (detail.graph_id !== id || detail.revision !== revision)
-      throw new Error('Revisión incorrecta.');
+      throw new Error('Incorrect revision.');
     return detail;
   }
 
@@ -34,7 +34,7 @@ export class OperatorClient extends OperatorTransport {
       definitionSchema,
       signal,
     );
-    if (detail.run_id !== run) throw new Error('Definición de otra ejecución.');
+    if (detail.run_id !== run) throw new Error('Definition belongs to another run.');
     return detail;
   }
 
@@ -45,7 +45,7 @@ export class OperatorClient extends OperatorTransport {
       executionPageSchema,
       signal,
     );
-    if (page.run_id !== run) throw new Error('Proyección de otra ejecución.');
+    if (page.run_id !== run) throw new Error('Projection belongs to another run.');
     return page;
   }
 
@@ -56,7 +56,7 @@ export class OperatorClient extends OperatorTransport {
 
   async run(id: string, signal: AbortSignal): Promise<Run> {
     const run = await this.read(`/runs/${encodeURIComponent(id)}`, runSchema, signal);
-    if (run.run_id !== id) throw new Error('Estado de otra ejecución.');
+    if (run.run_id !== id) throw new Error('State belongs to another run.');
     return run;
   }
 
@@ -73,7 +73,7 @@ export class OperatorClient extends OperatorTransport {
     const reply = await this.read(`/runs/${encodeURIComponent(id)}/result`, resultSchema, signal);
     return reply.status === 'recorded'
       ? JSON.stringify(reply.content, null, 2)
-      : 'No hay resultado final disponible.';
+      : 'No final result is available.';
   }
 
   async command(id: string, signal: AbortSignal): Promise<Receipt | null> {

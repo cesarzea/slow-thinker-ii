@@ -32,7 +32,7 @@ function input(name: string | RegExp, value: string): void {
   fireEvent.change(screen.getByLabelText(name), {target: {value}});
 }
 function start(): HTMLButtonElement {
-  return screen.getByRole('button', {name: 'Iniciar ejecución'});
+  return screen.getByRole('button', {name: 'Start run'});
 }
 it('collects typed primitive properties, rejects invalid values and omits untouched optional fields', async () => {
   view({
@@ -77,12 +77,12 @@ it('validates nested JSON input and sends the exact supported object', async () 
     required: ['items'],
   });
   await tick();
-  input('Entrada JSON', '{');
+  input('JSON input', '{');
   expect(start().disabled).toBe(true);
-  expect(screen.getByText('Escribe una entrada JSON válida.')).toBeTruthy();
-  input('Entrada JSON', '{"items":[{}]}');
+  expect(screen.getByText('Enter valid JSON input.')).toBeTruthy();
+  input('JSON input', '{"items":[{}]}');
   expect(start().disabled).toBe(true);
-  input('Entrada JSON', '{"items":[{"name":"private"}]}');
+  input('JSON input', '{"items":[{"name":"private"}]}');
   await userEvent.click(start());
   expect(JSON.parse(server.mutations[0]?.body ?? '{}') as unknown).toMatchObject({
     input: {items: [{name: 'private'}]},
@@ -95,8 +95,8 @@ it.each([
 ])('rejects a root %s clearly without dispatching', async (type, value) => {
   view(type === 'array' ? {type, items: {type: 'string'}} : {type});
   await tick();
-  input('Entrada JSON', value);
-  expect(screen.getByText('La entrada de ejecución debe ser un objeto JSON.')).toBeTruthy();
+  input('JSON input', value);
+  expect(screen.getByText('Run input must be a JSON object.')).toBeTruthy();
   expect(start().disabled).toBe(true);
   await userEvent.click(start());
   expect(server.mutations).toHaveLength(0);
@@ -109,7 +109,7 @@ it.each([
   view(schema);
   await tick();
   expect(start().disabled).toBe(true);
-  expect(screen.getByText(/Esquema de entrada no compatible/)).toBeTruthy();
+  expect(screen.getByText(/Unsupported input schema/)).toBeTruthy();
   expect(server.mutations).toHaveLength(0);
 });
 it('validates command input independently of the rendered form', async () => {
@@ -133,10 +133,10 @@ it('resets input on revision change and keeps start disabled until the exact def
     <ExecutionPanel credential="key" graph={graph} onInspect={vi.fn()} inputUnavailable />,
   );
   await tick();
-  input(/Problema o tarea/, 'private');
+  input(/Task or problem/, 'private');
   expect(start().disabled).toBe(true);
   mounted.rerender(
     <ExecutionPanel credential="key" graph={{...graph, revision: 'new'}} onInspect={vi.fn()} />,
   );
-  expect(screen.getByLabelText<HTMLTextAreaElement>(/Problema o tarea/).value).toBe('');
+  expect(screen.getByLabelText<HTMLTextAreaElement>(/Task or problem/).value).toBe('');
 });

@@ -32,7 +32,7 @@ export const executionPageSchema = z
     (page) =>
       new Set(page.activations.map((item) => item.id)).size === page.activations.length &&
       new Set(page.calls.map((item) => item.id)).size === page.calls.length,
-    'La página contiene identidades duplicadas.',
+    'The page contains duplicate identities.',
   );
 export type ActivationView = Readonly<z.infer<typeof activationViewSchema>>;
 export type CommunicationView = Readonly<z.infer<typeof communicationSchema>>;

@@ -19,9 +19,9 @@ type Props = InspectionSource &
 export function CallView(props: Props): ReactElement {
   const [cursor, onPage] = useState<string>();
   return (
-    <section aria-label="Detalle de llamada">
+    <section aria-label="Call details">
       <FocusHeading request={props.focusRequest}>
-        Llamada <code>{props.id}</code>
+        Call <code>{props.id}</code>
       </FocusHeading>
       <CallRead key={cursor ?? 'first'} {...props} cursor={cursor} onPage={onPage} />
     </section>

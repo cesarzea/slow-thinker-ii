@@ -27,7 +27,7 @@ export function simpleFields(schema: Readonly<Record<string, unknown>>): InputFi
 }
 function fieldTitle(name: string, title: unknown): string {
   if (typeof title === 'string') return title;
-  return name === 'problem' ? 'Problema o tarea' : name;
+  return name === 'problem' ? 'Task or problem' : name;
 }
 export function formValue(fields: InputField[], values: Readonly<Record<string, string>>): unknown {
   return Object.fromEntries(
@@ -52,7 +52,7 @@ export function InputFieldControl({field, value, onChange}: FieldProps): ReactEl
   return (
     <label>
       {field.title}
-      {field.required && ' (obligatorio)'}
+      {field.required && ' (required)'}
       {field.type === 'boolean' ? (
         <select
           value={value}
@@ -60,8 +60,8 @@ export function InputFieldControl({field, value, onChange}: FieldProps): ReactEl
             onChange(event.target.value);
           }}
         >
-          <option value="">Seleccionar</option>
-          <option value="true">Sí</option>
+          <option value="">Select</option>
+          <option value="true">Yes</option>
           <option value="false">No</option>
         </select>
       ) : (

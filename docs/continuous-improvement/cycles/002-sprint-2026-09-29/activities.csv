@@ -1,0 +1,10 @@
+activity,Coordinator,Backend,Components,Frontend,total_seconds,rounded_minutes
+Analysis,3626.061,1412.776,655.484,987.071,6681.392,111
+Implementation,138.934,981.036,567.75,874.208,2561.928,43
+Documentation,646.371,72.51,169.969,90.849,979.699,16
+Testing and verification,984.653,721.428,561.155,417.334,2684.57,45
+Technical diagnosis,220.216,296.483,33.047,81.29,631.037,11
+Environment and operational integration,236.592,0,106.867,0,343.46,6
+Communication and follow-up,334.501,123.791,111.295,120.51,690.097,11
+Context compaction,351.579,117.722,0,0,469.301,8
+Unattributed active time,266.981,34.404,0.607,0.409,302.401,5

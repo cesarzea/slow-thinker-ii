@@ -23,7 +23,8 @@ async def test_simultaneous_duplicate_commands_execute_once(tmp_path: Path) -> N
     with case.runs.begin() as transaction:
         assert transaction.run(first.receipt.target_id).state == "completed"
     assert case.coordinator.failures() == ()
-    assert not (await case.coordinator.close()).runs
+    pending = await case.coordinator.close()
+    assert not pending.runs
 
 
 async def test_lost_waiter_does_not_cancel_command_or_duplicate_execution(tmp_path: Path) -> None:

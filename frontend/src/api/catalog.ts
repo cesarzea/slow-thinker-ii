@@ -21,7 +21,7 @@ export async function loadGraphs(
       ? {}
       : {headers: {authorization: `Bearer ${credential}`}, credentials: 'omit' as const}),
   });
-  if (!response.ok) throw new Error('No se pudo cargar el catálogo de experimentos.');
+  if (!response.ok) throw new Error('Could not load the experiment catalog.');
   const body: unknown = await response.json();
   return z.array(graphSchema).parse(body);
 }

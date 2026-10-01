@@ -13,7 +13,7 @@ interface Props {
 export function SessionControls({state, store, commands}: Props): ReactElement {
   return (
     <fieldset disabled={state.pending !== null || state.busy}>
-      <legend>Sesión de trabajo</legend>
+      <legend>Work session</legend>
       <SessionSelector state={state} store={store} />
       <PageControls
         kind="workspace"
@@ -31,7 +31,7 @@ function NewSession({commands}: Pick<Props, 'commands'>): ReactElement {
   return (
     <div>
       <label>
-        Nueva sesión
+        New session
         <input
           value={name}
           onChange={(event) => {
@@ -46,7 +46,7 @@ function NewSession({commands}: Pick<Props, 'commands'>): ReactElement {
           void commands.createSession(name);
         }}
       >
-        Crear sesión
+        Create session
       </button>
     </div>
   );
@@ -56,17 +56,17 @@ function SessionSelector({state, store}: Pick<Props, 'state' | 'store'>): ReactE
   const sessions = state.workspace?.sessions.items ?? [];
   return (
     <label>
-      Sesión guardada
+      Saved session
       <select
         value={state.sessionId}
         onChange={(event) => {
           store.selectSession(event.target.value);
         }}
       >
-        <option value="">Selecciona una sesión</option>
+        <option value="">Select a session</option>
         {state.sessionId !== '' &&
           !sessions.some((item) => item.session_id === state.sessionId) && (
-            <option value={state.sessionId}>Sesión seleccionada</option>
+            <option value={state.sessionId}>Selected session</option>
           )}
         {sessions.map((session) => (
           <option key={session.session_id} value={session.session_id}>

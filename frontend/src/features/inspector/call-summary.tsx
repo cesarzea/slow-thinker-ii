@@ -14,15 +14,15 @@ export function CallSummary({call, onCall, onPayload, onActivation}: SummaryProp
   return (
     <>
       <p>
-        {context.caller ?? 'Orquestador'} → {context.target.instance}.{context.target.operation}
+        {context.caller ?? 'Orchestrator'} → {context.target.instance}.{context.target.operation}
       </p>
       <p>
-        Estado: {call.state}
+        State: {call.state}
         {call.reason !== null && ` · ${call.reason}`}
       </p>
       <p>
-        Nodo: {context.node_id ?? 'Sin nodo asociado'} · Activación:{' '}
-        {context.activation_id ?? 'No aplicable'}
+        Node: {context.node_id ?? 'No associated node'} · Activation:{' '}
+        {context.activation_id ?? 'Not applicable'}
       </p>
       <CallLinks call={call} onCall={onCall} onPayload={onPayload} onActivation={onActivation} />
       <CallCost cost={call.accounting} />
@@ -31,13 +31,13 @@ export function CallSummary({call, onCall, onPayload, onActivation}: SummaryProp
 }
 
 function CallCost({cost}: {readonly cost: CallDetails['accounting']}): ReactElement {
-  if (cost === null) return <p>Sin cargo directo registrado para esta llamada.</p>;
+  if (cost === null) return <p>No direct charge recorded for this call.</p>;
   return (
     <p>
-      Coste propio: {cost.amount === null ? 'Sin importe confirmado' : moneyLabel(cost.amount)} ·{' '}
-      {moneyLabel(cost.outstanding)} pendiente · Estado contable: {cost.state} · Mes:{' '}
+      Own cost: {cost.amount === null ? 'No confirmed amount' : moneyLabel(cost.amount)} ·{' '}
+      {moneyLabel(cost.outstanding)} pending · Accounting state: {cost.state} · Month:{' '}
       {cost.month_id}
-      {cost.source !== null && ` · Fuente: ${cost.source}`}
+      {cost.source !== null && ` · Source: ${cost.source}`}
     </p>
   );
 }
@@ -47,16 +47,16 @@ function CallLinks({call, onCall, onPayload, onActivation}: SummaryProps): React
   return (
     <>
       <EvidenceLink identity={context.activation_id} select={onActivation}>
-        Ver activación
+        View activation
       </EvidenceLink>
       <EvidenceLink identity={context.parent_call_id} select={onCall}>
-        Ver llamada de origen
+        View parent call
       </EvidenceLink>
       <EvidenceLink identity={call.request_payload_id} select={onPayload}>
-        Ver argumentos
+        View arguments
       </EvidenceLink>
       <EvidenceLink identity={call.pricing_payload_id} select={onPayload}>
-        Ver base de cálculo
+        View pricing basis
       </EvidenceLink>
     </>
   );

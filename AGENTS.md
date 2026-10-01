@@ -3,6 +3,11 @@
 Follow the [module workflow](docs/architecture/module-boundaries.md#module-documents-and-implementation-workflow)
 and the mandatory [engineering standards](README.md#engineering-standards).
 
+The current approved working method is
+[M06](docs/continuous-improvement/methods/006-delivery-preparation.md), approved on
+2026-10-01. It retains M05 and all inherited phases and verification obligations.
+Apply it to subsequent authorized delivery work; it does not activate a sprint.
+
 Every existing implementation module must have a brief `readme.md` (an existing
 `README.md` fulfils this role) and a `specification.md` in its own directory.
 Create `todo.md` there only when identified work remains. This applies to existing
@@ -48,6 +53,23 @@ decisions; resolve a blocking contract issue before affected work continues, and
 revisit only the affected design and tickets. Delegate tests and corrections with
 the same ownership rules. Apparent coherence permits entering testing, not release.
 
+Before delegation, include exact public dependency references, consumed data
+origins and field paths, a representative public payload, resolved shared decisions
+and explicitly local choices in the existing module specifications and tickets.
+Check that a representative case can be implemented from those sources. Report
+unexpected investigation beyond the supplied contracts with the missing information
+and outcome; necessary dependency comprehension and local design remain expected.
+
+Each delivery briefly maps acceptance criteria to changed code and available
+evidence, records material local choices and identifies pending verification.
+Use this map to guide code and whole-system review without replacing either.
+At the start of testing, establish shared fixtures, mocks and the configured
+environment, then check one representative composition or browser case before
+expanding dependent tests in parallel. Resume failed verification through the same
+configured entry point. Include preparation costs, repeated shared-decision analysis
+and classified test failures in cycle evaluation; fewer questions alone prove no
+saving. M05's local verification including CodeQL before upload remains mandatory.
+
 Read the affected modules' documents first. Keep `todo.md` as an implementer's
 ticket containing only unresolved work. Remove completed items; delete the file
 when nothing remains. Keep contracts and usage documents current, and link shared
@@ -58,3 +80,20 @@ without a relevant change or unresolved concern. Assess the method using elapsed
 time to a verified delivery, rework, integration
 defects and available resource usage; label estimates and do not infer efficiency
 from code volume or the number of parallel implementers.
+
+## Documentation and improvement records
+
+Maintain the [engineering process improvement record](docs/continuous-improvement/README.md)
+as formal project documentation. On closing a relevant delivery cycle, update its
+evaluation and index using the cycle template. Preserve method versions, previous
+measurements and conclusions; append dated corrections and explain any changed
+interpretation. Distinguish approved decisions, observed practice and proposals.
+Do not create tasks, goals or automations solely to maintain this record.
+
+## Language
+
+Use English for all product-authored UI, accessible labels, messages, examples,
+comments and all maintained documentation, including process records and working
+instructions. Preserve original source evidence separately; label translations of
+recorded user statements. Do not alter user-authored runtime content or meaningful
+Unicode test inputs.

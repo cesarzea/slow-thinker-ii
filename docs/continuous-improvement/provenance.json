@@ -1,0 +1,422 @@
+{
+  "schema_version": 1,
+  "owner": "Cesar Zea",
+  "project_documentation_edition": "2026-09-30",
+  "historical_archive_established": "2026-09-29",
+  "historical_manifest_sha256": "45a5f81a348d8bf6d076a9df782c5096e8485b227541cba4621b0cb70456b94c",
+  "source_archive_sha256": "a0da5a4943d27b02d3f11bcd5b40698ba336996e4f8710a7ac71b5fc1ca5453b",
+  "source_retention": "Original pre-migration files retained in a local, ignored documentation-history archive. Legacy structured datasets remain source evidence; maintained English records are in project documentation.",
+  "scope": "Documentation migration and translation only. No measurements recalculated and no pending proposals approved.",
+  "integrity_notes": [
+    "Historical source and archived hashes are retained as recorded claims. Original pre-archive sources are not independently verified by this migration.",
+    "Three historical CSV full-copy declarations have different recorded source and archived hashes. They are preserved without treating them as proof of byte identity.",
+    "Observed pre-migration hashes are computed from the preserved archive and are distinct from historical claims.",
+    "Migration hashes identify the integrated English edition. Future substantive corrections require dated records and updated evidence.",
+    "This manifest is not self-hashed; its original source hash is recorded separately. New maintenance instructions are not a migrated method version."
+  ],
+  "historical_records": [
+    {
+      "file": "cycles/001-baseline-2026-09-28/report.md",
+      "source_artifact": "slow-thinker-ii-time-audit/informe.md",
+      "source_sha256": "4c4ee2c52833dda6afb61ee658a6fcb77f7cfe05455cb1c46c6157b96be86072",
+      "archived_sha256": "4c4ee2c52833dda6afb61ee658a6fcb77f7cfe05455cb1c46c6157b96be86072",
+      "transformation": "Full-copy declaration in the historical manifest.",
+      "legacy_path": "ciclos/001-base-2026-09-28/informe.md",
+      "observed_pre_migration_sha256": "4c4ee2c52833dda6afb61ee658a6fcb77f7cfe05455cb1c46c6157b96be86072",
+      "historical_archived_hash_matches_observed": true
+    },
+    {
+      "file": "cycles/001-baseline-2026-09-28/turns.csv",
+      "source_artifact": "slow-thinker-ii-time-audit/turnos.csv",
+      "source_sha256": "b9637a0d2518a528ed6fa6f9681d230ee1eb44c4707d6d1c74a1bbeff6a4c913",
+      "archived_sha256": "b6ee073fbd34df1a12ce5347fa428db8459471ecc1c9fc5e0502ce9e32792d84",
+      "transformation": "Full-copy declaration in the historical manifest.",
+      "legacy_path": "ciclos/001-base-2026-09-28/turnos.csv",
+      "observed_pre_migration_sha256": "b6ee073fbd34df1a12ce5347fa428db8459471ecc1c9fc5e0502ce9e32792d84",
+      "historical_archived_hash_matches_observed": true
+    },
+    {
+      "file": "cycles/001-baseline-2026-09-28/intervals.csv",
+      "source_artifact": "slow-thinker-ii-time-audit/intervalos.csv",
+      "source_sha256": "fae32df2d1d957e30667d83566e278122fb3ee5b3a4da272ed097875f75d160c",
+      "archived_sha256": "f3dfa0a2a86ce0519e811bf608ec882e4e1cfec8d623b8c5249df3b8813bf7bc",
+      "transformation": "Chronology and classification retained; evidence replaced to exclude commands, tool paths and potentially private local values.",
+      "legacy_path": "ciclos/001-base-2026-09-28/intervalos.csv",
+      "observed_pre_migration_sha256": "f3dfa0a2a86ce0519e811bf608ec882e4e1cfec8d623b8c5249df3b8813bf7bc",
+      "historical_archived_hash_matches_observed": true
+    },
+    {
+      "file": "cycles/001-baseline-2026-09-28/results.json",
+      "source_artifact": "slow-thinker-ii-time-audit/resultados.json",
+      "source_sha256": "ef582df5b54d254cdf3b00227dceae359fe00385e691871ba14982bd19bd82a1",
+      "archived_sha256": "ef582df5b54d254cdf3b00227dceae359fe00385e691871ba14982bd19bd82a1",
+      "transformation": "Full-copy declaration in the historical manifest.",
+      "legacy_path": "ciclos/001-base-2026-09-28/resultados.json",
+      "observed_pre_migration_sha256": "ef582df5b54d254cdf3b00227dceae359fe00385e691871ba14982bd19bd82a1",
+      "historical_archived_hash_matches_observed": true
+    },
+    {
+      "file": "cycles/002-sprint-2026-09-29/report.md",
+      "source_artifact": "slow-thinker-ii-method-review/informe.md",
+      "source_sha256": "d150885739a03dbf6e241a9659051a0f1fd38c538a5c0784583a71f3e5d708ba",
+      "archived_sha256": "c1a0859bd8b5a19c7fc00d846bfffb1408479b73f6aee73bc65fbceffc98bd93",
+      "transformation": "Links adapted to the permanent archive.",
+      "legacy_path": "ciclos/002-sprint-2026-09-29/informe.md",
+      "observed_pre_migration_sha256": "c1a0859bd8b5a19c7fc00d846bfffb1408479b73f6aee73bc65fbceffc98bd93",
+      "historical_archived_hash_matches_observed": true
+    },
+    {
+      "file": "cycles/002-sprint-2026-09-29/activities.csv",
+      "source_artifact": "slow-thinker-ii-method-review/actividades.csv",
+      "source_sha256": "bd861aac7de15dfc4def4f2c06fb7abbfcf1f0675507fe476a7e3658864fe001",
+      "archived_sha256": "9185ea0fffa7a981f7e1aba5b85f35f9b604eff2b9fd191f7022b31194cd497e",
+      "transformation": "Full-copy declaration in the historical manifest.",
+      "legacy_path": "ciclos/002-sprint-2026-09-29/actividades.csv",
+      "observed_pre_migration_sha256": "9185ea0fffa7a981f7e1aba5b85f35f9b604eff2b9fd191f7022b31194cd497e",
+      "historical_archived_hash_matches_observed": true
+    },
+    {
+      "file": "cycles/002-sprint-2026-09-29/phases.csv",
+      "source_artifact": "slow-thinker-ii-method-review/fases.csv",
+      "source_sha256": "2b815b771e0dd3b55f1b4a1d8f4fb9396671e723338c606a72cfddd6a2a3cc96",
+      "archived_sha256": "6b353a8d42fb63f3db848de6ba5d475808bac5f37a366d344d3fc398201a61a3",
+      "transformation": "Full-copy declaration in the historical manifest.",
+      "legacy_path": "ciclos/002-sprint-2026-09-29/fases.csv",
+      "observed_pre_migration_sha256": "6b353a8d42fb63f3db848de6ba5d475808bac5f37a366d344d3fc398201a61a3",
+      "historical_archived_hash_matches_observed": true
+    },
+    {
+      "file": "cycles/002-sprint-2026-09-29/intervals.csv",
+      "source_artifact": "slow-thinker-ii-method-review/intervalos.csv",
+      "source_sha256": "4600def980f2401964e18e678bca2b5572cf7b297136b3d7633a3f8e77113756",
+      "archived_sha256": "ff725e4128404cfe43711582d3581b93cccd1ce04574cd3911edef6ecf6b926f",
+      "transformation": "Chronology and classification retained; evidence replaced to exclude commands, tool paths and potentially private local values.",
+      "legacy_path": "ciclos/002-sprint-2026-09-29/intervalos.csv",
+      "observed_pre_migration_sha256": "ff725e4128404cfe43711582d3581b93cccd1ce04574cd3911edef6ecf6b926f",
+      "historical_archived_hash_matches_observed": true
+    },
+    {
+      "file": "cycles/002-sprint-2026-09-29/results.json",
+      "source_artifact": "slow-thinker-ii-method-review/resultados.json",
+      "source_sha256": "e7b638dd80b9275d203f101b6699143fd9d4d917ad094d419e7c2fc9fcafe960",
+      "archived_sha256": "e7b638dd80b9275d203f101b6699143fd9d4d917ad094d419e7c2fc9fcafe960",
+      "transformation": "Full-copy declaration in the historical manifest.",
+      "legacy_path": "ciclos/002-sprint-2026-09-29/resultados.json",
+      "observed_pre_migration_sha256": "e7b638dd80b9275d203f101b6699143fd9d4d917ad094d419e7c2fc9fcafe960",
+      "historical_archived_hash_matches_observed": true
+    },
+    {
+      "file": "methods/002-rules-snapshot.md",
+      "source_artifact": "slow-thinker-ii/AGENTS.md",
+      "source_sha256": "434cb57cfd10b534d2eb8b8e532739819c04c56ec199778643adb5173ba4ad02",
+      "archived_sha256": "434cb57cfd10b534d2eb8b8e532739819c04c56ec199778643adb5173ba4ad02",
+      "transformation": "Literal rules snapshot; links originally retained relative to the source repository.",
+      "legacy_path": "metodos/002-reglas-aplicadas.txt",
+      "observed_pre_migration_sha256": "434cb57cfd10b534d2eb8b8e532739819c04c56ec199778643adb5173ba4ad02",
+      "historical_archived_hash_matches_observed": true
+    }
+  ],
+  "migration_records": [
+    {
+      "legacy_path": "README.md",
+      "source_sha256": "fd314f60b0a8d2c2191b115e7d6dba82e7cfb190b7970f6f855627039d1cb108",
+      "file": "README.md",
+      "sha256": "9b6ad3804bd8135aa20acee6c7f1cbf437da5bbd1b0f3209d0839b371dc486ab",
+      "transformation": "Formal English project edition with adapted links; historical decisions, measurements and qualifications preserved."
+    },
+    {
+      "legacy_path": "medicion.md",
+      "source_sha256": "9889f199ae0a4f00174f9cab1af104655c6c51fc558378f0b4c66a19cc743ded",
+      "file": "measurement.md",
+      "sha256": "f8552bab272884a8a585f26e7f33daff627d73af0e92afd8a2dea95eef6c488b",
+      "transformation": "Formal English project edition with adapted links; historical decisions, measurements and qualifications preserved."
+    },
+    {
+      "legacy_path": "mejoras.md",
+      "source_sha256": "6bb64b67d9279ae8da670f514df1ab909984446bb3cc3c65dc15879e2accf5ed",
+      "file": "improvement-register.md",
+      "sha256": "455355932b319bf347b2335f3cf5bef333eac00052476eea54fadfb5f50b91b8",
+      "transformation": "Formal English project edition with adapted links; historical decisions, measurements and qualifications preserved."
+    },
+    {
+      "legacy_path": "plantilla-ciclo.md",
+      "source_sha256": "bf908b57fcb190d1b824e68cf64083cdfa50b9aa4c3e0b473f1ced733f7fe785",
+      "file": "cycle-template.md",
+      "sha256": "a784f43fb101d3046602f0a5f09a2a7354071111d6b7274c8bc01f1d5bd8c841",
+      "transformation": "Formal English project edition with adapted links; historical decisions, measurements and qualifications preserved."
+    },
+    {
+      "legacy_path": "metodos/001-incremental.md",
+      "source_sha256": "68dbab3fcb51847915e141f622979522e1e4739967c306649fa1feb6a23d759b",
+      "file": "methods/001-incremental.md",
+      "sha256": "cc893b54af28ffd071fc14833393a4b9ebd20077a7544a75424ba7d6c76ac25a",
+      "transformation": "Formal English project edition with adapted links; historical decisions, measurements and qualifications preserved."
+    },
+    {
+      "legacy_path": "metodos/002-sprint-por-fases.md",
+      "source_sha256": "fe923e59fa5b7afb5d4011cc4626d2c7ae3a161f32fb65eb3e6741b3d05266a5",
+      "file": "methods/002-phased-sprint.md",
+      "sha256": "46850c8e28f8ea163bef85bb9bc8984997bf4f02ca8083517ee7f6013f8be20c",
+      "transformation": "Formal English project edition with adapted links; historical decisions, measurements and qualifications preserved."
+    },
+    {
+      "legacy_path": "metodos/003-cierre-de-contratos.md",
+      "source_sha256": "9a1de325fcff31a6d67f26429ecee0e569ca299aaf8e906a0dd7ab566f82f775",
+      "file": "methods/003-contract-closure.md",
+      "sha256": "9c112d78cea1fa9d7e18d34a58e8fcad612de9ff2057635bf5ff19c33e4cab26",
+      "transformation": "Formal English project edition with adapted links; historical decisions, measurements and qualifications preserved."
+    },
+    {
+      "legacy_path": "metodos/004-pruebas-y-verificacion.md",
+      "source_sha256": "d5ea8b65d90b9a838ad220e79d16d8b03f78e4e30d195cfa78bbcfc67e390282",
+      "file": "methods/004-testing-and-verification.md",
+      "sha256": "7cc8f17289351b1fccf7e051651a6740c1b56ae418d092f5a209915e1732defb",
+      "transformation": "Formal English project edition with adapted links; historical decisions, measurements and qualifications preserved."
+    },
+    {
+      "legacy_path": "metodos/005-verificacion-local-del-ci.md",
+      "source_sha256": "a667068efb8f2eeb2b0515edc4d280f86d403faaba49ee2984f7495edcf83113",
+      "file": "methods/005-local-ci-verification.md",
+      "sha256": "42d692063b2a9cf066e9a2e1bf75b38ec617a50ceb2d324789f5c37091598b82",
+      "transformation": "Formal English project edition with adapted links; historical decisions, measurements and qualifications preserved."
+    },
+    {
+      "legacy_path": "metodos/002-reglas-aplicadas.txt",
+      "source_sha256": "434cb57cfd10b534d2eb8b8e532739819c04c56ec199778643adb5173ba4ad02",
+      "file": "methods/002-rules-snapshot.md",
+      "sha256": "b04e5c111a21b52b5cde8b7f3bacf1c4b59a8615372385e97ee71c56386f3716",
+      "transformation": "Historical English rules relocated with document-control metadata and adapted links; original wording retained."
+    },
+    {
+      "legacy_path": "ciclos/001-base-2026-09-28/informe.md",
+      "source_sha256": "4c4ee2c52833dda6afb61ee658a6fcb77f7cfe05455cb1c46c6157b96be86072",
+      "file": "cycles/001-baseline-2026-09-28/report.md",
+      "sha256": "37bf3c654b0e4110431c77a8acd27d13dbefb6eb608608422f4d655e6dde5b5f",
+      "transformation": "Formal English project edition with adapted links; historical decisions, measurements and qualifications preserved."
+    },
+    {
+      "legacy_path": "ciclos/002-sprint-2026-09-29/informe.md",
+      "source_sha256": "c1a0859bd8b5a19c7fc00d846bfffb1408479b73f6aee73bc65fbceffc98bd93",
+      "file": "cycles/002-sprint-2026-09-29/report.md",
+      "sha256": "3d2fecdfe0202f6fb8840c09f91a028afd5f9ff02270385d2fe8e7e1d399c93a",
+      "transformation": "Formal English project edition with adapted links; historical decisions, measurements and qualifications preserved."
+    },
+    {
+      "legacy_path": "ciclos/002-sprint-2026-09-29/analisis-testing.md",
+      "source_sha256": "754080018bcd750cf0d0ef2c313137aa6253f4186e56e7a1173497b5e6be6385",
+      "file": "cycles/002-sprint-2026-09-29/testing-analysis.md",
+      "sha256": "a272cbc0daff406f21dcda2a93132651520e2d1796980398c7b770fde5bac6ef",
+      "transformation": "Formal English project edition with adapted links; historical decisions, measurements and qualifications preserved."
+    },
+    {
+      "legacy_path": "ciclos/003-cierre-de-contratos/informe.md",
+      "source_sha256": "785d9623a71feba2505b46293bbeb9e4b3b7de5e9d4d293ab4edeaa4ce39368f",
+      "file": "cycles/003-contract-closure/report.md",
+      "sha256": "f6d3d3a66bc207a3b99f48e7874edaf6d1ec6554f8fe7e195970be728495f801",
+      "transformation": "Formal English project edition with adapted links; historical decisions, measurements and qualifications preserved."
+    },
+    {
+      "legacy_path": "ciclos/003-cierre-de-contratos/plan.md",
+      "source_sha256": "30b0297e67b7fd72e194fd018ccae2716cbf1e00245bcf65c115c145b985c5d8",
+      "file": "cycles/003-contract-closure/plan.md",
+      "sha256": "c7d1a3d2ad91c0325974e40b333df0915e398201ae1365aaa6115f02e95ea9b1",
+      "transformation": "Formal English project edition with adapted links; historical decisions, measurements and qualifications preserved."
+    },
+    {
+      "legacy_path": "ciclos/003-cierre-de-contratos/observations.json",
+      "source_sha256": "542f2c661625c6af5fd3c9b07b69033ab7a368b59f3c7567ff89dfa3982c4823",
+      "file": "cycles/003-contract-closure/observations.json",
+      "sha256": "542f2c661625c6af5fd3c9b07b69033ab7a368b59f3c7567ff89dfa3982c4823",
+      "transformation": "English structured observations retained without semantic changes; formatting normalized."
+    },
+    {
+      "legacy_path": "ciclos/002-sprint-2026-09-29/intervalos.csv",
+      "source_sha256": "ff725e4128404cfe43711582d3581b93cccd1ce04574cd3911edef6ecf6b926f",
+      "file": "cycles/002-sprint-2026-09-29/intervals.csv",
+      "sha256": "00af2d8a2f657d63e9907635ad15123e195d06d876d3ad00a3573308ca12f105",
+      "transformation": "English column and activity labels; row order, identifiers, timestamps and numeric values preserved."
+    },
+    {
+      "legacy_path": "ciclos/002-sprint-2026-09-29/actividades.csv",
+      "source_sha256": "9185ea0fffa7a981f7e1aba5b85f35f9b604eff2b9fd191f7022b31194cd497e",
+      "file": "cycles/002-sprint-2026-09-29/activities.csv",
+      "sha256": "c7bc312bf1e6e8739a003a0455389b0cf4e3cbe111f4f4f4e12914ba380d5943",
+      "transformation": "English column and activity labels; row order, identifiers, timestamps and numeric values preserved."
+    },
+    {
+      "legacy_path": "ciclos/002-sprint-2026-09-29/fases.csv",
+      "source_sha256": "6b353a8d42fb63f3db848de6ba5d475808bac5f37a366d344d3fc398201a61a3",
+      "file": "cycles/002-sprint-2026-09-29/phases.csv",
+      "sha256": "2a0900764cfae145d2dca75d6f189285436f01868ad0ace2ddb99e698ab6cb70",
+      "transformation": "English column and activity labels; row order, identifiers, timestamps and numeric values preserved."
+    },
+    {
+      "legacy_path": "ciclos/001-base-2026-09-28/intervalos.csv",
+      "source_sha256": "f3dfa0a2a86ce0519e811bf608ec882e4e1cfec8d623b8c5249df3b8813bf7bc",
+      "file": "cycles/001-baseline-2026-09-28/intervals.csv",
+      "sha256": "773206d5bd70938faf09ce7d36355b83bd68494c0a94e858c5be953e0d4d8e01",
+      "transformation": "English column and activity labels; row order, identifiers, timestamps and numeric values preserved."
+    },
+    {
+      "legacy_path": "ciclos/001-base-2026-09-28/turnos.csv",
+      "source_sha256": "b6ee073fbd34df1a12ce5347fa428db8459471ecc1c9fc5e0502ce9e32792d84",
+      "file": "cycles/001-baseline-2026-09-28/turns.csv",
+      "sha256": "71ab7e1d153ebcb5dea21e0aef0e5849d225dbd3e4352b7ef49533cb3ac5328a",
+      "transformation": "English column and activity labels; row order, identifiers, timestamps and numeric values preserved."
+    },
+    {
+      "legacy_path": "ciclos/002-sprint-2026-09-29/resultados.json",
+      "source_sha256": "e7b638dd80b9275d203f101b6699143fd9d4d917ad094d419e7c2fc9fcafe960",
+      "file": "cycles/002-sprint-2026-09-29/results.json",
+      "sha256": "76fa2b4b8b37827b90d29ef45d2725f88ad5a275a574a619417dafcfed6d23ed",
+      "transformation": "English labels; structure, identifiers, timestamps and numeric values preserved."
+    },
+    {
+      "legacy_path": "ciclos/001-base-2026-09-28/resultados.json",
+      "source_sha256": "ef582df5b54d254cdf3b00227dceae359fe00385e691871ba14982bd19bd82a1",
+      "file": "cycles/001-baseline-2026-09-28/results.json",
+      "sha256": "daed99edbd0a94b4c7563103509df08f438e0d817d804b4315aec831d83c0717",
+      "transformation": "English labels; structure, identifiers, timestamps and numeric values preserved."
+    }
+  ],
+  "amendments": [
+    {
+      "recorded_on": "2026-10-01",
+      "timezone": "Europe/Lisbon",
+      "purpose": "C03 application through initial handoff: timestamp audit requested by the owner.",
+      "previous_edition_retention": "Local ignored documentation-history archive; migration records continue to identify the preserved pre-amendment edition.",
+      "previous_edition_archive_sha256": "0137167483ff29e4fb8e3e18eb5ca334ea30162724189322fc712fbf5490b33b",
+      "records": [
+        {
+          "file": "README.md",
+          "previous_edition_sha256": "9b6ad3804bd8135aa20acee6c7f1cbf437da5bbd1b0f3209d0839b371dc486ab",
+          "current_sha256": "6af1fd1795d76a6cf3345dddf04ee1c2ea1f40053fe2f5550a198d59f3e96738",
+          "change": "Dated C03 initial-handoff audit addendum or index update; original checkpoint evidence retained."
+        },
+        {
+          "file": "measurement.md",
+          "previous_edition_sha256": "f8552bab272884a8a585f26e7f33daff627d73af0e92afd8a2dea95eef6c488b",
+          "current_sha256": "cb0452f97700b3d10270ba072e440e826f12c9585efd086c1a3860099c7ccc0b",
+          "change": "Dated C03 initial-handoff audit addendum or index update; original checkpoint evidence retained."
+        },
+        {
+          "file": "cycles/003-contract-closure/report.md",
+          "previous_edition_sha256": "f6d3d3a66bc207a3b99f48e7874edaf6d1ec6554f8fe7e195970be728495f801",
+          "current_sha256": "db0a4bd08d97afa08eb882cf491503918db3027960fae3b121a48aca36f06c20",
+          "change": "Dated C03 initial-handoff audit addendum or index update; original checkpoint evidence retained."
+        },
+        {
+          "file": "cycles/003-contract-closure/time-audit.md",
+          "current_sha256": "f40ec53617f1c5db7eda6a989ada842d71071d40ac254ca80b69f8546ff86f15",
+          "change": "New C03 time-audit record or structured evidence."
+        },
+        {
+          "file": "cycles/003-contract-closure/time-audit-results.json",
+          "current_sha256": "bb1bae2487d7ae1b4636d87d73b2bc0607234f713fb93c0d0e4daa64f30b99be",
+          "change": "New C03 time-audit record or structured evidence."
+        },
+        {
+          "file": "cycles/003-contract-closure/time-audit-intervals.csv",
+          "current_sha256": "c506b5cf04bf3fe763c8e74088cabccba73932981937a0c68857723df80b8119",
+          "change": "New C03 time-audit record or structured evidence."
+        },
+        {
+          "file": "cycles/003-contract-closure/time-audit-activities.csv",
+          "current_sha256": "5fe3f5f92c4bf44401cb221242f56af8601b856c89500811c18b6b1610b4ca59",
+          "change": "New C03 time-audit record or structured evidence."
+        },
+        {
+          "file": "cycles/003-contract-closure/time-audit-phases.csv",
+          "current_sha256": "7bcb18291a63527e79fc9d2430d91196e1525e9bfdffab26c7264b89ee973b56",
+          "change": "New C03 time-audit record or structured evidence."
+        }
+      ]
+    },
+    {
+      "recorded_on": "2026-10-01",
+      "timezone": "Europe/Lisbon",
+      "purpose": "Identify improvements following C03 and owner discussion; P08\u2013P10 are proposals pending approval.",
+      "previous_edition_retention": "Local ignored snapshot of the previous register, cycle report and provenance manifest.",
+      "previous_edition_archive_sha256": "2f292414dcfe8eb222bf1e91632db1f6a95cbfb70ee053811d8cff4e62eaef0a",
+      "records": [
+        {
+          "file": "improvement-register.md",
+          "previous_edition_sha256": "455355932b319bf347b2335f3cf5bef333eac00052476eea54fadfb5f50b91b8",
+          "current_sha256": "87d717064ee526f64d5abc02a2fccc4b9fa2514ce27cfee15e31864ea01e53c7",
+          "change": "Pending C03 improvement proposals or dated report link; prior decisions and measurements retained."
+        },
+        {
+          "file": "cycles/003-contract-closure/report.md",
+          "previous_edition_sha256": "db0a4bd08d97afa08eb882cf491503918db3027960fae3b121a48aca36f06c20",
+          "current_sha256": "91a0a922c414a56bd00a1b20ae8b2b792ade6c31579c0fa1d4f44634c36fbc4d",
+          "change": "Pending C03 improvement proposals or dated report link; prior decisions and measurements retained."
+        }
+      ]
+    },
+    {
+      "recorded_on": "2026-10-01",
+      "timezone": "Europe/Lisbon",
+      "purpose": "Owner approval of P08-P10 as M06, retaining M05 and prior measurements; no new sprint or cycle activated.",
+      "previous_edition_retention": "Local ignored snapshot of affected records, working rules and provenance manifest before M06 approval was recorded.",
+      "previous_edition_archive_sha256": "8cccb5bf6480830e63b19ab248c5d13d2c7fc0a865cc66c4406124fe87dac96f",
+      "records": [
+        {
+          "file": "../../AGENTS.md",
+          "current_sha256": "b71adb8ebf11ecceab84fded347f25e95f8fbfad892c8715c9e5af74f7a08340",
+          "change": "Make approved M06 requirements operative for subsequent authorized work.",
+          "previous_edition_sha256": "6f555e6029807bda9809baa2df3273d4a7c3cfd50f81254eef92df618d08d1ea"
+        },
+        {
+          "file": "../architecture/module-boundaries.md",
+          "current_sha256": "c50359d4e1aad544be839092d9f536c015038515616de4425c6d9ee82692ece9",
+          "change": "Link module workflow to approved M06 without duplicating module contracts.",
+          "previous_edition_sha256": "c303a28d9dde0a16534a1a559bec63be7caa27c54e229dc6a3e6259dea11f899"
+        },
+        {
+          "file": "README.md",
+          "current_sha256": "599874b6ac2db11a4adfb6e5e8da417de29820fd986425976b0b4aa56360b236",
+          "change": "Register M06 as current; retain previous methods and cycle attribution.",
+          "previous_edition_sha256": "6af1fd1795d76a6cf3345dddf04ee1c2ea1f40053fe2f5550a198d59f3e96738"
+        },
+        {
+          "file": "improvement-register.md",
+          "current_sha256": "333284105350fc4df1c65fef215504b00d4438389b7fc6bbac342884f8b6b2b5",
+          "change": "Append owner approval of P08-P10 as M06; preserve prior proposal and decision status.",
+          "previous_edition_sha256": "87d717064ee526f64d5abc02a2fccc4b9fa2514ce27cfee15e31864ea01e53c7"
+        },
+        {
+          "file": "cycles/003-contract-closure/report.md",
+          "current_sha256": "43aa3c995edb60932d034c976a00b242f9e40a9e002bae39ab5bf875878b1048",
+          "change": "Append dated follow-up decision; retain C03 outcomes and method attribution.",
+          "previous_edition_sha256": "91a0a922c414a56bd00a1b20ae8b2b792ade6c31579c0fa1d4f44634c36fbc4d"
+        },
+        {
+          "file": "methods/006-delivery-preparation.md",
+          "current_sha256": "95d446286e2b8dfc9819fbcd7d639700360905ccfc117415bfd72903a31f293a",
+          "change": "New approved M06 extending M05; application and efficiency not yet evaluated."
+        }
+      ]
+    },
+    {
+      "recorded_on": "2026-10-01",
+      "timezone": "Europe/Lisbon",
+      "purpose": "Record M06 application and completed local CodeQL/shared verification as a later, unaudited follow-up; no historical timings changed.",
+      "previous_edition_retention": "Local ignored snapshot of the affected process records and a sorted JSON index of their SHA-256 values before this follow-up.",
+      "previous_edition_archive_sha256": "67edf58b70ecde1a4ed8e6193e5d13c485d004edefe54564bb924752c4d6eb60",
+      "records": [
+        {
+          "file": "README.md",
+          "previous_edition_sha256": "599874b6ac2db11a4adfb6e5e8da417de29820fd986425976b0b4aa56360b236",
+          "current_sha256": "38d5f8de849131bef4e484c04849ba7c35ce245c3368d6473d0c8752c5142716",
+          "change": "Append dated publication-verification follow-up; preserve original C03 measurements and conclusions."
+        },
+        {
+          "file": "cycles/003-contract-closure/report.md",
+          "previous_edition_sha256": "43aa3c995edb60932d034c976a00b242f9e40a9e002bae39ab5bf875878b1048",
+          "current_sha256": "1211ad20f19f35f415c55ccecc2327755c32e34880903b79fe1c0de33d736498",
+          "change": "Append dated publication-verification follow-up; preserve original C03 measurements and conclusions."
+        }
+      ]
+    }
+  ]
+}

@@ -18,7 +18,7 @@ export function useRead<T>(read: (signal: AbortSignal) => Promise<T>): ReadState
       },
       () => {
         if (!controller.signal.aborted)
-          setState({data: null, error: 'No se pudo cargar la evidencia. Vuelve a consultar.'});
+          setState({data: null, error: 'Could not load the evidence. Check again.'});
       },
     );
     return () => {

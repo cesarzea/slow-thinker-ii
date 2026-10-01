@@ -16,16 +16,16 @@ interface Props {
 export function StartControls(props: Props): ReactElement {
   const {state, graph} = props;
   return (
-    <section aria-label="Controles de ejecución">
+    <section aria-label="Run controls">
       <RunInput
         key={`${graph.graph_id}:${graph.revision}`}
         schema={graph.input_schema ?? legacyInputSchema}
       >
         {(input, valid) => <RunButtons {...props} input={input} valid={valid} />}
       </RunInput>
-      {state.stale && <p role="status">Estado sin confirmar. Se está consultando al servidor.</p>}
+      {state.stale && <p role="status">State unconfirmed. Checking with the server.</p>}
       {state.stopRequested && (
-        <p role="status">Parada solicitada; esperando confirmación del estado final.</p>
+        <p role="status">Stop requested; waiting for confirmation of the final state.</p>
       )}
     </section>
   );
@@ -47,7 +47,7 @@ function RunButtons({
           void commands.start(graph, input);
         }}
       >
-        Iniciar ejecución
+        Start run
       </button>
       <button
         disabled={!canStop(state)}
@@ -55,7 +55,7 @@ function RunButtons({
           void commands.stop();
         }}
       >
-        Detener ejecución
+        Stop run
       </button>
     </div>
   );

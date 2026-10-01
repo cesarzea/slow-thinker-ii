@@ -28,8 +28,8 @@ export function ExecutionPanel({
   const {state, store, commands, refresh} = useExecution(credential);
   useObservation(state, onObservation);
   return (
-    <section className="execution" aria-label="Ejecución del experimento">
-      <h2>Ejecutar experimento</h2>
+    <section className="execution" aria-label="Experiment execution">
+      <h2>Run experiment</h2>
       {state.message !== null && <p role="status">{state.message}</p>}
       <PendingControls state={state} commands={commands} refresh={refresh} />
       <SessionControls state={state} store={store} commands={commands} />
@@ -56,7 +56,7 @@ function InspectionButton({
         onInspect(run);
       }}
     >
-      Inspeccionar ejecución
+      Inspect run
     </button>
   );
 }
@@ -91,10 +91,12 @@ function ExecutionStatus({
             store.selectRun(state.workspace?.blocking_run_id ?? '');
           }}
         >
-          Ver ejecución que bloquea el inicio
+          View the run blocking new starts
         </button>
       )}
-      {state.workspace !== null && <BudgetView budget={state.workspace.month_budget} label="Mes" />}
+      {state.workspace !== null && (
+        <BudgetView budget={state.workspace.month_budget} label="Month" />
+      )}
       <RunView run={state.run} />
       <InspectionButton run={state.runId} onInspect={onInspect} />
       <ResultPanel credential={credential} run={state.run} />

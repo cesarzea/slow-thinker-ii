@@ -60,5 +60,6 @@ async def test_failed_durable_authorization_never_reaches_process(tmp_path: Path
     with pytest.raises(AccessDenied):
         case.authority.schedule(PROPOSER)
     assert outstanding(case) == (100, 100, 100)
-    assert await runner.close(1) == ()
+    pending = await runner.close(1)
+    assert pending == ()
     assert outstanding(case) == (0, 0, 0)

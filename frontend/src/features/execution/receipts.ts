@@ -19,18 +19,17 @@ export function acceptReceipt(
 
 function receiptMessage(receipt: Receipt): string {
   if (receipt.disposition === 'rejected')
-    return `Solicitud rechazada: ${receipt.reason ?? 'sin motivo disponible'}.`;
-  if (receipt.disposition === 'withdrawn')
-    return 'Inicio retirado. Se está comprobando el estado final.';
-  if (receipt.disposition === 'already_terminal') return 'La ejecución ya había terminado.';
+    return `Request rejected: ${receipt.reason ?? 'no reason available'}.`;
+  if (receipt.disposition === 'withdrawn') return 'Start withdrawn. Checking the final state.';
+  if (receipt.disposition === 'already_terminal') return 'The run had already ended.';
   const messages = {
-    session: 'Sesión creada.',
-    start: 'Ejecución admitida.',
-    stop: 'Parada solicitada.',
+    session: 'Session created.',
+    start: 'Run admitted.',
+    stop: 'Stop requested.',
   };
   return messages[receipt.kind];
 }
 
 export function failureMessage(error: unknown): string {
-  return error instanceof Error ? error.message : 'No se pudo confirmar la solicitud.';
+  return error instanceof Error ? error.message : 'Could not confirm the request.';
 }

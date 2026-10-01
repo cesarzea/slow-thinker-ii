@@ -11,12 +11,12 @@ export function Inspector(
   const selection = useSelection(props.selection);
   const {onCall, onPayload} = selection;
   return (
-    <section className="inspector" aria-label="Inspector de ejecución">
+    <section className="inspector" aria-label="Run inspector">
       <FocusHeading level="h2" request={0}>
-        Inspector de ejecución
+        Run inspector
       </FocusHeading>
       <p>
-        Ejecución: <code>{props.run}</code>
+        Run: <code>{props.run}</code>
       </p>
       <EventView {...props} onCall={onCall} onPayload={onPayload} />
       <SelectedEvidence {...props} selection={selection} />

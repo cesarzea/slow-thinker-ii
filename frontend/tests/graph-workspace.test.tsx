@@ -9,12 +9,14 @@ import {boundedDetail, repeatedPage, savedDefinition, summary} from './support/p
 import {runRecord} from './support/operator-data.ts';
 import {tick} from './support/execution-view.tsx';
 vi.mock('@xyflow/react', async (original) => {
-  const {Canvas, Empty} = await import('./support/graph-canvas.tsx');
+  const {Canvas, Empty, EdgeFrame} = await import('./support/graph-canvas.tsx');
   return {
     ...(await original<typeof ReactFlowModule>()),
     ReactFlow: Canvas,
     Background: Empty,
     Controls: Empty,
+    Handle: Empty,
+    BaseEdge: EdgeFrame,
   };
 });
 let server: InspectionServer;
@@ -41,38 +43,36 @@ async function selectedRun(): Promise<void> {
   render(<ExecutionWorkspace credential="key" graph={summary(boundedDetail)} />);
   await tick();
   await userEvent.click(
-    within(screen.getByRole('region', {name: 'Historial de la sesión'})).getByRole('button'),
+    within(screen.getByRole('region', {name: 'Session history'})).getByRole('button'),
   );
   await tick();
 }
 it('bridges graph objects to configuration and exact repeated activation evidence with visible focus', async () => {
   await selectedRun();
-  const live = within(screen.getByRole('region', {name: 'Grafo de la ejecución seleccionada'}));
-  await userEvent.click(live.getByText('Explorar componentes, nodos y evidencia en lista'));
-  await userEvent.click(live.getByRole('button', {name: 'Componente proposer'}));
+  const live = within(screen.getByRole('region', {name: 'Selected run graph'}));
+  await userEvent.click(live.getByText('Explore graph and evidence'));
+  await userEvent.click(live.getByRole('button', {name: 'Component proposer'}));
   expect(document.activeElement).toBe(screen.getByRole('heading', {name: 'component: proposer'}));
-  expect(live.getByRole('region', {name: 'Objeto seleccionado'}).textContent).toContain(
-    'instructions',
-  );
+  expect(live.getByRole('region', {name: 'Selected object'}).textContent).toContain('instructions');
   await userEvent.click(live.getByRole('button', {name: '#3 · draft-two · running'}));
   expect(document.activeElement).toBe(
-    await screen.findByRole('heading', {name: 'Activación draft-two'}),
+    await screen.findByRole('heading', {name: 'Activation draft-two'}),
   );
   expect(server.reads).toContain('/api/v1/runs/run/activations/draft-two');
   expect(server.operator.mutations).toHaveLength(0);
-  await userEvent.click(live.getByRole('button', {name: 'Llamada worker-call'}));
+  await userEvent.click(live.getByRole('button', {name: 'Call worker-call'}));
   expect(document.activeElement).toBe(
-    await screen.findByRole('heading', {name: 'Llamada worker-call'}),
+    await screen.findByRole('heading', {name: 'Call worker-call'}),
   );
 });
 it('labels stale graphs on connection failure and resumes without issuing a command', async () => {
   await selectedRun();
   server.operator.projectionStatus = 503;
   await tick();
-  expect(screen.getByText(/No se pudo actualizar el grafo/)).toBeTruthy();
+  expect(screen.getByText(/Could not refresh the graph/)).toBeTruthy();
   server.operator.projectionStatus = 200;
   await tick();
-  expect(screen.queryByText(/No se pudo actualizar el grafo/)).toBeNull();
+  expect(screen.queryByText(/Could not refresh the graph/)).toBeNull();
   expect(server.operator.mutations).toHaveLength(0);
 });
 it('does not enable Start from a stale or invalid catalog definition', async () => {
@@ -81,10 +81,8 @@ it('does not enable Start from a stale or invalid catalog definition', async () 
   await tick();
   expect(await screen.findByRole('alert')).toHaveProperty(
     'textContent',
-    'No se pudo cargar la definición exacta del experimento.',
+    'Could not load the exact experiment definition.',
   );
-  await userEvent.type(screen.getByLabelText(/Problema o tarea/), 'task');
-  expect(screen.getByRole<HTMLButtonElement>('button', {name: 'Iniciar ejecución'}).disabled).toBe(
-    true,
-  );
+  await userEvent.type(screen.getByLabelText(/Task or problem/), 'task');
+  expect(screen.getByRole<HTMLButtonElement>('button', {name: 'Start run'}).disabled).toBe(true);
 });

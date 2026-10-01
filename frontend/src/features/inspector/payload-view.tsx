@@ -19,8 +19,8 @@ export function PayloadView({credential, run, id, focusRequest}: Props): ReactEl
   );
   const {data, error, refresh} = useRead(read);
   return (
-    <section aria-label="Contenido conservado">
-      <FocusHeading request={focusRequest}>Contenido conservado</FocusHeading>
+    <section aria-label="Retained content">
+      <FocusHeading request={focusRequest}>Retained content</FocusHeading>
       <ReadStatus error={error} loading={data === null && error === null} refresh={refresh} />
       {data !== null && <PayloadContent payload={data} />}
     </section>
@@ -32,13 +32,13 @@ function PayloadContent({payload}: {readonly payload: RetainedPayload}): ReactEl
   return (
     <>
       <p>
-        {payload.payload_id} · Estado de captura: {payload.status}
+        {payload.payload_id} · Capture state: {payload.status}
       </p>
-      {payload.reason !== null && <p>Motivo: {payload.reason}</p>}
+      {payload.reason !== null && <p>Reason: {payload.reason}</p>}
       {available ? (
         <pre>{JSON.stringify(payload.content, null, 2)}</pre>
       ) : (
-        <p>Contenido no disponible.</p>
+        <p>Content unavailable.</p>
       )}
     </>
   );

@@ -52,8 +52,7 @@ export class ExecutionPolling {
       return {
         detail: previous.detail,
         execution: previous.execution,
-        projectionError:
-          'No se pudo actualizar el grafo. La evidencia visible puede estar desactualizada.',
+        projectionError: 'Could not refresh the graph. The visible evidence may be outdated.',
       };
     }
   }

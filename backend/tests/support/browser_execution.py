@@ -56,9 +56,7 @@ class BrowserPreparation:
         operation = FixtureOperation(
             ChargeBasis(3000, "fixture", "{}"), ChargeEvidence("{}", 2390, "browser-fixture")
         )
-        operation.result = OperationResult(
-            '{"nodes":{"draft":{"text":"Resultado de prueba"}}}', False
-        )
+        operation.result = OperationResult('{"nodes":{"draft":{"text":"Test result"}}}', False)
         if problem == "wait":
             operation.release.clear()
         return PreparedWorkflow(

@@ -17,7 +17,7 @@ export function CatalogPanel({credential, generation}: Props): ReactElement {
   const graph = graphs.find((item) => item.graph_id === selected) ?? graphs[0];
   return (
     <>
-      {loading && <p role="status">Cargando experimentos…</p>}
+      {loading && <p role="status">Loading experiments…</p>}
       {error !== null && <p role="alert">{error}</p>}
       {graph !== undefined && <ExperimentPanel graphs={graphs} graph={graph} onSelect={select} />}
       {graph !== undefined && (

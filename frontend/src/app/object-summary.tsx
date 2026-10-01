@@ -22,14 +22,12 @@ export function ObjectSummary(props: Props): ReactElement | null {
       ? record[props.selection.id]
       : undefined;
   return (
-    <section aria-label="Objeto seleccionado">
+    <section aria-label="Selected object">
       <h3 ref={heading} tabIndex={-1}>
         {props.selection.kind}: {props.selection.id}
       </h3>
       <pre>
-        {selected === undefined
-          ? 'Configuración no disponible.'
-          : JSON.stringify(selected, null, 2)}
+        {selected === undefined ? 'Configuration unavailable.' : JSON.stringify(selected, null, 2)}
       </pre>
       <ObjectActivations {...props} />
     </section>
@@ -42,8 +40,8 @@ function ObjectActivations({selection, execution, onSelect}: Props): ReactElemen
     ) ?? [];
   return (
     <>
-      <h4>Activaciones de este objeto</h4>
-      {items.length === 0 && <p>Sin activaciones en la instantánea visible.</p>}
+      <h4>Activations for this object</h4>
+      {items.length === 0 && <p>No activations in the visible snapshot.</p>}
       <ul>
         {items.map((item) => (
           <li key={item.id}>

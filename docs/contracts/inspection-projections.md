@@ -14,6 +14,7 @@ type GraphDetail = Readonly<{
   input_schema: Readonly<Record<string, unknown>>;
   definition: Readonly<Record<string, unknown>>;
   structure: GraphStructure;
+  execution?: Readonly<Record<string, unknown>>; // Saved-run snapshot only.
 }>;
 type GraphStructure = Readonly<{
   components: readonly ComponentView[];
@@ -126,10 +127,11 @@ activation/call evidence without substituting another activation silently.
 
 ## Acceptance
 
-Show structure before execution and distinct actual activations while running.
-Keep control, permission, resource binding and observed communication layers
-separate. Display contained components on expansion while preserving main agent
-identity. Provide list/keyboard navigation as well as canvas selection. Preserve
+Show agent steps before execution and their recorded status while running.
+Keep control, permission, resource binding and observed communication semantics
+separate. Follow the [agent canvas contract](../specification/agent-canvas-sprint.md):
+resources and exact internal/activation/call evidence belong below the canvas.
+Provide list/keyboard navigation as well as agent-card selection. Preserve
 positions on status changes, allow explicit reorganization, and never confuse a
 redacted/unavailable payload with an empty value. Verify existing inspector focus
 behavior, bounded-loop routes, repeated participants, paging and reconnection.

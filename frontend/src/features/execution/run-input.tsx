@@ -45,7 +45,7 @@ function JsonInput({
 }): ReactElement {
   return (
     <label>
-      Entrada JSON
+      JSON input
       <textarea
         value={value}
         rows={8}
@@ -61,6 +61,6 @@ function parseInput(text: string): {value: unknown; error: string | null} {
     const value: unknown = JSON.parse(text);
     return {value, error: null};
   } catch {
-    return {value: undefined, error: 'Escribe una entrada JSON válida.'};
+    return {value: undefined, error: 'Enter valid JSON input.'};
   }
 }

@@ -1,6 +1,184 @@
 # Verification record
 
-**Updated: 2026-09-29. First-cycle local delivery verified.** Current evidence below supersedes the historical implementation and feasibility notes.
+**Updated: 2026-10-01. The shared local verification runner passed, including CodeQL.** Dated sections retain earlier verification evidence.
+
+## Shared CodeQL verification and commit readiness — 2026-10-01
+
+Integrated the [CodeQL package](../tooling/quality/codeql/specification.md) into
+`make verify` before functional tests. Local execution and both CI workflows read
+the same bundle policy: CLI 2.27.1, Python queries 1.8.11 and JavaScript queries
+2.4.6. CI passes the SHA-pinned action's public CLI path to the shared runner;
+the independent native CodeQL matrix is retained. Remote execution of these
+workflow changes has not been performed.
+
+The public-contract tests cover current Git source, privacy exclusions, tooling,
+SARIF validation, findings and extraction completeness: 155 passed, with 99.50%
+line and 98.61% branch coverage of the new package. A real negative `make verify`
+probe using the [documented subprocess assertion](https://codeql.github.com/codeql-query-help/python/py-side-effect-in-assert/)
+failed on `py/side-effect-in-assert`; its temporary source was removed. An earlier
+probe stopped at document formatting, and the initial 2048 MB JavaScript analysis
+failed with an exhausted Java heap. Formatting was corrected and RAM raised to
+4096 MB, retaining two threads, complete suites and all rejection criteria. The
+affected resource test passed after the adjustment.
+
+The final uninterrupted `make verify` passed all configured commands: source-size,
+lint, format, types, imports, module boundaries, dead code, CodeQL, 1,421 Python
+tests, 154 frontend tests, production build, ten browser journeys, accounting
+mutations and the independent coverage gate. Python combined coverage is 95.86%;
+line coverage is 7,828/8,071 and branch coverage is 1,776/1,948, each above 90%.
+Frontend statement/branch/function/line coverage remains
+98.34%/92.89%/99.12%/99.23%. The mutation command completed with the existing
+baseline: 141 killed, one timeout and 58 survivors; this is not a claim that every
+mutant was killed.
+
+Both CodeQL analyses completed with zero errors and warnings. Python retains 80
+reviewed notes: 66 `Protocol` declaration bodies, ten awaited completion/exception
+statements and four dual import forms. JavaScript/TypeScript has no findings.
+The working-tree snapshot differs from the earlier index checkpoint; earlier
+counts remain historical evidence. No rule, source finding or note was suppressed.
+Reports and logs are retained in ignored local storage; snapshots/databases were
+removed. No paid provider call was made. Local commit readiness is established;
+remote CI success and release approval remain separate.
+
+## Commit preparation and local security analysis — 2026-10-01
+
+Reviewed the pending agent-canvas, English-interface and documentation changes.
+Excluded IDE files, credentials, local execution data and the additional host lock
+from the index. Corrected outdated current-status wording without deleting earlier
+verification checkpoints. Recorded process CSV bytes are preserved by Git attributes;
+all 31 current provenance hashes match the staged files.
+
+The shared local quality runner completed through a stopped/resumed sequence.
+Its first run passed static checks and stopped because the restricted environment
+prevented the dead-code tool from opening a loopback port. Resuming that runner
+with loopback permission and the Makefile environment passed dead-code checks,
+1,266 Python tests, 154 frontend tests, the production build, ten browser journeys,
+accounting mutations and the independent coverage gate. Combined Python coverage
+was 95.66%; frontend statement/branch/function/line coverage was
+98.34%/92.89%/99.12%/99.23%. No paid model call was made.
+
+Installed the official CodeQL 2.27.1 macOS bundle in ignored local storage and
+verified its published SHA-256. An initial extraction failed because the tool cache
+inherited the application's ES-module package setting; an isolated CommonJS package
+boundary in that cache resolved it without modifying CodeQL or application sources.
+The `security-and-quality` suites analyzed an index snapshot containing first-party
+source only: 499 Python files and 128 JavaScript/TypeScript files, plus four workflow
+files. Both analyses completed without execution errors; no finding was suppressed.
+
+JavaScript/TypeScript reported no findings. Python reported nine errors for cleanup
+operations inside assertions, one warning for unnecessary local-variable deletion
+and 82 notes. All findings were in files unchanged by the prepared delivery.
+They are retained findings, not a passing security result. A concrete cleanup patch
+for the nine assertions and one warning is prepared for owner review; it has not
+been applied. The remaining notes and shared-entry-point parity also require review
+before claiming complete M05 publication readiness. No commit or push was performed
+at that checkpoint.
+
+## Approved CodeQL cleanup — 2026-10-01
+
+The owner approved the concrete ten-file cleanup patch. Nine test cleanup calls
+now execute before their assertions, so optimized Python cannot remove process or
+coordinator cleanup. The default LLMCall validation hook explicitly returns `None`
+instead of deleting unused local parameters; its public behavior is unchanged.
+
+All 705 integration and LLMCall tests passed, as did five installed-coordinator
+checks using the existing seven-component immutable bundle and simulated provider
+traffic. The installed checks cover four completed graph profiles and cancellation;
+they do not claim a new component installation. Source-size rules, Ruff checks,
+formatting, Pyright and mypy passed. No provider credential or paid call was needed.
+
+The complete Python `security-and-quality` suite was rerun against the corrected
+index snapshot. It reports zero errors, zero warnings and 82 retained notes:
+67 `Protocol` declarations, 11 awaited-task statements whose completion or raised
+exception is observed, and four imports using both module and symbol forms.
+Those notes were reviewed; no rule, result or source location was suppressed.
+The earlier JavaScript/TypeScript analysis remains applicable because its source
+is unchanged. Frontend, browser, coverage and mutation evidence remains at the
+preceding full-run checkpoint; those unaffected checks were not repeated here.
+
+Local CodeQL analysis is now recorded, but it remains a separate invocation rather
+than part of the shared verification entry point. That M05 integration obligation
+remains open before publication; this record does not claim complete local/CI parity,
+remote CI success or release approval.
+
+## Engineering process improvement documentation — 2026-09-30
+
+Integrated the [formal English process record](continuous-improvement/README.md)
+into project documentation, retaining M01–M05, C01–C03, approval history and
+measurement limitations. Former external document locations now redirect to it;
+original source wording is preserved in a local archive.
+
+Checked relative links, English labels and document formatting. Compared all five
+CSV datasets and three structured result/observation records with their preserved
+sources: only labels changed; numeric values, timestamps, identifiers and row order
+were retained. C01/C02 accounting totals reconcile. The provenance manifest retains
+historical checksum claims separately from verified migration hashes.
+
+This verification covers documentation integrity. Product tests were not repeated
+and it does not extend the delivery or productivity claims of the recorded cycles.
+
+## Agent input/output correction — 2026-09-30
+
+Agent cards now show their input/output connectors and an incoming arrow at the
+declared entry step. Exterior arrows remain horizontal after expansion and
+dragging. Invisible boundary anchors add no visible platform nodes. Saved
+controller configuration takes precedence; unsupported or invalid entry metadata
+does not create an invented entry.
+
+All 154 frontend unit tests passed. Coverage: 98.34% statements, 92.89% branches,
+99.12% functions and 99.23% lines. Frontend typing, ESLint, formatting, dependency
+boundaries, dead-code checks and the production build passed. The dead-code check
+initially lacked loopback permission while loading the browser configuration; it
+passed when rerun with that permission. No source exception was added.
+
+All ten browser journeys passed before a node-handling correction. The new drag
+journey exposed React Flow initialization warnings despite passing its assertions.
+Controlled nodes now consume dimension/position changes and retain measurements.
+The connector/drag and polling journeys passed again with no initialization
+warning or ResizeObserver notification; the connector regression now explicitly
+rejects the initialization warning. The two geometry/narrow-viewport journeys
+also passed again after that correction. Live visual inspection confirmed the
+single-agent and bounded-review entry/exit routes without a paid model call.
+
+Backend/Python checks and accounting mutations were not repeated for this frontend
+correction. No commit, push, remote CI or local CodeQL run was performed.
+
+## Agent canvas and English presentation — 2026-09-30
+
+The canvas now displays agent-step cards and declared routes. Configuration and
+system markers are optional; resources and exact activation/call evidence remain
+below the canvas. Product-authored UI, accessible labels and client errors are
+English. User-authored content and historical evidence retain their original text.
+Saved-run model configuration takes precedence over illustrative definitions.
+
+Verification passed with 1,266 Python tests, 139 frontend tests and nine browser
+journeys. Python coverage: 96.86% lines, 90.58% branches. Frontend coverage: 98.27%
+statements, 92.65% branches, 99.09% functions and 99.20% lines. Static typing,
+formatting, lint, 26 Python import contracts, frontend module boundaries, dead-code
+checks, source-size rules and the production build passed. Accounting mutation
+results retain the reviewed baseline: 141 killed, one timeout and 58 survivors.
+No gate or coverage threshold was weakened.
+
+The local verification command stopped first on translated-fixture formatting,
+then on an unused private-helper export. Both were corrected. Remaining commands
+from the same verification runner were resumed without repeating completed Python
+checks. The first browser continuation omitted Makefile's browser-cache environment
+and could not launch Chromium; rerunning with the repository cache launched all
+journeys. Eight passed; one test incorrectly expected only the two model resources.
+The router is also a resource. Its corrected journey now asserts all three resource
+identities; both journeys in that file passed on the focused rerun. This is combined
+local gate evidence, not a claim of one uninterrupted `make verify` success.
+
+Browser checks cover all five bundled graphs, single-agent presentation, expanded
+configuration, system markers, reciprocal routes, narrow viewports, position and
+viewport retention during real polling, reviewer feedback and exact keyboard
+inspection. A separate live-browser review read an existing saved execution and
+confirmed its actual model/effort metadata. No paid provider call was made.
+
+No commit, push or remote CI run was performed for this delivery. CodeQL was not
+run locally; its publication prerequisite remains outstanding. Marker hover/click
+inspection is intentionally future work, as agreed in the
+[approved sprint](specification/agent-canvas-sprint.md).
 
 ## First-cycle delivery
 
@@ -127,24 +305,24 @@ Graph detail/input-schema routes, generic outgoing MCP mediation and full trace/
 
 ## Completed checks
 
-| Check | Method | Result |
-| --- | --- | --- |
-| Reference requirements | Compare the seven TypeScript rule descriptions with the local reference README, excluding table padding and status labels. | 7/7 descriptions identical |
-| Architecture coverage | Check numbered sections in the architecture overview and their linked content. | All 12 arc42 sections present |
-| Decision records | Check status, context, drivers, options, outcome, consequences and confirmation. | 11 ADRs: 5 Accepted, 6 Proposed |
-| Contract schemas | `jsonschema` 4.26.0, `Draft202012Validator.check_schema`; resolve package URNs through a local registry. | 6 root schemas and 12 embedded operation/configuration schemas valid |
-| Review fixtures | Validate manifests, bundled graphs and event; resolve graph bindings against illustrative outputs and separate run input, including effective instance input/output schemas. | 4 manifests, 4 graphs and 1 event accepted; eleven node input/output shapes checked |
-| LLMCall fixtures | Validate text/JSON configurations, derived-instance restrictions, success/error envelopes and the invalid-response examples. | 2 configurations, 1 derived instance and 4 result fixtures consistent; structured input accepted |
-| Python registration | Check descriptor identities, base metadata and package requirement declarations; compare the package metadata excerpt. | 2 registration fixtures consistent; 6 sample versions have the documented exact-pin and bounded-range membership |
-| Code specimens | Parse fenced Python declarations/examples with `ast.parse` and the package excerpt with `tomllib`. | 4 Python blocks and 1 TOML block syntactically valid; this check does not import SDKs, type-check or execute components |
-| Invalid variants | Schema validation and temporary semantic checks against deliberately altered review fixtures. | All 40 invalid cases rejected by the review harness |
-| Diagrams | Parse Mermaid blocks with Mermaid 12.0.0. | 2 C4 flowcharts, 1 runtime sequence diagram and 2 visual-model schematics accepted |
-| Internal references | Resolve relative Markdown links and heading fragments. | 43 Markdown documents; no broken local references |
-| Accounting examples | Exact decimal arithmetic and timestamp parsing of the proposed AP cases. | 9 arithmetic/date checks passed; no concurrent admission, provider billing or database recovery executed |
-| Provider reservation proposal | Decimal arithmetic from documented tariff/capacity values; compare category/output extremes against the proposed bound. | 3 example reserves and 36 endpoint comparisons consistent; settlement/release example checked. Does not establish provider billing compliance or an implemented admission guard. |
-| README preservation | Check current status, original-version attribution, dynamic-graph principle, mandatory engineering timing, and removal of the first-milestone section. | Preserved |
-| SDK feasibility | Temporary MCP subprocess/loopback probes, model HTTP mocks and exact dependency resolution. | Positive-path MCP transport/schema/metadata and client-shape checks passed; incompatible LangChain MCP adapter rejected. See the scoped [matrix](contracts/sdk-compatibility.md) and [captured evidence](evidence/sdk-review-20260928.json). |
-| Packaging feasibility | uv 0.12.17; offline synthetic wheel resolution/installation and subclass imports in separate Python environments. | Exact and old resolutions used B 1.1.0; explicit compatible update selected B 1.2.0 and excluded B 2.0.0. Conflicting constraints and an altered valid wheel were rejected. [Captured evidence](evidence/packaging-review-20260928.json); no platform loader tested. |
+| Check                         | Method                                                                                                                                                                       | Result                                                                                                                                                                                                                                                               |
+| ----------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Reference requirements        | Compare the seven TypeScript rule descriptions with the local reference README, excluding table padding and status labels.                                                   | 7/7 descriptions identical                                                                                                                                                                                                                                           |
+| Architecture coverage         | Check numbered sections in the architecture overview and their linked content.                                                                                               | All 12 arc42 sections present                                                                                                                                                                                                                                        |
+| Decision records              | Check status, context, drivers, options, outcome, consequences and confirmation.                                                                                             | 11 ADRs: 5 Accepted, 6 Proposed                                                                                                                                                                                                                                      |
+| Contract schemas              | `jsonschema` 4.26.0, `Draft202012Validator.check_schema`; resolve package URNs through a local registry.                                                                     | 6 root schemas and 12 embedded operation/configuration schemas valid                                                                                                                                                                                                 |
+| Review fixtures               | Validate manifests, bundled graphs and event; resolve graph bindings against illustrative outputs and separate run input, including effective instance input/output schemas. | 4 manifests, 4 graphs and 1 event accepted; eleven node input/output shapes checked                                                                                                                                                                                  |
+| LLMCall fixtures              | Validate text/JSON configurations, derived-instance restrictions, success/error envelopes and the invalid-response examples.                                                 | 2 configurations, 1 derived instance and 4 result fixtures consistent; structured input accepted                                                                                                                                                                     |
+| Python registration           | Check descriptor identities, base metadata and package requirement declarations; compare the package metadata excerpt.                                                       | 2 registration fixtures consistent; 6 sample versions have the documented exact-pin and bounded-range membership                                                                                                                                                     |
+| Code specimens                | Parse fenced Python declarations/examples with `ast.parse` and the package excerpt with `tomllib`.                                                                           | 4 Python blocks and 1 TOML block syntactically valid; this check does not import SDKs, type-check or execute components                                                                                                                                              |
+| Invalid variants              | Schema validation and temporary semantic checks against deliberately altered review fixtures.                                                                                | All 40 invalid cases rejected by the review harness                                                                                                                                                                                                                  |
+| Diagrams                      | Parse Mermaid blocks with Mermaid 12.0.0.                                                                                                                                    | 2 C4 flowcharts, 1 runtime sequence diagram and 2 visual-model schematics accepted                                                                                                                                                                                   |
+| Internal references           | Resolve relative Markdown links and heading fragments.                                                                                                                       | 43 Markdown documents; no broken local references                                                                                                                                                                                                                    |
+| Accounting examples           | Exact decimal arithmetic and timestamp parsing of the proposed AP cases.                                                                                                     | 9 arithmetic/date checks passed; no concurrent admission, provider billing or database recovery executed                                                                                                                                                             |
+| Provider reservation proposal | Decimal arithmetic from documented tariff/capacity values; compare category/output extremes against the proposed bound.                                                      | 3 example reserves and 36 endpoint comparisons consistent; settlement/release example checked. Does not establish provider billing compliance or an implemented admission guard.                                                                                     |
+| README preservation           | Check current status, original-version attribution, dynamic-graph principle, mandatory engineering timing, and removal of the first-milestone section.                       | Preserved                                                                                                                                                                                                                                                            |
+| SDK feasibility               | Temporary MCP subprocess/loopback probes, model HTTP mocks and exact dependency resolution.                                                                                  | Positive-path MCP transport/schema/metadata and client-shape checks passed; incompatible LangChain MCP adapter rejected. See the scoped [matrix](contracts/sdk-compatibility.md) and [captured evidence](evidence/sdk-review-20260928.json).                         |
+| Packaging feasibility         | uv 0.12.17; offline synthetic wheel resolution/installation and subclass imports in separate Python environments.                                                            | Exact and old resolutions used B 1.1.0; explicit compatible update selected B 1.2.0 and excluded B 2.0.0. Conflicting constraints and an altered valid wheel were rejected. [Captured evidence](evidence/packaging-review-20260928.json); no platform loader tested. |
 
 ## Invalid cases exercised
 
@@ -192,7 +370,13 @@ Rechecked official model capacity, context-window semantics and pricing. Propose
 
 The owner selected automatic daily Vercel tariff imports on 2026-09-28, replacing the earlier manual-maintenance proposal and closing Q03. Aligned the accounting and OpenAI profiles with daily refresh, validated local revisions and unchanged running/historical execution prices. This records the approved behavior; no importer, scheduler or application runtime has been implemented.
 
-## Still open
+## Historical outstanding items at the specification stage
+
+The following paragraphs retain the pre-implementation checkpoint. Their claims
+about missing first-cycle implementation and verification are historical, not the
+current delivery status. The [first-cycle delivery](#first-cycle-delivery) and
+subsequent dated sections record the implemented contracts and their evidence.
+Standalone Python export remains future work.
 
 The [question register](specification/open-questions.md) remains authoritative. Complete platform SDK conformance, authorization, real component package launch, persistence, concurrent budget accounting, cancellation races, production schemas and visual acceptance targets remain unverified. The limited SDK probes do not close those obligations.
 

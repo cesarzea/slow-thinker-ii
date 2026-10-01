@@ -2,7 +2,7 @@
 
 - Status: Accepted
 - Recorded: 2026-09-27
-- Decision-maker: César Zea
+- Decision-maker: Cesar Zea
 - Requirements: R05–R06, R09, R11–R15
 
 ## Context and problem statement

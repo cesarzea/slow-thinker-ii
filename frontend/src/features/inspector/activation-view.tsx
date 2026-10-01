@@ -14,9 +14,9 @@ type Props = InspectionSource &
 export function ActivationView(props: Props): ReactElement {
   const [cursor, onPage] = useState<string>();
   return (
-    <section aria-label="Detalle de activación">
+    <section aria-label="Activation details">
       <FocusHeading request={props.focusRequest}>
-        Activación <code>{props.id}</code>
+        Activation <code>{props.id}</code>
       </FocusHeading>
       <ActivationRead key={cursor ?? 'first'} {...props} cursor={cursor} onPage={onPage} />
     </section>

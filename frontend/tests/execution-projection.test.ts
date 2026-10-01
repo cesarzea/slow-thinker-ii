@@ -49,7 +49,7 @@ it.each([
     await model.polling.refresh(signal());
     server.execution = page;
     await model.polling.refresh(signal());
-    expect(model.store.snapshot().projectionError).toContain('No se pudo actualizar');
+    expect(model.store.snapshot().projectionError).toContain('Could not refresh');
     expect(model.store.snapshot().execution?.through_sequence).toBe(10);
   },
 );

@@ -86,6 +86,11 @@ Component packages expose their own operations and extension hooks. A derived re
 
 ## Module documents and implementation workflow
 
+The current approved process is [M06](../continuous-improvement/methods/006-delivery-preparation.md).
+It adds precise dependency handoffs, acceptance evidence for review and shared test
+readiness to the phases below. Apply those requirements in the existing module
+documents and tickets; no additional documentation hierarchy is required.
+
 Each module owns its documents in its directory. A module is a declared capability,
 frontend feature or independently packaged component, not every organizational
 folder. Keep one set at its ownership boundary, alongside its public entry point

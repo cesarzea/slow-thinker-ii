@@ -9,7 +9,7 @@ interface Props {
 
 export function AccessPanel({connected, onConnect, onDisconnect}: Props): ReactElement {
   const [token, setToken] = useState('');
-  if (connected) return <button onClick={onDisconnect}>Desconectar acceso de operador</button>;
+  if (connected) return <button onClick={onDisconnect}>Disconnect operator access</button>;
   return (
     <form
       onSubmit={(event) => {
@@ -19,7 +19,7 @@ export function AccessPanel({connected, onConnect, onDisconnect}: Props): ReactE
       }}
     >
       <label>
-        Clave de acceso
+        Access key
         <input
           type="password"
           autoComplete="off"
@@ -29,7 +29,7 @@ export function AccessPanel({connected, onConnect, onDisconnect}: Props): ReactE
           }}
         />
       </label>
-      <button disabled={token.trim() === ''}>Conectar para ejecutar</button>
+      <button disabled={token.trim() === ''}>Connect operator access</button>
     </form>
   );
 }

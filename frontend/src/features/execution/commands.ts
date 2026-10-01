@@ -47,7 +47,7 @@ export class ExecutionCommands {
       this.storage.setItem(pendingKey, commandId);
     } catch {
       this.store.update({
-        message: 'No se pudo guardar la referencia de la orden. No se ha enviado.',
+        message: 'Could not save the command reference. The command was not sent.',
       });
       return;
     }
@@ -64,7 +64,7 @@ export class ExecutionCommands {
     try {
       const receipt = await this.client.send(request.path, request.body);
       if (receipt.command_id !== request.body['command_id'])
-        throw new Error('El recibo no corresponde a esta orden.');
+        throw new Error('The receipt does not match this command.');
       acceptReceipt(this.store, this.storage, receipt);
     } catch (error) {
       this.store.update({message: failureMessage(error), busy: false, stale: true});
@@ -80,7 +80,7 @@ export class ExecutionCommands {
       if (receipt !== null) acceptReceipt(this.store, this.storage, receipt);
       else
         this.store.update({
-          message: 'Solicitud sin confirmar. Puedes volver a consultar su recibo.',
+          message: 'Request unconfirmed. You can check its receipt again.',
         });
     } catch (error) {
       if (!signal.aborted) this.store.update({message: failureMessage(error), stale: true});
@@ -118,13 +118,13 @@ export class ExecutionCommands {
     try {
       this.storage.removeItem(pendingKey);
     } catch {
-      this.store.update({message: 'No se pudo eliminar el seguimiento local.'});
+      this.store.update({message: 'Could not remove local tracking.'});
       return;
     }
     this.store.update({
       pending: null,
       stale: true,
-      message: 'Seguimiento eliminado. La solicitud podría completarse en el servidor.',
+      message: 'Tracking removed. The request may still complete on the server.',
     });
   }
 }
