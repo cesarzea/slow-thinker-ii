@@ -2,6 +2,41 @@
 
 **Updated: 2026-10-01. The shared local verification runner passed, including CodeQL.** Dated sections retain earlier verification evidence.
 
+## Browser polling regression and publication follow-up — 2026-10-01
+
+The published commit `d4581837016f33011c85c9cf08df312f2807ab48` passed local
+verification, but [GitHub CI run 36881892848](https://github.com/cesarzea/slow-thinker-ii/actions/runs/36881892848)
+failed the saved-run polling journey; the other nine browser cases passed. Both
+native CodeQL jobs and the title check passed. The failing assertion compared
+the node's complete inline style after layout reset.
+
+Temporary instrumentation showed that four passing local repetitions had not
+moved the node: its card was below the viewport when raw mouse input was sent.
+Adding a visibility assertion after reset reproduced the CI failure in four
+repetitions. Transient visibility styles could satisfy the earlier comparison
+without proving movement. Instrumentation was removed before correction.
+
+The corrected journey scrolls the card into view, requires an actual change in
+its computed transform, verifies node and camera transforms across a successful
+execution poll, and requires layout reset to restore the initial node transform.
+Only the browser test and its module contract changed; no product defect was
+established, and no retries, fixed delays, timeouts or gates were relaxed.
+
+The representative corrected case passed, then ten focused repetitions passed
+in 32.7 seconds. The unchanged full `make verify` runner subsequently passed:
+1,421 Python tests, 154 frontend tests, all ten browser journeys, static checks,
+production build, accounting mutations and independent coverage checks. Python
+combined coverage remains 95.86%; frontend statement/branch/function/line coverage
+remains 98.34%/92.89%/99.12%/99.23%. CodeQL retains the reviewed 80 Python notes,
+with no errors or warnings, and no JavaScript/TypeScript findings. The configured
+mutation baseline remains 141 killed, one timeout and 58 survivors.
+
+These checks used offline provider fixtures and made no paid model call. The
+earlier passing journey counts remain historical results; they did not establish
+the intended drag behavior. Remote validation of this correction is pending at
+document preparation. Main-branch protection remains unchanged; no merge or owner
+sign-off is claimed.
+
 ## Shared CodeQL verification and commit readiness — 2026-10-01
 
 Integrated the [CodeQL package](../tooling/quality/codeql/specification.md) into

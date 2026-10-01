@@ -69,3 +69,12 @@ after expansion/dragging, polling state and exact inspector selection. Frontend
 typing, ESLint, formatting, boundaries, dead-code checks and build pass.
 See the [verification record](../../../../docs/verification.md) for coverage,
 corrections, exact command scope and remaining publication limitations.
+
+### Browser polling regression
+
+The polling journey must scroll the selected saved-run agent into the browser
+viewport before sending pointer input, establish its initial CSS transform, and
+verify that the drag changes that transform. Compare node and viewport transforms
+across a successful execution-poll response, then require Reorganize graph to
+restore the initial node transform. Comparing the entire inline style can accept
+transient visibility changes without proving movement or layout reset.

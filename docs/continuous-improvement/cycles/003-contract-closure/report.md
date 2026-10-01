@@ -154,3 +154,25 @@ M06 application is observed for this follow-up; elapsed and accumulated activity
 have not been audited, so no productivity gain or comparative timing is claimed.
 The original C03 method assessment and measurements remain unchanged. Updated
 remote CI has not been run; this checkpoint establishes local commit readiness.
+
+## Browser CI regression follow-up — 2026-10-01
+
+After publication, the polling journey failed in GitHub CI despite the preceding
+local pass. The [diagnosis and correction](../../../verification.md#browser-polling-regression-and-publication-follow-up--2026-10-01)
+identify a test-fixture and assertion defect: the attempted drag was outside the
+viewport, and whole-style comparison could pass on visibility changes. Four
+passing diagnostic repetitions showed no movement; a readiness assertion then
+reproduced the failure four times. This qualifies the earlier browser evidence
+without changing its recorded counts or any C03 timing.
+
+Under M06, the coordinator resolved the diagnosis and module contract before
+assigning the complete browser-journey package to one implementer. Delivery and
+whole-change review preceded the separate testing assignment. One representative
+case, ten focused repetitions and the unchanged full shared runner passed. No
+production change, retry, delay or verification relaxation was needed.
+
+The local pass did not prevent this escaped defect. The correction strengthens
+evidence of the intended behavior rather than adding more broad test repetitions.
+Remote checks for the correction remain pending at this checkpoint. This follow-up
+has no complete timing audit and establishes no comparative productivity gain;
+the original cycle measurements and method attribution remain unchanged.

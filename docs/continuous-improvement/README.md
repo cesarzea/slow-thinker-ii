@@ -105,3 +105,12 @@ assignment and review/test phases. This closes the local publication prerequisit
 at a later checkpoint; it does not retroactively change C03's partial M05 assessment
 or its measured times. Updated remote CI remains pending. Follow-up duration and
 resource usage were not audited, so efficiency remains unevaluated.
+
+## Browser CI regression follow-up — 2026-10-01
+
+The [dated C03 follow-up](cycles/003-contract-closure/report.md#browser-ci-regression-follow-up--2026-10-01)
+records a polling test that passed locally without proving the intended drag and
+then failed in remote CI. Corrected movement and reset assertions passed focused
+repetitions and the full local runner under M06. Remote validation of the correction
+is pending at recording. Earlier verification counts and audited cycle times remain
+unchanged; this follow-up supplies no measured productivity comparison.

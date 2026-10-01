@@ -1,17 +1,17 @@
 # Sprint Status Report — S02
 
-| Document control         | Value                                                                      |
-| ------------------------ | -------------------------------------------------------------------------- |
-| Report ID                | SPRINT-S02-001                                                             |
-| Report version           | **0.0.2.4** — V0.0, Sprint 2, Revision 4                                   |
-| Owner                    | Cesar Zea                                                                  |
-| Reporting date           | 2026-10-01, Europe/Lisbon                                                  |
-| Delivery date            | 2026-09-30                                                                 |
-| Sprint                   | S02 — Agent canvas and English presentation                                |
-| Delivery status          | Functional scope delivered and verified locally                            |
-| Publication readiness    | CI polling regression corrected and verified locally; remote rerun pending |
-| Acceptance status        | Owner-requested corrections delivered; final owner sign-off not recorded   |
-| Product package versions | Python: `0.1.0.dev1`; frontend: `0.1.0-dev.1`                              |
+| Document control         | Value                                                                    |
+| ------------------------ | ------------------------------------------------------------------------ |
+| Report ID                | SPRINT-S02-001                                                           |
+| Report version           | **0.0.2.3** — V0.0, Sprint 2, Revision 3                                 |
+| Owner                    | Cesar Zea                                                                |
+| Reporting date           | 2026-10-01, Europe/Lisbon                                                |
+| Delivery date            | 2026-09-30                                                               |
+| Sprint                   | S02 — Agent canvas and English presentation                              |
+| Delivery status          | Functional scope delivered and verified locally                          |
+| Publication readiness    | Shared local verification passed; updated remote CI not yet run          |
+| Acceptance status        | Owner-requested corrections delivered; final owner sign-off not recorded |
+| Product package versions | Python: `0.1.0.dev1`; frontend: `0.1.0-dev.1`                            |
 
 The four-part report version identifies the report series, sprint and revision.
 It is a documentation identifier, not a product release version. The report is
@@ -69,27 +69,14 @@ The real negative assertion probe was rejected. The [verification record](../ver
 details the 155 new gate tests, resource correction and remaining limitations.
 No paid model call was made; updated remote CI execution is not yet recorded.
 
-## Publication correction follow-up — 2026-10-01
-
-The published revision passed CodeQL but failed one browser journey in remote CI.
-The test attempted to drag an offscreen card and compared unrelated inline styles.
-Its corrected assertions prove movement, preserve node/camera transforms across
-polling and restore the initial position on reorganization. Product code is unchanged.
-
-One representative case, ten focused repetitions and the complete shared runner
-passed after correction, including 1,421 Python tests, 154 frontend tests and all
-ten browser journeys. The [verification record](../verification.md#browser-polling-regression-and-publication-follow-up--2026-10-01)
-retains the diagnosis and limitations. Remote checks for the correction are pending
-at preparation; branch protection, release status and owner sign-off are unchanged.
-
 ## Outstanding items and next delivery
 
-| Item                                    | Disposition                                                                                                                         |
-| --------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
-| Publication verification                | Shared local verification passed; remote CodeQL passed on the prior commit, and the corrected browser test awaits its remote rerun. |
-| Final owner sign-off                    | Not recorded; owner-requested corrections are implemented and locally verified.                                                     |
-| Marker hover/click inspection           | Intentionally deferred, not an unfulfilled S02 acceptance requirement.                                                              |
-| S03 — Personal experiment configuration | Next proposed sprint: import/edit JSON graphs, configure agents, save versions and create variants. Implementation has not started. |
+| Item                                          | Disposition                                                                                                                         |
+| --------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
+| Shared CodeQL verification before publication | Integrated and verified locally; remote execution of the updated CI workflows remains pending.                                      |
+| Final owner sign-off                          | Not recorded; owner-requested corrections are implemented and locally verified.                                                     |
+| Marker hover/click inspection                 | Intentionally deferred, not an unfulfilled S02 acceptance requirement.                                                              |
+| S03 — Personal experiment configuration       | Next proposed sprint: import/edit JSON graphs, configure agents, save versions and create variants. Implementation has not started. |
 
 The [global sprint plan](../specification/sprint-roadmap.md) defines subsequent
 scope, dependencies and provisional timing. [M06](../continuous-improvement/methods/006-delivery-preparation.md)
@@ -104,11 +91,9 @@ records partial M05 application; it is distinct from this product progress repor
 | 0.0.2.1 | 2026-10-01 | Initial formal report, consolidating S02 delivery, owner-review corrections, verification and outstanding items.    |
 | 0.0.2.2 | 2026-10-01 | Added owner-approved CodeQL cleanup and follow-up evidence; clarified the remaining shared-verification obligation. |
 | 0.0.2.3 | 2026-10-01 | Integrated the shared CodeQL gate, verified rejection and full local checks, and retained remote CI limitations.    |
-| 0.0.2.4 | 2026-10-01 | Recorded the remote polling failure, corrected test evidence and complete local verification; remote rerun pending. |
 
 The [original report, revision 0.0.2.1](sprint-02-status-report-0.0.2.1.md), is
-retained unchanged as a versioned snapshot, together with [revision 0.0.2.2](sprint-02-status-report-0.0.2.2.md)
-and [revision 0.0.2.3](sprint-02-status-report-0.0.2.3.md).
+retained unchanged as a versioned snapshot, together with [revision 0.0.2.2](sprint-02-status-report-0.0.2.2.md).
 
 Increment the final version segment for substantive updates to this report and
 append their date and purpose here. Reports for subsequent sprints use their own

@@ -417,6 +417,27 @@
           "change": "Append dated publication-verification follow-up; preserve original C03 measurements and conclusions."
         }
       ]
+    },
+    {
+      "recorded_on": "2026-10-01",
+      "timezone": "Europe/Lisbon",
+      "purpose": "Append the escaped browser-test defect, diagnosis, M06 correction and local verification; preserve historical results and audited durations.",
+      "previous_edition_retention": "Local ignored snapshot of affected records and sorted SHA-256 index before the browser CI follow-up; prior published revision retained in Git.",
+      "previous_edition_archive_sha256": "139e952dca58055fef84068802b8508ea92fa0a0531ac7a247f84d4f8afcd705",
+      "records": [
+        {
+          "file": "README.md",
+          "previous_edition_sha256": "38d5f8de849131bef4e484c04849ba7c35ce245c3368d6473d0c8752c5142716",
+          "current_sha256": "93f80b723bd5622d3c57f12d9f3f9602ff5b0c1bbf6c3e420334a303de653bb8",
+          "change": "Append dated browser CI regression follow-up; original measurements and checkpoint results retained."
+        },
+        {
+          "file": "cycles/003-contract-closure/report.md",
+          "previous_edition_sha256": "1211ad20f19f35f415c55ccecc2327755c32e34880903b79fe1c0de33d736498",
+          "current_sha256": "eb1bfc13b721c74442ff7f00f72af19a356b2a650ebb86afb8c367698823963d",
+          "change": "Append dated browser CI regression follow-up; original measurements and checkpoint results retained."
+        }
+      ]
     }
   ]
 }
