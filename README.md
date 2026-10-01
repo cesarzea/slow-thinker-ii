@@ -73,7 +73,7 @@ execution limits. Graph editing and collaboration analysis are future work.
 
 | Standard | Requirement |
 | --- | --- |
-| Protected `main`: pull requests only, required checks and review, linear history, and squash merges. | Required |
+| Protected `main`: pull requests only, required checks, owner review under [ADR 0012](docs/adr/0012-single-maintainer-review.md), linear history, and squash merges. | Required |
 | Code review following [Google's engineering practices](https://google.github.io/eng-practices/review/), with a documented definition of done. | Required |
 | [Conventional Commits](https://www.conventionalcommits.org) through validated pull request titles and squash commit messages. | Required |
 | One verification command locally and in CI; each automated gate must fail on a deliberate violation when introduced. | Required |

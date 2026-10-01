@@ -163,8 +163,11 @@ provider account. Automated tests use local fixtures and require no provider key
 - Review follows [Google's practices](https://google.github.io/eng-practices/review/).
 
 Use Conventional Commit PR titles and squash messages. Changes to `main` require
-an approved pull request and required checks once the remote repository is set
-up. Local workflow files do not establish remote branch protection.
+a pull request, all required checks and the owner's review and merge decision.
+The [single-maintainer policy](docs/adr/0012-single-maintainer-review.md) keeps
+remote PR and CI enforcement while setting the required external approval count
+to zero. Revisit that count when an independent maintainer becomes available.
+Local workflow files do not establish remote branch protection.
 
 Never commit credentials, local databases or provider responses containing
 private data. Required CI checks use simulated providers and no provider keys.
