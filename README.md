@@ -95,7 +95,7 @@ Technology stack: **Python + FastAPI** for the backend; **React + TypeScript, Re
 and Vite** for the browser interface. MCP and OpenAI-compatible interfaces
 support integration with agent tooling, including LangChain and LangGraph.
 
-See the [development instructions](CONTRIBUTING.md) and [verification record](docs/verification.md) for setup, tested behavior and current limitations. The complete platform remains under development.
+See the [contributing guide](CONTRIBUTING.md), [local development guide](docs/development.md) and [verification record](docs/verification.md) for setup, tested behavior and current limitations. The complete platform remains under development.
 
 The [Changelog](CHANGELOG.md) records development progress and sprint report versions.
 
