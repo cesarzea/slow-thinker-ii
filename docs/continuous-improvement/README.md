@@ -41,12 +41,13 @@ does not activate a new sprint or cycle. See the
 
 ## Cycle register
 
-| Cycle                                                                                | Method                 | Observed active elapsed time | Accumulated participant activity                | Outcome                                                                 |
-| ------------------------------------------------------------------------------------ | ---------------------- | ---------------------------- | ----------------------------------------------- | ----------------------------------------------------------------------- |
-| [C01 — Baseline](cycles/001-baseline-2026-09-28/report.md)                           | M01                    | 10 h 04 min 39 s             | 10 h 04 min 39 s for the audited principal work | Execution, observation and control foundations; objective remained open |
-| [C02 — Sprint through delivery](cycles/002-sprint-2026-09-29/report.md)              | M02                    | 1 h 53 min 26 s              | 4 h 15 min 44 s across four participants        | First local cycle verified; PR #8 checks completed                      |
-| [C03 — Agent canvas and English presentation](cycles/003-contract-closure/report.md) | M05, partially applied | 36 min to initial handoff    | 1 h 03 min 50 s across three participants       | Initial delivery audited; subsequent input/output correction verified   |
-| [C04 — Dependency maintenance](cycles/004-dependency-maintenance/report.md) | M06 | Not audited; checkpoint span recorded | Not audited | Selected updates locally verified; remote publication pending |
+| Cycle                                                                                | Method                 | Observed active elapsed time                 | Accumulated participant activity                | Outcome                                                                          |
+| ------------------------------------------------------------------------------------ | ---------------------- | -------------------------------------------- | ----------------------------------------------- | -------------------------------------------------------------------------------- |
+| [C01 — Baseline](cycles/001-baseline-2026-09-28/report.md)                           | M01                    | 10 h 04 min 39 s                             | 10 h 04 min 39 s for the audited principal work | Execution, observation and control foundations; objective remained open          |
+| [C02 — Sprint through delivery](cycles/002-sprint-2026-09-29/report.md)              | M02                    | 1 h 53 min 26 s                              | 4 h 15 min 44 s across four participants        | First local cycle verified; PR #8 checks completed                               |
+| [C03 — Agent canvas and English presentation](cycles/003-contract-closure/report.md) | M05, partially applied | 36 min to initial handoff                    | 1 h 03 min 50 s across three participants       | Initial delivery audited; subsequent input/output correction verified            |
+| [C04 — Dependency maintenance](cycles/004-dependency-maintenance/report.md)          | M06                    | Not audited; checkpoint span recorded        | Not audited                                     | Selected updates locally verified; remote publication pending                    |
+| [C05 — Personal experiments](cycles/005-personal-experiments/report.md)              | M06                    | Not audited; 2 h 20 min 49 s checkpoint span | Not audited                                     | Personal authoring locally verified; delivery and preparation defects classified |
 
 C01 covers the audited windows on 2026-09-28 and the brief reactivation on
 2026-09-29. C02 covers 03:53:47–05:47:13 Europe/Lisbon on 2026-09-29. The initial C03
@@ -124,3 +125,13 @@ Complete visible-card samples now support the original geometry assertions; the
 representative, 20 repetitions and full local runner pass. Remote verification is
 pending at preparation. Historical durations and conclusions remain unchanged;
 two escaped test defects limit any claim about the method's verification efficacy.
+
+## Maintenance closure and S03 evaluation — 2026-10-02
+
+C04's [dated closure](cycles/004-dependency-maintenance/report.md#publication-and-identity-closure--2026-10-01)
+records PR #9 merged with required checks passing and the owner's public-name
+decision. Earlier pending statuses and checkpoint measurements remain preserved.
+[C05](cycles/005-personal-experiments/report.md) evaluates M06's S03 application,
+including shared-contract omissions, review corrections and classified verification
+failures. Its checkpoints do not constitute an activity-duration audit. P11/P12
+remain proposals; no efficiency improvement or new method version is claimed.

@@ -5,7 +5,6 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Protocol
 
-from slow_thinker_ii.adapters.catalog import BundledDefinitionStore
 from slow_thinker_ii.adapters.http import OperatorAccess
 from slow_thinker_ii.adapters.installations import InstallationCatalog
 from slow_thinker_ii.adapters.preparation import (
@@ -23,6 +22,8 @@ from slow_thinker_ii.adapters.sqlite import (
     SqliteTariffStore,
 )
 from slow_thinker_ii.application import ExecutionConfiguration, ExecutionCoordinator
+
+from ._library import experiment_library
 
 
 @dataclass(frozen=True)
@@ -80,7 +81,7 @@ class ExecutionSetup:
         self, database: SqliteDatabase, root: Path, commands: SqliteOperatorStore
     ) -> InstalledWorkflowPreparer:
         return InstalledWorkflowPreparer(
-            BundledDefinitionStore(root / "docs/contracts/examples"),
+            experiment_library(database, root),
             self.installations,
             root / "docs/contracts/schemas",
             self.descriptors,

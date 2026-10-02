@@ -99,3 +99,15 @@ cost and acceptance outcomes; no productivity gain is established by approval.
 Append a dated decision with rationale, owner, target cycle and expected evidence.
 If the agreed procedure changes, retain the prior method and create a new version.
 Record the subsequent outcome even when it contradicts the hypothesis.
+
+## Proposals following C05 — 2026-10-02
+
+Status: proposed; owner decision pending. M06 remains the approved method.
+The [C05 evaluation](cycles/005-personal-experiments/report.md) records the observed
+defects and measurement limits. These proposals refine existing preparation and
+testing obligations; they do not remove checks or change product scope.
+
+| ID  | Observation                                                                                                                       | Proposed refinement                                                                                                                                                                   | Evaluation                                                                                                                     |
+| --- | --------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| P11 | Raw browser numeric conversion and the public library import policy were omitted from preparation.                                | Include transport representation fidelity and exact public dependency-entry policy in the existing representative handoff.                                                            | Count reopened shared decisions and representation/boundary defects, including preparation effort.                             |
+| P12 | Isolated tests missed complete collection/dead-code issues; heading-only historical checks missed a malformed activation fixture. | Check joint collection and dead-code integration before expensive shared analysis; require the representative saved-run browser path to render its actual canvas and linked evidence. | Classify integration/fixture escapes and necessary reruns; measure preparation and full delivery rather than test count alone. |

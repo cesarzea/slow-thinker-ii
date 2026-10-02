@@ -141,6 +141,16 @@ name = "Application internals are private"
 type = "protected"
 protected_modules = ["slow_thinker_ii.application.*"]
 allowed_importers = ["slow_thinker_ii.application"]
+ignore_imports = [
+    "slow_thinker_ii.adapters.** -> slow_thinker_ii.application.library",
+    "slow_thinker_ii.bootstrap.** -> slow_thinker_ii.application.library",
+]
+
+[[tool.importlinter.contracts]]
+name = "Library internals are private"
+type = "protected"
+protected_modules = ["slow_thinker_ii.application.library.*"]
+allowed_importers = ["slow_thinker_ii.application.library"]
 
 [[tool.importlinter.contracts]]
 name = "Catalogue adapter internals are private"

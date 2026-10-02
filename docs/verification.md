@@ -1,6 +1,65 @@
 # Verification record
 
-**Updated: 2026-10-01. The shared local verification runner passed, including CodeQL.** Dated sections retain earlier verification evidence.
+**Updated: 2026-10-02. S03 passed the complete shared local verification runner, including CodeQL.** Dated sections retain earlier verification evidence.
+
+## Personal experiment delivery — 2026-10-02
+
+The [S03 delivery specification](specification/personal-experiments-sprint.md)
+and [status report](progress/sprint-03-status-report.md) identify the delivered
+personal JSON authoring scope. After reviewed corrections, the complete configured
+`make verify` runner finished with exit 0 at the observed 00:08:38 UTC checkpoint.
+
+| Mandatory check                                                              | Recorded result                                                                     |
+| ---------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
+| Physical source limits, Ruff, strict Pyright/Mypy, Vulture and Import Linter | Passed; 27 import contracts and real deliberate boundary violations remain enforced |
+| TypeScript, ESLint, Prettier, dependency-cruiser and Knip                    | Passed; no boundary or unused-code exemptions added                                 |
+| Python/component/tooling tests                                               | 1,724 passed in 247.79 seconds                                                      |
+| Frontend component/API tests                                                 | 259 passed across 39 files                                                          |
+| Browser journeys through real HTTP/SQLite                                    | 15 passed in 56.9 seconds                                                           |
+| Python coverage                                                              | 97.21% lines; 91.61% branches; 96.11% combined                                      |
+| Frontend coverage                                                            | 98.66% statements; 93.48% branches; 99.15% functions; 99.27% lines                  |
+| Pinned local CodeQL, Python and JavaScript/TypeScript                        | No errors or warnings; 90 Python notes and no JavaScript notes                      |
+| Frontend production build                                                    | Passed                                                                              |
+| Accounting mutation execution and independent coverage gates                 | Completed successfully; surviving baseline mutants are not claimed as killed        |
+
+Library/SQLite tests establish canonical numeric fidelity, atomic concurrent replay
+and conflicts, exact identities, known parent lineage and fixed signed listing windows.
+HTTP/client tests cover operator authorization, viewer write absence, bounded
+requests/responses, safe complete diagnostics and uncertain insertion outcomes.
+Real v5-to-v6 migrations preserve prior tables, verified backups and rollback behavior.
+
+Production preparation executes a saved personal graph's real program/policy with
+the actual Sequence process and LLMCall, using explicitly simulated runtime ports
+and transport. Recorded native SDK instructions, input, model alias and output-token
+settings establish the admitted configuration and mediated charge. A later revision
+leaves the earlier snapshot, result and call evidence unchanged. This is independent
+of browser fixtures and does not claim synthetic manifest packages launch inference.
+
+Browser journeys establish raw import/edit/save/reload, exact two-revision selection,
+manual new-ID variant execution, dirty/pending/stale/uncertain-state recovery and
+retained inspection. Historical checks require a rendered proposer canvas and
+recorded activation. The isolated GUI demonstration saved `s03-demo · v1`, completed
+a simulated execution and retained its graph/result after changed instructions were
+saved as `v2`. Fixture accounting is simulated; no provider traffic or charge occurred.
+
+Whole-system review corrected raw authoring fidelity and post-save editor state.
+Testing corrected boolean schema handling, the shared public import policy, test
+exports/collection, a CodeQL fixture expression and browser visibility/evidence
+assumptions. The [C05 evaluation](continuous-improvement/cycles/005-personal-experiments/report.md)
+classifies these failures; five earlier runner attempts stopped before complete
+acceptance. The successful sixth attempt retains the original gates and environment.
+
+Ten new Python CodeQL notes are deliberate typing.Protocol method ellipses; the
+previous 80 reviewed notes remain. No suppression or severity policy was changed.
+Hosted verification and owner review/merge authorization remain separate publication
+requirements. These results establish local delivery, not a stable product release.
+
+The existing local application was then restarted with its unchanged execution
+configuration. Its database migrated from v5 to v6 with verified backups and passed
+integrity checks. All three completed runs, 33 calls, prior event/result content and
+spending records were retained; restart recovery appended two cleanup events without
+replacing historical evidence. The authenticated library responds successfully and
+the existing monthly cap remains USD 3. No new model execution was initiated.
 
 ## Browser geometry readiness follow-up — 2026-10-01
 

@@ -8,7 +8,7 @@
 | --- | --- |
 | `schema_version` | Exact graph contract version, initially `0.1-draft`. |
 | `graph_id`, `revision` | Definition identity and immutable semantic revision. |
-| `derived_from` | Optional parent definition reference for future variant lineage. |
+| `derived_from` | Optional exact parent definition reference for manual variant lineage. |
 | `components` | Configured instances pinned to type/version, configuration and resource bindings. |
 | `controller` | A component and operation responsible for control decisions. |
 | `nodes` | Component operations and explicit input bindings. |
@@ -18,7 +18,7 @@
 
 The [review-cycle example](examples/review-cycle.graph.json) uses proposer, reviewer, model resource and sequence controller instances. Three nodes refer to two agent identities. Configured resources and controllers are not counted as extra reasoning agents.
 
-The [initial example set](examples/README.md) also includes a single agent, a two-agent handoff and two rounds of review. The first UI selects these bundled definitions; an editing tool and manual upload follow later. Every example goes through the same graph validation and execution contracts.
+The [initial example set](examples/README.md) also includes a single agent, a two-agent handoff and two rounds of review. S03 adds JSON import/edit and immutable personal definitions alongside these bundled graphs. Every definition uses the same graph schema and supported execution profiles; the [personal experiment guide](../personal-experiments.md) describes authoring and execution.
 
 ## Control policy
 
@@ -69,3 +69,9 @@ Fresh run state is the default. Persistent resources require explicit bindings, 
 - Freeze effective inputs and policies before side effects; validate resolved invocation shapes before dispatch.
 
 Schemas cannot establish these cross-reference or behavioral properties alone. The [open questions](../specification/open-questions.md) identify the unresolved contracts needed for executable admission.
+
+## S03 personal definitions
+
+The [personal experiment library](personal-experiments.md) extends selection with
+JSON import/edit, immutable saves and manual lineage using this same graph schema.
+Its static validation boundary is distinct from installed runtime preflight.

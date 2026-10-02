@@ -1,4 +1,4 @@
-"""Prepare one exact bundled graph using approved backend resources and immutable local evidence."""
+"""Prepare one exact saved graph using approved backend resources and immutable local evidence."""
 
 import asyncio
 import math
@@ -8,7 +8,6 @@ from contextlib import suppress
 from pathlib import Path
 
 from slow_thinker_ii.adapters.catalog import (
-    BundledDefinitionStore,
     GraphRecord,
     InstalledGraphCompiler,
 )
@@ -20,6 +19,7 @@ from slow_thinker_ii.application import (
     ProcessJournal,
     StartIntent,
     TariffStore,
+    library,
 )
 
 from ._endpoints import ServiceEndpoints
@@ -36,7 +36,7 @@ from ._workflow import WorkflowAssembly
 class InstalledWorkflowPreparer:
     def __init__(
         self,
-        definitions: BundledDefinitionStore,
+        definitions: library.DefinitionReader,
         installations: InstallationCatalog,
         schemas: Path,
         descriptors: tuple[str, ...],

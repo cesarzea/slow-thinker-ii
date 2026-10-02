@@ -6,7 +6,7 @@ async function start(page: Page, problem: string): Promise<void> {
   await connect(page);
   await page
     .getByRole('combobox', {name: 'Experiment', exact: true})
-    .selectOption('bounded-review');
+    .selectOption(JSON.stringify(['bounded-review', 'example-1']));
   await createSession(page, `Bounded ${problem}`);
   await page.getByLabel('Task or problem').fill(problem);
   await page.getByRole('button', {name: 'Start run', exact: true}).click();

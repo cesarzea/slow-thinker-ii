@@ -36,7 +36,7 @@ def test_v2_runs_must_be_recovered_before_receipt_schema_migration(tmp_path: Pat
     assert recover_runs(SqliteRunStore(database, 4096)) == ("run",)
     database.initialize()
     with database.transaction() as connection:
-        assert connection.execute("PRAGMA user_version").fetchone()[0] == 5
+        assert connection.execute("PRAGMA user_version").fetchone()[0] == 6
         assert connection.execute("SELECT state FROM managed_runs").fetchone()[0] == "interrupted"
         assert connection.execute("SELECT COUNT(*) FROM call_receipts").fetchone()[0] == 0
     assert list(tmp_path.glob("old.sqlite.v2.*.backup"))

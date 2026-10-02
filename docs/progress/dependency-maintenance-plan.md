@@ -1,12 +1,12 @@
 # Dependency maintenance — October 2026
 
-| Document control | Value |
-| --- | --- |
-| Owner | Cesar Zea |
-| Method | M06 |
-| Baseline | Main after PR #8 (`e47e6ae`) |
-| Scope | Resolve the dependency proposals preceding S03 |
-| Status | Locally verified; remote checks and merge pending |
+| Document control | Value                                             |
+| ---------------- | ------------------------------------------------- |
+| Owner            | Cesar Zea                                         |
+| Method           | M06                                               |
+| Baseline         | Main after PR #8 (`e47e6ae`)                      |
+| Scope            | Resolve the dependency proposals preceding S03    |
+| Status           | Locally verified; remote checks and merge pending |
 
 ## Decisions and delivery
 
@@ -15,13 +15,13 @@ PR #3 (Node 26 types) and PR #5 (TypeScript 7) are closed as incompatible update
 Combine the remaining proposals into one reviewed maintenance PR against current
 main. Close the superseded proposals only after the replacement is merged.
 
-| Proposal | Selected change | Acceptance |
-| --- | --- | --- |
-| #1 | setup-uv 10.2.0, pinned to `c18668ad3cf93ea998bef934396af7bb5c839dc7` | Existing version/Python inputs retained; remote workflow succeeds |
-| #2 | Vite 8.3.1 | Locked install, build and browser journeys pass |
-| #4 | uv 0.12.19 | Development/CI/installer pins agree; exact offline installation remains mandatory |
-| #6 | jsdom 30.1.1 | Existing DOM/component tests and coverage pass |
-| #7 | Pyright 1.1.414 | Strict analysis passes without disabling deprecation checks |
+| Proposal | Selected change                                                       | Acceptance                                                                        |
+| -------- | --------------------------------------------------------------------- | --------------------------------------------------------------------------------- |
+| #1       | setup-uv 10.2.0, pinned to `c18668ad3cf93ea998bef934396af7bb5c839dc7` | Existing version/Python inputs retained; remote workflow succeeds                 |
+| #2       | Vite 8.3.1                                                            | Locked install, build and browser journeys pass                                   |
+| #4       | uv 0.12.19                                                            | Development/CI/installer pins agree; exact offline installation remains mandatory |
+| #6       | jsdom 30.1.1                                                          | Existing DOM/component tests and coverage pass                                    |
+| #7       | Pyright 1.1.414                                                       | Strict analysis passes without disabling deprecation checks                       |
 
 The action's reviewed [v8](https://github.com/astral-sh/setup-uv/releases/tag/v8.0.0),
 [v9](https://github.com/astral-sh/setup-uv/releases/tag/v9.0.0) and
@@ -96,3 +96,12 @@ The first shared attempt stopped at the physical-size gate after an annotation
 wrapped a fixture signature. Extracting its existing identity construction into a
 private helper restored the 30-line limit without relaxing the gate. The full
 runner was resumed through the same configured entry point.
+
+## Publication closure — 2026-10-01
+
+[PR #9](https://github.com/cesarzea/slow-thinker-ii/pull/9) passed all required
+remote checks and was merged at 19:52:19 UTC as `604cc5d`. The replacement closes
+this maintenance delivery. Later contribution-guide documentation was merged in
+[PR #10](https://github.com/cesarzea/slow-thinker-ii/pull/10) at 22:47:17 UTC as
+`f10e062`, also with all required checks passing. The pending states above retain
+what was known at the earlier checkpoint; neither merge constitutes a product release.

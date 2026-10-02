@@ -1,9 +1,9 @@
-import {useState} from 'react';
-import type {GraphSummary} from '../api/index.ts';
+import type {GraphSummary, GraphReference} from '../api/index.ts';
 import type {ReactElement} from 'react';
 import {GraphWorkspace} from './graph-workspace.tsx';
 import {ExecutionWorkspace} from './execution-workspace.tsx';
 import {ExperimentPanel} from './experiment-panel.tsx';
+import {LibraryControls} from './library-controls.tsx';
 import {useCatalog} from './use-catalog.ts';
 
 interface Props {
@@ -12,16 +12,22 @@ interface Props {
 }
 
 export function CatalogPanel({credential, generation}: Props): ReactElement {
-  const {graphs, error, loading} = useCatalog(credential);
-  const [selected, select] = useState('');
-  const graph = graphs.find((item) => item.graph_id === selected) ?? graphs[0];
+  const catalog = useCatalog(credential);
+  const {graph, graphs, model} = catalog;
   return (
     <>
-      {loading && <p role="status">Loading experiments…</p>}
-      {error !== null && <p role="alert">{error}</p>}
-      {graph !== undefined && <ExperimentPanel graphs={graphs} graph={graph} onSelect={select} />}
-      {graph !== undefined && (
-        <SelectedWorkspace credential={credential} generation={generation} graph={graph} />
+      <LibraryControls catalog={catalog} connected={credential !== undefined} />
+      {graph !== null && <ExperimentPanel graphs={graphs} graph={graph} onSelect={model.select} />}
+      {graph !== null && (
+        <SelectedWorkspace
+          credential={credential}
+          generation={generation}
+          graph={graph}
+          selectionBlocked={catalog.selectionBlocked}
+          onSaved={(reference) => {
+            void model.recoverSaved(reference);
+          }}
+        />
       )}
     </>
   );
@@ -31,13 +37,25 @@ function SelectedWorkspace({
   credential,
   generation,
   graph,
-}: Props & {readonly graph: GraphSummary}): ReactElement {
+  onSaved,
+  selectionBlocked,
+}: Props & {
+  readonly graph: GraphSummary;
+  readonly onSaved: (reference: GraphReference) => void;
+  readonly selectionBlocked: boolean;
+}): ReactElement {
   return credential === undefined ? (
     <GraphWorkspace
-      key={`${String(generation)}:${graph.graph_id}:${graph.revision}`}
+      key={JSON.stringify([generation, graph.graph_id, graph.revision])}
       graph={graph}
     />
   ) : (
-    <ExecutionWorkspace key={generation} credential={credential} graph={graph} />
+    <ExecutionWorkspace
+      key={generation}
+      credential={credential}
+      graph={graph}
+      onSaved={onSaved}
+      selectionBlocked={selectionBlocked}
+    />
   );
 }

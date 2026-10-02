@@ -1,13 +1,11 @@
 import {useState} from 'react';
 import type {ReactElement} from 'react';
-import type {GraphSummary} from '../api/index.ts';
-import {ExecutionPanel} from '../features/execution/index.ts';
+import type {GraphReference, GraphSummary} from '../api/index.ts';
 import type {ExecutionObservation} from '../features/execution/index.ts';
 import {Inspector} from '../features/inspector/index.ts';
 import type {InspectionSelection} from '../features/inspector/index.ts';
-import {DefinitionGraph} from './graph-workspace.tsx';
+import {ExperimentExecution} from './experiment-execution.tsx';
 import {LiveGraph} from './live-graph.tsx';
-import {useGraphDetail} from './use-graph-detail.ts';
 
 interface Inspection {
   readonly run: string;
@@ -16,19 +14,24 @@ interface Inspection {
 interface WorkspaceProps {
   readonly credential: string;
   readonly graph: GraphSummary;
+  readonly onSaved?: (reference: GraphReference) => void;
+  readonly selectionBlocked?: boolean;
 }
-export function ExecutionWorkspace({credential, graph}: WorkspaceProps): ReactElement {
-  const {detail, error} = useGraphDetail(graph, credential);
+export function ExecutionWorkspace({
+  credential,
+  graph,
+  onSaved = () => undefined,
+  selectionBlocked = false,
+}: WorkspaceProps): ReactElement {
   const [observation, onObservation] = useState<ExecutionObservation>();
   const [inspection, inspect] = useState<Inspection>();
-  const selected = detail === null ? graph : {...graph, input_schema: detail.input_schema};
   return (
     <>
-      <DefinitionGraph key={`${graph.graph_id}:${graph.revision}`} {...{graph, detail, error}} />
-      <ExecutionPanel
+      <ExperimentExecution
         credential={credential}
-        graph={selected}
-        inputUnavailable={detail === null}
+        graph={graph}
+        onSaved={onSaved}
+        selectionBlocked={selectionBlocked}
         onObservation={onObservation}
         onInspect={(run) => {
           inspect({run});

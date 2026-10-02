@@ -47,3 +47,30 @@ Public startup limits require decimal USD strings under run_budget, session_budg
 The decorated `TariffLifetime.lifespan` implementation uses
 `AsyncGenerator[None]` for Pyright 1.1.414. Its yielded value remains `None`;
 preserve startup, recovery and bounded shutdown behavior.
+
+## S03 personal experiment library
+
+Follow the [shared contract](../../../../docs/contracts/personal-experiments.md) for wire values, data origins,
+public interfaces, validation scope, errors, immutable identity, paging and failure
+handling. Implementation owner: A.
+
+Compose ExperimentLibrary with trusted bundled source, SQLite repository,
+GraphDefinitionValidator and a >=32-byte process-local cursor signing key. Install
+definition_router only when execution is explicitly configured, under the existing
+operator boundary. Keep viewer/legacy graph routes bundled and read-only. Use an
+equivalent same-database library reader in ExecutionSetup.preparer; preserve the
+existing ExecutionComposition.build(database, root) public signature. No database
+I/O in constructors. Normal lifetime migration precedes request/admission reads.
+
+Acceptance follows the shared S03 scenarios. Development delivery does not claim
+testing is complete. Keep module-private choices within these public contracts.
+
+## S03 development implementation
+
+`experiment_library` composes the public library, local descriptor validator and
+SQLite repository with a random 32-byte signing key. `create_app` adds definition
+routes inside the configured operator boundary. `ExecutionSetup.preparer` creates
+an equivalent reader using the same persistent database and immutable bundled
+source. `ExecutionComposition.build(database, root)` retains its signature and
+the existing lifespan initializes/migrates storage before serving requests.
+Coordinator review and configured/viewer composition verification remain pending.

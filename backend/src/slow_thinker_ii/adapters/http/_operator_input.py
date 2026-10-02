@@ -23,8 +23,8 @@ class SessionBody(CommandBody):
 
 class StartBody(CommandBody):
     session_id: Identity
-    graph_id: Identity
-    graph_revision: Identity
+    graph_id: str = Field(pattern=r"^[a-z][a-z0-9_.-]*$")
+    graph_revision: str = Field(min_length=1)
     configuration_revision: Identity
     input: JsonObject
 

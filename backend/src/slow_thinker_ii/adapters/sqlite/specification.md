@@ -55,3 +55,35 @@ for Pyright 1.1.414. `SqliteDatabase.transaction` and `SqliteOperatorStore._unit
 yield `sqlite3.Connection`; `SqliteRunStore.begin` yields `RunTransaction`;
 `SqliteLedgerStore.begin` yields `LedgerTransaction`; `own_store` yields `None`.
 Preserve transaction/ownership semantics and ordinary iterator interfaces.
+
+## S03 personal experiment library
+
+Follow the [shared contract](../../../../../docs/contracts/personal-experiments.md) for wire values, data origins,
+public interfaces, validation scope, errors, immutable identity, paging and failure
+handling. Implementation owner: A.
+
+Add public SqliteDefinitionRepository(database: SqliteDatabase), implementing
+library.DefinitionRepository. Migration v6 adds the personal definition rows,
+canonical JSON, unique identity, parent fields and monotonically ordered sequence.
+Use transactional parent checks and uniqueness for concurrent canonical replay or
+conflict. Preserve migration backup, all prior tables and unsupported-version
+rejection. page uses one read transaction to fix/reuse its upper boundary. Organize
+new persistence helpers in a cohesive definition-library subpackage if needed;
+export only its repository through the existing SQLite public entry point.
+
+Acceptance follows the shared S03 scenarios. Development delivery does not claim
+testing is complete. Keep module-private choices within these public contracts.
+
+## S03 development implementation
+
+Migration v6 installs `definitions.sql` after existing migrations and preserves
+pre-migration backup verification and transactional installation. No previous
+accounting, process, operator, installation or execution table changes.
+
+The repository uses the database's `BEGIN IMMEDIATE` transaction for identity
+replay/conflict resolution, personal-parent existence and insertion. Sequence is
+an autoincrement primary key; pages read their boundary and ordered rows together,
+fetching one extra row for continuation. Zero-sized repository pages fix a boundary
+without returning personal rows. Constructors perform no database access.
+Focused S03 migration, rollback, concurrency and paging acceptance passes;
+complete coordinator verification remains pending.

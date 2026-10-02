@@ -26,7 +26,11 @@ export function App(): ReactElement {
           connect(undefined);
         }}
       />
-      <CatalogPanel credential={connection.credential} generation={connection.generation} />
+      <CatalogPanel
+        key={connection.generation}
+        credential={connection.credential}
+        generation={connection.generation}
+      />
     </main>
   );
 }

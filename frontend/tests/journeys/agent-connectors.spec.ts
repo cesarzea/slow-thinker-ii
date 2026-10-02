@@ -60,6 +60,8 @@ async function expectBoundaryArrows(canvas: Locator): Promise<void> {
 }
 async function moveAgent(page: Page, canvas: Locator): Promise<void> {
   const agent = canvas.locator('.react-flow__node-agent');
+  await agent.scrollIntoViewIfNeeded();
+  await expect(agent).toBeInViewport();
   const box = await agent.boundingBox();
   if (box === null) throw new Error('Missing agent card');
   const start = {x: box.x + box.width / 2, y: box.y + 20};

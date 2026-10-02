@@ -61,3 +61,21 @@ earlier canvas-layer and separate activation-card presentation requirements.
 ## English presentation contract
 
 The document language is English. Access, experiment selection and inspection navigation use English labels without changing selected graph, run or evidence identities.
+
+## S03 personal experiment library
+
+Follow the [shared contract](../../../docs/contracts/personal-experiments.md) for wire values, data origins,
+public interfaces, validation scope, errors, immutable identity, paging and failure
+handling. Implementation owner: C.
+
+Connected selection uses DefinitionClient.list with explicit refresh/load-more;
+viewer selection retains loadGraphs. Key selected revisions collision-free by both
+identity strings; show each revision distinctly. Compose the new definition-editor
+through its public entry point, refresh/select exact identity after save, propagate
+dirty state to disable Start through existing execution inputUnavailable gating
+with a clear explanation. useGraphDetail reads connected library details, viewer
+legacy details. Preserve saved-run canvas/inspection identities and disconnect
+remount behavior. Leave component canvas design unchanged.
+
+Acceptance follows the shared S03 scenarios. Development delivery does not claim
+testing is complete. Keep module-private choices within these public contracts.

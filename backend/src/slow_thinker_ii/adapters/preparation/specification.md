@@ -43,3 +43,31 @@ Preparation tests verify frozen snapshots, effective installed contracts, bootst
 ## Implemented behavior
 
 Preparation publishes general MCP clients with aliases from the same frozen access policy used at execution. Conditional and Sequence workflows share installation, limits, tariff and host ownership preparation; graph resource bindings do not grant permission.
+
+## S03 personal experiment library
+
+Follow the [shared contract](../../../../../docs/contracts/personal-experiments.md) for wire values, data origins,
+public interfaces, validation scope, errors, immutable identity, paging and failure
+handling. Implementation owner: A.
+
+Change InstalledWorkflowPreparer's concrete BundledDefinitionStore annotation
+to library.DefinitionReader from the public application namespace. Freeze/read the
+exact raw definition through this port. Keep installed effective schema checks,
+configuration, provider/limit validation, mediated dispatch, costs and run snapshots
+unchanged. Existing bundled-reader callers remain structurally compatible.
+
+Acceptance follows the shared S03 scenarios. Development delivery does not claim
+testing is complete. Keep module-private choices within these public contracts.
+
+## S03 development implementation
+
+`InstalledWorkflowPreparer` consumes the public raw-definition reader and freezes
+the exact selected text through the existing installed compiler. Host preparation,
+effective contracts, provider and limit checks, mediated dispatch and saved run
+evidence retain their existing path. Bundled stores remain structurally compatible.
+Focused S03 acceptance prepares saved revisions and executes their production
+program/policy using an explicit fixture environment, real Sequence and LLMCall
+and an in-memory native SDK transport. Exact prompt/input, frozen configuration,
+mediated call evidence and earlier run preservation pass. Synthetic description
+installations are not claimed to execute inference. Complete coordinator
+verification remains pending.

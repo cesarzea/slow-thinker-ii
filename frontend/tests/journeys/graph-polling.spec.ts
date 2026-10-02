@@ -27,7 +27,7 @@ async function openSavedRunGraph(page: Page): Promise<Locator> {
   await connect(page);
   await page
     .getByRole('combobox', {name: 'Experiment', exact: true})
-    .selectOption('bounded-review');
+    .selectOption(JSON.stringify(['bounded-review', 'example-1']));
   await createSession(page, 'Graph polling');
   await page.getByLabel('Task or problem').fill('accept');
   await page.getByRole('button', {name: 'Start run', exact: true}).click();

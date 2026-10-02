@@ -47,6 +47,26 @@ ROOT = Path(__file__).resolve().parents[2]
             "import slow_thinker_ii.application",
             "dependency direction BROKEN",
         ),
+        (
+            "adapters/catalog/__init__.py",
+            "from slow_thinker_ii.application._catalog import ExperimentCatalog",
+            "Application internals are private BROKEN",
+        ),
+        (
+            "bootstrap/__init__.py",
+            "from slow_thinker_ii.application.library._service import ExperimentLibrary",
+            "Library internals are private BROKEN",
+        ),
+        (
+            "adapters/catalog/__init__.py",
+            "from slow_thinker_ii.application.library._records import GraphReference",
+            "Library internals are private BROKEN",
+        ),
+        (
+            "application/_catalog.py",
+            "from slow_thinker_ii.application.library._records import GraphReference",
+            "Library internals are private BROKEN",
+        ),
     ],
 )
 def test_import_contract_rejects(

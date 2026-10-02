@@ -16,3 +16,13 @@ export type {
 } from './graph-schemas.ts';
 export type {ExecutionPage, ActivationView, CommunicationView} from './execution-schemas.ts';
 export type {ReportView} from './report-schema.ts';
+
+export {DefinitionClient, DefinitionError} from './definition-library.ts';
+export type {
+  GraphReference,
+  LibraryItem,
+  LibraryPage,
+  ValidationResult,
+  SaveResult,
+  DefinitionIssue,
+} from './definition-library.ts';

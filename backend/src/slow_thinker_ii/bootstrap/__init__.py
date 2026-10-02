@@ -9,6 +9,7 @@ from slow_thinker_ii.adapters.catalog import BundledDefinitionStore
 from slow_thinker_ii.adapters.http import (
     OperatorBoundary,
     catalog_router,
+    definition_router,
     mcp_router,
     openai_router,
     operator_router,
@@ -20,6 +21,7 @@ from slow_thinker_ii.application import ExperimentCatalog, TariffRefresh, Tariff
 
 from ._configuration import configured_execution, load_execution_setup
 from ._execution import ExecutionComposition, ExecutionServices, ExecutionSetup
+from ._library import experiment_library
 from ._refresh import TariffLifetime
 
 __all__ = [
@@ -50,14 +52,17 @@ def create_app(
     app.add_middleware(TrustedHostMiddleware, allowed_hosts=["localhost", "127.0.0.1"])
     app.include_router(catalog_router(catalog))
     app.include_router(tariff_router(tariffs))
-    attach_execution(app, execution)
+    attach_execution(app, execution, database, root)
     return app
 
 
-def attach_execution(app: FastAPI, execution: ExecutionServices | None) -> None:
+def attach_execution(
+    app: FastAPI, execution: ExecutionServices | None, database: SqliteDatabase, root: Path
+) -> None:
     if execution is not None:
         app.add_middleware(OperatorBoundary, access=execution.access)
         bound = execution.configuration.limits.max_payload_bytes
+        app.include_router(definition_router(experiment_library(database, root), bound))
         app.include_router(
             operator_router(
                 execution.coordinator,
