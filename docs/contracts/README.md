@@ -39,3 +39,6 @@ Core objects reject unknown fields. Explicit `extensions` objects reserve namesp
 Schemas refer only to local definitions or explicitly registered schema URNs from this package. Resolve these through a trusted local registry; the runtime must not fetch arbitrary schema references from the network. User-supplied input/output schemas in the initial LLMCall profile use local fragment references only. Artifact schemas are application contracts, not replacements for the authoritative MCP protocol schemas.
 
 Changing meaning requires a new contract revision and compatibility review. No automatic migration behavior has been approved. See [ADR 0005](../adr/0005-versioned-contracts.md) and [Q13](../specification/open-questions.md).
+
+The [personal experiment library](personal-experiments.md) defines the authorized
+S03 authoring, immutable revisions, validation, paging and operator/client boundary.

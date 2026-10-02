@@ -188,3 +188,9 @@ Pointer. Multiple candidate activations are reported as unavailable rather than
 chosen by recency. Missing historical inputs retain an absence marker. These are
 binding references and recorded arguments, not claims of causal influence or
 reconstructed reasoning.
+
+## S03 authoring extension
+
+The [personal experiment library](personal-experiments.md) specifies additional
+authenticated definition routes, exact query identities, raw JSON writes and bounded
+errors. Existing execution, accounting and inspection routes retain their behavior.

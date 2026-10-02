@@ -15,7 +15,7 @@ test('fits arriving agent definitions, expanded configuration and separate recip
   await connect(page);
   await page
     .getByRole('combobox', {name: 'Experiment', exact: true})
-    .selectOption('bounded-review');
+    .selectOption(JSON.stringify(['bounded-review', 'example-1']));
   await expect(page.getByText(/Detailed structure unavailable/)).toHaveCount(0);
   const canvas = page.getByLabel('Agent collaboration canvas');
   await expect(canvas.locator('.react-flow__node-agent')).toHaveCount(2);
@@ -35,10 +35,11 @@ test('fits arriving agent definitions, expanded configuration and separate recip
   await page.screenshot({path: info.outputPath('bounded-review-agent-canvas.png'), fullPage: true});
 });
 async function delayDefinition(page: Page): Promise<void> {
-  await page.route('**/graphs/bounded-review/revisions/*', async (route) => {
-    await new Promise((resolve) => {
-      setTimeout(resolve, 150);
-    });
+  await page.route('**/definitions/detail?*', async (route) => {
+    if (new URL(route.request().url()).searchParams.get('graph_id') === 'bounded-review')
+      await new Promise((resolve) => {
+        setTimeout(resolve, 150);
+      });
     await route.continue();
   });
 }
@@ -47,7 +48,7 @@ test('keeps agent configuration within a narrow viewport after fitting', async (
   await connect(page);
   await page
     .getByRole('combobox', {name: 'Experiment', exact: true})
-    .selectOption('bounded-review');
+    .selectOption(JSON.stringify(['bounded-review', 'example-1']));
   const canvas = page.getByLabel('Agent collaboration canvas');
   await expect(canvas.locator('.react-flow__node-agent')).toHaveCount(2);
   await page.getByLabel('Show configuration').check();

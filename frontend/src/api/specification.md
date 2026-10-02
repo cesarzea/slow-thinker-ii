@@ -10,6 +10,7 @@ The [public entry point](index.ts) is authoritative for exported names and signa
 - OperatorClient exposes workspace, run, history, result and command operations.
 - events, call, payload and activation fetch bounded inspection projections.
 - Public response types are derived from the module validation schemas.
+- DefinitionClient validates personal library, detail/source, draft, validation and save replies.
 
 ## Required behavior
 
@@ -53,6 +54,11 @@ consumers; the graph-detail and execution endpoints require their full contract.
 Current local gate results are recorded in the shared verification record.
 The 2026-09-30 delivery preserves the module acceptance criteria above.
 
+S03 targeted API tests cover raw source fidelity, exact source/draft identity and
+wire checks, strict stable error envelopes, bounded issues, explicit timeouts,
+cancellation and uncertain-save recovery. Whole-system and mandatory verification
+remain coordinator-owned.
+
 ## Agent canvas and English delivery
 
 Follow the approved [sprint contract](../../../docs/specification/agent-canvas-sprint.md) for presentation,
@@ -62,3 +68,32 @@ earlier canvas-layer and separate activation-card presentation requirements.
 ## English presentation contract
 
 `GraphDetail.execution` is an optional JSON object. Catalog details may omit it; `OperatorClient.definition` still requires it in saved-definition responses. Validation preserves this metadata without altering backend or wire contracts. Client-authored validation and transport messages are English; server evidence and protocol values remain unchanged.
+
+## S03 personal experiment library
+
+Follow the [shared contract](../../../docs/contracts/personal-experiments.md) for wire values, data origins,
+public interfaces, validation scope, errors, immutable identity, paging and failure
+handling. Implementation owner: B.
+
+`DefinitionClient` implements the reviewed interface with validated library,
+detail, validation and save replies. Validate/save send source strings directly;
+exact detail identity uses query parameters and is checked against the reply.
+Recognized error envelopes/statuses produce `DefinitionError` with bounded issues;
+unconfirmed replies produce fixed transport errors suitable for exact-source save
+recovery. Save also treats `response_too_large` and `operator_service_unavailable`
+as uncertain because insertion may precede those errors.
+Reads/validation have a 10-second timeout; saves have a 65-second timeout,
+combined with the caller's abort signal. `index.ts` exports the public client/types.
+`OperatorClient.graph` and `loadGraphs` remain available for viewer reads. There is
+no client persistence or unchecked response cast.
+
+`source(reference, signal)` and `draft(reference, target, signal)` return the
+original successful response text after requiring status 200, JSON content type
+and exact source/target identity. Parsing supports those sanity checks only; it
+never becomes returned authoring text. Draft serializes explicitly selected
+identity strings, excluding any additional fields from structural arguments.
+Both operations use the existing 10-second read timeout and cancellation/error
+behavior; draft generation has no insertion effect.
+
+Acceptance follows the shared S03 scenarios. Development delivery does not claim
+testing is complete. Keep module-private choices within these public contracts.

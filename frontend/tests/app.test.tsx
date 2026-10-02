@@ -60,7 +60,10 @@ it('selects a graph while retaining repeated participant identities', async () =
   vi.stubGlobal('fetch', vi.fn().mockResolvedValue(new Response(JSON.stringify(examples))));
   render(<App />);
   expect(await screen.findByText('1 agent · 1 declared node · 1')).toBeTruthy();
-  await userEvent.selectOptions(await screen.findByLabelText('Experiment'), 'review');
+  await userEvent.selectOptions(
+    await screen.findByLabelText('Experiment'),
+    JSON.stringify(['review', '1']),
+  );
   const ordered = within(screen.getByRole('list', {name: 'Experiment nodes'}));
   expect(ordered.getAllByRole('listitem').map((item) => item.textContent)).toEqual([
     'draft: proposer',

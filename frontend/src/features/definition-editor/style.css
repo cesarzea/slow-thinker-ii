@@ -1,0 +1,18 @@
+.definition-editor {
+  border: 1px solid #bccbd6;
+  border-radius: 0.5rem;
+  margin-block: 1.5rem;
+  padding: 1.25rem;
+  background: white;
+}
+.definition-editor textarea {
+  font-family: ui-monospace, monospace;
+  font-size: 0.9rem;
+}
+.definition-editor span {
+  display: block;
+  margin-block: 0.5rem;
+}
+.definition-editor code {
+  overflow-wrap: anywhere;
+}

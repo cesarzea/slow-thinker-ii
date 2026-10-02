@@ -2,6 +2,7 @@ import {z} from 'zod';
 import {singleDetail, savedDefinition, executionPage} from './projection-data.ts';
 import type {Receipt, Run} from '../../src/api/index.ts';
 import {graph, reply, runRecord, workspace} from './operator-data.ts';
+import {operatorLibraryRead} from './operator-library.ts';
 
 const commandSchema = z.object({command_id: z.string(), name: z.string().optional()});
 
@@ -47,6 +48,8 @@ export class OperatorServer {
   }
 
   private projection(path: string): Response | null {
+    const library = operatorLibraryRead(path, this.detail, this.projectionStatus);
+    if (library !== null) return library;
     if (path.includes('/revisions/')) return reply(this.detail);
     if (path.endsWith('/definition')) return reply(this.definition, this.projectionStatus);
     if (path.endsWith('/execution')) return reply(this.execution, this.projectionStatus);

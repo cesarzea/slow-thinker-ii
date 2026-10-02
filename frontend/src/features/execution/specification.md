@@ -43,6 +43,10 @@ or unsupported schemas fail explicitly. The command boundary also validates inpu
 its existing string argument remains a compatibility adapter for `{problem: text}`.
 The app withholds Start until the exact definition is available.
 
+For S03, the app also supplies `inputUnavailable` while a definition draft is dirty
+or a confirmed saved revision awaits selection. Start exposes an accessible
+explanation; Stop and retained-run controls remain independent of that gate.
+
 ExecutionPanel optionally emits ExecutionObservation through `onObservation`.
 Its existing credential, graph and onInspect props remain supported. Definition
 and execution reads share the selected run's polling and abort lifetime. Paging

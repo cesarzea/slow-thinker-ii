@@ -6,6 +6,23 @@ Detailed [component lifecycle](../contracts/component-lifecycle.md), [call autho
 
 ## Validate and start
 
+### S03 authoring and saved revision selection
+
+1. Load exact definition text or import UTF-8 JSON. A manual draft changes only
+   identity and lineage on the backend; it does not reserve or save a revision.
+2. Validate structure, registered descriptors, supported profiles and static
+   bindings without starting components or making provider calls.
+3. Save canonical content atomically. Identical replay confirms the existing
+   revision; different content at the same identity fails without overwriting it.
+4. Refresh the bounded library and select the confirmed identity. If a reply is
+   uncertain, retry the identical content; if listing fails, retain confirmation
+   and recover selection separately. Unsaved drafts cannot start a run.
+
+The [authoring contract](../contracts/personal-experiments.md) is authoritative for
+this extension. It does not change run admission, accounting or retained evidence.
+
+### Run admission
+
 1. Resolve a saved work session and a graph revision.
 2. Validate structure, component availability, supported execution profile, input references, permissions, and effective limits.
 3. Freeze the graph, component versions/configurations, input, and pricing references for this run. Reject invalid or unsupported definitions before side effects.

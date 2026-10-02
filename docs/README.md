@@ -20,12 +20,21 @@ The [local development guide](development.md) covers running the application,
 preparing components and enabling model execution. Full verification requires
 the pinned [CodeQL bundle](../tooling/quality/codeql/readme.md#installation).
 
+The [personal experiment guide](personal-experiments.md) describes S03 JSON
+authoring, immutable revisions, recovery and saved-definition execution. The
+[S03 delivery specification](specification/personal-experiments-sprint.md) tracks
+acceptance verification separately from these usage instructions.
+
 The [central version register](../CHANGELOG.md) records development package versions
 and the history of versioned sprint reports.
 
 The [S02 Sprint Status Report](progress/sprint-02-status-report.md), version
 `0.0.2.5`, consolidates delivered progress, verification, owner-review corrections
 and outstanding items, with links to the sprint specification.
+
+The [S03 Sprint Status Report](progress/sprint-03-status-report.md), version
+`0.0.3.1`, records locally verified personal authoring and retained execution,
+with publication and owner review identified separately.
 
 The [sprint roadmap](specification/sprint-roadmap.md) records delivered scopes and
 proposes subsequent sprint scopes, delivery order, dependencies and milestones.

@@ -8,9 +8,9 @@ from uuid import uuid4
 
 def migrate(connection: sqlite3.Connection, path: Path) -> None:
     version = connection.execute("PRAGMA user_version").fetchone()[0]
-    if version not in (0, 1, 2, 3, 4, 5):
+    if version not in (0, 1, 2, 3, 4, 5, 6):
         raise ValueError("Unsupported database schema version")
-    if version == 5:
+    if version == 6:
         return
     before = connection.execute("PRAGMA data_version").fetchone()[0]
     if version > 0:
@@ -21,11 +21,17 @@ def migrate(connection: sqlite3.Connection, path: Path) -> None:
             raise RuntimeError("Database changed during migration preparation")
         if version == 2:
             require_stopped(connection)
-        for name in ("schema.sql", "execution.sql", "receipts.sql", "operator.sql", "runtime.sql")[
-            version:
-        ]:
+        names = (
+            "schema.sql",
+            "execution.sql",
+            "receipts.sql",
+            "operator.sql",
+            "runtime.sql",
+            "definitions.sql",
+        )
+        for name in names[version:]:
             execute_schema(connection, Path(__file__).with_name(name).read_text())
-        connection.execute("PRAGMA user_version=5")
+        connection.execute("PRAGMA user_version=6")
         connection.commit()
     except BaseException:
         connection.rollback()

@@ -1,0 +1,57 @@
+{
+  "run_id": "e2cf376c479f49679afdd4e06c4bb949",
+  "graph_id": "git-workshop-collaboration",
+  "revision": "v1",
+  "state": "completed",
+  "result": "accepted",
+  "rounds": 3,
+  "activation_count": 6,
+  "mediated_calls": 25,
+  "paid_model_calls": [
+    {
+      "call_id": "054c171fb10b47be96f5cc1218ec2044",
+      "tokens": 418,
+      "cost_usd": "0.000047400"
+    },
+    {
+      "call_id": "8d719f0a48d94eaaab7f4ac00d851002",
+      "tokens": 773,
+      "cost_usd": "0.000177700"
+    },
+    {
+      "call_id": "55f709f654ab4184957ca6726725b099",
+      "tokens": 1197,
+      "cost_usd": "0.000334500"
+    },
+    {
+      "call_id": "a2a7f0956230437a8305cf33bc1afbcb",
+      "tokens": 1109,
+      "cost_usd": "0.000158050"
+    },
+    {
+      "call_id": "2c7a97e4faa24187ab8e62c494aad688",
+      "tokens": 1500,
+      "cost_usd": "0.000351600"
+    },
+    {
+      "call_id": "e1ab2e68c3e34b43b47a6aa385a02ab3",
+      "tokens": 1036,
+      "cost_usd": "0.000108400"
+    }
+  ],
+  "review_ports": ["revise", "revise", "accept"],
+  "cost_usd": "0.001177650",
+  "elapsed_seconds_including_preparation_and_cleanup": 39.558,
+  "exact_saved_definition_verified": true,
+  "feedback_provenance_verified": true,
+  "final_schedule_verified": true,
+  "second_schedule_also_met_explicit_requirements": true,
+  "reviewer_quality_observation": "Second rejection appears unnecessary: the poll and checklist already occur in the final five-minute row. The reviewer misnames that row and adds an explicit three-minute requirement absent from the task.",
+  "document_id": "S03-LIVE-EVIDENCE-001",
+  "owner": "Cesar Zea",
+  "recorded_at_utc": "2026-10-02T01:40:13.758Z",
+  "model": "gpt-6-luna",
+  "provider": "OpenAI",
+  "first_proposal": "deliberately_incomplete_controlled_baseline",
+  "verification_scope": "One real live run; independent recording, schedule, feedback provenance and cost checks. No comparison experiment."
+}

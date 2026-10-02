@@ -55,3 +55,9 @@ ManagedGatewayService exposes deadline, filtered tools, invoke, report and rejec
 Decorated synchronous context-manager implementations use
 `Generator[YieldedType]` for Pyright 1.1.414. Preserve all run admission,
 locking, transaction and exception behavior; ordinary iterator ports are unchanged.
+
+## S03 library coordination
+
+The public `library` namespace owns personal graph use cases and ports; see
+[library/specification.md](library/specification.md). Existing execution services
+retain their public signatures and immutable run snapshots.

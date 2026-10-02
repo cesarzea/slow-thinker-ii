@@ -14,6 +14,9 @@ The [public entry point](verify.py) is authoritative for exported names and sign
 
 - Return failure when a mandatory gate fails; do not silently exempt generated or adapter code.
 - Restrict source locations and validate module boundaries in addition to style.
+- S03 exposes `application.library` to adapters and bootstrap as an exact public
+  entry point. Its descendants remain protected, including from sibling
+  application modules. Explicit exceptions must never cover private targets.
 - Keep accounting mutation checks and independent coverage thresholds effective.
 - Run CodeQL locally and in CI with the shared bundle policy; missing tools, incomplete analysis or warning/error findings must stop the runner.
 

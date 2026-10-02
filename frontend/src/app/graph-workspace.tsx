@@ -10,7 +10,7 @@ export function GraphWorkspace({graph}: {readonly graph: GraphSummary}): ReactEl
   const {detail, error} = useGraphDetail(graph, undefined);
   return (
     <DefinitionGraph
-      key={`${graph.graph_id}:${graph.revision}`}
+      key={JSON.stringify([graph.graph_id, graph.revision])}
       graph={graph}
       detail={detail}
       error={error}

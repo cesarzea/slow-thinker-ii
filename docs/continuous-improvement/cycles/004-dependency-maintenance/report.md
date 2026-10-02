@@ -1,13 +1,13 @@
 # C04 — Dependency compatibility maintenance
 
-| Document control | Value |
-| --- | --- |
-| Document ID | C04 |
-| Status at recording | Locally verified; replacement PR remote checks and merge pending |
-| Record owner | Cesar Zea |
-| Recorded date and timezone | 2026-10-01, Europe/Lisbon |
-| Method | M06 |
-| Delivery | [Dependency maintenance plan](../../../progress/dependency-maintenance-plan.md) |
+| Document control           | Value                                                                           |
+| -------------------------- | ------------------------------------------------------------------------------- |
+| Document ID                | C04                                                                             |
+| Status at recording        | Locally verified; replacement PR remote checks and merge pending                |
+| Record owner               | Cesar Zea                                                                       |
+| Recorded date and timezone | 2026-10-01, Europe/Lisbon                                                       |
+| Method                     | M06                                                                             |
+| Delivery                   | [Dependency maintenance plan](../../../progress/dependency-maintenance-plan.md) |
 
 ## Context and hypothesis
 
@@ -71,3 +71,13 @@ M06 remains the approved method. Proposed preparation improvement: review the fu
 relevant diagnostic set and run static size/format/type checks before declaring
 the delivery ready for functional verification. This is an operational application
 of existing gates, not a new approved method version. No threshold is reduced.
+
+## Publication and identity closure — 2026-10-01
+
+All required remote checks passed on [PR #9](https://github.com/cesarzea/slow-thinker-ii/pull/9).
+It was merged at 19:52:19 UTC as `604cc5d`, closing the maintenance delivery.
+The owner confirmed that his public full name is César Pedro Zea Gómez and
+authorized retaining it. Git commits prepared locally continue to use the requested
+`Cesar Zea` identity; GitHub's approved public profile may supply its squash author.
+The earlier pending decision and measured checkpoint span remain historical evidence.
+Publication activity was not retrospectively added to the unaudited cycle timing.

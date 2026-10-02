@@ -1,6 +1,6 @@
 # Changelog and version register
 
-Owner: Cesar Zea. Updated: 2026-10-01, Europe/Lisbon.
+Owner: Cesar Zea. Updated: 2026-10-02, Europe/Lisbon.
 
 This is the central record of development progress and versioned sprint reports.
 Package versions and report versions have separate meanings. No published product
@@ -12,7 +12,7 @@ release is recorded here yet.
 | -------------------- | ------------- | ------------------------------------------------------------- |
 | Python application   | `0.1.0.dev1`  | [pyproject.toml](pyproject.toml)                              |
 | Frontend application | `0.1.0-dev.1` | [package.json](package.json)                                  |
-| Latest sprint report | `0.0.2.5`     | [S02 status report](docs/progress/sprint-02-status-report.md) |
+| Latest sprint report | `0.0.3.2`     | [S03 status report](docs/progress/sprint-03-status-report.md) |
 
 The report identifier follows `<series-major>.<series-minor>.<sprint>.<revision>`:
 `0.0.2.1` means report series V0.0, Sprint 2, Revision 1. It does not change package
@@ -20,6 +20,15 @@ versions or identify a published software release.
 
 ## Unreleased development progress
 
+- Personal JSON import/edit/validation, immutable revisions, manual lineage,
+  exact selection and saved-definition execution with retained history:
+  [S03 delivery specification](docs/specification/personal-experiments-sprint.md).
+- SQLite v6 retains earlier data and verified backups; strict authoring boundaries
+  and safe uncertain-save recovery pass the complete shared local runner:
+  [S03 verification](docs/verification.md#personal-experiment-delivery--2026-10-02).
+- S03 functional closure includes a real personal collaboration case, independently
+  verified feedback, result and cost, and a recorded reviewer-quality limitation:
+  [live validation](docs/progress/sprint-03-live-validation.md).
 - Local collaborative execution, independently hosted components, bounded
   proposer/reviewer feedback, saved history, deadlines, budgets and costs:
   [S01 delivery specification](docs/specification/first-cycle-sprint.md).
@@ -48,10 +57,18 @@ chronology and publication prerequisites. Planned future work belongs in the
   Exact installation pins and decorated generator annotations are adapted; all
   local mandatory gates pass. Replacement PR remote verification remains pending.
 
+The later closure is recorded separately: [PR #9](https://github.com/cesarzea/slow-thinker-ii/pull/9)
+passed required remote checks and was merged as `604cc5d` on 2026-10-01.
+The contribution guide followed in [PR #10](https://github.com/cesarzea/slow-thinker-ii/pull/10),
+merged as `f10e062` after required checks passed. Earlier pending states retain
+their original checkpoint meaning.
+
 ## Sprint report version history
 
 | Version     | Recorded date | Sprint | Progress status                                                                                                         | Report and specification                                                                                                                       |
 | ----------- | ------------- | ------ | ----------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
+| **0.0.3.2** | 2026-10-02    | S03    | Functionally closed after real OpenAI acceptance; closure supplement publication and owner merge remain pending. | [Status report](docs/progress/sprint-03-status-report.md) · [Live validation](docs/progress/sprint-03-live-validation.md) |
+| 0.0.3.1 | 2026-10-02    | S03    | Personal authoring, immutable revisions and retained execution verified locally; publication and owner review pending.  | [Revision 1 snapshot](docs/progress/sprint-03-status-report-0.0.3.1.md) · [Sprint specification](docs/specification/personal-experiments-sprint.md)          |
 | **0.0.2.5** | 2026-10-01    | S02    | Remote polling passed; geometry readiness corrected with focused and complete local verification; remote rerun pending. | [Status report](docs/progress/sprint-02-status-report.md) · [Sprint specification](docs/specification/agent-canvas-sprint.md)                  |
 | 0.0.2.4     | 2026-10-01    | S02    | Remote polling failure corrected; focused repetitions and full local verification passed; remote rerun pending.         | [Revision 4 snapshot](docs/progress/sprint-02-status-report-0.0.2.4.md) · [Sprint specification](docs/specification/agent-canvas-sprint.md)    |
 | 0.0.2.3     | 2026-10-01    | S02    | Shared CodeQL rejection and full local verification passed; updated remote CI not yet run.                              | [Revision 3 snapshot](docs/progress/sprint-02-status-report-0.0.2.3.md) · [Sprint specification](docs/specification/agent-canvas-sprint.md)    |

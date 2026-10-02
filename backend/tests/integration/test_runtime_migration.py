@@ -29,7 +29,7 @@ def test_v4_upgrade_preserves_evidence_and_adds_empty_runtime_tables(tmp_path: P
     database.initialize()
     database.initialize()
     with database.transaction() as db:
-        assert db.execute("PRAGMA user_version").fetchone()[0] == 5
+        assert db.execute("PRAGMA user_version").fetchone()[0] == 6
         assert tuple(db.execute("SELECT settled,reserved FROM budget_scopes").fetchone()) == (
             37,
             100,

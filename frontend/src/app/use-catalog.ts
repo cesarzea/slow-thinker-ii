@@ -1,30 +1,13 @@
-import {useEffect, useState} from 'react';
-import {loadGraphs} from '../api/index.ts';
-import type {GraphSummary} from '../api/index.ts';
+import {useEffect, useMemo, useSyncExternalStore} from 'react';
+import {CatalogModel} from './catalog-model.ts';
+import type {CatalogState} from './catalog-state.ts';
 
-interface CatalogState {
-  graphs: GraphSummary[];
-  error: string | null;
-  loading: boolean;
-}
-
-export function useCatalog(credential?: string): CatalogState {
-  const [state, setState] = useState<CatalogState>({graphs: [], error: null, loading: true});
+export function useCatalog(credential?: string): CatalogState & {readonly model: CatalogModel} {
+  const model = useMemo(() => new CatalogModel(credential), [credential]);
+  const state = useSyncExternalStore(model.subscribe, model.snapshot);
   useEffect(() => {
-    const controller = new AbortController();
-    void loadGraphs(controller.signal, credential).then(
-      (graphs) => {
-        if (!controller.signal.aborted) setState({graphs, error: null, loading: false});
-      },
-      () => {
-        if (!controller.signal.aborted) {
-          setState({graphs: [], error: 'Could not load the catalog.', loading: false});
-        }
-      },
-    );
-    return () => {
-      controller.abort();
-    };
-  }, [credential]);
-  return state;
+    void model.refresh();
+    return model.dispose;
+  }, [model]);
+  return {...state, model};
 }

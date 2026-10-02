@@ -474,6 +474,64 @@
           "change": "Add C04 cycle register row; all existing cycle data and historical follow-up entries are preserved."
         }
       ]
+    },
+    {
+      "recorded_on": "2026-10-02",
+      "timezone": "Europe/Lisbon",
+      "purpose": "Append C05 local delivery evaluation and unapproved refinements; preserve earlier measurements, conclusions and method versions.",
+      "previous_edition_retention": "Published prior contents retained in main commit f10e062fc4baab57f49a92ba06652a58face6aee; original S03 checkpoints retained in ignored local evidence.",
+      "source_checkpoint_sha256": "4ffa3ba35af0572100a872d1953c74610e84463627f87cbd358ad57c669414cf",
+      "records": [
+        {
+          "file": "README.md",
+          "current_sha256": "80270e4c8d2d8f9561c8773736b17d3ea6a18f6f6076acd0f8f720005c165fa7",
+          "change": "Add C05 evaluation/index and dated C04 closure; prior measures and method versions retained.",
+          "previous_edition_sha256": "9388d30d47efb24952677366b00432812ac417e2dfa7519ef55b93958e5c67c8"
+        },
+        {
+          "file": "improvement-register.md",
+          "current_sha256": "0a37464c0adbb357a5abee6626da88ca21bf5ad2a3647fcf9c2ea12ba5ded767",
+          "change": "Append P11/P12 as unapproved C05 refinements; preserve prior decisions.",
+          "previous_edition_sha256": "333284105350fc4df1c65fef215504b00d4438389b7fc6bbac342884f8b6b2b5"
+        },
+        {
+          "file": "cycles/004-dependency-maintenance/report.md",
+          "current_sha256": "7dd7fe9a9dee0af2bd64d1f70afdd0ce312634d4800b99d631dbbfaa5fd80db7",
+          "change": "Append dated publication and owner identity closure; historical checkpoint basis retained.",
+          "previous_edition_sha256": "2a3b4acbeec4f0db1f2e747ba7b4aee4f75fda7e48a3f4b50c7744e0b7545433"
+        },
+        {
+          "file": "cycles/005-personal-experiments/report.md",
+          "current_sha256": "32e8eaa33f953645cc4d52a4e29c0f9eb5d3b4b624a7d0f21b23ef50e6620afc",
+          "change": "Record M06 S03 application, verified local outcome, classified corrections and unaudited checkpoint limits."
+        },
+        {
+          "file": "cycles/005-personal-experiments/checkpoints.jsonl",
+          "current_sha256": "154087bc0804e177db357bab8cee6a416fcd9057ace98ecfa90c4acdd6559f54",
+          "change": "Retain sanitized S03 checkpoints with exact times, neutral labels and no private commands or paths."
+        }
+      ]
+    },
+    {
+      "recorded_on": "2026-10-02",
+      "timezone": "Europe/Lisbon",
+      "purpose": "Record owner-requested live acceptance and S03 functional closure, keeping remote publication and merge separate.",
+      "previous_edition_retention": "Prior published editions retained in b806140 and an ignored local snapshot with a sorted SHA-256 index.",
+      "previous_edition_archive_sha256": "9dbd9db76ac4982ef2d502ee2da4acc24e2f2c224d948f945f9e9952b4b50cd4",
+      "records": [
+        {
+          "file": "README.md",
+          "previous_edition_sha256": "80270e4c8d2d8f9561c8773736b17d3ea6a18f6f6076acd0f8f720005c165fa7",
+          "current_sha256": "5698bc6827db4125528eeb48845029f8c2093972cf0a098785d55447791a8f9b",
+          "change": "Append dated S03 functional closure and real-provider follow-up; preserve original measurements, method decisions and checkpoint claims."
+        },
+        {
+          "file": "cycles/005-personal-experiments/report.md",
+          "previous_edition_sha256": "32e8eaa33f953645cc4d52a4e29c0f9eb5d3b4b624a7d0f21b23ef50e6620afc",
+          "current_sha256": "ad1ff792e0c4cb396803983c67c372fad3e29ddaad0ecef79ceeff57b9237401",
+          "change": "Append dated S03 functional closure and real-provider follow-up; preserve original measurements, method decisions and checkpoint claims."
+        }
+      ]
     }
   ]
 }

@@ -36,15 +36,24 @@ These are logical responsibilities. The source layout and enforced dependency di
 
 | Responsibility | Owns | Public interactions |
 | --- | --- | --- |
-| Definitions and registry | Component descriptors, graph versions, validation | Resolve types and publish validated definitions |
+| Definitions and registry | Component descriptors, immutable graph versions, static validation and manual lineage | Resolve types, read bundled/personal definitions and save validated revisions |
 | Execution | Run and activation lifecycle, scheduling, deadlines | Start, request stop, receive authorized outcomes |
 | Access and routing | Caller identity, scoped discovery, invocation policy | Resolve permitted capabilities and dispatch requests |
 | Accounting | Reservations, usage, charges, scope balances | Authorize bounded spending and settle actual usage |
 | Observation | Events, payload references, read models | Append evidence and supply authorized inspection |
 | Integration adapters | MCP, model providers, compatibility APIs, persistence | Translate external formats at validated boundaries |
-| Browser features | Graph views, inspectors, session/run navigation | Use application APIs and status updates |
+| Browser features | JSON authoring, revision selection, graph views, inspectors and session/run navigation | Use bounded application APIs and status updates |
 
 Only public module APIs may be used across responsibilities. Domain code must not import web frameworks, provider SDKs, UI types, or storage implementations. A composition root wires implementations. The [module-boundary contract](module-boundaries.md) defines the implemented directories, dependency direction, public entry points and placement checks.
+
+S03's [personal experiment library](../contracts/personal-experiments.md) composes
+bundled definitions with SQLite-owned personal revisions behind a common reader.
+Static authoring validation checks declared contracts without launching installed
+components. Execution preparation independently resolves installations, effective
+schemas and limits, then freezes the selected exact revision. Browser authoring
+uses raw canonical text and backend-generated drafts to preserve numeric values
+across Python and JavaScript. Runtime evidence continues to refer to the admitted
+snapshot rather than the current editor or library selection.
 
 ## 6. Runtime view
 

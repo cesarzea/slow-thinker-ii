@@ -1,8 +1,8 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "urn:slow-thinker-ii:contracts:graph:0.1-draft",
-  "title": "Graph contract \u2014 proposal 0.1-draft",
-  "description": "Review artifact only. Not an approved or implemented API.",
+  "title": "Graph contract \u2014 0.1-draft",
+  "description": "Approved domain format for bundled and personal graph definitions; execution profiles add semantic constraints.",
   "type": "object",
   "properties": {
     "schema_version": {

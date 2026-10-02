@@ -6,7 +6,7 @@ import time
 from pathlib import Path
 from urllib.parse import urlsplit
 
-from slow_thinker_ii.access import AccessPolicy
+from slow_thinker_ii.adapters.catalog import ConditionalCompiler, SequenceCompiler
 from slow_thinker_ii.adapters.http import OperatorAccess
 from slow_thinker_ii.adapters.sqlite import (
     SqliteDatabase,
@@ -15,55 +15,67 @@ from slow_thinker_ii.adapters.sqlite import (
     SqliteRunStore,
 )
 from slow_thinker_ii.application import (
-    ChargeBasis,
-    ChargeEvidence,
     ConditionalProgram,
     ExecutionConfiguration,
     ExecutionCoordinator,
     LimitsProfile,
     PreparedStart,
     PreparedWorkflow,
+    SequenceProgram,
     StartIntent,
+    library,
     sequence_access,
 )
 from slow_thinker_ii.bootstrap import ExecutionServices
-from slow_thinker_ii.contracts import OperationResult, decode_json, json_object
+from slow_thinker_ii.contracts import decode_json, json_object
 
+from .browser_sequence import BrowserSequenceEnvironment
 from .browser_snapshot import browser_snapshot
-from .conditional import ConditionalEnvironment, conditional_plan
-from .coordinator import TARGET, Environment, Program
-from .managed_calls import FixtureOperation
+from .conditional import ConditionalEnvironment
+from .personal_library import personal_library
+from .sequence_plans import SCHEMAS, resolved
 
 BROWSER_TOKEN = "browser_fixture_operator_token_01234567890123456789"
 
 
 class BrowserPreparation:
-    def __init__(self, configuration: ExecutionConfiguration) -> None:
+    def __init__(
+        self, configuration: ExecutionConfiguration, definitions: library.DefinitionReader
+    ) -> None:
         self._configuration = configuration
+        self._definitions = definitions
 
     async def prepare(self, intent: StartIntent, runtime_id: str) -> PreparedWorkflow:
         problem = json_object(decode_json(intent.input_json)).get("problem")
-        if intent.graph_id == "bounded-review":
-            plan = conditional_plan(str(problem))
+        source = self._definitions.definition(intent.graph_id, intent.graph_revision)
+        definition = json_object(decode_json(source))
+        components = json_object(definition["components"])
+        controller = json_object(definition["controller"])
+        if json_object(components[str(controller["component"])])["type_id"] == "bounded-flow":
+            plan = ConditionalCompiler(SCHEMAS).compile(
+                source, intent.input_json, resolved(definition)
+            )
             return PreparedWorkflow(
-                PreparedStart(intent, self._configuration, runtime_id, browser_snapshot(intent)),
+                self._start(intent, runtime_id),
                 sequence_access(plan),
                 ConditionalEnvironment(plan, str(problem)),
                 ConditionalProgram(plan),
             )
         if problem == "prepare-wait":
             await asyncio.sleep(0.5)
-        operation = FixtureOperation(
-            ChargeBasis(3000, "fixture", "{}"), ChargeEvidence("{}", 2390, "browser-fixture")
+        sequence = SequenceCompiler(SCHEMAS).compile(
+            source, intent.input_json, resolved(definition)
         )
-        operation.result = OperationResult('{"nodes":{"draft":{"text":"Test result"}}}', False)
-        if problem == "wait":
-            operation.release.clear()
         return PreparedWorkflow(
-            PreparedStart(intent, self._configuration, runtime_id, browser_snapshot(intent)),
-            AccessPolicy((TARGET,), (), (TARGET,)),
-            Environment(operation),
-            Program(),
+            self._start(intent, runtime_id),
+            sequence_access(sequence),
+            BrowserSequenceEnvironment(sequence, str(problem)),
+            SequenceProgram(sequence),
+        )
+
+    def _start(self, intent: StartIntent, runtime_id: str) -> PreparedStart:
+        return PreparedStart(
+            intent, self._configuration, runtime_id, browser_snapshot(intent, self._definitions)
         )
 
 
@@ -78,7 +90,7 @@ class BrowserExecution:
         coordinator = ExecutionCoordinator(
             commands,
             SqliteRunStore(database, limits.max_payload_bytes),
-            BrowserPreparation(configuration),
+            BrowserPreparation(configuration, personal_library(database)),
             time.monotonic,
             5,
             3,

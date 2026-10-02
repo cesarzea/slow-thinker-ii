@@ -29,7 +29,8 @@
     "examples/grounded-review",
     "tooling/quality",
     "tooling/components",
-    "tooling/tests"
+    "tooling/tests",
+    "frontend/src/features/definition-editor"
   ],
   "files": [
     "backend/src/slow_thinker_ii/__init__.py",
