@@ -3,9 +3,10 @@
 from dataclasses import dataclass
 
 from slow_thinker_ii.accounting import TariffRevision
-from slow_thinker_ii.application import PreparationRejected, TariffStore
+from slow_thinker_ii.adapters.catalog import ComponentRecord
+from slow_thinker_ii.application import PreparationRejected, TariffStore, workspace
 
-from ._models import ProviderProfile
+from ._models import ModelReference, ProviderProfile, ResourceSettings
 
 
 @dataclass(frozen=True)
@@ -37,3 +38,27 @@ def admission_deadline(
     if now >= deadline:
         raise PreparationRejected("pricing_review_expired")
     return deadline
+
+
+def model_tariff(
+    component: ComponentRecord,
+    settings: ResourceSettings,
+    legacy: SelectedTariff | None,
+    reader: workspace.ModelTariffReader | None,
+) -> SelectedTariff | None:
+    if component.type_id != "model-provider":
+        return legacy
+    reference = ModelReference.model_validate(component.config)
+    profile = settings.providers.get(reference.provider_profile)
+    if profile is None:
+        raise PreparationRejected("provider_profile_unavailable")
+    if reader is None:
+        if (
+            profile.provider == "openai"
+            and legacy is not None
+            and legacy.revision.tariff.profile == profile.billing_profile
+        ):
+            return legacy
+        return None
+    selected = reader.selected(profile.billing_profile)
+    return None if selected is None else SelectedTariff(selected.revision, selected.validated_at)

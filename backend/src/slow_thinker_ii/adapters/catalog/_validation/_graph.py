@@ -15,12 +15,12 @@ from ._types import instances
 
 
 def validate_definition(
-    value: JsonObject, schemas: LocalSchemas, directory: Path
+    value: JsonObject, schemas: LocalSchemas, directory: Path, extra: tuple[str, ...] = ()
 ) -> tuple[library.ValidatedDefinition, dict[str, tuple[str, ...]]]:
     schemas.validate(value, schemas.graph, ())
     graph = GraphRecord.model_validate(value)
     schemas.schema(graph_input_schema(value), "/input_schema")
-    resolved = instances(graph, directory, schemas)
+    resolved = instances(graph, directory, schemas, extra)
     containment(graph)
     controller(graph, resolved)
     allowed = permissions(graph, resolved)

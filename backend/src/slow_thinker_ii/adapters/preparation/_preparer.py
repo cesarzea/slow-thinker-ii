@@ -20,6 +20,7 @@ from slow_thinker_ii.application import (
     StartIntent,
     TariffStore,
     library,
+    workspace,
 )
 
 from ._endpoints import ServiceEndpoints
@@ -48,6 +49,7 @@ class InstalledWorkflowPreparer:
         adapters: Mapping[str, HostAdapter],
         wall: Callable[[], float],
         journal: ProcessJournal | None = None,
+        model_tariffs: workspace.ModelTariffReader | None = None,
     ) -> None:
         if not workspace.is_absolute():
             raise ValueError("Preparation requires an absolute workspace")
@@ -55,7 +57,7 @@ class InstalledWorkflowPreparer:
         self._descriptors, self._configuration = descriptors, configuration
         self._tariffs, self._secrets, self._endpoints = tariffs, secrets, endpoints
         self._workspace, self._adapters, self._wall = workspace, dict(adapters), wall
-        self._journal = journal
+        self._journal, self._model_tariffs = journal, model_tariffs
 
     async def prepare(self, intent: StartIntent, runtime_id: str) -> PreparedWorkflow:
         worker = asyncio.create_task(asyncio.to_thread(self._prepare, intent, runtime_id))
@@ -92,8 +94,8 @@ class InstalledWorkflowPreparer:
         settings = ResourceSettings.model_validate_json(configuration.resources_json)
         types = select_types(settings, self._descriptors)
         tariff = select_tariff(self._tariffs)
-        planner = HostPlanner(self._adapters, self._endpoints, self._secrets)
-        hosts = planner.configure(graph, configuration.limits, settings, tariff, now)
+        planner = HostPlanner(self._adapters, self._endpoints, self._secrets, self._model_tariffs)
+        hosts = planner.configure(graph, configuration.limits, settings, tariff, now, runtime_id)
         compiler = InstalledGraphCompiler(
             self._installations, self._schemas, types, configuration.limits.startup_seconds
         )

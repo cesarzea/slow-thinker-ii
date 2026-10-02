@@ -7,6 +7,7 @@ import {
   deriveRevision,
   editableSource,
   editor,
+  openSource,
   saveRevision,
   selectRevision,
 } from '../support/browser-authoring.ts';
@@ -55,10 +56,15 @@ async function importPersonal(page: Page): Promise<void> {
   await createSession(page, 'Personal authoring');
   await page.getByLabel('Task or problem').fill('Draft input');
   await expect(page.getByRole('button', {name: 'Start run', exact: true})).toBeDisabled();
+  await openSource(page);
   await page.getByRole('button', {name: 'Validate definition', exact: true}).click();
   await expect(
     page.getByText(/Definition validation passed for single-agent · authoring-v1/u),
   ).toBeVisible();
+  await page
+    .getByRole('navigation', {name: 'Workspace'})
+    .getByRole('button', {name: 'Runs', exact: true})
+    .click();
   await expect(page.getByRole('button', {name: 'Start run', exact: true})).toBeDisabled();
   await saveRevision(page, 'authoring-v1');
 }
@@ -68,6 +74,10 @@ async function reloadAndRun(page: Page): Promise<void> {
   await connect(page, false);
   await selectRevision(page, 'authoring-v1');
   expect(await editableSource(page)).toContain('Imported personal instructions.');
+  await page
+    .getByRole('navigation', {name: 'Workspace'})
+    .getByRole('button', {name: 'Runs', exact: true})
+    .click();
   await page.getByLabel('Task or problem').fill('Execute the saved personal revision');
   await page.getByRole('button', {name: 'Start run', exact: true}).click();
   await expect(page.getByRole('heading', {name: 'Completed', exact: true})).toBeVisible();

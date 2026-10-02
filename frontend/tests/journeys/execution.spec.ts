@@ -18,6 +18,10 @@ test('creates a saved session, executes, inspects results and recovers history a
   await page.screenshot({path: info.outputPath('execution-result.png'), fullPage: true});
   await page.reload();
   await connect(page, false);
+  await page
+    .getByRole('navigation', {name: 'Workspace'})
+    .getByRole('button', {name: 'Runs', exact: true})
+    .click();
   const history = page.getByRole('region', {name: 'Session history'});
   await history.getByRole('button').first().click();
   await expect(page.getByRole('heading', {name: 'Completed', exact: true})).toBeVisible();

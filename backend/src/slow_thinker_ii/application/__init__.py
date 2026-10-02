@@ -1,6 +1,6 @@
 """Application services and ports for the composition root and adapters."""
 
-from . import library
+from . import library, workspace
 from ._call_runner import ManagedCalls
 from ._catalog import DefinitionStore, ExperimentCatalog
 from ._conditional_program import ConditionalProgram
@@ -70,6 +70,7 @@ from ._tariffs import REFRESH_SECONDS, TariffRefresh, TariffSource, TariffStore
 
 __all__ = [
     "library",
+    "workspace",
     "OwnedLaunch",
     "OwnedRunEnvironment",
     "ProcessIdentity",

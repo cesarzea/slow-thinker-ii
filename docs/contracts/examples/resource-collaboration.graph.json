@@ -1,0 +1,546 @@
+{
+  "schema_version": "0.1-draft",
+  "graph_id": "resource-collaboration",
+  "revision": "example-1",
+  "controller": {
+    "component": "sequence",
+    "operation": "next"
+  },
+  "components": {
+    "proposer": {
+      "type_id": "contextual-call",
+      "type_version": "0.1.0",
+      "config": {
+        "input_schema": {
+          "type": "object",
+          "properties": {
+            "problem": {
+              "type": "string",
+              "minLength": 1
+            },
+            "expression": {
+              "type": "string",
+              "minLength": 1
+            },
+            "proposal": {
+              "type": "string"
+            },
+            "calculation": {
+              "type": "string"
+            },
+            "memory": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          },
+          "required": [
+            "problem",
+            "expression"
+          ],
+          "additionalProperties": false
+        },
+        "worker_operation": "generate",
+        "worker_output_schema": {
+          "type": "object",
+          "oneOf": [
+            {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "const": "ok"
+                },
+                "format": {
+                  "const": "text"
+                },
+                "value": {
+                  "type": "string",
+                  "$id": "urn:slow-thinker-ii:llm-output"
+                }
+              },
+              "required": [
+                "status",
+                "format",
+                "value"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "const": "error"
+                },
+                "error": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "enum": [
+                        "invalid_json",
+                        "output_schema_mismatch",
+                        "output_validation_failed"
+                      ]
+                    },
+                    "message": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "raw_output": {
+                      "type": "string"
+                    },
+                    "issues": {
+                      "type": "array",
+                      "minItems": 1,
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "path": {
+                            "type": "string",
+                            "pattern": "^(?:/(?:[^~/]|~[01])*)*$"
+                          },
+                          "message": {
+                            "type": "string",
+                            "minLength": 1
+                          }
+                        },
+                        "required": [
+                          "path",
+                          "message"
+                        ],
+                        "additionalProperties": false
+                      }
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message",
+                    "raw_output",
+                    "issues"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "required": [
+                "status",
+                "error"
+              ],
+              "additionalProperties": false
+            }
+          ]
+        },
+        "calculation_enabled": true,
+        "expression_pointer": "/expression",
+        "calculation_field": "calculation",
+        "memory_read": true,
+        "memory_write": true,
+        "memory_key": "proposal",
+        "memory_field": "memory",
+        "result_pointer": "/value"
+      },
+      "resources": {
+        "worker": "proposer-worker",
+        "calculator": "calculator",
+        "memory": "shared-memory"
+      }
+    },
+    "proposer-worker": {
+      "type_id": "example.resource-agent",
+      "type_version": "0.1.0",
+      "config": {
+        "instructions": "Propose a concise, feasible response to the task. Use the exact calculation and any supplied memory as evidence.",
+        "input_schema": {
+          "type": "object",
+          "properties": {
+            "problem": {
+              "type": "string",
+              "minLength": 1
+            },
+            "expression": {
+              "type": "string",
+              "minLength": 1
+            },
+            "proposal": {
+              "type": "string"
+            },
+            "calculation": {
+              "type": "string"
+            },
+            "memory": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          },
+          "required": [
+            "problem",
+            "expression"
+          ],
+          "additionalProperties": false
+        },
+        "parameters": {
+          "max_completion_tokens": 1024,
+          "reasoning_effort": "none"
+        },
+        "output": {
+          "format": "text"
+        }
+      },
+      "resources": {
+        "model": "openai-model"
+      },
+      "contained_by": "proposer"
+    },
+    "reviewer": {
+      "type_id": "contextual-call",
+      "type_version": "0.1.0",
+      "config": {
+        "input_schema": {
+          "type": "object",
+          "properties": {
+            "problem": {
+              "type": "string",
+              "minLength": 1
+            },
+            "expression": {
+              "type": "string",
+              "minLength": 1
+            },
+            "proposal": {
+              "type": "string"
+            },
+            "calculation": {
+              "type": "string"
+            },
+            "memory": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          },
+          "required": [
+            "problem",
+            "expression"
+          ],
+          "additionalProperties": false
+        },
+        "worker_operation": "generate",
+        "worker_output_schema": {
+          "type": "object",
+          "oneOf": [
+            {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "const": "ok"
+                },
+                "format": {
+                  "const": "text"
+                },
+                "value": {
+                  "type": "string",
+                  "$id": "urn:slow-thinker-ii:llm-output"
+                }
+              },
+              "required": [
+                "status",
+                "format",
+                "value"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "const": "error"
+                },
+                "error": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "enum": [
+                        "invalid_json",
+                        "output_schema_mismatch",
+                        "output_validation_failed"
+                      ]
+                    },
+                    "message": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "raw_output": {
+                      "type": "string"
+                    },
+                    "issues": {
+                      "type": "array",
+                      "minItems": 1,
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "path": {
+                            "type": "string",
+                            "pattern": "^(?:/(?:[^~/]|~[01])*)*$"
+                          },
+                          "message": {
+                            "type": "string",
+                            "minLength": 1
+                          }
+                        },
+                        "required": [
+                          "path",
+                          "message"
+                        ],
+                        "additionalProperties": false
+                      }
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "message",
+                    "raw_output",
+                    "issues"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "required": [
+                "status",
+                "error"
+              ],
+              "additionalProperties": false
+            }
+          ]
+        },
+        "calculation_enabled": true,
+        "expression_pointer": "/expression",
+        "calculation_field": "calculation",
+        "memory_read": true,
+        "memory_write": true,
+        "memory_key": "proposal",
+        "memory_field": "memory",
+        "result_pointer": "/value"
+      },
+      "resources": {
+        "worker": "reviewer-worker",
+        "calculator": "calculator",
+        "memory": "shared-memory"
+      }
+    },
+    "reviewer-worker": {
+      "type_id": "example.resource-agent",
+      "type_version": "0.1.0",
+      "config": {
+        "instructions": "Review the supplied proposal against the original task. Correct omissions and return the final answer. Cite the supplied exact calculation and compare against the remembered proposal.",
+        "input_schema": {
+          "type": "object",
+          "properties": {
+            "problem": {
+              "type": "string",
+              "minLength": 1
+            },
+            "expression": {
+              "type": "string",
+              "minLength": 1
+            },
+            "proposal": {
+              "type": "string"
+            },
+            "calculation": {
+              "type": "string"
+            },
+            "memory": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          },
+          "required": [
+            "problem",
+            "expression"
+          ],
+          "additionalProperties": false
+        },
+        "parameters": {
+          "max_completion_tokens": 1024,
+          "reasoning_effort": "none"
+        },
+        "output": {
+          "format": "text"
+        }
+      },
+      "resources": {
+        "model": "deepseek-model"
+      },
+      "contained_by": "reviewer"
+    },
+    "openai-model": {
+      "type_id": "model-provider",
+      "type_version": "0.1.0",
+      "config": {
+        "provider_profile": "openai-luna",
+        "model": "gpt-6-luna"
+      },
+      "resources": {}
+    },
+    "deepseek-model": {
+      "type_id": "model-provider",
+      "type_version": "0.1.0",
+      "config": {
+        "provider_profile": "deepseek-flash",
+        "model": "deepseek-flash"
+      },
+      "resources": {}
+    },
+    "calculator": {
+      "type_id": "calculator",
+      "type_version": "0.1.0",
+      "config": {},
+      "resources": {}
+    },
+    "shared-memory": {
+      "type_id": "key-value-memory",
+      "type_version": "0.1.0",
+      "config": {
+        "namespace": "collaboration",
+        "retention": "persistent",
+        "max_entries": 100,
+        "max_value_bytes": 16384
+      },
+      "resources": {}
+    },
+    "sequence": {
+      "type_id": "example.sequence",
+      "type_version": "0.1.0-example",
+      "config": {
+        "steps": [
+          "draft",
+          "review"
+        ]
+      },
+      "resources": {}
+    }
+  },
+  "nodes": {
+    "draft": {
+      "component": "proposer",
+      "operation": "invoke",
+      "inputs": {
+        "problem": {
+          "source": "run_input",
+          "pointer": "/problem"
+        },
+        "expression": {
+          "source": "run_input",
+          "pointer": "/expression"
+        }
+      }
+    },
+    "review": {
+      "component": "reviewer",
+      "operation": "invoke",
+      "inputs": {
+        "problem": {
+          "source": "run_input",
+          "pointer": "/problem"
+        },
+        "expression": {
+          "source": "run_input",
+          "pointer": "/expression"
+        },
+        "proposal": {
+          "source": "node_output",
+          "node": "draft",
+          "pointer": "/value"
+        }
+      }
+    }
+  },
+  "permissions": [
+    {
+      "caller": "proposer",
+      "target": "proposer-worker",
+      "operations": [
+        "generate"
+      ]
+    },
+    {
+      "caller": "proposer",
+      "target": "calculator",
+      "operations": [
+        "calculate"
+      ]
+    },
+    {
+      "caller": "proposer",
+      "target": "shared-memory",
+      "operations": [
+        "get",
+        "put"
+      ]
+    },
+    {
+      "caller": "proposer-worker",
+      "target": "openai-model",
+      "operations": [
+        "complete"
+      ]
+    },
+    {
+      "caller": "reviewer",
+      "target": "reviewer-worker",
+      "operations": [
+        "generate"
+      ]
+    },
+    {
+      "caller": "reviewer",
+      "target": "calculator",
+      "operations": [
+        "calculate"
+      ]
+    },
+    {
+      "caller": "reviewer",
+      "target": "shared-memory",
+      "operations": [
+        "get",
+        "put"
+      ]
+    },
+    {
+      "caller": "reviewer-worker",
+      "target": "deepseek-model",
+      "operations": [
+        "complete"
+      ]
+    }
+  ],
+  "limits_profile": "illustrative-limits",
+  "input_schema": {
+    "type": "object",
+    "properties": {
+      "problem": {
+        "type": "string",
+        "minLength": 1
+      },
+      "expression": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "required": [
+      "problem",
+      "expression"
+    ],
+    "additionalProperties": false
+  },
+  "result": {
+    "source": "node_output",
+    "node": "review",
+    "pointer": "/value"
+  }
+}

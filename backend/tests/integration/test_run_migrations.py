@@ -31,7 +31,7 @@ def test_migration_preserves_money_and_retains_a_verified_old_schema(tmp_path: P
         assert backup.execute("PRAGMA user_version").fetchone()[0] == 1
         assert backup.execute("SELECT settled,reserved FROM budget_scopes").fetchone() == (37, 100)
     with database.transaction() as connection:
-        assert connection.execute("PRAGMA user_version").fetchone()[0] == 6
+        assert connection.execute("PRAGMA user_version").fetchone()[0] == 7
         assert tuple(
             connection.execute("SELECT settled,reserved FROM budget_scopes").fetchone()
         ) == (37, 100)

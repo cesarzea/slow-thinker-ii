@@ -3,7 +3,7 @@
 from slow_thinker_ii.access import OperationAddress
 from slow_thinker_ii.adapters.openai import OpenAIPricePolicy, OpenAIProfile
 from slow_thinker_ii.adapters.process import HostBinding, ProcessSecret
-from slow_thinker_ii.application import ModelBinding, PreparationRejected
+from slow_thinker_ii.application import ModelBinding, PreparationRejected, workspace
 from slow_thinker_ii.contracts import encode_json
 
 from ._host_profiles import HostProfile, HostRequest
@@ -39,6 +39,8 @@ class OpenAIResourceAdapter:
         provider = request.settings.providers.get(reference.provider_profile)
         if provider is None:
             raise PreparationRejected("provider_profile_unavailable")
+        if provider.provider != "openai":
+            raise PreparationRejected("legacy_provider_profile_mismatch")
         deadline = admission_deadline(
             provider, request.tariff, request.now, request.limits.run_seconds
         )
@@ -56,7 +58,12 @@ class OpenAIResourceAdapter:
             "SLOW_THINKER_SECRET_OPENAI", request.secrets.resolve(provider.credential_ref)
         )
         binding = HostBinding(provider_clients(request), (("complete", price),), (credential,))
-        return HostProfile(binding, model_config(reference, provider), admit_before=deadline)
+        selected = workspace.ModelTariffSelection(
+            request.tariff.revision, request.tariff.validated_at
+        )
+        return HostProfile(
+            binding, model_config(reference, provider), admit_before=deadline, model_tariff=selected
+        )
 
 
 def provider_clients(request: HostRequest) -> str:

@@ -14,11 +14,14 @@ def bind_mcp(
 ) -> dict[str, HostProfile]:
     graph = GraphRecord.model_validate_json(installed.plan.graph_json)
     policy = sequence_access(installed.plan)
-    result: dict[str, HostProfile] = {}
+    result = dict(hosts)
     for identity, profile in hosts.items():
         permitted = policy.discover(identity)
+        bindings = graph.components[identity].resources
+        if not bindings and not permitted:
+            continue
         resources: JsonObject = {}
-        for slot, target in graph.components[identity].resources.items():
+        for slot, target in bindings.items():
             resources[slot] = {
                 item.address.operation: item.alias
                 for item in permitted

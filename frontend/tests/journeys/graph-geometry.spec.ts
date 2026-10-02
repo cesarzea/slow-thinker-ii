@@ -1,3 +1,4 @@
+import {expectWorkspaceFits} from '../support/browser-workspace.ts';
 import {expect, test} from '@playwright/test';
 import type {Locator, Page} from '@playwright/test';
 import {connect} from '../support/browser.ts';
@@ -55,7 +56,7 @@ test('keeps agent configuration within a narrow viewport after fitting', async (
   await page.getByRole('button', {name: 'Reorganize graph'}).click();
   await expect.poll(async () => allCardsInside(canvas)).toBe(true);
   await expectCardsSeparated(canvas);
-  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+  await expectWorkspaceFits(page);
 });
 async function allCardsInside(canvas: Locator): Promise<boolean> {
   const sample = await sampleGeometry(canvas);

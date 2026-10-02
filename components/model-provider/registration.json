@@ -1,0 +1,12 @@
+{
+  "schema_version": "0.1-draft",
+  "type_id": "model-provider",
+  "type_version": "0.1.0",
+  "descriptor": "model-provider.component.json",
+  "distribution": {
+    "name": "slow-thinker-model-provider",
+    "version": "0.1.0"
+  },
+  "entry_point": "slow_thinker_model_provider:ModelProviderHost",
+  "environment_profile": "reviewed-python313-model-provider"
+}

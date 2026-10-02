@@ -14,6 +14,8 @@ from slow_thinker_ii.contracts import (
 )
 from slow_thinker_ii.definitions import ResolvedInstance, ResourceRequirement, SequencePlan
 
+from .resource_contracts import resource_descriptor_path, resource_operation
+
 ROOT = Path(__file__).resolve().parents[3]
 EXAMPLES = ROOT / "docs/contracts/examples"
 SCHEMAS = ROOT / "docs/contracts/schemas"
@@ -41,18 +43,7 @@ def resolved(graph: JsonObject) -> tuple[ResolvedInstance, ...]:
 
 def resolve_instance(identity: str, spec: JsonObject) -> ResolvedInstance:
     type_id, version = str(spec["type_id"]), str(spec["type_version"])
-    manifest = json_object(decode_json((EXAMPLES / MANIFESTS[type_id]).read_text()))
-    operations: list[OperationContract] = []
-    for name, value in json_object(manifest["operations"]).items():
-        contract = json_object(value)
-        input_schema = contract["input_schema"]
-        if type_id == "llm-call" and name == "generate":
-            input_schema = json_object(spec["config"])["input_schema"]
-        operations.append(
-            OperationContract(
-                name, encode_json(input_schema), encode_json(contract["output_schema"])
-            )
-        )
+    manifest = json_object(decode_json(manifest_path(type_id).read_text()))
     requirements = tuple(
         resource(name, json_object(value))
         for name, value in json_object(manifest["resource_slots"]).items()
@@ -63,8 +54,35 @@ def resolve_instance(identity: str, spec: JsonObject) -> ResolvedInstance:
         version,
         encode_json(manifest["config_schema"]),
         STRINGS.validate_python(manifest["roles"]),
-        tuple(operations),
+        instance_operations(spec, manifest),
         requirements,
+    )
+
+
+def instance_operations(spec: JsonObject, manifest: JsonObject) -> tuple[OperationContract, ...]:
+    type_id = str(spec["type_id"])
+    operations: list[OperationContract] = []
+    for name, value in json_object(manifest["operations"]).items():
+        contract = json_object(value)
+        input_schema = contract["input_schema"]
+        if type_id == "llm-call" and name == "generate":
+            input_schema = json_object(spec["config"])["input_schema"]
+        input_schema, output_schema = resource_operation(
+            type_id,
+            name,
+            json_object(spec["config"]),
+            json_object(input_schema),
+            json_object(contract["output_schema"]),
+        )
+        operations.append(
+            OperationContract(name, encode_json(input_schema), encode_json(output_schema))
+        )
+    return tuple(operations)
+
+
+def manifest_path(type_id: str) -> Path:
+    return (
+        EXAMPLES / MANIFESTS[type_id] if type_id in MANIFESTS else resource_descriptor_path(type_id)
     )
 
 

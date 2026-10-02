@@ -1,5 +1,7 @@
+import {boundedText} from './response-body.ts';
 import type {z} from 'zod';
 import {referenceSchema} from './definition-library-schemas.ts';
+import {jsonObjectSchema} from './graph-schemas.ts';
 import {
   DefinitionError,
   definitionFailure,
@@ -43,6 +45,16 @@ export class DefinitionTransport {
     }
   }
 
+  protected async objectText(path: string, signal: AbortSignal, body: string): Promise<string> {
+    try {
+      const response = await this.request(path, signal, body, false);
+      return await patchTextResponse(response);
+    } catch (error) {
+      if (error instanceof DefinitionError) throw error;
+      throw unconfirmedDefinitionFailure(false);
+    }
+  }
+
   private async request(
     path: string,
     signal: AbortSignal,
@@ -54,7 +66,10 @@ export class DefinitionTransport {
       credentials: 'omit',
       cache: 'no-store',
       headers: {authorization: `Bearer ${this.credential}`, 'content-type': 'application/json'},
-      signal: AbortSignal.any([signal, AbortSignal.timeout(saving ? 65_000 : 10_000)]),
+      signal: AbortSignal.any([
+        signal,
+        AbortSignal.timeout(saving || path === '/configuration/limits' ? 65_000 : 10_000),
+      ]),
       ...(source === undefined ? {} : {body: source}),
     });
   }
@@ -64,7 +79,7 @@ async function definitionTextResponse(
   response: Response,
   reference: SourceReference,
 ): Promise<string> {
-  const source = await response.text();
+  const source = await boundedText(response);
   const value: unknown = JSON.parse(source);
   if (!response.ok) throw definitionFailure(value, response.status);
   const contentType = response.headers.get('content-type')?.split(';')[0]?.trim().toLowerCase();
@@ -86,7 +101,7 @@ async function definitionResponse<T>(
   saving: boolean,
   accepts: ((value: T, status: number) => boolean) | undefined,
 ): Promise<T> {
-  const value: unknown = await response.json();
+  const value: unknown = JSON.parse(await boundedText(response));
   if (!response.ok) throw definitionFailure(value, response.status);
   const parsed = schema.parse(value);
   if (response.status !== 200 && !(saving && response.status === 201))
@@ -94,4 +109,15 @@ async function definitionResponse<T>(
   if (accepts !== undefined && !accepts(parsed, response.status))
     throw unconfirmedDefinitionFailure(saving);
   return parsed;
+}
+
+async function patchTextResponse(response: Response): Promise<string> {
+  const source = await boundedText(response);
+  const value: unknown = JSON.parse(source);
+  if (!response.ok) throw definitionFailure(value, response.status);
+  const contentType = response.headers.get('content-type')?.split(';')[0]?.trim().toLowerCase();
+  if (response.status !== 200 || contentType !== 'application/json')
+    throw unconfirmedDefinitionFailure(false);
+  jsonObjectSchema.parse(value);
+  return source;
 }

@@ -12,13 +12,23 @@ release is recorded here yet.
 | -------------------- | ------------- | ------------------------------------------------------------- |
 | Python application   | `0.1.0.dev1`  | [pyproject.toml](pyproject.toml)                              |
 | Frontend application | `0.1.0-dev.1` | [package.json](package.json)                                  |
-| Latest sprint report | `0.0.3.2`     | [S03 status report](docs/progress/sprint-03-status-report.md) |
+| Latest sprint report | `0.0.6.1`     | [S06 status report](docs/progress/sprint-06-status-report.md) |
 
 The report identifier follows `<series-major>.<series-minor>.<sprint>.<revision>`:
 `0.0.2.1` means report series V0.0, Sprint 2, Revision 1. It does not change package
 versions or identify a published software release.
 
 ## Unreleased development progress
+
+- Provider-neutral OpenAI/DeepSeek model resources, explicit reasoning options,
+  reviewed daily tariffs and native usage/evidence: [S04 report](docs/progress/sprint-04-status-report.md).
+- External installed components, bounded calculator and private/shared durable
+  key/value memory with managed composition: [S05 report](docs/progress/sprint-05-status-report.md).
+- Structured component/graph configuration, Experiments/Components/Resources/Runs/
+  Settings navigation and recoverable bounded budget commands: [S06 report](docs/progress/sprint-06-status-report.md).
+- All shared local gates passed; actual two-provider resource collaboration and
+  retained revisions audited within the existing USD 3 allowance:
+  [S04–S06 live validation](docs/progress/s04-s06-live-validation.md).
 
 - Personal JSON import/edit/validation, immutable revisions, manual lineage,
   exact selection and saved-definition execution with retained history:
@@ -63,17 +73,27 @@ The contribution guide followed in [PR #10](https://github.com/cesarzea/slow-thi
 merged as `f10e062` after required checks passed. Earlier pending states retain
 their original checkpoint meaning.
 
+## S03 publication closure — 2026-10-02
+
+[PR #11](https://github.com/cesarzea/slow-thinker-ii/pull/11) was merged as
+`1557522` after required checks passed, including its live/closure supplement.
+The S04–S06 branch starts from that merged tree. Earlier pending entries remain
+historical checkpoint statements; the latest sprint reports describe local delivery.
+
 ## Sprint report version history
 
-| Version     | Recorded date | Sprint | Progress status                                                                                                         | Report and specification                                                                                                                       |
-| ----------- | ------------- | ------ | ----------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
-| **0.0.3.2** | 2026-10-02    | S03    | Functionally closed after real OpenAI acceptance; closure supplement publication and owner merge remain pending. | [Status report](docs/progress/sprint-03-status-report.md) · [Live validation](docs/progress/sprint-03-live-validation.md) |
-| 0.0.3.1 | 2026-10-02    | S03    | Personal authoring, immutable revisions and retained execution verified locally; publication and owner review pending.  | [Revision 1 snapshot](docs/progress/sprint-03-status-report-0.0.3.1.md) · [Sprint specification](docs/specification/personal-experiments-sprint.md)          |
-| **0.0.2.5** | 2026-10-01    | S02    | Remote polling passed; geometry readiness corrected with focused and complete local verification; remote rerun pending. | [Status report](docs/progress/sprint-02-status-report.md) · [Sprint specification](docs/specification/agent-canvas-sprint.md)                  |
-| 0.0.2.4     | 2026-10-01    | S02    | Remote polling failure corrected; focused repetitions and full local verification passed; remote rerun pending.         | [Revision 4 snapshot](docs/progress/sprint-02-status-report-0.0.2.4.md) · [Sprint specification](docs/specification/agent-canvas-sprint.md)    |
-| 0.0.2.3     | 2026-10-01    | S02    | Shared CodeQL rejection and full local verification passed; updated remote CI not yet run.                              | [Revision 3 snapshot](docs/progress/sprint-02-status-report-0.0.2.3.md) · [Sprint specification](docs/specification/agent-canvas-sprint.md)    |
-| 0.0.2.2     | 2026-10-01    | S02    | Approved CodeQL cleanup and follow-up tests verified; shared-verification integration remains open.                     | [Revision 2 snapshot](docs/progress/sprint-02-status-report-0.0.2.2.md) · [Sprint specification](docs/specification/agent-canvas-sprint.md)    |
-| **0.0.2.1** | 2026-10-01    | S02    | Local delivery and owner-requested corrections verified; publication prerequisites remained open at recording.          | [Original status report](docs/progress/sprint-02-status-report-0.0.2.1.md) · [Sprint specification](docs/specification/agent-canvas-sprint.md) |
+| Version     | Recorded date | Sprint | Progress status                                                                                                         | Report and specification                                                                                                                            |
+| ----------- | ------------- | ------ | ----------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **0.0.6.1** | 2026-10-02    | S06    | Structured workspace locally verified; owner interface review and hosted checks pending.                                | [Status report](docs/progress/sprint-06-status-report.md) · [Delivery block](docs/specification/s04-s06-delivery.md)                                |
+| **0.0.5.1** | 2026-10-02    | S05    | External components, calculator and scoped memory locally verified, including real installed execution.                 | [Status report](docs/progress/sprint-05-status-report.md) · [Resource contract](docs/contracts/tools-memory.md)                                     |
+| **0.0.4.1** | 2026-10-02    | S04    | Provider-neutral model resources and actual OpenAI/DeepSeek calls verified locally.                                     | [Status report](docs/progress/sprint-04-status-report.md) · [Model contract](docs/contracts/model-resources.md)                                     |
+| **0.0.3.2** | 2026-10-02    | S03    | Functionally closed after real OpenAI acceptance; closure supplement publication and owner merge remain pending.        | [Status report](docs/progress/sprint-03-status-report.md) · [Live validation](docs/progress/sprint-03-live-validation.md)                           |
+| 0.0.3.1     | 2026-10-02    | S03    | Personal authoring, immutable revisions and retained execution verified locally; publication and owner review pending.  | [Revision 1 snapshot](docs/progress/sprint-03-status-report-0.0.3.1.md) · [Sprint specification](docs/specification/personal-experiments-sprint.md) |
+| **0.0.2.5** | 2026-10-01    | S02    | Remote polling passed; geometry readiness corrected with focused and complete local verification; remote rerun pending. | [Status report](docs/progress/sprint-02-status-report.md) · [Sprint specification](docs/specification/agent-canvas-sprint.md)                       |
+| 0.0.2.4     | 2026-10-01    | S02    | Remote polling failure corrected; focused repetitions and full local verification passed; remote rerun pending.         | [Revision 4 snapshot](docs/progress/sprint-02-status-report-0.0.2.4.md) · [Sprint specification](docs/specification/agent-canvas-sprint.md)         |
+| 0.0.2.3     | 2026-10-01    | S02    | Shared CodeQL rejection and full local verification passed; updated remote CI not yet run.                              | [Revision 3 snapshot](docs/progress/sprint-02-status-report-0.0.2.3.md) · [Sprint specification](docs/specification/agent-canvas-sprint.md)         |
+| 0.0.2.2     | 2026-10-01    | S02    | Approved CodeQL cleanup and follow-up tests verified; shared-verification integration remains open.                     | [Revision 2 snapshot](docs/progress/sprint-02-status-report-0.0.2.2.md) · [Sprint specification](docs/specification/agent-canvas-sprint.md)         |
+| **0.0.2.1** | 2026-10-01    | S02    | Local delivery and owner-requested corrections verified; publication prerequisites remained open at recording.          | [Original status report](docs/progress/sprint-02-status-report-0.0.2.1.md) · [Sprint specification](docs/specification/agent-canvas-sprint.md)      |
 
 ## Maintenance
 

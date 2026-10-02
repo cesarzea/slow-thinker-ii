@@ -31,7 +31,7 @@ function modelWorker(detail: GraphDetail | undefined, initial: string): string |
     visited.add(current);
     const type = definitionComponent(detail, current)['type_id'];
     if (type === 'llm-call') return current;
-    if (type !== 'routed-call') return undefined;
+    if (type !== 'routed-call' && type !== 'contextual-call') return undefined;
     current = resourceTarget(detail, current, 'worker');
   }
   return undefined;

@@ -1,4 +1,4 @@
-"""Schema v6 preserves old records and its verified v5 backup transactionally."""
+"""Schema v7 preserves old records and its verified v5 backup transactionally."""
 
 import sqlite3
 from contextlib import closing
@@ -44,7 +44,7 @@ def test_v5_migration_preserves_every_existing_table_and_verified_backup(tmp_pat
     database.initialize()
     database.initialize()
     with closing(sqlite3.connect(path)) as db:
-        assert db.execute("PRAGMA user_version").fetchone()[0] == 6
+        assert db.execute("PRAGMA user_version").fetchone()[0] == 7
         current = saved_tables(db)
         assert {name: current[name] for name in original} == original
         assert current["personal_definitions"] == []
@@ -80,10 +80,10 @@ def test_future_schema_is_rejected_without_migration(tmp_path: Path) -> None:
     path = tmp_path / "future.sqlite"
     original = version_five(path)
     with closing(sqlite3.connect(path)) as db, db:
-        db.execute("PRAGMA user_version=7")
+        db.execute("PRAGMA user_version=8")
     with pytest.raises(ValueError, match="Unsupported database schema"):
         SqliteDatabase(path).initialize()
     with closing(sqlite3.connect(path)) as db:
-        assert db.execute("PRAGMA user_version").fetchone()[0] == 7
+        assert db.execute("PRAGMA user_version").fetchone()[0] == 8
         assert saved_tables(db) == original
     assert not list(tmp_path.glob("*.backup"))

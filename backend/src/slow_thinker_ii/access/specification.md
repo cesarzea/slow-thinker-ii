@@ -28,3 +28,12 @@ Public definition and value contracts; the application layer owns durable record
 ## Shared contracts
 
 - [call-authority](../../../../docs/contracts/call-authority.md)
+
+## S04–S06 active delivery
+
+Follow [the shared contract](../../../../docs/contracts/tools-memory.md). Implementation owner: Coordinator.
+
+Preserve invocation-specific aliases/grants and permissions independent of resource bindings. New resource operations use the current policy; no implicit trace or peer access.
+
+Completion requires the shared delivery acceptance evidence; implementation alone
+does not close verification. Keep existing approved contracts compatible.

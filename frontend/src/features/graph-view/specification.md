@@ -83,3 +83,20 @@ Geometry checks must wait for both expected agent cards to be rendered and visib
 An empty collection or hidden initialization state must not count as fitted.
 Observe containment and separation from stable DOM geometry, retrying condition
 checks through Playwright assertions across definition arrival and layout remounts.
+
+## S04–S06 active delivery
+
+Follow [the shared contract](../../../../docs/contracts/product-workspace.md). Implementation owner: C.
+
+Retain approved agent-focused geometry and boundaries; resolve effective model/reasoning through nested ContextualCall/RoutedCall workers and new resource configs. Preserve layout/viewport updates and optional configuration/system elements.
+
+Completion requires the shared delivery acceptance evidence; implementation alone
+does not close verification. Keep existing approved contracts compatible.
+
+## Local delivery checkpoint — 2026-10-02
+
+S04–S06 implementation, individual/whole-system review and mandatory shared
+verification are complete. The [verification record](../../../../docs/verification.md#provider-resource-and-workspace-delivery--2026-10-02)
+is authoritative for final evidence and limitations; earlier preparation/scoped-test
+statuses above describe preceding checkpoints. Owner review and hosted checks remain
+separate. No implementation ticket remains for this delivery.

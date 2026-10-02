@@ -52,3 +52,12 @@ yield `ComponentConnection`; `ProcessFleet.open` and `InstalledGraphEnvironment.
 yield `Mapping[OperationAddress, OperationPort]`; `transport` and `channels` yield
 the existing `Streams` tuple. Preserve all yielded values, cleanup and runtime
 behavior; leave ordinary iterator contracts unchanged.
+
+## S04–S06 active delivery
+
+Follow [the shared contract](../../../../../docs/contracts/tools-memory.md). Implementation owner: Coordinator.
+
+Keep independently installed host invocation/capture/ownership behavior. Trusted storage/provider client bootstrap is supplied by adapters; no graph-driven external command or unscoped environment secret.
+
+Completion requires the shared delivery acceptance evidence; implementation alone
+does not close verification. Keep existing approved contracts compatible.

@@ -34,9 +34,11 @@ it('gates Start through editing and validation until the exact saved revision is
   localStorage.clear();
   const fixture = new CatalogFixture();
   await fixture.ready();
+  await press('Runs');
   await userEvent.type(screen.getByLabelText(/Task or problem/), 'personal input');
   const start = screen.getByRole<HTMLButtonElement>('button', {name: 'Start run'});
   expect(start.disabled).toBe(false);
+  await press('Experiments');
   fixture.change(draftText());
   expect(start.disabled).toBe(true);
   expect(screen.getByText(/Unsaved draft — save or discard/)).toBeTruthy();
@@ -49,15 +51,11 @@ it('gates Start through editing and validation until the exact saved revision is
       option(personalReference),
     );
   });
+  await press('Runs');
   await userEvent.type(screen.getByLabelText(/Task or problem/), 'selected saved input');
   await press('Start run');
-  const body: unknown = JSON.parse(fixture.operator.mutations.at(-1)?.body ?? '{}');
-  expect(body).toMatchObject({
-    graph_id: 'single-agent',
-    graph_revision: 'personal-1',
-  });
-  expect(JSON.stringify(localStorage)).not.toContain('selected saved input');
-  expect(JSON.stringify(localStorage)).not.toContain(draftText());
+  expectSavedStart(fixture);
+  expect(JSON.stringify(localStorage)).not.toMatch(/selected saved input|temperature/u);
 });
 
 it('keeps confirmed Save separate from failed listing and restores the selected source baseline', async () => {
@@ -83,6 +81,7 @@ it('keeps confirmed Save separate from failed listing and restores the selected 
   await press('Discard draft');
   fixture.list.mockResolvedValue(libraryPage([libraryItem('personal-1')]));
   await press('Retry saved definition selection');
+  await press('JSON source');
   await waitFor(() => {
     expect(fixture.text.value).toBe(draftText());
   });
@@ -92,16 +91,20 @@ it('keeps confirmed Save separate from failed listing and restores the selected 
 it('retains historical run evidence while selecting and editing another saved revision', async () => {
   const fixture = new CatalogFixture();
   await fixture.ready();
+  await press('Runs');
   await userEvent.type(screen.getByLabelText(/Task or problem/), 'first run');
   await press('Start run');
   await screen.findByRole('heading', {name: 'Completed'});
   fixture.list.mockResolvedValue(libraryPage([libraryItem(), libraryItem('personal-1')]));
+  await press('Experiments');
   await press('Refresh library');
   await userEvent.selectOptions(screen.getByLabelText('Experiment'), option(personalReference));
+  await press('JSON source');
   await waitFor(() => {
     expect(fixture.text.value).toBe(draftText());
   });
   fixture.change(`${draftText()}\n`);
+  await press('Runs');
   expect(
     within(screen.getByRole('region', {name: 'Run state'})).getByRole('heading', {
       name: 'Completed',
@@ -112,3 +115,8 @@ it('retains historical run evidence while selecting and editing another saved re
   );
   expect(fixture.operator.mutations.filter(({path}) => path.includes('/runs'))).toHaveLength(1);
 });
+
+function expectSavedStart(fixture: CatalogFixture): void {
+  const body: unknown = JSON.parse(fixture.operator.mutations.at(-1)?.body ?? '{}');
+  expect(body).toMatchObject({graph_id: 'single-agent', graph_revision: 'personal-1'});
+}

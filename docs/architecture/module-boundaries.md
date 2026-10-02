@@ -1,6 +1,6 @@
 # Source organization and module boundaries
 
-**Status: Accepted first-cycle layout; implementation and automated boundary checks are in progress.** R02, R05, R21–R22, R27–R28; Q14, Q17, Q20. The engineering obligations in [ADR 0001](../adr/0001-engineering-baseline.md) are accepted. The current implementation and verification limits are recorded in the [verification record](../verification.md).
+**Status: Implemented through S06; automated boundaries verified locally.** R02, R05, R21–R22, R27–R28; Q14, Q17, Q20. The engineering obligations in [ADR 0001](../adr/0001-engineering-baseline.md) are accepted. The current implementation and verification limits are recorded in the [verification record](../verification.md).
 
 ## Repository layout
 
@@ -14,7 +14,12 @@ backend/
     accounting/      money, reservations and settlement rules
     observation/     evidence envelopes and capture rules
     application/     coordinated use cases and transaction ports
+      library/       personal immutable experiment definitions
+      workspace/     discovery, source patches and limit commands
     adapters/        HTTP, MCP, process hosting and SQLite implementations
+      models/        reviewed provider request and billing policies
+      resources/     run-local and persistent resource namespace binding
+      workspace/     trusted schema and configuration discovery
     bootstrap/       configuration and dependency composition
   tests/
     unit/
@@ -29,17 +34,28 @@ frontend/
       execution/
       graph-view/
       inspector/
+      definition-editor/
+      workspace/
     api/             validated application API boundary
     ui/              reusable presentation without experiment logic
   tests/
     integration/
     journeys/
 components/
+  host/src/slow_thinker_host/
   llm-call/src/slow_thinker_llm_call/
   sequence/src/slow_thinker_sequence/
   openai-model/src/slow_thinker_openai_model/
+  model-provider/src/slow_thinker_model_provider/
+  calculator/src/slow_thinker_calculator/
+  key-value-memory/src/slow_thinker_key_value_memory/
+  contextual-call/src/slow_thinker_contextual_call/
+  redirector/src/slow_thinker_redirector/
+  routed-call/src/slow_thinker_routed_call/
+  bounded-flow/src/slow_thinker_bounded_flow/
 examples/
   grounded-review/src/example_grounded_review/
+  resource-agent/src/example_resource_agent/
 tooling/             repository verification and fixture checks
 docs/                architecture, contracts and review artifacts
 ```
@@ -62,7 +78,7 @@ Domain modules own their rules and expose narrow public operations. The applicat
 
 Keep shared `contracts` limited to identities and immutable boundary values required by multiple modules. It must not become a collection of generic helpers, mutable registries or unrelated models. Module-specific types stay with their owning module; mappings at the application boundary are preferable to exposing private objects.
 
-External I/O belongs in adapters or independently hosted resource components. The backend's MCP adapter invokes the approved OpenAI resource operation; it must not also instantiate a second provider client that bypasses that component. SQL and FastAPI types stay inside their adapters. Dependency injection occurs in bootstrap; core modules cannot discover or construct concrete adapters themselves.
+External I/O belongs in adapters or independently hosted resource components. The backend's MCP adapter invokes a reviewed model/resource operation; it must not also instantiate a provider client that bypasses that component. OpenAI and DeepSeek policies share the same authority/accounting path. SQL and FastAPI types stay inside their adapters. Dependency injection occurs in bootstrap; core modules cannot discover or construct concrete adapters themselves.
 
 The application transaction port coordinates repositories under one unit of work. An adapter must not commit each repository independently when a use case requires atomic reservations/state/evidence. Nor may the application keep that transaction open while awaiting a provider. These boundaries implement the [storage proposal](../adr/0011-local-persistence.md), not a generic dependency-injection framework.
 

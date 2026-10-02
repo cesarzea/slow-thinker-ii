@@ -82,3 +82,12 @@ Partial static input checks preserve boolean schemas reached through local refs
 and allOf at the operation or bound-argument level. False rejects even unavailable
 values; true retains the ordinary shape/literal checks. Owning schemas preserve
 fragment resolution. No general schema satisfiability inference is introduced.
+
+## S04–S06 active delivery
+
+Follow [the shared contract](../../../../../docs/contracts/product-workspace.md). Implementation owner: Coordinator.
+
+Keep exact registration/schema/runtime validation and static/personal authoring separate. Support ContextualCall composition validation and containment through declared child bindings. Expose trusted registered type configuration schemas for workspace discovery; do not hardcode built-in types in authoring.
+
+Completion requires the shared delivery acceptance evidence; implementation alone
+does not close verification. Keep existing approved contracts compatible.

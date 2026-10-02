@@ -1,0 +1,15 @@
+{
+  "schema_version": "1",
+  "cycle": "C06",
+  "method": "M06",
+  "measurement_basis": "Observed activation to final verification confirmation, including intervening closing documents and the import-policy audit; not audited active elapsed time",
+  "start_utc": "2026-10-02T03:14:37.206052+00:00",
+  "end_utc": "2026-10-02T06:08:26.074297+00:00",
+  "checkpoint_span_seconds": 10428.868245,
+  "accumulated_participant_activity_seconds": null,
+  "task_duration_allocations": null,
+  "causal_productivity_comparison_established": false,
+  "first_verification_confirmation_utc": "2026-10-02T05:49:48.691270+00:00",
+  "first_checkpoint_span_seconds": 9311.485218,
+  "post_confirmation_documentation_publication_work_excluded": true
+}

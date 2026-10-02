@@ -35,6 +35,7 @@ it('exposes explicit fixed-page controls while preserving selection outside a re
   expect(selector.options).toHaveLength(2);
   expect(fixture.list.mock.calls[1]?.[1]).toBe('fixed-page-2');
   await userEvent.selectOptions(selector, option(personalReference));
+  await press('JSON source');
   await waitFor(() => {
     expect(fixture.text.value).toBe(draftText());
   });

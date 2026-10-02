@@ -34,3 +34,18 @@ production HTTP/storage import, editing, saving, reload, variants and execution;
 the [recovery journeys](../../../tests/journeys/personal-recovery.spec.ts) cover
 lost responses and post-confirmation listing failure. Browser execution uses
 deterministic operations; provider behavior is verified separately.
+
+## S04–S06 development
+
+DefinitionSession exposes the public EditorModel to app composition. Source patches
+lock conflicting changes and preserve the previous source on rejection. Structured
+and JSON edits share the same baseline and existing immutable save/replay behavior.
+Review and functional verification are complete; see [verification record](../../../../docs/verification.md#provider-resource-and-workspace-delivery--2026-10-02).
+
+## Local delivery checkpoint — 2026-10-02
+
+S04–S06 implementation, individual/whole-system review and mandatory shared
+verification are complete. The [verification record](../../../../docs/verification.md#provider-resource-and-workspace-delivery--2026-10-02)
+is authoritative for final evidence and limitations; earlier preparation/scoped-test
+statuses above describe preceding checkpoints. Owner review and hosted checks remain
+separate. No implementation ticket remains for this delivery.

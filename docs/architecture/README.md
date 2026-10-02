@@ -42,7 +42,7 @@ These are logical responsibilities. The source layout and enforced dependency di
 | Accounting | Reservations, usage, charges, scope balances | Authorize bounded spending and settle actual usage |
 | Observation | Events, payload references, read models | Append evidence and supply authorized inspection |
 | Integration adapters | MCP, model providers, compatibility APIs, persistence | Translate external formats at validated boundaries |
-| Browser features | JSON authoring, revision selection, graph views, inspectors and session/run navigation | Use bounded application APIs and status updates |
+| Browser features | Structured/JSON configuration, revision selection, graph views, inspectors, resources and session/run/settings navigation | Use bounded application APIs and status updates |
 
 Only public module APIs may be used across responsibilities. Domain code must not import web frameworks, provider SDKs, UI types, or storage implementations. A composition root wires implementations. The [module-boundary contract](module-boundaries.md) defines the implemented directories, dependency direction, public entry points and placement checks.
 
@@ -54,6 +54,15 @@ schemas and limits, then freezes the selected exact revision. Browser authoring
 uses raw canonical text and backend-generated drafts to preserve numeric values
 across Python and JavaScript. Runtime evidence continues to refer to the admitted
 snapshot rather than the current editor or library selection.
+
+S04–S06 adds the [workspace](../contracts/product-workspace.md) application boundary
+for trusted discovery, source-preserving patches and transactional limit commands.
+[Model policies](../contracts/model-resources.md) select provider-specific request
+and billing behavior behind a common model-resource host; immutable per-model
+tariffs remain separate from historical charges. [Resource binding](../contracts/tools-memory.md)
+resolves run-local or persistent namespaces before independent calculator, memory
+and composed-agent processes launch. Child bindings and grants remain explicit;
+configuration discovery does not expose credentials or confer authority.
 
 ## 6. Runtime view
 

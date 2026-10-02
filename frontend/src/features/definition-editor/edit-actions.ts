@@ -30,7 +30,8 @@ function discard(state: DraftState, update: UpdateDraft, requests: Requests): vo
     !state.loaded ||
     state.pending === 'save' ||
     state.pending === 'import' ||
-    state.pending === 'draft'
+    state.pending === 'draft' ||
+    state.pending === 'patch'
   )
     return;
   requests.cancel();

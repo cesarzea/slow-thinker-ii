@@ -4,7 +4,7 @@ from pathlib import Path
 
 import pytest
 from fastapi.testclient import TestClient
-from slow_thinker_ii.adapters.sqlite import SqliteDatabase, SqliteOperatorStore
+from slow_thinker_ii.adapters.sqlite import SqliteConfigurationCommands, SqliteDatabase
 from slow_thinker_ii.application import (
     CoordinatorShutdown,
     ExecutionConfiguration,
@@ -42,11 +42,11 @@ def test_failed_startup_releases_database_ownership(
 ) -> None:
     setup = application_setup(tmp_path)
 
-    def failed(self: SqliteOperatorStore, profile: ExecutionConfiguration) -> None:
+    def failed(self: SqliteConfigurationCommands, profile: ExecutionConfiguration) -> None:
         del self, profile
         raise RuntimeError("Synthetic activation failure")
 
-    monkeypatch.setattr(SqliteOperatorStore, "configure", failed)
+    monkeypatch.setattr(SqliteConfigurationCommands, "initialize", failed)
     app = create_app(tmp_path / "app.sqlite", RecordedCatalog(), setup)
     with (
         pytest.raises(RuntimeError, match="Synthetic activation failure"),

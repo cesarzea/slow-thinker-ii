@@ -20,6 +20,8 @@ class InstallationChoice(Record, frozen=True):
 
 
 class ProviderProfile(Record, frozen=True):
+    provider: Literal["openai", "deepseek"] = "openai"
+    billing_profile: Identity = "openai.gpt-6-luna.standard.text.v1"
     model: Identity
     returned_models: tuple[Identity, ...] = Field(min_length=1)
     credential_ref: Identity

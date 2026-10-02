@@ -57,6 +57,17 @@ def prepare_component(
     selector_project: Path | None = None,
 ) -> Resolution:
     recipe = _recipe(name, selector_project)
+    return prepare_recipe(root, destination, uv, python, recipe)
+
+
+def prepare_recipe(
+    root: Path,
+    destination: Path,
+    uv: Path,
+    python: Path,
+    recipe: PreparationTarget,
+    metadata: dict[str, str] | None = None,
+) -> Resolution:
     preparation = destination / "preparations" / uuid4().hex
     wheels = preparation / "wheels"
     wheels.mkdir(parents=True, exist_ok=False)
@@ -66,7 +77,7 @@ def prepare_component(
     lock = preparation / "requirements.txt"
     resolve_and_fetch(uv, python, inputs, lock, wheels)
     verify_built_wheels(wheels, built)
-    provenance = record_provenance(sources, built, uv, preparation)
+    provenance = record_provenance(sources, built, uv, preparation, metadata)
     catalog = InstallationCatalog(destination, uv, python)
     return catalog.prepare(lock, wheels, recipe.registration, provenance)
 

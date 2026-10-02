@@ -1,6 +1,6 @@
 # Project documentation
 
-**Status: First-cycle specification approved; local implementation available.**
+**Status: S04–S06 locally verified; owner review and publication pending.**
 
 This documentation records the approved first-cycle requirements, architecture and contracts, and keeps later capabilities explicitly deferred. The [delivery sprint](specification/first-cycle-sprint.md) identifies the implemented scope.
 
@@ -25,6 +25,11 @@ authoring, immutable revisions, recovery and saved-definition execution. The
 [S03 delivery specification](specification/personal-experiments-sprint.md) tracks
 acceptance verification separately from these usage instructions.
 
+The [workspace guide](workspace.md) covers structured component and graph editing,
+model/resource discovery, execution history, configurable limits and recovery.
+The [S04–S06 delivery block](specification/s04-s06-delivery.md) defines the current
+end-to-end acceptance scope.
+
 The [central version register](../CHANGELOG.md) records development package versions
 and the history of versioned sprint reports.
 
@@ -33,13 +38,22 @@ The [S02 Sprint Status Report](progress/sprint-02-status-report.md), version
 and outstanding items, with links to the sprint specification.
 
 The [S03 Sprint Status Report](progress/sprint-03-status-report.md), version
-`0.0.3.1`, records locally verified personal authoring and retained execution,
-with publication and owner review identified separately.
+`0.0.3.2`, records personal authoring, retained execution and functional closure
+after real collaboration validation, with publication and owner review identified
+separately.
 
-The [sprint roadmap](specification/sprint-roadmap.md) records delivered scopes and
-proposes subsequent sprint scopes, delivery order, dependencies and milestones.
-Its future sprint scopes remain proposals until approved; planning does not activate
-implementation.
+The S04 [model report](progress/sprint-04-status-report.md), S05
+[resource report](progress/sprint-05-status-report.md) and S06
+[workspace report](progress/sprint-06-status-report.md) record the latest verified
+delivery. The [live validation](progress/s04-s06-live-validation.md) retains actual
+two-provider collaboration, shared persistent memory and independently audited cost.
+
+The [sprint roadmap](specification/sprint-roadmap.md), revision 3, records delivered
+scopes, future delivery order, dependencies and milestones. The owner-requested
+replan adds the product configuration/execution workspace as S06, followed by
+evaluation as S07. The [previous plan](specification/sprint-roadmap-20261002-r1.md)
+retains its original scope numbering and forecast. Future delivery specifications
+still require approval; planning does not activate implementation.
 
 The process-improvement record is part of the project documentation. It evaluates
 how development is organized; product requirements and architecture retain their

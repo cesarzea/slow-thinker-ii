@@ -13,17 +13,20 @@ from slow_thinker_ii.adapters.preparation import (
     ServiceEndpoints,
     standard_host_adapters,
 )
+from slow_thinker_ii.adapters.resources import MemoryResourceAdapter
 from slow_thinker_ii.adapters.sqlite import (
     SqliteDatabase,
+    SqliteModelTariffReader,
     SqliteOperatorQueries,
     SqliteOperatorStore,
     SqliteProcessJournal,
     SqliteRunStore,
     SqliteTariffStore,
 )
-from slow_thinker_ii.application import ExecutionConfiguration, ExecutionCoordinator
+from slow_thinker_ii.application import ExecutionConfiguration, ExecutionCoordinator, workspace
 
 from ._library import experiment_library
+from ._workspace import workspace_service
 
 
 @dataclass(frozen=True)
@@ -33,6 +36,8 @@ class ExecutionServices:
     commands: SqliteOperatorStore
     queries: SqliteOperatorQueries
     access: OperatorAccess
+    workspace_service: workspace.WorkspaceService | None = None
+    descriptors: tuple[str, ...] = ()
 
     async def close(self) -> bool:
         pending = await self.coordinator.close()
@@ -75,13 +80,15 @@ class ExecutionSetup:
             commands,
             SqliteOperatorQueries(database, self.cursor_key),
             self.access,
+            workspace_service(database, root, commands, self.configuration, self.descriptors),
+            self.descriptors,
         )
 
     def preparer(
         self, database: SqliteDatabase, root: Path, commands: SqliteOperatorStore
     ) -> InstalledWorkflowPreparer:
         return InstalledWorkflowPreparer(
-            experiment_library(database, root),
+            experiment_library(database, root, self.descriptors),
             self.installations,
             root / "docs/contracts/schemas",
             self.descriptors,
@@ -90,7 +97,11 @@ class ExecutionSetup:
             self.secrets,
             self.endpoints,
             self.workspace,
-            standard_host_adapters(),
+            {
+                **standard_host_adapters(),
+                "memory-resource": MemoryResourceAdapter(self.workspace / "resources"),
+            },
             time.time,
             SqliteProcessJournal(database, self.configuration.limits.max_payload_bytes),
+            model_tariffs=SqliteModelTariffReader(database),
         )

@@ -61,3 +61,20 @@ locking, transaction and exception behavior; ordinary iterator ports are unchang
 The public `library` namespace owns personal graph use cases and ports; see
 [library/specification.md](library/specification.md). Existing execution services
 retain their public signatures and immutable run snapshots.
+
+## S04–S06 active delivery
+
+Follow [the shared contract](../../../../docs/contracts/product-workspace.md). Implementation owner: Coordinator.
+
+Export the workspace namespace as its explicit public entry point, retaining existing public signatures and no framework dependencies. Keep new configuration use cases injected and preserve legacy execution/accounting behavior.
+
+Completion requires the shared delivery acceptance evidence; implementation alone
+does not close verification. Keep existing approved contracts compatible.
+
+## Local delivery checkpoint — 2026-10-02
+
+S04–S06 implementation, individual/whole-system review and mandatory shared
+verification are complete. The [verification record](../../../../docs/verification.md#provider-resource-and-workspace-delivery--2026-10-02)
+is authoritative for final evidence and limitations; earlier preparation/scoped-test
+statuses above describe preceding checkpoints. Owner review and hosted checks remain
+separate. No implementation ticket remains for this delivery.

@@ -20,7 +20,11 @@ def write_inputs(recipe: PreparationTarget, preparation: Path) -> Path:
 
 
 def record_provenance(
-    sources: dict[str, str], built: dict[str, str], uv: Path, preparation: Path
+    sources: dict[str, str],
+    built: dict[str, str],
+    uv: Path,
+    preparation: Path,
+    metadata: dict[str, str] | None = None,
 ) -> dict[str, str]:
     provenance = {
         **{f"source.{name}": checksum for name, checksum in sources.items()},
@@ -28,6 +32,7 @@ def record_provenance(
         "hatchling": version("hatchling"),
         "pip": version("pip"),
         "uv": command([str(uv), "--version"], preparation).strip(),
+        **(metadata or {}),
     }
     (preparation / "provenance.json").write_text(json.dumps(provenance, indent=2))
     return provenance

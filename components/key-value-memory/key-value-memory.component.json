@@ -1,0 +1,233 @@
+{
+  "schema_version": "0.1-draft",
+  "type_id": "key-value-memory",
+  "type_version": "0.1.0",
+  "roles": [
+    "resource"
+  ],
+  "operations": {
+    "get": {
+      "mcp_tool": "get",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256
+          }
+        },
+        "required": [
+          "key"
+        ],
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "found": {
+            "type": "boolean"
+          },
+          "value": {},
+          "version": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 1
+          }
+        },
+        "required": [
+          "found",
+          "value",
+          "version"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "put": {
+      "mcp_tool": "put",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256
+          },
+          "value": {},
+          "expected_version": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 1
+          }
+        },
+        "required": [
+          "key",
+          "value"
+        ],
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "version": {
+            "type": "integer",
+            "minimum": 1
+          }
+        },
+        "required": [
+          "version"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "delete": {
+      "mcp_tool": "delete",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256
+          },
+          "expected_version": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 1
+          }
+        },
+        "required": [
+          "key"
+        ],
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "deleted": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "deleted"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "list": {
+      "mcp_tool": "list",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "limit": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 100,
+            "default": 100
+          },
+          "after": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256
+          }
+        },
+        "required": [],
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "maxItems": 100,
+            "items": {
+              "type": "object",
+              "properties": {
+                "key": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 256
+                },
+                "version": {
+                  "type": "integer",
+                  "minimum": 1
+                }
+              },
+              "required": [
+                "key",
+                "version"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "next_key": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "items",
+          "next_key"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "config_schema": {
+    "type": "object",
+    "properties": {
+      "namespace": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 256
+      },
+      "retention": {
+        "enum": [
+          "run",
+          "persistent"
+        ],
+        "default": "run"
+      },
+      "max_entries": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 10000,
+        "default": 1000
+      },
+      "max_value_bytes": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 65536,
+        "default": 65536
+      }
+    },
+    "required": [
+      "namespace"
+    ],
+    "additionalProperties": false
+  },
+  "resource_slots": {},
+  "execution": {
+    "state_scope": "none",
+    "concurrency": "independent"
+  },
+  "billing": "none",
+  "extensions": {
+    "slow-thinker-ii:resource-store": {
+      "retention": [
+        "run",
+        "persistent"
+      ],
+      "owner": "resource",
+      "transactional": true
+    }
+  }
+}

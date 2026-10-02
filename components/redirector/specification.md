@@ -33,3 +33,20 @@ Host failures use `MCPError(code=-32603, data={"stage": ..., "reason": ...})`.
 The platform preserves the protocol error as a failed operation result. It is not
 a `ToolReply` success/error union and has no eligible port; declared output
 schemas describe successful structured values only.
+
+## S04–S06 active delivery
+
+Follow [the shared contract](../../docs/contracts/tools-memory.md). Implementation owner: B.
+
+Retain deterministic packaged selectors and declared output ports. New structured authoring exposes existing options; standalone and embedded use remain supported.
+
+Completion requires the shared delivery acceptance evidence; implementation alone
+does not close verification. Keep existing approved contracts compatible.
+
+## Local delivery checkpoint — 2026-10-02
+
+S04–S06 implementation, individual/whole-system review and mandatory shared
+verification are complete. The [verification record](../../docs/verification.md#provider-resource-and-workspace-delivery--2026-10-02)
+is authoritative for final evidence and limitations; earlier preparation/scoped-test
+statuses above describe preceding checkpoints. Owner review and hosted checks remain
+separate. No implementation ticket remains for this delivery.

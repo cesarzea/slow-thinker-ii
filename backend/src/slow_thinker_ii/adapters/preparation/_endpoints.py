@@ -8,11 +8,14 @@ from urllib.parse import urlsplit
 class ServiceEndpoints:
     gateway: str
     provider: str = "https://api.openai.com/v1"
+    deepseek_provider: str = "https://api.deepseek.com"
 
     def __post_init__(self) -> None:
         require_loopback(self.gateway)
         if self.provider != "https://api.openai.com/v1":
             require_loopback(self.provider)
+        if self.deepseek_provider != "https://api.deepseek.com":
+            require_loopback(self.deepseek_provider)
 
 
 def require_loopback(url: str) -> None:

@@ -33,3 +33,12 @@ Public component registration contracts and explicit uv/Python executables.
 ## October 2026 maintenance: uv installation pin
 
 Set the exact new-installation uv version to `uv 0.12.19` in `_commands.py`. Keep mismatch rejection, offline/hash/binary requirements and public records unchanged. Saved historical resolutions must not be rewritten or rejected merely for recording their original uv version.
+
+## S04–S06 active delivery
+
+Follow [the shared contract](../../../../../docs/contracts/tools-memory.md). Implementation owner: Coordinator.
+
+Reuse exact hashed preparation/resolution/description behavior for external user components. External registrations still require trusted exact package/type identity; no installing during graph execution.
+
+Completion requires the shared delivery acceptance evidence; implementation alone
+does not close verification. Keep existing approved contracts compatible.

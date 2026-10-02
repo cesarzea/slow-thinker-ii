@@ -3,7 +3,8 @@
 from slow_thinker_ii.contracts import OperationContract
 from slow_thinker_ii.definitions import ResolvedInstance
 
-from .._models import GraphRecord
+from .._contextual_contracts import validate_contextual
+from .._models import ComponentRecord, GraphRecord
 from ._diagnostics import pointer, require
 
 
@@ -89,30 +90,38 @@ def resources(
 def compositions(
     graph: GraphRecord, instances: dict[str, ResolvedInstance], allowed: set[tuple[str, str, str]]
 ) -> None:
+    validate_contextual(graph, instances, allowed)
     for identity, component in graph.components.items():
         if component.type_id != "routed-call":
             continue
-        config, bindings = component.config, component.resources
-        path = pointer(("components", identity, "resources"))
-        worker_id, router_id = bindings["worker"], bindings["router"]
-        worker_name = str(config["worker_operation"])
-        operation(instances, worker_id, worker_name, path)
-        operation(instances, router_id, "route", path)
+        _routed(identity, component, graph, instances, allowed)
+
+
+def _routed(
+    identity: str,
+    component: ComponentRecord,
+    graph: GraphRecord,
+    instances: dict[str, ResolvedInstance],
+    allowed: set[tuple[str, str, str]],
+) -> None:
+    config, bindings = component.config, component.resources
+    path = pointer(("components", identity, "resources"))
+    worker_id, router_id = bindings["worker"], bindings["router"]
+    worker_name = str(config["worker_operation"])
+    operation(instances, worker_id, worker_name, path)
+    operation(instances, router_id, "route", path)
+    require(
+        (identity, worker_id, worker_name) in allowed and (identity, router_id, "route") in allowed,
+        path,
+        "Composition worker and router operations require explicit permissions.",
+    )
+    worker_schema = graph.components[worker_id].config.get("input_schema")
+    if worker_schema is not None:
         require(
-            (identity, worker_id, worker_name) in allowed
-            and (identity, router_id, "route") in allowed,
+            worker_schema == config["input_schema"],
             path,
-            "Composition worker and router operations require explicit permissions.",
+            "Composition and worker inputs must agree.",
         )
-        worker_schema = graph.components[worker_id].config.get("input_schema")
-        if worker_schema is not None:
-            require(
-                worker_schema == config["input_schema"],
-                path,
-                "Composition and worker inputs must agree.",
-            )
-        ports = graph.components[router_id].config.get("outputs")
-        if ports is not None:
-            require(
-                ports == config["outputs"], path, "Composition and router output ports must agree."
-            )
+    ports = graph.components[router_id].config.get("outputs")
+    if ports is not None:
+        require(ports == config["outputs"], path, "Composition and router output ports must agree.")

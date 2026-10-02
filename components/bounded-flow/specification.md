@@ -25,3 +25,20 @@ Selects one next activation from a declared conditional topology and bounded com
 - [Component installation](../../docs/contracts/component-installation.md) defines packaging and isolated execution.
 
 No backend implementation imports are permitted. First-cycle implementation and local acceptance checks are complete.
+
+## S04–S06 active delivery
+
+Follow [the shared contract](../../docs/contracts/tools-memory.md). Implementation owner: B.
+
+Retain bounded conditional controller behavior and explicit routes/exhaustion. The new interface configures the current profile; no parallel joins or dynamic mutation are added here.
+
+Completion requires the shared delivery acceptance evidence; implementation alone
+does not close verification. Keep existing approved contracts compatible.
+
+## Local delivery checkpoint — 2026-10-02
+
+S04–S06 implementation, individual/whole-system review and mandatory shared
+verification are complete. The [verification record](../../docs/verification.md#provider-resource-and-workspace-delivery--2026-10-02)
+is authoritative for final evidence and limitations; earlier preparation/scoped-test
+statuses above describe preceding checkpoints. Owner review and hosted checks remain
+separate. No implementation ticket remains for this delivery.

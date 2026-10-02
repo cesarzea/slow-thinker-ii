@@ -30,7 +30,13 @@
     "tooling/quality",
     "tooling/components",
     "tooling/tests",
-    "frontend/src/features/definition-editor"
+    "frontend/src/features/definition-editor",
+    "components/model-provider",
+    "components/calculator",
+    "components/key-value-memory",
+    "components/contextual-call",
+    "examples/resource-agent",
+    "frontend/src/features/workspace"
   ],
   "files": [
     "backend/src/slow_thinker_ii/__init__.py",

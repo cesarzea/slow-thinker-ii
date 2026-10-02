@@ -14,6 +14,7 @@ from slow_thinker_ii.adapters.http import (
     openai_router,
     operator_router,
     tariff_router,
+    workspace_router,
 )
 from slow_thinker_ii.adapters.sqlite import SqliteDatabase, SqliteTariffStore
 from slow_thinker_ii.adapters.tariffs import VercelTariffSource
@@ -23,6 +24,7 @@ from ._configuration import configured_execution, load_execution_setup
 from ._execution import ExecutionComposition, ExecutionServices, ExecutionSetup
 from ._library import experiment_library
 from ._refresh import TariffLifetime
+from ._workspace import model_refreshes
 
 __all__ = [
     "create_app",
@@ -37,6 +39,7 @@ def create_app(
     database_path: Path | None = None,
     tariff_source: TariffSource | None = None,
     execution_setup: ExecutionComposition | None = None,
+    model_tariff_sources: dict[str, TariffSource] | None = None,
 ) -> FastAPI:
     root = Path(__file__).resolve().parents[4]
     catalog = ExperimentCatalog(BundledDefinitionStore(root / "docs/contracts/examples"))
@@ -44,7 +47,12 @@ def create_app(
     tariffs = SqliteTariffStore(database)
     execution = None if execution_setup is None else execution_setup.build(database, root)
     lifetime = TariffLifetime(
-        database, TariffRefresh(tariff_source or VercelTariffSource(), tariffs), execution
+        database,
+        TariffRefresh(tariff_source or VercelTariffSource(), tariffs),
+        execution,
+        model_refreshes(
+            database, None if execution is None else execution.configuration, model_tariff_sources
+        ),
     )
     app = FastAPI(
         title="Slow Thinker II", docs_url=None, redoc_url=None, lifespan=lifetime.lifespan
@@ -62,7 +70,11 @@ def attach_execution(
     if execution is not None:
         app.add_middleware(OperatorBoundary, access=execution.access)
         bound = execution.configuration.limits.max_payload_bytes
-        app.include_router(definition_router(experiment_library(database, root), bound))
+        app.include_router(
+            definition_router(experiment_library(database, root, execution.descriptors), bound)
+        )
+        if execution.workspace_service is not None:
+            app.include_router(workspace_router(execution.workspace_service, bound))
         app.include_router(
             operator_router(
                 execution.coordinator,

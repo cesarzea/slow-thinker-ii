@@ -1,7 +1,9 @@
 """Public construction of SQLite persistence adapters."""
 
+from ._configuration_commands import SqliteConfigurationCommands
 from ._database import SqliteDatabase
 from ._definition_repository import SqliteDefinitionRepository
+from ._model_tariffs import SqliteModelTariffReader, SqliteModelTariffStore
 from ._operator_queries import SqliteOperatorQueries
 from ._operator_store import SqliteOperatorStore
 from ._process_journal import SqliteProcessJournal
@@ -18,4 +20,7 @@ __all__ = [
     "SqliteDatabase",
     "SqliteLedgerStore",
     "SqliteTariffStore",
+    "SqliteModelTariffStore",
+    "SqliteModelTariffReader",
+    "SqliteConfigurationCommands",
 ]

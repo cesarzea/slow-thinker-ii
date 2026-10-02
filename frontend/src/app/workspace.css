@@ -1,0 +1,138 @@
+.product-workspace {
+  display: grid;
+  grid-template-columns: 11rem minmax(0, 1fr);
+  gap: 1.5rem;
+  align-items: start;
+}
+.product-workspace nav {
+  position: sticky;
+  top: 1rem;
+  display: grid;
+  gap: 0.35rem;
+  border: 1px solid #c9d5df;
+  border-radius: 0.75rem;
+  padding: 0.7rem;
+  background: white;
+}
+.product-workspace nav button {
+  text-align: left;
+  border-color: transparent;
+}
+.product-workspace nav button[aria-current='page'] {
+  color: #fff;
+  background: #214f70;
+}
+.nav-caption {
+  font-size: 0.8rem;
+  color: #526575;
+  margin: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+.workspace-content {
+  min-width: 0;
+}
+.selected-experiment {
+  padding: 1rem;
+  background: #e8eff4;
+  border-radius: 0.6rem;
+  margin-block: 1rem;
+}
+.selected-experiment ol {
+  display: none;
+}
+.selected-experiment label {
+  margin-top: 0;
+}
+.selected-experiment p {
+  margin-bottom: 0;
+}
+.discovery-status {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem;
+}
+.schema-fields {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
+  gap: 0.75rem;
+}
+.form-field {
+  min-width: 0;
+  padding: 0.8rem;
+  border: 1px solid #d5dfe7;
+  border-radius: 0.5rem;
+  background: white;
+}
+.form-field textarea {
+  font-family: ui-monospace, monospace;
+}
+.structured-workspace > section,
+.inventory-card {
+  background: white;
+  border: 1px solid #c9d5df;
+  border-radius: 0.6rem;
+  padding: 1rem;
+  margin-block: 1rem;
+}
+.inventory-card h3 {
+  margin-top: 0;
+}
+label span {
+  display: block;
+  color: #526575;
+  font-size: 0.85rem;
+  margin-top: 0.35rem;
+}
+label select {
+  display: block;
+  max-width: 100%;
+  margin: 0.35rem 0 0;
+}
+input[type='checkbox'] {
+  display: inline-block;
+  width: auto;
+}
+.notice {
+  background: #e8eff4;
+  border-radius: 0.6rem;
+  padding: 0.8rem;
+}
+.technical-drawer {
+  position: fixed;
+  inset: 0 0 0 auto;
+  z-index: 20;
+  width: min(42rem, calc(100vw - 2rem));
+  overflow-y: auto;
+  background: #fff;
+  padding: 1rem;
+  box-shadow: -8px 0 28px #18263830;
+  border-left: 1px solid #a5b9c9;
+}
+.technical-drawer > button {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+[hidden] {
+  display: none !important;
+}
+@media (max-width: 760px) {
+  .product-workspace {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.8rem;
+  }
+  .product-workspace nav {
+    position: static;
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .nav-caption {
+    display: none;
+  }
+  .product-workspace nav button {
+    flex: 1 1 auto;
+    text-align: center;
+  }
+}

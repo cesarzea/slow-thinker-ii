@@ -35,6 +35,7 @@ function pendingLabel(pending: NonNullable<DraftState['pending']>): string {
     save: 'Saving frozen definition…',
     import: 'Reading UTF-8 JSON file…',
     draft: 'Creating revision draft…',
+    patch: 'Applying configuration changes…',
   };
   return labels[pending];
 }

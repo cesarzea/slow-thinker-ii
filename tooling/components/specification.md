@@ -45,3 +45,44 @@ selector. New routed-call and bounded-flow recipes use the same installation pat
 ## October 2026 maintenance: Preparation compatibility
 
 Preparation continues to record the actual pinned uv executable version for new bundles. Production artifact hashes, explicit preparation boundaries and existing resolution identity remain unchanged; the selected development pin is uv 0.12.19.
+
+## S04–S06 active delivery
+
+Owner B implements the complete tooling/components package. Follow
+[tools and memory](../../docs/contracts/tools-memory.md) and the
+[delivery block](../../docs/specification/s04-s06-delivery.md).
+Add built-in recipes for model-provider, calculator, key-value-memory and
+contextual-call (distribution/component version 0.1.0). Preserve existing recipes.
+Add explicit external Hatchling src-layout preparation with --external-project PATH,
+--registration FILE, --descriptor FILE and repeatable --dependency-project PATH.
+Validate identity agreement and exact offline dependency closure before publishing
+a bundle. External source paths are trusted preparation inputs, never graph fields.
+A owns model-provider implementation; B owns its recipe. The coordinator owns root
+package/quality configuration and shared example graph definitions.
+
+## External bundle contract
+
+External preparation retains built-in bundle fields `schema_version`, `catalog_root`
+and `resolutions`, adding `descriptors: {component_name: absolute_descriptor_path}`.
+The copied descriptor and registration live in `bundles/<bundle_id>/<component_name>/`;
+the manifest lives beside that owned directory. The descriptor filename agrees with
+registration. Trusted startup consumes the explicit copied descriptor path; graph
+configuration cannot select source, registration or build inputs. Built-in manifests
+omit `descriptors` and retain their established format.
+
+Inner descriptor schemas use the trusted canonical contract registry. Preparation
+checks static distribution/registration/descriptor identity and source layout before
+building; the existing installation catalog verifies installed public exports,
+ancestry, exact hash closure and interpreter/SDK compatibility before publication.
+Canonical declaration hashes accompany source and built-wheel hashes in provenance.
+Targeted tests cover all eleven recipes and the independent external component's
+build, offline installation and managed MCP execution. Shared mandatory
+whole-system verification remains pending.
+
+## Local delivery checkpoint — 2026-10-02
+
+S04–S06 implementation, individual/whole-system review and mandatory shared
+verification are complete. The [verification record](../../docs/verification.md#provider-resource-and-workspace-delivery--2026-10-02)
+is authoritative for final evidence and limitations; earlier preparation/scoped-test
+statuses above describe preceding checkpoints. Owner review and hosted checks remain
+separate. No implementation ticket remains for this delivery.

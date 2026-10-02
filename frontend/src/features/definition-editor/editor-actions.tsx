@@ -45,7 +45,8 @@ function DraftButtons({model}: {readonly model: EditorModel}): ReactElement {
           !state.loaded ||
           state.pending === 'save' ||
           state.pending === 'import' ||
-          state.pending === 'draft'
+          state.pending === 'draft' ||
+          state.pending === 'patch'
         }
         action={model.discard}
         label="Discard draft"

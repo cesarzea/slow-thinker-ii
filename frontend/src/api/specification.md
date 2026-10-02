@@ -97,3 +97,20 @@ behavior; draft generation has no insertion effect.
 
 Acceptance follows the shared S03 scenarios. Development delivery does not claim
 testing is complete. Keep module-private choices within these public contracts.
+
+## S04–S06 active delivery
+
+Follow [the shared contract](../../../docs/contracts/product-workspace.md). Implementation owner: C.
+
+Add validated ConfigurationClient catalogue/limits and DefinitionClient source-patch APIs. Preserve exact source text, value_json numeric fidelity, cancellation, finite bounds and uncertain-command replay. Export only public types/functions through index.ts.
+
+Completion requires the shared delivery acceptance evidence; implementation alone
+does not close verification. Keep existing approved contracts compatible.
+
+## Local delivery checkpoint — 2026-10-02
+
+S04–S06 implementation, individual/whole-system review and mandatory shared
+verification are complete. The [verification record](../../../docs/verification.md#provider-resource-and-workspace-delivery--2026-10-02)
+is authoritative for final evidence and limitations; earlier preparation/scoped-test
+statuses above describe preceding checkpoints. Owner review and hosted checks remain
+separate. No implementation ticket remains for this delivery.

@@ -29,3 +29,12 @@ Shared value contracts and the Python standard library; no provider SDK, HTTP or
 ## Shared contracts
 
 - [accounting-policy](../../../../docs/contracts/accounting-policy.md)
+
+## S04–S06 active delivery
+
+Follow [the shared contract](../../../../docs/contracts/model-resources.md). Implementation owner: Coordinator.
+
+Preserve exact integer-quanta accounting, existing tariff/reservation/usage values and unresolved exposure semantics. New source/billing policies are adapters and must not introduce provider/framework dependencies into accounting.
+
+Completion requires the shared delivery acceptance evidence; implementation alone
+does not close verification. Keep existing approved contracts compatible.

@@ -1,6 +1,6 @@
 # C4 views
 
-**Status: Draft.** These diagrams use [C4 abstractions](https://c4model.com/diagrams) rendered with Mermaid. Each view identifies people, software systems or containers, responsibilities, and relationships. A C4 container is a runnable application or data store, not necessarily a Docker container.
+**Status: Local implementation view through S06.** These diagrams use [C4 abstractions](https://c4model.com/diagrams) rendered with Mermaid. Each view identifies people, software systems or containers, responsibilities, and relationships. A C4 container is a runnable application or data store, not necessarily a Docker container. Evaluation remains a future system capability.
 
 ## System context
 
@@ -26,16 +26,18 @@ flowchart TB
   person["Operator<br/>Person"]
   ext["Provider APIs<br/>External software systems"]
   subgraph system["Slow Thinker II — local deployment boundary"]
-    web["Browser UI<br/>React / TypeScript / React Flow<br/>Graph views and inspection"]
+    web["Product workspace<br/>React / TypeScript / React Flow<br/>Configure experiments; execute and inspect"]
     api["Application and runtime<br/>Python / FastAPI<br/>Routing, execution, limits, accounting and observation"]
     worker["Independent local component processes<br/>MCP capabilities and familiar clients<br/>Agents and extensions"]
-    resource["Provider resource processes<br/>Managed MCP adapters<br/>External requests and usage reporting"]
+    resource["Independent resource processes<br/>Models, calculator and memory<br/>Managed calls and usage reporting"]
     data[("Local persistent store<br/>SQLite<br/>Definitions, evidence and accounting")]
-    web -->|"Application API: commands and reads; HTTP polling proposed"| api
-    api -->|"MCP invocation; stdio proposed"| worker
-    worker -->|"MCP or compatible client calls; loopback HTTP proposed"| api
+    memory[("Resource-owned SQLite state<br/>Scoped persistent key/value memory")]
+    web -->|"Authenticated HTTP commands, reads and polling"| api
+    api -->|"MCP invocation: stdio"| worker
+    worker -->|"MCP or compatible clients: loopback HTTP"| api
     api -->|"Authorized, budget-reserved MCP calls"| resource
     api -->|"Persist and query through storage adapters"| data
+    resource -->|"Version-checked resource operations"| memory
   end
   person -->|"Uses in browser"| web
   resource -->|"Authorized provider requests: HTTPS"| ext
@@ -43,7 +45,7 @@ flowchart TB
 
 ## View constraints
 
-- Independent local component processes are required from the first cycle. Exact hosting and transport details remain under review; this view does not define source-module boundaries.
+- Independent local component processes use the implemented hosting/MCP profile. This view does not define source-module boundaries.
 - The runtime serves the compiled browser application; a separate production Node backend is not required.
 - Provider resources receive platform-authorized calls and return results and usage. Their external I/O belongs to the managed adapter boundary and must be instrumented for accounting. It does not grant agent processes direct provider access.
 - Component-to-platform calls use their own client transport. They must not assume an MCP server can initiate arbitrary reverse requests on the platform's connection.
@@ -53,4 +55,9 @@ flowchart TB
 
 ## Review questions
 
-Independent-process packaging is accepted in [ADR 0004](../adr/0004-component-packaging.md). Confirm the transport directions and compatibility mappings in [ADR 0007](../adr/0007-mcp-profile.md). SQLite is selected; detailed persistence and the [browser polling proposal](visual-model.md#proposed-live-update-behavior) remain under review in the [open-question register](../specification/open-questions.md). A component-level C4 view will follow when public module boundaries are approved.
+Independent-process packaging is recorded in [ADR 0004](../adr/0004-component-packaging.md).
+The [MCP contract](../contracts/mcp-profile.md) and compatibility contracts define
+the two transport directions. The [verification record](../verification.md)
+retains observed conformance and persistence limits. Detailed source boundaries
+belong in the [module view](module-boundaries.md); future deployment and execution
+profiles remain in the [question register](../specification/open-questions.md).

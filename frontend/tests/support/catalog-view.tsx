@@ -1,5 +1,6 @@
 import {expect, vi} from 'vitest';
 import {fireEvent, render, waitFor} from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import {screen} from '@testing-library/dom';
 import {z} from 'zod';
 import {DefinitionClient} from '../../src/api/index.ts';
@@ -36,6 +37,7 @@ export class CatalogFixture extends EditorClientFixture {
   }
 
   async ready(): Promise<void> {
+    await userEvent.click(await screen.findByRole('button', {name: 'JSON source'}));
     await waitFor(() => {
       expect(this.text.value).toBe(numericSource);
     });

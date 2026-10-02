@@ -1,6 +1,73 @@
 # Verification record
 
-**Updated: 2026-10-02. S03 passed the complete shared local verification runner, including CodeQL.** Dated sections retain earlier verification evidence.
+**Updated: 2026-10-02. S04–S06 passed the complete shared local verification runner and actual two-provider resource execution.** Dated sections retain earlier evidence.
+
+## Provider, resource and workspace delivery — 2026-10-02
+
+The owner activated the [S04–S06 delivery block](specification/s04-s06-delivery.md)
+with DeepSeek Flash, a deterministic calculator and private/shared key/value memory.
+After reviewed corrections, the complete configured `make verify` finished with
+exit 0. The [sanitized summary](evidence/s04-s06-verification-20261002.json)
+retains counts, coverage numerators, mutation results and the retained log digest.
+
+| Mandatory check | Result |
+| --- | --- |
+| Source limits, Ruff, strict Pyright/Mypy, Vulture and Import Linter | Passed; 36 import contracts kept, no broken contracts |
+| TypeScript, ESLint, Prettier, dependency-cruiser and Knip | Passed; no type/boundary/unused-code gate relaxed |
+| Python/component/example/tooling tests | 2,204 passed in 258.29 seconds |
+| Frontend component/API tests | 340 passed across 50 files |
+| Browser journeys through production HTTP/SQLite | 20 passed in 1.4 minutes |
+| Python independent coverage | 97.57% lines (10,649/10,914); 92.62% branches (2,599/2,806) |
+| Frontend independent coverage | 99.37% lines; 93.63% branches; 99.12% functions; 98.64% statements |
+| Pinned local CodeQL, Python and JavaScript/TypeScript | No errors or warnings; 97 reviewed Python notes, no JavaScript/TypeScript findings |
+| Production build | Passed |
+| Accounting mutation baseline | 141 killed, one timeout, 58 survivors; command completed |
+
+Provider tests use ordinary OpenAI/LangChain clients and real loopback mediation,
+authority, hosts and price policies with simulated native transport. They cover
+provider selection, reasoning options/rejection, cache usage, UTC pricing windows,
+reviewed calendar exclusions, exact rounding, immutable source snapshots, refresh
+failure and historical compatibility. Required tests make no paid requests.
+
+Resource tests build and install external packages offline, launch real subprocess
+MCP hosts and exercise calculator bounds, private namespaces, shared persistent
+state, run-local reset, version/CAS/ABA behavior and managed ordinary/routed workers.
+Permission, cancellation, budget and nested failure paths retain their evidence.
+Workspace tests cover source-preserving patches, strict discovery/HTTP boundaries,
+transactional limit commands, replay/conflicts and SQLite v7 migration. Existing
+history remains readable. Browser journeys configure components/graphs, save and
+execute exact revisions, retain historical canvases, recover uncertain settings
+and disconnections, and verify narrow-viewport behavior using deterministic workers.
+
+Whole-system review/testing corrected UTF-8 patch handling, hidden execution
+feedback, run-panel remounting and form overflow. Actual installed startup also
+exposed an unnecessary outgoing MCP binding on resource-only hosts before any paid
+call; public preparation regressions and both subsequent real runs pass.
+Three earlier full-runner attempts stopped at formatting, unsupported Node 23 and
+CodeQL respectively. The fourth passed under the existing Node 24 environment. Final configuration
+audit then found an accidental additional-importer exemption on the derived example.
+It was removed; a real negative probe demonstrated acceptance before correction
+and rejection afterward. All 14 boundary probes and a fifth complete runner passed
+on the corrected configuration.
+The [C06 evaluation](continuous-improvement/cycles/006-provider-resource-workspace/report.md)
+classifies production, fixture, environment and command defects separately.
+
+Vulture's unchanged 60% scan uses two exact inherited HTMLParser callback references
+for framework-dispatch false positives; strict override signatures and actual
+parser tests establish their use. No file exclusion or broad name pattern was added.
+CodeQL notes comprise protocol/completion declarations, deliberate dual imports
+and exhaustive calculator pattern matching; each match has an explicit rejecting
+default. No finding was suppressed. Mutation survivors retain the pre-existing
+baseline meaning and are not claimed as killed.
+
+The [live validation](progress/s04-s06-live-validation.md) separately records two
+actual OpenAI/DeepSeek executions with installed external workers, calculator,
+shared durable memory and exact proposal provenance. Their native usage reconciles
+to USD 0.000520600 together, with no unresolved charge and unchanged prior results.
+Total preceding/current authorized demonstrations remain USD 0.002651950 of USD 3.
+Manual live-session UI inspection awaits credential authorization; the original
+operator key was preserved. Automated browser acceptance and actual production
+execution are complete. Owner review and hosted verification remain separate.
 
 ## Personal experiment live execution — 2026-10-02
 

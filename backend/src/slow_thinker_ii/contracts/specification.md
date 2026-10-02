@@ -27,3 +27,12 @@ Python standard library only; other modules consume the public package entry poi
 ## Shared contracts
 
 - [components](../../../../docs/contracts/components.md)
+
+## S04–S06 active delivery
+
+Follow [the shared contract](../../../../docs/contracts/product-workspace.md). Implementation owner: Coordinator.
+
+Preserve shared validated JSON and operation-result values. New workspace-specific records belong in application.workspace, not a generic helpers expansion.
+
+Completion requires the shared delivery acceptance evidence; implementation alone
+does not close verification. Keep existing approved contracts compatible.

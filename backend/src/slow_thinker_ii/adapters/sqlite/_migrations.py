@@ -5,12 +5,22 @@ from contextlib import closing
 from pathlib import Path
 from uuid import uuid4
 
+SCHEMAS = (
+    "schema.sql",
+    "execution.sql",
+    "receipts.sql",
+    "operator.sql",
+    "runtime.sql",
+    "definitions.sql",
+    "workspace.sql",
+)
+
 
 def migrate(connection: sqlite3.Connection, path: Path) -> None:
     version = connection.execute("PRAGMA user_version").fetchone()[0]
-    if version not in (0, 1, 2, 3, 4, 5, 6):
+    if version not in (0, 1, 2, 3, 4, 5, 6, 7):
         raise ValueError("Unsupported database schema version")
-    if version == 6:
+    if version == 7:
         return
     before = connection.execute("PRAGMA data_version").fetchone()[0]
     if version > 0:
@@ -21,17 +31,9 @@ def migrate(connection: sqlite3.Connection, path: Path) -> None:
             raise RuntimeError("Database changed during migration preparation")
         if version == 2:
             require_stopped(connection)
-        names = (
-            "schema.sql",
-            "execution.sql",
-            "receipts.sql",
-            "operator.sql",
-            "runtime.sql",
-            "definitions.sql",
-        )
-        for name in names[version:]:
+        for name in SCHEMAS[version:]:
             execute_schema(connection, Path(__file__).with_name(name).read_text())
-        connection.execute("PRAGMA user_version=6")
+        connection.execute("PRAGMA user_version=7")
         connection.commit()
     except BaseException:
         connection.rollback()

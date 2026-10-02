@@ -68,3 +68,20 @@ earlier canvas-layer and separate activation-card presentation requirements.
 ## English presentation contract
 
 Product-authored session, start, stop, history, budget and recovery text is English. Input schema titles, user input, receipt reasons and recorded results are rendered without translation. Command identities, polling and recovery behavior remain unchanged.
+
+## S04–S06 active delivery
+
+Follow [the shared contract](../../../../docs/contracts/product-workspace.md). Implementation owner: C.
+
+Integrate sessions, task input, execution controls, costs/results/history with product navigation; preserve polling, live/unknown/stale/stop/accounting behavior and exact run identity. Surface current configuration revision after settings changes; no implicit rerun.
+
+Completion requires the shared delivery acceptance evidence; implementation alone
+does not close verification. Keep existing approved contracts compatible.
+
+## Local delivery checkpoint — 2026-10-02
+
+S04–S06 implementation, individual/whole-system review and mandatory shared
+verification are complete. The [verification record](../../../../docs/verification.md#provider-resource-and-workspace-delivery--2026-10-02)
+is authoritative for final evidence and limitations; earlier preparation/scoped-test
+statuses above describe preceding checkpoints. Owner review and hosted checks remain
+separate. No implementation ticket remains for this delivery.

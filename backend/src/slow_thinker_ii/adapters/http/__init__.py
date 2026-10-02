@@ -8,6 +8,7 @@ from ._operator import operator_router
 from ._operator_auth import OperatorAccess
 from ._operator_boundary import OperatorBoundary
 from ._tariffs import TariffStatusReply, tariff_router
+from ._workspace import workspace_router
 
 __all__ = [
     "definition_router",
@@ -20,4 +21,5 @@ __all__ = [
     "catalog_router",
     "TariffStatusReply",
     "tariff_router",
+    "workspace_router",
 ]

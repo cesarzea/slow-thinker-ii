@@ -8,7 +8,7 @@
 | Reporting date           | 2026-10-02, Europe/Lisbon                                          |
 | Sprint                   | S03 — Personal experiment definitions                              |
 | Delivery status          | Functionally closed after verification and real execution          |
-| Publication status       | PR #11 open; closure supplement awaiting publication and merge      |
+| Publication status       | PR #11 merged on 2026-10-02; dated closure below      |
 | Product package versions | Python: `0.1.0.dev1`; frontend: `0.1.0-dev.1`                      |
 
 This report version identifies a development checkpoint, not a product release.
@@ -105,3 +105,12 @@ remain separate. S04 remains proposed and has not been activated.
 
 The [0.0.3.1 snapshot](sprint-03-status-report-0.0.3.1.md) preserves the original
 delivery checkpoint before the live validation and functional closure.
+
+## Publication closure — 2026-10-02
+
+At the later publication checkpoint, [PR #11](https://github.com/cesarzea/slow-thinker-ii/pull/11)
+was merged at 02:44:21 UTC as `1557522905b7b4ef6b71b0ceae5c7fa947a4d945`,
+after all required checks passed. Its merged tree includes the S03 live/closure
+supplement. Earlier pending statements above retain their checkpoint meaning.
+The subsequent owner goal activated S04–S06; this does not retroactively change
+the S03 report's scope or measured verification.
