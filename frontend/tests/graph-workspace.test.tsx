@@ -40,7 +40,7 @@ afterEach(() => {
   vi.unstubAllGlobals();
 });
 async function selectedRun(): Promise<void> {
-  render(<ExecutionWorkspace credential="key" graph={summary(boundedDetail)} />);
+  render(<ExecutionWorkspace page="Runs" credential="key" graph={summary(boundedDetail)} />);
   await tick();
   await userEvent.click(
     within(screen.getByRole('region', {name: 'Session history'})).getByRole('button'),
@@ -77,7 +77,7 @@ it('labels stale graphs on connection failure and resumes without issuing a comm
 });
 it('does not enable Start from a stale or invalid catalog definition', async () => {
   server.operator.detail = {};
-  render(<ExecutionWorkspace credential="key" graph={summary(boundedDetail)} />);
+  render(<ExecutionWorkspace page="Runs" credential="key" graph={summary(boundedDetail)} />);
   await tick();
   expect(await screen.findByRole('alert')).toHaveProperty(
     'textContent',

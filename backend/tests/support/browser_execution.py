@@ -3,6 +3,7 @@
 import asyncio
 import os
 import time
+from collections.abc import Callable
 from pathlib import Path
 from urllib.parse import urlsplit
 
@@ -27,20 +28,34 @@ from slow_thinker_ii.application import (
     sequence_access,
 )
 from slow_thinker_ii.bootstrap import ExecutionServices
-from slow_thinker_ii.contracts import decode_json, json_object
+from slow_thinker_ii.contracts import decode_json, encode_json, json_object
 
 from .browser_sequence import BrowserSequenceEnvironment
 from .browser_snapshot import browser_snapshot
+from .browser_workspace import browser_workspace
 from .conditional import ConditionalEnvironment
 from .personal_library import personal_library
 from .sequence_plans import SCHEMAS, resolved
+from .workspace_data import workspace_descriptors, workspace_resources
 
 BROWSER_TOKEN = "browser_fixture_operator_token_01234567890123456789"
 
 
+def browser_access() -> OperatorAccess:
+    origins = (
+        os.environ["SLOW_THINKER_TEST_API_ORIGIN"],
+        os.environ["SLOW_THINKER_TEST_BROWSER_ORIGIN"],
+    )
+    return OperatorAccess(
+        BROWSER_TOKEN, origins, tuple(urlsplit(origin).netloc for origin in origins)
+    )
+
+
 class BrowserPreparation:
     def __init__(
-        self, configuration: ExecutionConfiguration, definitions: library.DefinitionReader
+        self,
+        configuration: Callable[[], ExecutionConfiguration | None],
+        definitions: library.DefinitionReader,
     ) -> None:
         self._configuration = configuration
         self._definitions = definitions
@@ -74,35 +89,39 @@ class BrowserPreparation:
         )
 
     def _start(self, intent: StartIntent, runtime_id: str) -> PreparedStart:
+        configuration = self._configuration()
+        assert configuration is not None and configuration.revision == intent.configuration_revision
         return PreparedStart(
-            intent, self._configuration, runtime_id, browser_snapshot(intent, self._definitions)
+            intent, configuration, runtime_id, browser_snapshot(intent, self._definitions)
         )
 
 
 class BrowserExecution:
     def build(self, database: SqliteDatabase, root: Path) -> ExecutionServices:
-        del root
         limits = LimitsProfile(
             "browser", 30, 20, 5, 3, 100, 8, 1_048_576, 1_000_000_000, 5_000_000_000, 10_000_000_000
         )
-        configuration = ExecutionConfiguration("browser", limits, "{}")
+        configuration = ExecutionConfiguration(
+            "browser", limits, encode_json(workspace_resources(root))
+        )
         commands = SqliteOperatorStore(database, limits.max_payload_bytes)
         coordinator = ExecutionCoordinator(
             commands,
             SqliteRunStore(database, limits.max_payload_bytes),
-            BrowserPreparation(configuration, personal_library(database)),
+            BrowserPreparation(
+                commands.profile, personal_library(database, workspace_descriptors(root))
+            ),
             time.monotonic,
             5,
             3,
             4,
         )
-        origins = (
-            os.environ["SLOW_THINKER_TEST_API_ORIGIN"],
-            os.environ["SLOW_THINKER_TEST_BROWSER_ORIGIN"],
-        )
-        access = OperatorAccess(
-            BROWSER_TOKEN, origins, tuple(urlsplit(origin).netloc for origin in origins)
-        )
         return ExecutionServices(
-            configuration, coordinator, commands, SqliteOperatorQueries(database, b"k" * 32), access
+            configuration,
+            coordinator,
+            commands,
+            SqliteOperatorQueries(database, b"k" * 32),
+            browser_access(),
+            browser_workspace(database, root, commands, configuration),
+            workspace_descriptors(root),
         )

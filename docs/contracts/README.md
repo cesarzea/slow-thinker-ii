@@ -42,3 +42,13 @@ Changing meaning requires a new contract revision and compatibility review. No a
 
 The [personal experiment library](personal-experiments.md) defines the authorized
 S03 authoring, immutable revisions, validation, paging and operator/client boundary.
+
+## S04–S06 active contracts
+
+- [Model resources](model-resources.md): provider-neutral calls and reviewed tariffs.
+- [Tools and memory](tools-memory.md): deterministic tools, scoped storage and composition.
+- [Product workspace](product-workspace.md): configuration discovery, structured editing and safe settings commands.
+
+Implementation and mandatory local verification are complete. The
+[delivery block](../specification/s04-s06-delivery.md) maps acceptance to evidence;
+owner review and hosted verification remain separate publication checkpoints.

@@ -1,5 +1,10 @@
 import type {Dispatch, SetStateAction} from 'react';
-import type {DefinitionIssue, GraphReference, ValidationResult} from '../../api/index.ts';
+import type {
+  DefinitionIssue,
+  GraphReference,
+  ValidationResult,
+  PatchOperation,
+} from '../../api/index.ts';
 
 export interface DefinitionEditorProps {
   readonly credential: string;
@@ -13,7 +18,7 @@ export interface DraftState {
   readonly baseline: string;
   readonly selectedSource: string;
   readonly loaded: boolean;
-  readonly pending: 'load' | 'validate' | 'save' | 'import' | 'draft' | null;
+  readonly pending: 'load' | 'validate' | 'save' | 'import' | 'draft' | 'patch' | null;
   readonly validation: ValidationResult | null;
   readonly message: string | null;
   readonly issues: readonly DefinitionIssue[];
@@ -39,4 +44,5 @@ export interface EditorModel {
   readonly save: () => Promise<void>;
   readonly retry: () => Promise<void>;
   readonly reload: () => void;
+  readonly patch: (operations: readonly PatchOperation[]) => Promise<void>;
 }

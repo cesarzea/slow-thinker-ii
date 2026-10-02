@@ -1,0 +1,12 @@
+{
+  "schema_version": "0.1-draft",
+  "type_id": "key-value-memory",
+  "type_version": "0.1.0",
+  "descriptor": "key-value-memory.component.json",
+  "distribution": {
+    "name": "slow-thinker-key-value-memory",
+    "version": "0.1.0"
+  },
+  "entry_point": "slow_thinker_key_value_memory:KeyValueMemoryHost",
+  "environment_profile": "trusted-python-host"
+}

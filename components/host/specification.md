@@ -50,3 +50,20 @@ uses the existing pinned compatibility candidate and is imported only when used.
 The decorated `managed_mcp_client` implementation uses
 `AsyncGenerator[Client]` for Pyright 1.1.414. It yields the same managed MCP
 `Client`; keep ordinary async iterator interfaces and invocation authority unchanged.
+
+## S04–S06 active delivery
+
+Follow [the shared contract](../../docs/contracts/tools-memory.md). Implementation owner: B.
+
+Retain existing public bootstrap/MCP/normal client APIs. Extend only if a documented shared host boundary is required; no direct peer/provider calls from host compatibility clients. Keep fresh invocation authority and no implicit memory injection.
+
+Completion requires the shared delivery acceptance evidence; implementation alone
+does not close verification. Keep existing approved contracts compatible.
+
+## Local delivery checkpoint — 2026-10-02
+
+S04–S06 implementation, individual/whole-system review and mandatory shared
+verification are complete. The [verification record](../../docs/verification.md#provider-resource-and-workspace-delivery--2026-10-02)
+is authoritative for final evidence and limitations; earlier preparation/scoped-test
+statuses above describe preceding checkpoints. Owner review and hosted checks remain
+separate. No implementation ticket remains for this delivery.

@@ -27,18 +27,19 @@
 - [Architecture and specification](docs/README.md)
 - [Architecture decisions](docs/adr/README.md)
 - [Contracts and examples](docs/contracts/README.md)
+- [Workspace guide](docs/workspace.md)
 - [Personal experiment guide](docs/personal-experiments.md)
 - [Engineering process improvement](docs/continuous-improvement/README.md)
 - [Open questions](docs/specification/open-questions.md)
 
 ## Current Status
 
-The local prototype runs five bundled graphs, including a proposer–reviewer loop
-with conditional feedback. It records calls, results and costs, with configurable
-execution limits. Personal experiments can be imported and edited as JSON, saved
-as immutable revisions, and used to create manual variants. The
-[S03 report](docs/progress/sprint-03-status-report.md) records the verified scope.
-Deep collaboration analysis remains future work.
+The local prototype provides structured experiment configuration, immutable graph
+revisions, execution history and budget settings. Agents can use OpenAI or DeepSeek,
+external Python components, a calculator and private/shared persistent memory.
+The [S04–S06 reports](docs/specification/s04-s06-delivery.md#delivery-checkpoint--2026-10-02)
+record verified scope and actual execution evidence. Owner review remains pending;
+comparison, deep collaboration analysis and automatic improvement remain future work.
 
 ## Engineering standards
 

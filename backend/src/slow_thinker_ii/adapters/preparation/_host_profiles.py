@@ -5,7 +5,7 @@ from typing import Protocol
 
 from slow_thinker_ii.adapters.catalog import ComponentRecord, GraphRecord
 from slow_thinker_ii.adapters.process import HostBinding
-from slow_thinker_ii.application import LimitsProfile, ModelBinding
+from slow_thinker_ii.application import LimitsProfile, ModelBinding, workspace
 
 from ._endpoints import ServiceEndpoints
 from ._models import ResourceSettings
@@ -24,6 +24,7 @@ class HostRequest:
     tariff: SelectedTariff | None
     now: float
     secrets: SecretSource = field(repr=False)
+    runtime_id: str = ""
 
 
 @dataclass(frozen=True)
@@ -32,6 +33,7 @@ class HostProfile:
     config_json: str | None = None
     models: tuple[ModelBinding, ...] = ()
     admit_before: float | None = None
+    model_tariff: workspace.ModelTariffSelection | None = None
 
 
 class HostAdapter(Protocol):

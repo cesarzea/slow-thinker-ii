@@ -68,3 +68,11 @@ authority and cannot extend its lifetime. No incompatible MCP adapter is install
 Scoped tests verify standard MCP wire behavior with simulated HTTP, cancellation,
 deadlines, bounded close, reporting receipts and the LangChain tool binding.
 Real gateway, storage and installed composition acceptance checks pass with simulated providers.
+
+## Local delivery checkpoint — 2026-10-02
+
+S04–S06 implementation, individual/whole-system review and mandatory shared
+verification are complete. The [verification record](../../docs/verification.md#provider-resource-and-workspace-delivery--2026-10-02)
+is authoritative for final evidence and limitations; earlier preparation/scoped-test
+statuses above describe preceding checkpoints. Owner review and hosted checks remain
+separate. No implementation ticket remains for this delivery.

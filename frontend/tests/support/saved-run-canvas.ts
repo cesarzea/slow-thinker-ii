@@ -6,6 +6,10 @@ export async function expectSavedRunCanvas(
   graphId: string,
   revision: string,
 ): Promise<void> {
+  await page
+    .getByRole('navigation', {name: 'Workspace'})
+    .getByRole('button', {name: 'Runs', exact: true})
+    .click();
   const live = page.getByRole('region', {name: 'Selected run graph'});
   await expect(live).toContainText(`Saved definition: ${graphId} · ${revision}`);
   const canvas = live.getByLabel('Agent collaboration canvas');

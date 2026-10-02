@@ -1,0 +1,12 @@
+{
+  "schema_version": "0.1-draft",
+  "type_id": "calculator",
+  "type_version": "0.1.0",
+  "descriptor": "calculator.component.json",
+  "distribution": {
+    "name": "slow-thinker-calculator",
+    "version": "0.1.0"
+  },
+  "entry_point": "slow_thinker_calculator:CalculatorHost",
+  "environment_profile": "trusted-python-host"
+}

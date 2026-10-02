@@ -45,6 +45,10 @@ def routing_projects(root: Path) -> None:
         ("routed-call", "RoutedCallHost"),
         ("bounded-flow", "BoundedFlowHost"),
         ("sequence", "SequenceHost"),
+        ("model-provider", "ModelProviderHost"),
+        ("calculator", "CalculatorHost"),
+        ("key-value-memory", "KeyValueMemoryHost"),
+        ("contextual-call", "ContextualCallHost"),
     ]:
         project(
             root,
@@ -108,6 +112,10 @@ def assert_bundle(destination: Path) -> None:
         "redirector",
         "routed-call",
         "bounded-flow",
+        "model-provider",
+        "calculator",
+        "key-value-memory",
+        "contextual-call",
     }
     assert all(
         (destination / "catalog" / f"{identity}.json").is_file()

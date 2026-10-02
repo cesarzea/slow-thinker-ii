@@ -1,4 +1,13 @@
 export {loadGraphs} from './catalog.ts';
+export {ConfigurationClient} from './configuration.ts';
+export type {
+  ConfigurationCatalog,
+  EffectiveLimits,
+  InstalledType,
+  ModelProfile,
+  LimitsCommand,
+} from './configuration-schemas.ts';
+export type {PatchOperation} from './source-patch.ts';
 export type {GraphSummary} from './catalog.ts';
 
 export {OperatorClient} from './operator.ts';

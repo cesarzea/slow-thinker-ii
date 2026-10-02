@@ -97,6 +97,7 @@ it('connects and disconnects without storing the operator credential', async () 
   render(<App />);
   await userEvent.type(screen.getByLabelText('Access key'), 'private-operator-key');
   await userEvent.click(screen.getByRole('button', {name: 'Connect operator access'}));
+  await userEvent.click(screen.getByRole('button', {name: 'Runs'}));
   expect(await screen.findByRole('region', {name: 'Experiment execution'})).toBeTruthy();
   expect(JSON.stringify(localStorage)).not.toContain('private-operator-key');
   await userEvent.click(screen.getByRole('button', {name: 'Disconnect operator access'}));

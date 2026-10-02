@@ -41,3 +41,12 @@ Bounded decision tests pass for acceptance on the final activation, exhaustion a
 ## Implemented behavior
 
 require_conditional_decision independently verifies activate, complete and exhausted decisions; ActivationLimitReached retains the explicit activation_limit_reached failure reason.
+
+## S04–S06 active delivery
+
+Follow [the shared contract](../../../../docs/contracts/tools-memory.md). Implementation owner: Coordinator.
+
+Preserve lifecycle, deadline and cancellation rules with new nonbillable resource calls. Resource state can outlive host processes; no hidden restart or replay of paid calls.
+
+Completion requires the shared delivery acceptance evidence; implementation alone
+does not close verification. Keep existing approved contracts compatible.

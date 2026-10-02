@@ -1,3 +1,4 @@
+@import './workspace.css';
 :root {
   font-family: system-ui, sans-serif;
   color: #182638;
@@ -7,9 +8,9 @@ body {
   margin: 0;
 }
 main {
-  max-width: 1200px;
+  max-width: 1440px;
   margin: 0 auto;
-  padding: 2rem;
+  padding: 1.5rem;
 }
 header {
   margin-bottom: 2rem;
@@ -68,6 +69,7 @@ fieldset,
   margin-block: 1rem;
 }
 fieldset {
+  min-inline-size: 0;
   border: 1px solid #bccbd6;
   border-radius: 0.5rem;
   padding: 1rem;

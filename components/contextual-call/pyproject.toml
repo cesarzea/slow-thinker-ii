@@ -1,0 +1,15 @@
+[build-system]
+requires = ["hatchling>=1.27,<2"]
+build-backend = "hatchling.build"
+
+[project]
+license = "Apache-2.0"
+name = "slow-thinker-contextual-call"
+version = "0.1.0"
+description = "Managed worker composition with calculator and memory."
+requires-python = ">=3.13,<3.14"
+authors = [{name = "Cesar Zea"}]
+dependencies = ["slow-thinker-host==0.1.0.dev1"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/slow_thinker_contextual_call"]

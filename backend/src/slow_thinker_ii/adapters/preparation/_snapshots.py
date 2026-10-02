@@ -6,7 +6,7 @@ from pydantic import TypeAdapter
 
 from slow_thinker_ii.accounting import Tariff
 from slow_thinker_ii.adapters.catalog import InstalledPlan
-from slow_thinker_ii.application import ModelBinding, PreparationRejected
+from slow_thinker_ii.application import ModelBinding, PreparationRejected, workspace
 from slow_thinker_ii.contracts import JsonObject, JsonValue, decode_json, encode_json, json_object
 
 from ._host_profiles import HostProfile
@@ -24,7 +24,7 @@ def installation_evidence(value: str) -> JsonObject:
     return record
 
 
-def tariff_evidence(selected: SelectedTariff | None) -> JsonValue:
+def tariff_evidence(selected: SelectedTariff | workspace.ModelTariffSelection | None) -> JsonValue:
     if selected is None:
         return None
     revision = selected.revision
@@ -81,6 +81,7 @@ def instance_evidence(
         "operations": operations,
         "clients": decode_json(host.binding.clients_json),
         "models": model_evidence(host.models),
+        "model_tariff": model_tariff_evidence(host.model_tariff),
         "credentials": "withheld" if host.binding.secrets else "none",
         "metered_operations": [name for name, _ in host.binding.pricing],
     }
@@ -96,3 +97,17 @@ def model_evidence(models: tuple[ModelBinding, ...]) -> list[JsonValue]:
         }
         for model in models
     ]
+
+
+def model_tariff_evidence(selected: workspace.ModelTariffSelection | None) -> JsonValue:
+    evidence = tariff_evidence(selected)
+    if selected is None or selected.revision.tariff.profile != "deepseek.flash.direct.v1":
+        return evidence
+    source = json_object(decode_json(selected.revision.source_json))
+    value = json_object(evidence)
+    captured = source["captured_html"]
+    if not isinstance(captured, str):
+        raise PreparationRejected("invalid_tariff_source_capture")
+    value["billing"] = source["normalized"]
+    value["source_capture_sha256"] = sha256(captured.encode()).hexdigest()
+    return value

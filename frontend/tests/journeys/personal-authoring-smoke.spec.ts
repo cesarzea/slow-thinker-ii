@@ -1,11 +1,13 @@
 import {expect, test} from '@playwright/test';
 import type {Locator, Page} from '@playwright/test';
+import {openSource} from '../support/browser-authoring.ts';
 import {connect} from '../support/browser.ts';
 
 test('raw authoring preserves numeric values through save, reload and backend draft', async ({
   page,
 }) => {
   await connect(page);
+  await openSource(page);
   const editor = page.getByRole('textbox', {name: /Definition JSON/u});
   await expect(editor).toBeEditable();
   const initial = await editor.inputValue();
@@ -18,6 +20,7 @@ test('raw authoring preserves numeric values through save, reload and backend dr
   await expect(page.getByRole('combobox', {name: 'Experiment', exact: true})).toHaveValue(
     JSON.stringify(['single-agent', 'smoke-source']),
   );
+  await openSource(page);
   await expect(editor).toBeEditable();
   await assertNumericSource(editor);
   await page.getByLabel('New revision', {exact: true}).fill('smoke-variant');

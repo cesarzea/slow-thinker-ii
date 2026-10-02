@@ -28,7 +28,7 @@ it('opens and closes inspection of a saved execution without issuing a new Start
   const server = new InspectionServer();
   server.operator.run = runRecord();
   vi.stubGlobal('fetch', server.fetch);
-  render(<ExecutionWorkspace credential="key" graph={graph} />);
+  render(<ExecutionWorkspace page="Runs" credential="key" graph={graph} />);
   const history = within(await screen.findByRole('region', {name: 'Session history'}));
   await userEvent.click(history.getByRole('button'));
   await userEvent.click(await screen.findByRole('button', {name: 'Inspect run'}));

@@ -16,7 +16,7 @@ test('the five bundled graphs render through the actual backend', async ({page},
   for (const [id, revision, count] of examples) {
     await selector.selectOption(JSON.stringify([id, revision]));
     await expect(
-      page.getByRole('list', {name: 'Experiment nodes'}).getByRole('listitem'),
+      page.getByRole('combobox', {name: 'Node', exact: true}).locator('option'),
     ).toHaveCount(count);
     await expect(page.locator('.agent-card')).toHaveCount(count);
     await expect(page.getByText(/Detailed structure unavailable/)).toHaveCount(0);

@@ -2,7 +2,9 @@
 
 **Bundled definitions for the first functional cycle. Local implementation and acceptance checks are recorded in the [verification record](../../verification.md).**
 
-The UI offers these bundled examples for selection, visualization and execution. Editing tools and manual JSON upload follow later. Example selection does not replace graph validation or permission and budget checks.
+The UI offers these bundled examples for selection, visualization and execution.
+The workspace also supports forms and manual JSON import/editing. Example selection
+does not replace graph validation or permission and budget checks.
 
 | Definition | Agent sequence | What it exercises |
 | --- | --- | --- |
@@ -21,3 +23,14 @@ The [JSON configuration](llm-call-json.config.json) and [successful result](llm-
 [GroundedReview](grounded-review.md) is a separate code-inheritance specimen with a [descriptor](grounded-review.component.json), [configured instance](grounded-review.instance.json) and [trusted registration](grounded-review.registration.json). It adds validation that cited source IDs were supplied in the input. Its [reference failure](grounded-review-reference-error.result.json) demonstrates a domain validation error. This example does not turn the ordinary reviewer instances in the four graphs into distinct component types.
 
 The provider, model and limits profile names are placeholders. Execution requires prepared components and explicit installation, provider, tariff and limit configuration. Schema and semantic checks require no LLM calls.
+
+## Resource collaboration
+
+[resource-collaboration.graph.json](resource-collaboration.graph.json) is an S04–S06
+example with an independently packaged resource-agent, two model providers, a
+deterministic calculator and explicitly shared persistent memory. The reviewer
+receives both the proposer output and the same memory record through managed calls.
+The [input](resource-collaboration.input.json) supplies a concrete workshop task.
+Execution requires explicit preparation/registration of the new component packages,
+reviewed OpenAI/DeepSeek profiles, valid tariffs and a configured limits policy.
+This definition is an example; verification and actual provider evidence are pending.

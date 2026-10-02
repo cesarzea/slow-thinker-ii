@@ -18,6 +18,10 @@ The [public entry point](verify.py) is authoritative for exported names and sign
   entry point. Its descendants remain protected, including from sibling
   application modules. Explicit exceptions must never cover private targets.
 - Keep accounting mutation checks and independent coverage thresholds effective.
+- Standard-library dynamic callbacks may be documented with exact checked symbol
+  references, following Vulture's false-positive procedure. The tariff parser's
+  two HTMLParser callbacks have override signature checking and functional tests.
+  Do not exclude files, add name patterns or change the confidence threshold.
 - Run CodeQL locally and in CI with the shared bundle policy; missing tools, incomplete analysis or warning/error findings must stop the runner.
 
 ## Dependencies and ownership

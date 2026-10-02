@@ -1,7 +1,7 @@
 import {expect, test} from '@playwright/test';
 import type {Page} from '@playwright/test';
 import {connect} from '../support/browser.ts';
-import {editableSource, editor, saveRevision} from '../support/browser-authoring.ts';
+import {editableSource, editor, openSource, saveRevision} from '../support/browser-authoring.ts';
 
 test('recovers a committed save after a lost reply by replaying identical source', async ({
   page,
@@ -23,6 +23,7 @@ test('recovers a committed save after a lost reply by replaying identical source
     JSON.stringify(['single-agent', 'recovery-identical']),
   );
   expect(bodies).toEqual([`\n${source}\n`, `\n${source}\n`]);
+  await openSource(page);
   await expect(editor(page)).toBeEditable();
 });
 
@@ -65,6 +66,7 @@ test('retains confirmed Save and the original baseline until a failed library re
   await expect(page.getByRole('combobox', {name: 'Experiment', exact: true})).toHaveValue(
     JSON.stringify(['single-agent', 'recovery-listing']),
   );
+  await openSource(page);
   await expect(editor(page)).toBeEditable();
   await saveRevision(page, 'recovery-listing');
 });

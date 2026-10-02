@@ -111,3 +111,17 @@ testing obligations; they do not remove checks or change product scope.
 | --- | --------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
 | P11 | Raw browser numeric conversion and the public library import policy were omitted from preparation.                                | Include transport representation fidelity and exact public dependency-entry policy in the existing representative handoff.                                                            | Count reopened shared decisions and representation/boundary defects, including preparation effort.                             |
 | P12 | Isolated tests missed complete collection/dead-code issues; heading-only historical checks missed a malformed activation fixture. | Check joint collection and dead-code integration before expensive shared analysis; require the representative saved-run browser path to render its actual canvas and linked evidence. | Classify integration/fixture escapes and necessary reruns; measure preparation and full delivery rather than test count alone. |
+
+## Proposal following C06 — 2026-10-02
+
+Status: proposed; owner decision pending. M06 remains approved.
+The [C06 evaluation](cycles/006-provider-resource-workspace/report.md) records
+a bootstrap defect that escaped representative fixture composition and was caught
+by the actual installed demonstration before any paid dispatch.
+
+| ID | Observation | Proposed refinement | Evaluation |
+| --- | --- | --- | --- |
+| P13 | Compiled plans and real application ports did not exercise installed mixed-resource host bootstrap. | Use one prepared-and-installed representative graph with agents and non-calling resources at test readiness, before expanding dependent tests. Keep simulated inference, exclusive ownership and all existing gates. | Record preparation cost, bootstrap/composition escapes, corrective reruns and total verified delivery; no saving is assumed. |
+
+This refines approved P10 without adopting a new method or activating a sprint.
+P11/P12 remain pending; none is approved merely by being used as an observed check.

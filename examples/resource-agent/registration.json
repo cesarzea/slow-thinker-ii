@@ -1,0 +1,20 @@
+{
+  "schema_version": "0.1-draft",
+  "type_id": "example.resource-agent",
+  "type_version": "0.1.0",
+  "descriptor": "resource-agent.component.json",
+  "distribution": {
+    "name": "example-resource-agent",
+    "version": "0.1.0"
+  },
+  "entry_point": "example_resource_agent:ResourceAgent",
+  "environment_profile": "trusted-python-host",
+  "base": {
+    "type_id": "llm-call",
+    "type_version": "0.1.0-example",
+    "distribution": "slow-thinker-llm-call",
+    "declared_requirement": "slow-thinker-llm-call==0.1.0.dev1",
+    "resolved_version": "0.1.0.dev1",
+    "entry_point": "slow_thinker_llm_call:LLMCall"
+  }
+}

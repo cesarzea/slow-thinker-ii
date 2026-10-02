@@ -17,6 +17,11 @@ export class DefinitionError extends Error {
 
 const statuses: Readonly<Record<string, number>> = {
   invalid_json: 400,
+  invalid_patch: 422,
+  invalid_limits: 422,
+  configuration_conflict: 409,
+  configuration_active: 409,
+  budget_below_commitments: 422,
   invalid_query: 400,
   invalid_cursor: 400,
   unsupported_transport_options: 400,

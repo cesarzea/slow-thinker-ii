@@ -1,0 +1,132 @@
+{
+  "schema_version": "0.1-draft",
+  "type_id": "model-provider",
+  "type_version": "0.1.0",
+  "roles": [
+    "resource"
+  ],
+  "operations": {
+    "complete": {
+      "mcp_tool": "complete",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "request": {
+            "type": "object"
+          }
+        },
+        "required": [
+          "request"
+        ],
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "object",
+        "oneOf": [
+          {
+            "required": [
+              "response"
+            ],
+            "properties": {
+              "response": {
+                "type": "object"
+              },
+              "request_id": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "redacted": {
+                "type": "boolean"
+              },
+              "transport": {
+                "type": "object",
+                "properties": {
+                  "request_started_at": {
+                    "type": "number"
+                  },
+                  "response_finished_at": {
+                    "type": "number"
+                  }
+                },
+                "required": [
+                  "request_started_at",
+                  "response_finished_at"
+                ],
+                "additionalProperties": false
+              },
+              "response_headers": {
+                "type": "object",
+                "additionalProperties": {
+                  "type": "string"
+                }
+              }
+            },
+            "additionalProperties": false
+          },
+          {
+            "required": [
+              "error"
+            ],
+            "properties": {
+              "error": {
+                "type": "object"
+              },
+              "redacted": {
+                "type": "boolean"
+              },
+              "transport": {
+                "type": "object",
+                "properties": {
+                  "request_started_at": {
+                    "type": "number"
+                  },
+                  "response_finished_at": {
+                    "type": "number"
+                  }
+                },
+                "required": [
+                  "request_started_at",
+                  "response_finished_at"
+                ],
+                "additionalProperties": false
+              },
+              "response_headers": {
+                "type": "object",
+                "additionalProperties": {
+                  "type": "string"
+                }
+              }
+            },
+            "additionalProperties": false
+          }
+        ]
+      }
+    }
+  },
+  "config_schema": {
+    "type": "object",
+    "properties": {
+      "provider_profile": {
+        "type": "string",
+        "pattern": "^[a-z][a-z0-9_.-]*$"
+      },
+      "model": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "required": [
+      "provider_profile",
+      "model"
+    ],
+    "additionalProperties": false
+  },
+  "resource_slots": {},
+  "execution": {
+    "state_scope": "none",
+    "concurrency": "independent"
+  },
+  "billing": "metered"
+}

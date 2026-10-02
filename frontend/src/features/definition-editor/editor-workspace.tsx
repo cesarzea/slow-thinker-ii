@@ -9,6 +9,18 @@ import type {DefinitionEditorProps, EditorModel} from './types.ts';
 export function EditorWorkspace(props: DefinitionEditorProps): ReactElement {
   const model = useEditor(props);
   const {reference} = props;
+  return <EditorView model={model} reference={reference} />;
+}
+
+export function EditorView({
+  model,
+  reference,
+  sourceVisible = true,
+}: {
+  readonly model: EditorModel;
+  readonly reference: DefinitionEditorProps['reference'];
+  readonly sourceVisible?: boolean;
+}): ReactElement {
   return (
     <section className="definition-editor" aria-label="Experiment definition editor">
       <h2>Experiment definition</h2>
@@ -20,7 +32,7 @@ export function EditorWorkspace(props: DefinitionEditorProps): ReactElement {
           ? 'Unsaved draft — save or discard before starting a run.'
           : 'No unsaved changes.'}
       </p>
-      <DraftText model={model} />
+      {sourceVisible && <DraftText model={model} />}
       <EditorActions model={model} />
       <EditorFeedback state={model.state} />
       <RevisionDraft reference={reference} model={model} />

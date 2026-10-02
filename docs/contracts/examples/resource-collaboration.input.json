@@ -1,0 +1,4 @@
+{
+  "problem": "Plan a 90-minute workshop for 6 adults and 3 children. Tickets cost USD12 for adults and USD8 for children. State the exact total, include one break, and provide an agenda whose durations sum to 90 minutes.",
+  "expression": "6 * 12 + 3 * 8"
+}

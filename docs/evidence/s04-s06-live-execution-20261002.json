@@ -1,0 +1,159 @@
+{
+  "schema_version": "1",
+  "recorded_at": "2026-10-02T05:40:53.096482+00:00",
+  "task_reference": "docs/contracts/examples/resource-collaboration.input.json",
+  "scope": "Actual OpenAI/DeepSeek managed collaboration; calculator, shared persistent memory, external installed workers and immutable revision retention.",
+  "runs": [
+    {
+      "run_id": "788acc7addd542ed9e56e2442971f334",
+      "revision": "example-1",
+      "state": "completed",
+      "cleanup": "confirmed",
+      "mediated_calls": 15,
+      "model_calls": [
+        {
+          "instance": "openai-model",
+          "model": "gpt-6-luna",
+          "response_id": "chatcmpl-EUQ7ckvjVZnJ20YeOR1eSUVsWxgAO",
+          "request_id": "req_6faabbf72f5c498b9f14004ce2563c05",
+          "usage": {
+            "completion_tokens": 165,
+            "completion_tokens_details": {
+              "accepted_prediction_tokens": 0,
+              "audio_tokens": 0,
+              "reasoning_tokens": 0,
+              "rejected_prediction_tokens": 0
+            },
+            "prompt_tokens": 135,
+            "prompt_tokens_details": {
+              "audio_tokens": 0,
+              "cache_write_tokens": 0,
+              "cached_tokens": 0
+            },
+            "total_tokens": 300
+          },
+          "charge_usd": "0.000096000",
+          "reconciled_independently": true,
+          "reported_transport": {
+            "request_started_at": 1790918959.305093,
+            "response_finished_at": 1790918962.1061351
+          }
+        },
+        {
+          "instance": "deepseek-model",
+          "model": "deepseek-flash",
+          "response_id": "b77f3a2e-c4a2-47d6-94cb-b95c26a1ee7f",
+          "request_id": null,
+          "usage": {
+            "completion_tokens": 215,
+            "prompt_cache_hit_tokens": 0,
+            "prompt_cache_miss_tokens": 494,
+            "prompt_tokens": 494,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            },
+            "total_tokens": 709
+          },
+          "charge_usd": "0.000203100",
+          "reconciled_independently": true,
+          "reported_transport": {
+            "request_started_at": 1790918962.346024,
+            "response_finished_at": 1790918963.757227
+          }
+        }
+      ],
+      "charge_usd": "0.000299100",
+      "provenance_checks": {
+        "reviewer_received_exact_proposal": true,
+        "reviewer_memory_matches_proposal": true,
+        "calculator_total": "96"
+      },
+      "result_sha256": "07c005e0887f2d19f74145590533515aac10a1a367c1f8001a97167c9b4ec042"
+    },
+    {
+      "run_id": "1a6a889893f54851842a912da1c02554",
+      "revision": "example-2",
+      "state": "completed",
+      "cleanup": "confirmed",
+      "mediated_calls": 15,
+      "model_calls": [
+        {
+          "instance": "openai-model",
+          "model": "gpt-6-luna",
+          "response_id": "chatcmpl-EUQAYjIrvfj1bVLyn6SYtF1u3ku6Y",
+          "request_id": "req_bc91ad016e0b412b98e55d9db0fc6df2",
+          "usage": {
+            "completion_tokens": 116,
+            "completion_tokens_details": {
+              "accepted_prediction_tokens": 0,
+              "audio_tokens": 0,
+              "reasoning_tokens": 0,
+              "rejected_prediction_tokens": 0
+            },
+            "prompt_tokens": 363,
+            "prompt_tokens_details": {
+              "audio_tokens": 0,
+              "cache_write_tokens": 0,
+              "cached_tokens": 0
+            },
+            "total_tokens": 479
+          },
+          "charge_usd": "0.000094300",
+          "reconciled_independently": true,
+          "reported_transport": {
+            "request_started_at": 1790919141.582579,
+            "response_finished_at": 1790919143.446713
+          }
+        },
+        {
+          "instance": "deepseek-model",
+          "model": "deepseek-flash",
+          "response_id": "d7039791-6029-4bf9-8dbd-a816a80c17cb",
+          "request_id": null,
+          "usage": {
+            "completion_tokens": 112,
+            "prompt_cache_hit_tokens": 0,
+            "prompt_cache_miss_tokens": 400,
+            "prompt_tokens": 400,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            },
+            "total_tokens": 512
+          },
+          "charge_usd": "0.000127200",
+          "reconciled_independently": true,
+          "reported_transport": {
+            "request_started_at": 1790919143.6665668,
+            "response_finished_at": 1790919144.620424
+          }
+        }
+      ],
+      "charge_usd": "0.000221500",
+      "provenance_checks": {
+        "reviewer_received_exact_proposal": true,
+        "reviewer_memory_matches_proposal": true,
+        "calculator_total": "96"
+      },
+      "result_sha256": "68a119f28900aabc00be429c692f847e239de9cdee9f46b025e564f57826c93f"
+    }
+  ],
+  "persistent_memory": {
+    "second_revision_restored_first_review": true,
+    "restored_version": 2,
+    "reviewer_and_proposer_share_instance": true
+  },
+  "historical_result_unchanged": true,
+  "budget": {
+    "authorized_total_usd": "3.000000000",
+    "spent_total_usd": "0.002651950",
+    "new_demonstration_usd": "0.000520600",
+    "unresolved_usd": "0.000000000",
+    "remaining_usd": "2.997348050"
+  },
+  "startup_correction": {
+    "initial_failed_run": "aa507c6599e44a8fbff102754e4405d6",
+    "reason": "Unnecessary outgoing MCP client binding on resource-only hosts.",
+    "paid_dispatches": 0,
+    "fixed_before_new_run": true
+  }
+}

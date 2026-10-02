@@ -1,0 +1,37 @@
+{
+  "schema_version": "0.1-draft",
+  "type_id": "example.resource-agent",
+  "type_version": "0.1.0",
+  "roles": [
+    "agent"
+  ],
+  "operations": {
+    "generate": {
+      "mcp_tool": "generate",
+      "input_schema": {
+        "type": "object"
+      },
+      "output_schema": {
+        "type": "object",
+        "$ref": "urn:slow-thinker-ii:contracts:llm-call-result:0.1-draft"
+      }
+    }
+  },
+  "config_schema": {
+    "$ref": "urn:slow-thinker-ii:contracts:llm-call-config:0.1-draft"
+  },
+  "resource_slots": {
+    "model": {
+      "role": "resource",
+      "required": true,
+      "operations": [
+        "complete"
+      ]
+    }
+  },
+  "execution": {
+    "state_scope": "none",
+    "concurrency": "independent"
+  },
+  "billing": "mediated"
+}

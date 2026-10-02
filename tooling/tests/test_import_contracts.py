@@ -38,6 +38,11 @@ ROOT = Path(__file__).resolve().parents[2]
             "Derived example internals are private BROKEN",
         ),
         (
+            "../slow_thinker_model_provider/__init__.py",
+            "from example_grounded_review._review import GroundedReview",
+            "Derived example internals are private BROKEN",
+        ),
+        (
             "application/_catalog.py",
             "from slow_thinker_ii.accounting._money import parse_limit",
             "Accounting internals are private BROKEN",
@@ -75,8 +80,7 @@ def test_import_contract_rejects(
     addition: str,
     diagnostic: str,
 ) -> None:
-    source = tmp_path / "src"
-    shutil.copytree(ROOT / "backend/src", source, ignore=shutil.ignore_patterns("__pycache__"))
+    source = _isolated_source(tmp_path)
     target = source / "slow_thinker_ii" / path
     target.write_text(target.read_text() + f"\n{addition}\n")
     environment = dict(os.environ, PYTHONPATH=str(source))
@@ -94,3 +98,15 @@ def test_import_contract_rejects(
     )
     assert result.returncode != 0
     assert diagnostic in result.stdout
+
+
+def _isolated_source(tmp_path: Path) -> Path:
+    source = tmp_path / "src"
+    ignore = shutil.ignore_patterns("__pycache__")
+    shutil.copytree(ROOT / "backend/src", source, ignore=ignore)
+    shutil.copytree(
+        ROOT / "components/model-provider/src/slow_thinker_model_provider",
+        source / "slow_thinker_model_provider",
+        ignore=ignore,
+    )
+    return source

@@ -1,0 +1,99 @@
+{
+  "schema_version": "0.1-draft",
+  "type_id": "contextual-call",
+  "type_version": "0.1.0",
+  "roles": [
+    "agent"
+  ],
+  "operations": {
+    "invoke": {
+      "mcp_tool": "invoke",
+      "input_schema": {
+        "type": "object"
+      },
+      "output_schema": {
+        "type": "object"
+      }
+    }
+  },
+  "config_schema": {
+    "type": "object",
+    "properties": {
+      "input_schema": {
+        "type": "object"
+      },
+      "worker_operation": {
+        "type": "string",
+        "minLength": 1
+      },
+      "worker_output_schema": {
+        "type": "object"
+      },
+      "calculation_enabled": {
+        "type": "boolean",
+        "default": false
+      },
+      "expression_pointer": {
+        "type": "string",
+        "default": "/expression",
+        "pattern": "^(?:/(?:[^~/]|~[01])*)*$"
+      },
+      "calculation_field": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 256,
+        "default": "calculation"
+      },
+      "memory_read": {
+        "type": "boolean",
+        "default": false
+      },
+      "memory_write": {
+        "type": "boolean",
+        "default": false
+      },
+      "memory_key": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 256,
+        "default": "context"
+      },
+      "memory_field": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 256,
+        "default": "memory"
+      },
+      "result_pointer": {
+        "type": "string",
+        "default": "",
+        "pattern": "^(?:/(?:[^~/]|~[01])*)*$"
+      }
+    },
+    "required": [
+      "input_schema",
+      "worker_operation",
+      "worker_output_schema"
+    ],
+    "additionalProperties": false
+  },
+  "resource_slots": {
+    "worker": {
+      "role": "agent",
+      "required": true
+    },
+    "calculator": {
+      "role": "resource",
+      "required": false
+    },
+    "memory": {
+      "role": "resource",
+      "required": false
+    }
+  },
+  "execution": {
+    "state_scope": "none",
+    "concurrency": "independent"
+  },
+  "billing": "mediated"
+}

@@ -30,6 +30,7 @@ export function locked(state: DraftState): boolean {
     state.pending === 'save' ||
     state.pending === 'import' ||
     state.pending === 'draft' ||
+    state.pending === 'patch' ||
     state.uncertain
   );
 }

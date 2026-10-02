@@ -37,8 +37,9 @@ make components
 
 This command downloads production wheels, creates hash-pinned locks, installs
 offline and verifies the environments under `.local/components`. It prepares
-Sequence, LLMCall, the OpenAI resource, GroundedReview, Redirector, RoutedCall and
-BoundedFlow. Existing installation resolutions remain immutable. The command
+Sequence, LLMCall, the legacy OpenAI resource, GroundedReview, Redirector, RoutedCall,
+BoundedFlow, ModelProvider, Calculator, KeyValueMemory and ContextualCall.
+Existing installation resolutions remain immutable. The command
 prints the path to a bundle containing the selected resolution identifiers.
 
 See [component preparation](../tooling/components/readme.md) for supported recipes
@@ -82,6 +83,28 @@ configuration. Existing spending and outstanding obligations remain in force.
 For an older configuration using integer budget amounts, convert them from
 billionths of USD to equivalent decimal USD strings; do not interpret them as
 whole dollars.
+
+## Configure additional providers and resources
+
+The [model contract](contracts/model-resources.md) defines the reviewed OpenAI and
+DeepSeek profiles. Add a `model-provider` installation using `model-resource`, a
+matching backend provider profile and an environment credential reference. Bind
+the graph agent's model resource to the selected instance. DeepSeek configuration
+enables its independent daily official tariff refresh; OpenAI retains the Vercel
+catalogue source. Both refreshes preserve their last valid prices after failure.
+
+Calculator and ContextualCall use the `mcp` adapter. KeyValueMemory uses
+`memory-resource`, which supplies its trusted storage path and scoped namespace.
+Register their canonical descriptors in the startup configuration. For external
+packages, use the explicit preparation command described in
+[component preparation](../tooling/components/readme.md); register the prepared
+bundle's descriptor and resolution. Execution never installs an uploaded package.
+
+The [workspace guide](workspace.md) describes forms, model selection, resource
+sharing, settings and recovery. The
+[resource collaboration example](contracts/examples/resource-collaboration.graph.json)
+requires the new packages and external resource-agent; the legacy startup template
+continues to support the five bundled experiments.
 
 ## Inspect an execution
 

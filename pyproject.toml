@@ -19,6 +19,12 @@ dev = [
   "slow-thinker-llm-call",
   "slow-thinker-openai-model",
   "example-grounded-review",
+  "slow-thinker-model-provider",
+  "slow-thinker-calculator",
+  "slow-thinker-key-value-memory",
+  "slow-thinker-contextual-call",
+  "example-resource-agent",
+
   "hatchling>=1.27,<2",
   "pip>=25,<27",
   "uv==0.12.19",
@@ -50,16 +56,26 @@ slow-thinker-openai-model = { path = "components/openai-model", editable = true 
 
 example-grounded-review = { path = "examples/grounded-review", editable = true }
 
+slow-thinker-model-provider = { path = "components/model-provider", editable = true }
+
+slow-thinker-calculator = { path = "components/calculator", editable = true }
+
+slow-thinker-key-value-memory = { path = "components/key-value-memory", editable = true }
+
+slow-thinker-contextual-call = { path = "components/contextual-call", editable = true }
+
+example-resource-agent = { path = "examples/resource-agent", editable = true }
+
 [tool.pytest.ini_options]
 addopts = "-ra --strict-markers --strict-config"
-testpaths = ["backend/tests", "tooling/tests", "components/host/tests", "components/sequence/tests", "components/redirector/tests", "components/routed-call/tests", "components/bounded-flow/tests", "components/llm-call/tests", "components/openai-model/tests", "examples/grounded-review/tests"]
+testpaths = ["backend/tests", "tooling/tests", "components/host/tests", "components/sequence/tests", "components/redirector/tests", "components/routed-call/tests", "components/bounded-flow/tests", "components/llm-call/tests", "components/openai-model/tests", "components/model-provider/tests", "components/calculator/tests", "components/key-value-memory/tests", "components/contextual-call/tests", "examples/resource-agent/tests", "examples/grounded-review/tests"]
 pythonpath = ["backend/tests"]
 asyncio_mode = "auto"
 filterwarnings = ["error"]
 
 [tool.coverage.run]
 branch = true
-source = ["backend/src/slow_thinker_ii", "tooling/quality", "tooling/components", "components/host/src/slow_thinker_host", "components/sequence/src/slow_thinker_sequence", "components/redirector/src/slow_thinker_redirector", "components/routed-call/src/slow_thinker_routed_call", "components/bounded-flow/src/slow_thinker_bounded_flow", "components/llm-call/src/slow_thinker_llm_call", "components/openai-model/src/slow_thinker_openai_model", "examples/grounded-review/src/example_grounded_review"]
+source = ["backend/src/slow_thinker_ii", "tooling/quality", "tooling/components", "components/host/src/slow_thinker_host", "components/sequence/src/slow_thinker_sequence", "components/redirector/src/slow_thinker_redirector", "components/routed-call/src/slow_thinker_routed_call", "components/bounded-flow/src/slow_thinker_bounded_flow", "components/llm-call/src/slow_thinker_llm_call", "components/openai-model/src/slow_thinker_openai_model", "components/model-provider/src/slow_thinker_model_provider", "components/calculator/src/slow_thinker_calculator", "components/key-value-memory/src/slow_thinker_key_value_memory", "components/contextual-call/src/slow_thinker_contextual_call", "examples/resource-agent/src/example_resource_agent", "examples/grounded-review/src/example_grounded_review"]
 
 [tool.coverage.report]
 fail_under = 90
@@ -103,7 +119,7 @@ min_confidence = 60
 sort_by_size = true
 
 [tool.importlinter]
-root_packages = ["slow_thinker_ii", "slow_thinker_host", "slow_thinker_sequence", "slow_thinker_redirector", "slow_thinker_routed_call", "slow_thinker_bounded_flow", "slow_thinker_llm_call", "slow_thinker_openai_model", "example_grounded_review"]
+root_packages = ["slow_thinker_ii", "slow_thinker_host", "slow_thinker_sequence", "slow_thinker_redirector", "slow_thinker_routed_call", "slow_thinker_bounded_flow", "slow_thinker_llm_call", "slow_thinker_openai_model", "slow_thinker_model_provider", "slow_thinker_calculator", "slow_thinker_key_value_memory", "slow_thinker_contextual_call", "example_resource_agent", "example_grounded_review"]
 include_external_packages = true
 
 [[tool.importlinter.contracts]]
@@ -144,6 +160,8 @@ allowed_importers = ["slow_thinker_ii.application"]
 ignore_imports = [
     "slow_thinker_ii.adapters.** -> slow_thinker_ii.application.library",
     "slow_thinker_ii.bootstrap.** -> slow_thinker_ii.application.library",
+    "slow_thinker_ii.adapters.** -> slow_thinker_ii.application.workspace",
+    "slow_thinker_ii.bootstrap.** -> slow_thinker_ii.application.workspace",
 ]
 
 [[tool.importlinter.contracts]]
@@ -179,14 +197,14 @@ allowed_importers = ["slow_thinker_ii.adapters.tariffs"]
 [[tool.importlinter.contracts]]
 name = "Component packages cannot import the application"
 type = "forbidden"
-source_modules = ["slow_thinker_host", "slow_thinker_sequence", "slow_thinker_redirector", "slow_thinker_routed_call", "slow_thinker_bounded_flow", "slow_thinker_llm_call", "slow_thinker_openai_model", "example_grounded_review"]
+source_modules = ["slow_thinker_host", "slow_thinker_sequence", "slow_thinker_redirector", "slow_thinker_routed_call", "slow_thinker_bounded_flow", "slow_thinker_llm_call", "slow_thinker_openai_model", "slow_thinker_model_provider", "slow_thinker_calculator", "slow_thinker_key_value_memory", "slow_thinker_contextual_call", "example_resource_agent", "example_grounded_review"]
 forbidden_modules = ["slow_thinker_ii"]
 
 [[tool.importlinter.contracts]]
 name = "Backend never imports component implementations"
 type = "forbidden"
 source_modules = ["slow_thinker_ii"]
-forbidden_modules = ["slow_thinker_sequence", "slow_thinker_redirector", "slow_thinker_routed_call", "slow_thinker_bounded_flow", "slow_thinker_llm_call", "slow_thinker_openai_model", "example_grounded_review"]
+forbidden_modules = ["slow_thinker_sequence", "slow_thinker_redirector", "slow_thinker_routed_call", "slow_thinker_bounded_flow", "slow_thinker_llm_call", "slow_thinker_openai_model", "slow_thinker_model_provider", "slow_thinker_calculator", "slow_thinker_key_value_memory", "slow_thinker_contextual_call", "example_resource_agent", "example_grounded_review"]
 
 [[tool.importlinter.contracts]]
 name = "Host SDK internals are private"
@@ -271,3 +289,57 @@ name = "BoundedFlow internals are private"
 type = "protected"
 protected_modules = ["slow_thinker_bounded_flow.*"]
 allowed_importers = ["slow_thinker_bounded_flow"]
+
+[[tool.importlinter.contracts]]
+name = "Workspace application internals are private"
+type = "protected"
+protected_modules = ["slow_thinker_ii.application.workspace.*"]
+allowed_importers = ["slow_thinker_ii.application.workspace"]
+
+[[tool.importlinter.contracts]]
+name = "Workspace adapter internals are private"
+type = "protected"
+protected_modules = ["slow_thinker_ii.adapters.workspace.*"]
+allowed_importers = ["slow_thinker_ii.adapters.workspace"]
+
+[[tool.importlinter.contracts]]
+name = "slow-thinker-model-provider internals are private"
+type = "protected"
+protected_modules = ["slow_thinker_model_provider.*"]
+allowed_importers = ["slow_thinker_model_provider"]
+
+[[tool.importlinter.contracts]]
+name = "slow-thinker-calculator internals are private"
+type = "protected"
+protected_modules = ["slow_thinker_calculator.*"]
+allowed_importers = ["slow_thinker_calculator"]
+
+[[tool.importlinter.contracts]]
+name = "slow-thinker-key-value-memory internals are private"
+type = "protected"
+protected_modules = ["slow_thinker_key_value_memory.*"]
+allowed_importers = ["slow_thinker_key_value_memory"]
+
+[[tool.importlinter.contracts]]
+name = "slow-thinker-contextual-call internals are private"
+type = "protected"
+protected_modules = ["slow_thinker_contextual_call.*"]
+allowed_importers = ["slow_thinker_contextual_call"]
+
+[[tool.importlinter.contracts]]
+name = "example-resource-agent internals are private"
+type = "protected"
+protected_modules = ["example_resource_agent.*"]
+allowed_importers = ["example_resource_agent"]
+
+[[tool.importlinter.contracts]]
+name = "Models adapter internals are private"
+type = "protected"
+protected_modules = ["slow_thinker_ii.adapters.models.*"]
+allowed_importers = ["slow_thinker_ii.adapters.models"]
+
+[[tool.importlinter.contracts]]
+name = "Resources adapter internals are private"
+type = "protected"
+protected_modules = ["slow_thinker_ii.adapters.resources.*"]
+allowed_importers = ["slow_thinker_ii.adapters.resources"]

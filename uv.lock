@@ -266,6 +266,21 @@ dependencies = [
 requires-dist = [{ name = "slow-thinker-llm-call", specifier = "==0.1.0.dev1" }]
 
 [[package]]
+name = "example-resource-agent"
+version = "0.1.0"
+source = { editable = "examples/resource-agent" }
+dependencies = [
+    { name = "slow-thinker-host" },
+    { name = "slow-thinker-llm-call" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "slow-thinker-host", specifier = "==0.1.0.dev1" },
+    { name = "slow-thinker-llm-call", specifier = "==0.1.0.dev1" },
+]
+
+[[package]]
 name = "fastapi"
 version = "0.141.1"
 source = { registry = "https://pypi.org/simple" }
@@ -1278,6 +1293,28 @@ dependencies = [
 requires-dist = [{ name = "slow-thinker-host", specifier = "==0.1.0.dev1" }]
 
 [[package]]
+name = "slow-thinker-calculator"
+version = "0.1.0"
+source = { editable = "components/calculator" }
+dependencies = [
+    { name = "slow-thinker-host" },
+]
+
+[package.metadata]
+requires-dist = [{ name = "slow-thinker-host", specifier = "==0.1.0.dev1" }]
+
+[[package]]
+name = "slow-thinker-contextual-call"
+version = "0.1.0"
+source = { editable = "components/contextual-call" }
+dependencies = [
+    { name = "slow-thinker-host" },
+]
+
+[package.metadata]
+requires-dist = [{ name = "slow-thinker-host", specifier = "==0.1.0.dev1" }]
+
+[[package]]
 name = "slow-thinker-host"
 version = "0.1.0.dev1"
 source = { editable = "components/host" }
@@ -1342,6 +1379,7 @@ source = { virtual = "." }
 [package.dev-dependencies]
 dev = [
     { name = "example-grounded-review" },
+    { name = "example-resource-agent" },
     { name = "hatchling" },
     { name = "httpx" },
     { name = "import-linter" },
@@ -1355,9 +1393,13 @@ dev = [
     { name = "pytest-cov" },
     { name = "ruff" },
     { name = "slow-thinker-bounded-flow" },
+    { name = "slow-thinker-calculator" },
+    { name = "slow-thinker-contextual-call" },
     { name = "slow-thinker-host", extra = ["langchain"] },
     { name = "slow-thinker-ii" },
+    { name = "slow-thinker-key-value-memory" },
     { name = "slow-thinker-llm-call" },
+    { name = "slow-thinker-model-provider" },
     { name = "slow-thinker-openai-model" },
     { name = "slow-thinker-redirector" },
     { name = "slow-thinker-routed-call" },
@@ -1373,6 +1415,7 @@ dev = [
 [package.metadata.requires-dev]
 dev = [
     { name = "example-grounded-review", editable = "examples/grounded-review" },
+    { name = "example-resource-agent", editable = "examples/resource-agent" },
     { name = "hatchling", specifier = ">=1.27,<2" },
     { name = "httpx", specifier = ">=0.28,<1" },
     { name = "import-linter", specifier = ">=2,<3" },
@@ -1386,9 +1429,13 @@ dev = [
     { name = "pytest-cov", specifier = ">=6,<8" },
     { name = "ruff", specifier = ">=0.12,<1" },
     { name = "slow-thinker-bounded-flow", editable = "components/bounded-flow" },
+    { name = "slow-thinker-calculator", editable = "components/calculator" },
+    { name = "slow-thinker-contextual-call", editable = "components/contextual-call" },
     { name = "slow-thinker-host", extras = ["langchain"], editable = "components/host" },
     { name = "slow-thinker-ii", editable = "backend" },
+    { name = "slow-thinker-key-value-memory", editable = "components/key-value-memory" },
     { name = "slow-thinker-llm-call", editable = "components/llm-call" },
+    { name = "slow-thinker-model-provider", editable = "components/model-provider" },
     { name = "slow-thinker-openai-model", editable = "components/openai-model" },
     { name = "slow-thinker-redirector", editable = "components/redirector" },
     { name = "slow-thinker-routed-call", editable = "components/routed-call" },
@@ -1398,6 +1445,17 @@ dev = [
     { name = "uv", specifier = "==0.12.19" },
     { name = "vulture", specifier = ">=2,<3" },
 ]
+
+[[package]]
+name = "slow-thinker-key-value-memory"
+version = "0.1.0"
+source = { editable = "components/key-value-memory" }
+dependencies = [
+    { name = "slow-thinker-host" },
+]
+
+[package.metadata]
+requires-dist = [{ name = "slow-thinker-host", specifier = "==0.1.0.dev1" }]
 
 [[package]]
 name = "slow-thinker-llm-call"
@@ -1417,6 +1475,21 @@ requires-dist = [
     { name = "jsonschema", specifier = ">=4.26,<5" },
     { name = "openai", specifier = "==3.19.2" },
     { name = "referencing", specifier = ">=0.37,<1" },
+    { name = "slow-thinker-host", specifier = "==0.1.0.dev1" },
+]
+
+[[package]]
+name = "slow-thinker-model-provider"
+version = "0.1.0"
+source = { editable = "components/model-provider" }
+dependencies = [
+    { name = "httpx2" },
+    { name = "slow-thinker-host" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "httpx2", specifier = ">=2.13,<3" },
     { name = "slow-thinker-host", specifier = "==0.1.0.dev1" },
 ]
 

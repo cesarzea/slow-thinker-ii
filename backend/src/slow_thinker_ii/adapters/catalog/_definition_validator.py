@@ -12,8 +12,11 @@ from ._validation import LocalSchemas, validate_definition
 
 
 class GraphDefinitionValidator:
-    def __init__(self, schema_directory: Path, descriptor_directory: Path) -> None:
+    def __init__(
+        self, schema_directory: Path, descriptor_directory: Path, descriptors: tuple[str, ...] = ()
+    ) -> None:
         self._schemas, self._descriptors = schema_directory, descriptor_directory
+        self._extra = descriptors
 
     def validate(self, source: str) -> library.ValidatedDefinition:
         document, _ = self._validated(source)
@@ -34,7 +37,9 @@ class GraphDefinitionValidator:
             raise library.DefinitionError("invalid_json") from error
         try:
             value = json_object(decoded)
-            return validate_definition(value, LocalSchemas(self._schemas), self._descriptors)
+            return validate_definition(
+                value, LocalSchemas(self._schemas), self._descriptors, self._extra
+            )
         except library.DefinitionError:
             raise
         except (ValueError, KeyError, Unresolvable, RecursionError) as error:

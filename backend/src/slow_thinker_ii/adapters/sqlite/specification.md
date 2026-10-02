@@ -87,3 +87,20 @@ fetching one extra row for continuation. Zero-sized repository pages fix a bound
 without returning personal rows. Constructors perform no database access.
 Focused S03 migration, rollback, concurrency and paging acceptance passes;
 complete coordinator verification remains pending.
+
+## S04–S06 active delivery
+
+Follow [the shared contract](../../../../../docs/contracts/product-workspace.md). Implementation owner: Coordinator.
+
+Add transactional scoped model-tariff storage and configuration-command receipts through a version-7 backup-verified migration. Preserve legacy tariffs and all historical definitions/runs/budgets. Configuration changes preserve commitments, current profile resources and immutable revision identity; reject active runs, stale expected revisions and replay conflicts.
+
+Completion requires the shared delivery acceptance evidence; implementation alone
+does not close verification. Keep existing approved contracts compatible.
+
+## Local delivery checkpoint — 2026-10-02
+
+S04–S06 implementation, individual/whole-system review and mandatory shared
+verification are complete. The [verification record](../../../../../docs/verification.md#provider-resource-and-workspace-delivery--2026-10-02)
+is authoritative for final evidence and limitations; earlier preparation/scoped-test
+statuses above describe preceding checkpoints. Owner review and hosted checks remain
+separate. No implementation ticket remains for this delivery.

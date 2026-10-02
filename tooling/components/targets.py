@@ -12,6 +12,10 @@ TARGETS = (
     "redirector",
     "routed-call",
     "bounded-flow",
+    "model-provider",
+    "calculator",
+    "key-value-memory",
+    "contextual-call",
 )
 
 
@@ -23,6 +27,26 @@ class PreparationTarget:
 
 
 _IDENTITIES = {
+    "model-provider": (
+        "model-provider",
+        "slow-thinker-model-provider",
+        "slow_thinker_model_provider:ModelProviderHost",
+    ),
+    "calculator": (
+        "calculator",
+        "slow-thinker-calculator",
+        "slow_thinker_calculator:CalculatorHost",
+    ),
+    "key-value-memory": (
+        "key-value-memory",
+        "slow-thinker-key-value-memory",
+        "slow_thinker_key_value_memory:KeyValueMemoryHost",
+    ),
+    "contextual-call": (
+        "contextual-call",
+        "slow-thinker-contextual-call",
+        "slow_thinker_contextual_call:ContextualCallHost",
+    ),
     "redirector": (
         "redirector",
         "slow-thinker-redirector",
@@ -86,7 +110,15 @@ def _registration(name: str) -> ComponentRegistration:
             entry_point="slow_thinker_llm_call:LLMCall",
             requirement="slow-thinker-llm-call==0.1.0.dev1",
         )
-    stable = name in {"redirector", "routed-call", "bounded-flow"}
+    stable = name in {
+        "redirector",
+        "routed-call",
+        "bounded-flow",
+        "model-provider",
+        "calculator",
+        "key-value-memory",
+        "contextual-call",
+    }
     return ComponentRegistration(
         type_id=type_id,
         type_version="0.1.0" if stable else "0.1.0-example",

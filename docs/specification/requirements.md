@@ -55,6 +55,7 @@ Identifiers below describe requirements, not implementation completion. “Bound
 | R28 | Export a complete supported graph as readable standalone Python code with direct calls and resolved component dependencies, removing platform logging, intermediation and supervision while retaining functional graph logic.                               | Later cycle; export direction selected; portability and generation details pending Q21                                                    |
 | R29 | LLMCall supports text or schema-validated JSON output. On invalid output return a structured failure, retain the received response and make no implicit repair call. Further calls require explicit configuration and normal accounting.                    | First cycle; accepted ADR 0010 and LLMCall contract, implementation evidence in the verification record                                   |
 | R30 | Provide a redirector component usable independently or inside another component. A user-authored deterministic Python script selects among explicitly declared outputs; the containing graph or agent binds their destinations.                             | First cycle, added by owner agreement 2026-09-29; extension contracts closed, implementation evidence in the verification record          |
+| R31 | Provide a coherent user-facing workspace to configure agents, supported graphs and resources, manage experiments, sessions and budgets, and run and inspect results. Preserve expert JSON authoring and optional technical evidence inspection. | S06 in the owner-requested 2026-10-02 [roadmap revision 2](sprint-roadmap.md#user-interface-delivery); detailed interactions pending Q23; direct graphical authoring follows in S14 |
 
 Platform mediation, recording and supervisory requirements apply to platform-managed runs. R28 defines a separate future standalone profile that deliberately omits those services, including platform accounting, budget enforcement and watchdogs. Its build metadata identifies the source graph and dependencies without requiring runtime logging.
 
@@ -77,6 +78,17 @@ This cycle includes selection and validation of bundled JSON graphs, live graph 
 Graph editing tools and manual JSON upload, parallel execution and control profiles beyond the bounded conditional review loop, runtime graph mutation, reusable subgraphs, memory-provider implementations, interactive pause/resume, historical navigation during a live run, automatic influence analysis, variant comparison, automatic graph improvement, standalone Python export, server/container deployment, and multiple users remain later work. These are functional deferrals; the engineering requirements are not deferred.
 
 The owner clarified on 2026-09-28 that tools, memory and other resources must follow soon after the starting profile. Their extension boundaries belong in the initial design: components declare their own operations and bindings, managed calls remain mediated, and closing a run-owned process does not imply deleting persistent resource data. The first concrete additions and their acceptance examples remain to be selected; this clarification does not authorize application implementation or move every future capability into the first cycle.
+
+## Subsequent delivery checkpoint — 2026-10-02
+
+The first-cycle deferrals above retain the original baseline scope. S03 has since
+delivered JSON authoring and immutable revisions. The owner then activated S04–S06:
+provider-neutral OpenAI/DeepSeek resources, external components, calculator,
+private/shared durable key/value memory and structured product configuration.
+These scopes are locally verified in the [delivery block](s04-s06-delivery.md).
+The [roadmap](sprint-roadmap.md) retains remaining execution, evaluation, analysis,
+automatic improvement and deployment work. No deferred capability is claimed
+implemented merely because its extension boundary exists.
 
 ## Evidence limits
 

@@ -3,6 +3,8 @@ import type {GraphSummary} from './catalog.ts';
 import {graphDetailSchema} from './graph-schemas.ts';
 import {DefinitionTransport} from './definition-transport.ts';
 import {DefinitionError, unconfirmedDefinitionFailure} from './definition-errors.ts';
+import {patchBody} from './source-patch.ts';
+import type {PatchOperation} from './source-patch.ts';
 import {
   libraryPageSchema,
   validationResultSchema,
@@ -31,6 +33,13 @@ export interface SaveResult extends GraphReference {
   readonly created: boolean;
 }
 export class DefinitionClient extends DefinitionTransport {
+  async patch(
+    source: string,
+    operations: readonly PatchOperation[],
+    signal: AbortSignal,
+  ): Promise<string> {
+    return await this.objectText('/definitions/patch', signal, patchBody(source, operations));
+  }
   async list(signal: AbortSignal, cursor?: string, limit?: number): Promise<LibraryPage> {
     if (limit !== undefined && (!Number.isInteger(limit) || limit < 1 || limit > 100))
       throw new DefinitionError('invalid_query');

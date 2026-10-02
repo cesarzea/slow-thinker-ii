@@ -1,0 +1,69 @@
+{
+  "configuration_revision": "workspace-1",
+  "limits": {
+    "current": {
+      "call_seconds": 20.0,
+      "max_calls": 100,
+      "max_depth": 8,
+      "max_payload_bytes": 1048576,
+      "month_budget": "0.000010000",
+      "run_budget": "0.000001000",
+      "run_seconds": 90.0,
+      "session_budget": "0.000005000",
+      "shutdown_seconds": 5.0,
+      "startup_seconds": 10.0
+    },
+    "maximum": {
+      "call_seconds": 20,
+      "max_calls": 100,
+      "max_depth": 8,
+      "max_payload_bytes": 1048576,
+      "month_budget": "0.000010000",
+      "run_budget": "0.000001000",
+      "run_seconds": 90,
+      "session_budget": "0.000005000",
+      "shutdown_seconds": 5,
+      "startup_seconds": 10
+    }
+  },
+  "models": [
+    {
+      "billing_profile": "deepseek.flash.direct.v1",
+      "default_output_tokens": 256,
+      "maximum_output_tokens": 4096,
+      "model": "deepseek-flash",
+      "provider": "deepseek",
+      "provider_profile": "deepseek-flash",
+      "reasoning_efforts": ["none", "low", "high", "max"],
+      "review_expires_at": 1793507814,
+      "supports_temperature": true,
+      "tariff_status": "unavailable"
+    },
+    {
+      "billing_profile": "openai.gpt-6-luna.standard.text.v1",
+      "default_output_tokens": 256,
+      "maximum_output_tokens": 4096,
+      "model": "gpt-6-luna",
+      "provider": "openai",
+      "provider_profile": "illustrative-provider",
+      "reasoning_efforts": ["none"],
+      "review_expires_at": 1793507814,
+      "supports_temperature": false,
+      "tariff_status": "unavailable"
+    },
+    {
+      "billing_profile": "openai.gpt-6-luna.standard.text.v1",
+      "default_output_tokens": 256,
+      "maximum_output_tokens": 4096,
+      "model": "gpt-6-luna",
+      "provider": "openai",
+      "provider_profile": "openai-luna",
+      "reasoning_efforts": ["none"],
+      "review_expires_at": 1793507814,
+      "supports_temperature": false,
+      "tariff_status": "unavailable"
+    }
+  ],
+  "schema_version": "1",
+  "supported_graph_profiles": ["sequence", "bounded-conditional"]
+}

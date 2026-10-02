@@ -76,3 +76,20 @@ canonical domain JSON text without a projection envelope or `view_token`.
 
 Acceptance follows the shared S03 scenarios. Development delivery does not claim
 testing is complete. Keep module-private choices within these public contracts.
+
+## S04–S06 active delivery
+
+Follow [the shared contract](../../../../../docs/contracts/product-workspace.md). Implementation owner: Coordinator.
+
+Add authenticated bounded configuration/catalog, configuration/limits and definitions/patch endpoints exactly as specified. Preserve existing APIs, origin/credential checks, no-store and error semantics. Return canonical source text without inserting or invoking a component.
+
+Completion requires the shared delivery acceptance evidence; implementation alone
+does not close verification. Keep existing approved contracts compatible.
+
+## Local delivery checkpoint — 2026-10-02
+
+S04–S06 implementation, individual/whole-system review and mandatory shared
+verification are complete. The [verification record](../../../../../docs/verification.md#provider-resource-and-workspace-delivery--2026-10-02)
+is authoritative for final evidence and limitations; earlier preparation/scoped-test
+statuses above describe preceding checkpoints. Owner review and hosted checks remain
+separate. No implementation ticket remains for this delivery.

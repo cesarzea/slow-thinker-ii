@@ -3,13 +3,13 @@
 from collections.abc import Mapping
 
 from slow_thinker_ii.adapters.catalog import GraphRecord
-from slow_thinker_ii.application import LimitsProfile, PreparationRejected
+from slow_thinker_ii.application import LimitsProfile, PreparationRejected, workspace
 
 from ._endpoints import ServiceEndpoints
 from ._host_profiles import HostAdapter, HostProfile, HostRequest
 from ._models import ResourceSettings
 from ._secrets import SecretSource
-from ._tariffs import SelectedTariff
+from ._tariffs import SelectedTariff, model_tariff
 
 
 class HostPlanner:
@@ -18,8 +18,10 @@ class HostPlanner:
         adapters: Mapping[str, HostAdapter],
         endpoints: ServiceEndpoints,
         secrets: SecretSource,
+        model_tariffs: workspace.ModelTariffReader | None = None,
     ) -> None:
         self._adapters, self._endpoints, self._secrets = adapters, endpoints, secrets
+        self._model_tariffs = model_tariffs
 
     def configure(
         self,
@@ -28,10 +30,12 @@ class HostPlanner:
         settings: ResourceSettings,
         tariff: SelectedTariff | None,
         now: float,
+        runtime_id: str = "",
     ) -> dict[str, HostProfile]:
         result: dict[str, HostProfile] = {}
         for identity, component in graph.components.items():
             adapter = self._adapter(component.type_id, component.type_version, settings)
+            selected = model_tariff(component, settings, tariff, self._model_tariffs)
             request = HostRequest(
                 identity,
                 component,
@@ -39,9 +43,10 @@ class HostPlanner:
                 settings,
                 limits,
                 self._endpoints,
-                tariff,
+                selected,
                 now,
                 self._secrets,
+                runtime_id,
             )
             result[identity] = adapter.configure(request)
         return result

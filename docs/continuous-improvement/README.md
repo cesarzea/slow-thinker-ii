@@ -30,7 +30,7 @@ The repository's [working rules](../../AGENTS.md) remain the operational authori
 | [M03 — Contract closure before delegation](methods/003-contract-closure.md)                             | Approved on 2026-09-29; incorporated into M04              | Contract preparation for C03                                          |
 | [M04 — Contracts, test preparation and verification](methods/004-testing-and-verification.md)           | Approved on 2026-09-29; incorporated into M05              | Test preparation for C03                                              |
 | [M05 — Local verification equivalent to CI](methods/005-local-ci-verification.md)                       | Approved on 2026-09-29; partially applied                  | C03 local delivery; local CodeQL and publication effect not evaluated |
-| [M06 — Assignment preparation, review evidence and test readiness](methods/006-delivery-preparation.md) | Approved on 2026-10-01; current method                     | CodeQL gate follow-up applied; no efficiency audit                    |
+| [M06 — Assignment preparation, review evidence and test readiness](methods/006-delivery-preparation.md) | Approved on 2026-10-01; current method                     | CodeQL follow-up, C05 and C06; no reconciled efficiency audit                    |
 
 Methods are retained as historical versions. A later method does not overwrite an
 earlier method or retroactively change which method was used for a cycle.
@@ -48,6 +48,7 @@ does not activate a new sprint or cycle. See the
 | [C03 — Agent canvas and English presentation](cycles/003-contract-closure/report.md) | M05, partially applied | 36 min to initial handoff                    | 1 h 03 min 50 s across three participants       | Initial delivery audited; subsequent input/output correction verified            |
 | [C04 — Dependency maintenance](cycles/004-dependency-maintenance/report.md)          | M06                    | Not audited; checkpoint span recorded        | Not audited                                     | Selected updates locally verified; remote publication pending                    |
 | [C05 — Personal experiments](cycles/005-personal-experiments/report.md)              | M06                    | Not audited; 2 h 20 min 49 s checkpoint span | Not audited                                     | Personal authoring locally verified; delivery and preparation defects classified |
+| [C06 — Provider, resource and workspace delivery](cycles/006-provider-resource-workspace/report.md) | M06 | Not audited; 2 h 53 min 48 s final checkpoint span | Not audited | S04–S06 locally verified, including actual provider/resource execution; review pending |
 
 C01 covers the audited windows on 2026-09-28 and the brief reactivation on
 2026-09-29. C02 covers 03:53:47–05:47:13 Europe/Lisbon on 2026-09-29. The initial C03
@@ -145,3 +146,14 @@ decision. Earlier pending statuses and checkpoint measurements remain preserved.
 including shared-contract omissions, review corrections and classified verification
 failures. Its checkpoints do not constitute an activity-duration audit. P11/P12
 remain proposals; no efficiency improvement or new method version is claimed.
+
+## S04–S06 evaluation — 2026-10-02
+
+[C06](cycles/006-provider-resource-workspace/report.md) records the complete
+provider/resource/workspace block, shared-decision omissions and classified
+verification corrections. Its final checkpoint span ends at final-verification confirmation, includes
+intervening documentation and import-policy correction, and excludes later
+publication work. The earlier 2 h 35 min 11 s checkpoint remains separately retained. Actual native costs
+and proposal/memory provenance were independently checked; automated browser
+journeys and live production execution are distinguished. P13 remains proposed.
+M06 is unchanged and no causal productivity improvement is established.

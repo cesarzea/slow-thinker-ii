@@ -42,3 +42,12 @@ Conditional binding, selected-port, containment and declared-input tests pass, i
 ## Implemented behavior
 
 ConditionalPlan, ConditionalNode, LatestOutput and CompletedActivation keep cyclic bindings separate from SequencePlan. graph_detail and graph_input_schema produce presentation-independent definition projections.
+
+## S04–S06 active delivery
+
+Follow [the shared contract](../../../../docs/contracts/product-workspace.md). Implementation owner: Coordinator.
+
+Preserve generic instance operations/resources/permissions and existing execution profiles. Support new resources through current public contracts without treating state persistence as agent scheduling or introducing silent profile weakening.
+
+Completion requires the shared delivery acceptance evidence; implementation alone
+does not close verification. Keep existing approved contracts compatible.

@@ -2,6 +2,7 @@
 
 from ._endpoints import ServiceEndpoints
 from ._host_profiles import HostAdapter, HostProfile, HostRequest, PlainHostAdapter
+from ._model_hosts import ModelResourceAdapter, model_capabilities
 from ._models import ResourceSettings
 from ._openai_hosts import OpenAIClientAdapter, OpenAIResourceAdapter
 from ._preparer import InstalledWorkflowPreparer
@@ -13,10 +14,15 @@ def standard_host_adapters() -> dict[str, HostAdapter]:
         "mcp": PlainHostAdapter(),
         "openai-client": OpenAIClientAdapter(),
         "openai-model": OpenAIResourceAdapter(),
+        "openai-resource": OpenAIResourceAdapter(),
+        "model-resource": ModelResourceAdapter(),
+        "plain": PlainHostAdapter(),
     }
 
 
 __all__ = [
+    "ModelResourceAdapter",
+    "model_capabilities",
     "ResourceSettings",
     "ServiceEndpoints",
     "HostAdapter",

@@ -1,3 +1,4 @@
+import {configuration} from './configuration-data.ts';
 import {reply} from './operator-data.ts';
 import {singleDetail, summary} from './projection-data.ts';
 
@@ -7,6 +8,7 @@ export function operatorLibraryRead(
   detail: unknown,
   status: number,
 ): Response | null {
+  if (path === '/configuration/catalog') return reply(configuration);
   if (path === '/definitions')
     return reply({
       items: [{...summary(singleDetail), origin: 'bundled', derived_from: null}],

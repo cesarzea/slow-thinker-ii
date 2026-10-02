@@ -4,6 +4,7 @@ import {initialDraft} from './draft.ts';
 import {editActions} from './edit-actions.ts';
 import {deriveAction} from './derive-action.ts';
 import {writeActions} from './write-actions.ts';
+import {patchAction} from './patch-action.ts';
 import {useRequests} from './use-requests.ts';
 import {useSource} from './use-source.ts';
 import type {DefinitionEditorProps, EditorModel} from './types.ts';
@@ -26,6 +27,7 @@ export function useEditor({
     state,
     reload,
     dirty,
+    patch: patchAction(state, client, requests, update),
     ...editActions(state, update, requests),
     derive: deriveAction(state, {client, reference, requests, update}),
     ...writeActions(state, {client, requests, update, onSaved}),
