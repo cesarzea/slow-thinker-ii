@@ -3,12 +3,12 @@
 | Document control         | Value                                                              |
 | ------------------------ | ------------------------------------------------------------------ |
 | Report ID                | SPRINT-S03-001                                                     |
-| Report version           | **0.0.3.2** — V0.0, Sprint 3, Revision 2                           |
+| Report version           | **0.0.3.1** — V0.0, Sprint 3, Revision 1                           |
 | Owner                    | Cesar Zea                                                          |
 | Reporting date           | 2026-10-02, Europe/Lisbon                                          |
 | Sprint                   | S03 — Personal experiment definitions                              |
-| Delivery status          | Functionally closed after verification and real execution          |
-| Publication status       | PR #11 open; closure supplement awaiting publication and merge      |
+| Delivery status          | Functional scope delivered and verified locally                    |
+| Publication status       | Not yet published; owner review and merge decision remain separate |
 | Product package versions | Python: `0.1.0.dev1`; frontend: `0.1.0-dev.1`                      |
 
 This report version identifies a development checkpoint, not a product release.
@@ -56,17 +56,7 @@ retains corrections and limits; surviving accounting mutants are not claimed as 
 The isolated browser demonstration saves `s03-demo · v1`, executes it with
 deterministic participants, saves changed instructions as `v2`, and displays the
 retained `v1` result and agent canvas. Its accounting values are simulated.
-At that initial delivery checkpoint, no provider request or actual provider charge
-was made for S03 verification.
-
-### Live execution supplement — 2026-10-02
-
-The owner subsequently requested a real case. A personal proposer/reviewer graph
-completed an offline Git workshop task through six actual OpenAI calls, with a
-recorded cost of USD 0.001177650 and verified feedback provenance. Independent
-checks confirmed the final result and identified an apparently unnecessary second
-rejection. The [live validation report](sprint-03-live-validation.md) records the
-scope, evidence and model-quality limitation separately from the earlier tests.
+No provider request or actual provider charge was made for S03 verification.
 
 ## Review corrections and limitations
 
@@ -82,26 +72,8 @@ The next proposed scope is [S04](../specification/sprint-roadmap.md): provider-n
 selection and a second provider. Evaluation, automatic variants and graphical
 authoring remain later scopes; this report does not activate them.
 
-## Functional closure — 2026-10-02
-
-The owner requested sprint closure after the real execution review. The functional
-scope is closed: all fourteen acceptance outcomes are covered, the shared local
-runner passed, and a real personal collaboration case has been retained and audited.
-The reviewer's apparently unnecessary rejection is an observed agent-quality
-limitation, not an unresolved product implementation task.
-
-All required checks for implementation commit `b806140` passed on
-[PR #11](https://github.com/cesarzea/slow-thinker-ii/pull/11), which remains open
-and mergeable. This closure supplement is local and is not yet included in that
-checked commit. Publication of the supplement and the owner's merge decision
-remain separate. S04 remains proposed and has not been activated.
-
 ## Revision history
 
 | Version | Date       | Change                                                                                                           |
 | ------- | ---------- | ---------------------------------------------------------------------------------------------------------------- |
-| 0.0.3.2 | 2026-10-02 | Functional closure, real OpenAI acceptance, independent recording checks and the observed reviewer-quality limitation. |
 | 0.0.3.1 | 2026-10-02 | Initial S03 report: authoring, immutable revisions, retained execution, verification and publication boundaries. |
-
-The [0.0.3.1 snapshot](sprint-03-status-report-0.0.3.1.md) preserves the original
-delivery checkpoint before the live validation and functional closure.

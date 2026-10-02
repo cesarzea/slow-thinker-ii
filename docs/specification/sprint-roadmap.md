@@ -5,7 +5,7 @@
 | Document ID      | PLAN-001                                                             |
 | Owner            | Cesar Zea                                                            |
 | Updated          | 2026-10-02, Europe/Lisbon                                            |
-| Status           | S03 locally verified; later sprint scopes remain provisional         |
+| Status           | S03 functionally closed; publication pending; later scopes proposed |
 | Working method   | [M06](../continuous-improvement/methods/006-delivery-preparation.md) |
 
 ## Objective and delivery order
@@ -19,9 +19,10 @@ Execute in numbered order, closing each sprint with a working demonstration and
 required verification before starting the next. Independent package assignments
 within a sprint run in parallel under M06. Dependencies identify functional
 prerequisites; they do not imply that all intervening work is technically required.
-[S03](personal-experiments-sprint.md) has passed local functional acceptance and
-mandatory verification. Publication and owner review remain pending at this
-checkpoint. Later scopes remain provisional.
+[S03](personal-experiments-sprint.md) is functionally closed after local mandatory
+verification and a real personal collaboration case. PR #11's implementation checks
+are green; publication of the closure supplement and owner-authorized merge remain
+pending. Later scopes remain provisional and S04 has not been activated.
 
 ## Sprint plan
 
@@ -29,7 +30,7 @@ checkpoint. Later scopes remain provisional.
 | ------ | -------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------ | ---------------- |
 | S01    | Local execution, mediated component calls, bounded proposer/reviewer collaboration, history, budgets and costs.                  | Initial foundations                                          | Delivered        |
 | S02    | Agent-focused canvas, visible input/output, optional configuration/system markers, evidence inspection and English presentation. | S01                                                          | Delivered        |
-| S03    | Import/edit JSON graphs; configure agents, save immutable versions and create manual variants.                                   | S01–S02                                                      | Locally verified |
+| S03    | Import/edit JSON graphs; configure agents, save immutable versions and create manual variants.                                   | S01–S02                                                      | Functionally closed; publication pending |
 | S04    | Provider-neutral model selection, a second provider, supported reasoning options and unified cost/error handling.                | S03; existing gateway                                        | Proposed         |
 | S05    | External user components, one tool and simple private/shared memory using existing installation and MCP boundaries.              | S03; existing component SDK                                  | Proposed         |
 | S06    | Task datasets, evaluation criteria, repeated trials and comparison by quality, time, cost and failures.                          | S03; existing evidence/accounting                            | Proposed         |

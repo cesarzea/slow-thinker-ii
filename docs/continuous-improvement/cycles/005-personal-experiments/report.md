@@ -95,3 +95,31 @@ handoff. Proposed P12 checks complete collection/dead-code integration before
 expensive shared analysis and requires actual rendered historical evidence in the
 representative browser path. These remain proposals in the
 [decision register](../../improvement-register.md), subject to owner approval.
+
+## Functional closure and live acceptance follow-up — 2026-10-02
+
+After the initial handoff, the owner requested a real task before closure. The
+original acceptance plan explicitly used simulated providers; its passing tests
+did not establish an actual provider execution in S03. This follow-up adds the
+[live validation](../../../progress/sprint-03-live-validation.md) without changing
+the earlier verification claims or measurement window.
+
+The browser saved and executed a personal conditional proposer/reviewer graph.
+Six actual OpenAI calls completed over three rounds, with retained source bindings,
+native usage and reconciled cost of USD 0.001177650. The recorded run lifecycle
+lasted 39.558 seconds, including preparation and cleanup; this is runtime duration,
+not engineering effort. Its history and graph were verified again after reload.
+
+The provider-review period had expired and was renewed before admission while
+retaining the configured USD 3 caps and tariff-age guard. No product source changed.
+The second reviewer response demanded an unrequested precision already implicit in
+a compliant agenda and caused another round. That model-quality limitation is
+retained separately from product or test infrastructure defects.
+
+The owner then requested closure. S03 is functionally closed, with all required
+implementation checks green on `b806140` in
+[PR #11](https://github.com/cesarzea/slow-thinker-ii/pull/11). The local live/closure
+supplement has not yet been published and the merge decision remains separate.
+The original 2 h 20 min 49 s checkpoint span excludes this follow-up; its additional
+engineering time was not audited and cannot be added as a reconciled allocation.
+M06 remains approved, P11/P12 remain proposals, and no next sprint is activated.

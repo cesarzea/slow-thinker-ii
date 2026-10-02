@@ -62,6 +62,16 @@ later input/output correction passed 154 frontend tests and ten journeys, with t
 four affected journeys rerun after a node-handling correction. These are successive
 verification checkpoints, not measures of engineering productivity.
 
+### C05 functional closure follow-up — 2026-10-02
+
+The [dated C05 supplement](cycles/005-personal-experiments/report.md#functional-closure-and-live-acceptance-follow-up--2026-10-02)
+records the owner's real-task acceptance and functional closure of S03. Actual
+provider responses, feedback provenance, result, history and cost were verified;
+an apparently unnecessary model rejection remains recorded. PR #11's implementation
+checks are green; publication of the supplement and owner-authorized merge remain
+pending. The original checkpoint span is unchanged and this follow-up's engineering
+time is not audited. No new method or later sprint is activated.
+
 ## Improvement cycle and records
 
 1. Define the delivery context, hypothesis, method version and acceptance evidence

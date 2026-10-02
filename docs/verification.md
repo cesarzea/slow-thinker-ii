@@ -2,6 +2,23 @@
 
 **Updated: 2026-10-02. S03 passed the complete shared local verification runner, including CodeQL.** Dated sections retain earlier verification evidence.
 
+## Personal experiment live execution — 2026-10-02
+
+At the owner's request, the browser created and saved a personal conditional
+proposer/reviewer graph and executed an offline Git workshop task with real
+OpenAI responses. The run completed with three rounds, six paid model calls,
+25 mediated calls and confirmed cleanup. Recorded cost was USD 0.001177650;
+the existing USD 3 run/session/month caps remained enforced.
+
+Independent recording checks confirmed the exact saved definition, unchanged
+feedback and previous-proposal inputs, source activation bindings, final schedule,
+provider request IDs and usage-based cost reconciliation. The reviewer also
+produced an apparently unnecessary second rejection, retained as model-quality
+evidence. The [live validation report](progress/sprint-03-live-validation.md) and
+[sanitized summary](evidence/s03-live-execution-20261002.json) distinguish these
+observations from the earlier simulated tests. One run does not establish general
+reviewer reliability or a comparative improvement. No product source was changed.
+
 ## Personal experiment delivery — 2026-10-02
 
 The [S03 delivery specification](specification/personal-experiments-sprint.md)

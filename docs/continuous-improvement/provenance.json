@@ -335,7 +335,7 @@
     {
       "recorded_on": "2026-10-01",
       "timezone": "Europe/Lisbon",
-      "purpose": "Identify improvements following C03 and owner discussion; P08–P10 are proposals pending approval.",
+      "purpose": "Identify improvements following C03 and owner discussion; P08\u2013P10 are proposals pending approval.",
       "previous_edition_retention": "Local ignored snapshot of the previous register, cycle report and provenance manifest.",
       "previous_edition_archive_sha256": "2f292414dcfe8eb222bf1e91632db1f6a95cbfb70ee053811d8cff4e62eaef0a",
       "records": [
@@ -509,6 +509,27 @@
           "file": "cycles/005-personal-experiments/checkpoints.jsonl",
           "current_sha256": "154087bc0804e177db357bab8cee6a416fcd9057ace98ecfa90c4acdd6559f54",
           "change": "Retain sanitized S03 checkpoints with exact times, neutral labels and no private commands or paths."
+        }
+      ]
+    },
+    {
+      "recorded_on": "2026-10-02",
+      "timezone": "Europe/Lisbon",
+      "purpose": "Record owner-requested live acceptance and S03 functional closure, keeping remote publication and merge separate.",
+      "previous_edition_retention": "Prior published editions retained in b806140 and an ignored local snapshot with a sorted SHA-256 index.",
+      "previous_edition_archive_sha256": "9dbd9db76ac4982ef2d502ee2da4acc24e2f2c224d948f945f9e9952b4b50cd4",
+      "records": [
+        {
+          "file": "README.md",
+          "previous_edition_sha256": "80270e4c8d2d8f9561c8773736b17d3ea6a18f6f6076acd0f8f720005c165fa7",
+          "current_sha256": "5698bc6827db4125528eeb48845029f8c2093972cf0a098785d55447791a8f9b",
+          "change": "Append dated S03 functional closure and real-provider follow-up; preserve original measurements, method decisions and checkpoint claims."
+        },
+        {
+          "file": "cycles/005-personal-experiments/report.md",
+          "previous_edition_sha256": "32e8eaa33f953645cc4d52a4e29c0f9eb5d3b4b624a7d0f21b23ef50e6620afc",
+          "current_sha256": "ad1ff792e0c4cb396803983c67c372fad3e29ddaad0ecef79ceeff57b9237401",
+          "change": "Append dated S03 functional closure and real-provider follow-up; preserve original measurements, method decisions and checkpoint claims."
         }
       ]
     }

@@ -12,7 +12,7 @@ release is recorded here yet.
 | -------------------- | ------------- | ------------------------------------------------------------- |
 | Python application   | `0.1.0.dev1`  | [pyproject.toml](pyproject.toml)                              |
 | Frontend application | `0.1.0-dev.1` | [package.json](package.json)                                  |
-| Latest sprint report | `0.0.3.1`     | [S03 status report](docs/progress/sprint-03-status-report.md) |
+| Latest sprint report | `0.0.3.2`     | [S03 status report](docs/progress/sprint-03-status-report.md) |
 
 The report identifier follows `<series-major>.<series-minor>.<sprint>.<revision>`:
 `0.0.2.1` means report series V0.0, Sprint 2, Revision 1. It does not change package
@@ -26,6 +26,9 @@ versions or identify a published software release.
 - SQLite v6 retains earlier data and verified backups; strict authoring boundaries
   and safe uncertain-save recovery pass the complete shared local runner:
   [S03 verification](docs/verification.md#personal-experiment-delivery--2026-10-02).
+- S03 functional closure includes a real personal collaboration case, independently
+  verified feedback, result and cost, and a recorded reviewer-quality limitation:
+  [live validation](docs/progress/sprint-03-live-validation.md).
 - Local collaborative execution, independently hosted components, bounded
   proposer/reviewer feedback, saved history, deadlines, budgets and costs:
   [S01 delivery specification](docs/specification/first-cycle-sprint.md).
@@ -64,7 +67,8 @@ their original checkpoint meaning.
 
 | Version     | Recorded date | Sprint | Progress status                                                                                                         | Report and specification                                                                                                                       |
 | ----------- | ------------- | ------ | ----------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
-| **0.0.3.1** | 2026-10-02    | S03    | Personal authoring, immutable revisions and retained execution verified locally; publication and owner review pending.  | [Status report](docs/progress/sprint-03-status-report.md) · [Sprint specification](docs/specification/personal-experiments-sprint.md)          |
+| **0.0.3.2** | 2026-10-02    | S03    | Functionally closed after real OpenAI acceptance; closure supplement publication and owner merge remain pending. | [Status report](docs/progress/sprint-03-status-report.md) · [Live validation](docs/progress/sprint-03-live-validation.md) |
+| 0.0.3.1 | 2026-10-02    | S03    | Personal authoring, immutable revisions and retained execution verified locally; publication and owner review pending.  | [Revision 1 snapshot](docs/progress/sprint-03-status-report-0.0.3.1.md) · [Sprint specification](docs/specification/personal-experiments-sprint.md)          |
 | **0.0.2.5** | 2026-10-01    | S02    | Remote polling passed; geometry readiness corrected with focused and complete local verification; remote rerun pending. | [Status report](docs/progress/sprint-02-status-report.md) · [Sprint specification](docs/specification/agent-canvas-sprint.md)                  |
 | 0.0.2.4     | 2026-10-01    | S02    | Remote polling failure corrected; focused repetitions and full local verification passed; remote rerun pending.         | [Revision 4 snapshot](docs/progress/sprint-02-status-report-0.0.2.4.md) · [Sprint specification](docs/specification/agent-canvas-sprint.md)    |
 | 0.0.2.3     | 2026-10-01    | S02    | Shared CodeQL rejection and full local verification passed; updated remote CI not yet run.                              | [Revision 3 snapshot](docs/progress/sprint-02-status-report-0.0.2.3.md) · [Sprint specification](docs/specification/agent-canvas-sprint.md)    |
