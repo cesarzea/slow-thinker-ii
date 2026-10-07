@@ -30,8 +30,8 @@ Install the pinned [CodeQL bundle](tooling/quality/codeql/readme.md#installation
 before running full verification. Automated tests use simulated providers and
 require no provider credentials or paid model calls.
 
-See the [local development guide](docs/development.md) to start the application,
-prepare components or enable model execution.
+See the [local development guide](docs/development.md) to install the components, configure
+and start the platform, or enable model execution.
 
 ## Implement the change
 
@@ -76,3 +76,11 @@ owner's review and merge decision under the
 [single-maintainer policy](docs/adr/0012-single-maintainer-review.md).
 Reviews follow [Google's engineering practices](https://google.github.io/eng-practices/review/).
 Approved pull requests are squash merged with a Conventional Commit message.
+
+## License of contributions
+
+Slow Thinker II is licensed under the [Functional Source License 1.1](LICENSE)
+(`FSL-1.1-ALv2`). By submitting a contribution, you confirm that you have the right to
+submit it, you license it under the same terms, and you grant Cesar Zea a perpetual,
+worldwide, non-exclusive, royalty-free and irrevocable license to use, modify and
+license it under other terms, including commercial ones.

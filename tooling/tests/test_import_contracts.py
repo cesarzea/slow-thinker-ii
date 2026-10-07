@@ -9,74 +9,41 @@ from pathlib import Path
 import pytest
 
 ROOT = Path(__file__).resolve().parents[2]
+FRAMEWORK = "Domain and engine have no framework dependencies BROKEN"
+DIRECTION = "All backend capabilities follow the dependency direction BROKEN"
 
 
 @pytest.mark.parametrize(
     "path, addition, diagnostic",
     [
-        ("accounting/_money.py", "import fastapi", "framework dependencies BROKEN"),
-        ("access/_policy.py", "import openai", "framework dependencies BROKEN"),
-        ("execution/_outcomes.py", "import sqlite3", "framework dependencies BROKEN"),
+        ("accounting/__init__.py", "import fastapi", FRAMEWORK),
+        ("graphs/__init__.py", "import sqlite3", FRAMEWORK),
+        ("engine/__init__.py", "import httpx", FRAMEWORK),
+        ("application/__init__.py", "import pydantic", FRAMEWORK),
+        ("graphs/__init__.py", "import slow_thinker_ii.engine", DIRECTION),
+        ("catalog/__init__.py", "import slow_thinker_ii.graphs", DIRECTION),
+        ("application/__init__.py", "import slow_thinker_ii.adapters", DIRECTION),
         (
-            "application/_catalog.py",
-            "from slow_thinker_ii.execution._outcomes import stopped_outcome",
-            "Execution internals are private BROKEN",
+            "catalog/__init__.py",
+            "from slow_thinker_ii.accounting import _probe",
+            "accounting internals are private BROKEN",
         ),
         (
-            "application/_catalog.py",
-            "from slow_thinker_ii.access._authority import CallAuthority",
-            "Access internals are private BROKEN",
+            "adapters/http/__init__.py",
+            "import slow_thinker_ii.adapters.sqlite",
+            "Adapters are independent BROKEN",
         ),
         (
-            "bootstrap/__init__.py",
-            "from slow_thinker_llm_call._component import LLMCall",
-            "LLMCall internals are private BROKEN",
-        ),
-        (
-            "bootstrap/__init__.py",
-            "from example_grounded_review._review import GroundedReview",
-            "Derived example internals are private BROKEN",
-        ),
-        (
-            "application/_catalog.py",
-            "from slow_thinker_ii.accounting._money import parse_limit",
-            "Accounting internals are private BROKEN",
-        ),
-        (
-            "definitions/_graph.py",
-            "import slow_thinker_ii.application",
-            "dependency direction BROKEN",
-        ),
-        (
-            "adapters/catalog/__init__.py",
-            "from slow_thinker_ii.application._catalog import ExperimentCatalog",
-            "Application internals are private BROKEN",
-        ),
-        (
-            "bootstrap/__init__.py",
-            "from slow_thinker_ii.application.library._service import ExperimentLibrary",
-            "Library internals are private BROKEN",
-        ),
-        (
-            "adapters/catalog/__init__.py",
-            "from slow_thinker_ii.application.library._records import GraphReference",
-            "Library internals are private BROKEN",
-        ),
-        (
-            "application/_catalog.py",
-            "from slow_thinker_ii.application.library._records import GraphReference",
-            "Library internals are private BROKEN",
+            "application/__init__.py",
+            "import slow_thinker_llm_call",
+            "Backend never imports component implementations BROKEN",
         ),
     ],
 )
-def test_import_contract_rejects(
-    tmp_path: Path,
-    path: str,
-    addition: str,
-    diagnostic: str,
-) -> None:
+def test_import_contract_rejects(tmp_path: Path, path: str, addition: str, diagnostic: str) -> None:
     source = tmp_path / "src"
     shutil.copytree(ROOT / "backend/src", source, ignore=shutil.ignore_patterns("__pycache__"))
+    (source / "slow_thinker_ii/accounting/_probe.py").write_text('"""Private probe."""\n')
     target = source / "slow_thinker_ii" / path
     target.write_text(target.read_text() + f"\n{addition}\n")
     environment = dict(os.environ, PYTHONPATH=str(source))

@@ -1,0 +1,125 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:slow-thinker:schema:component-declaration:1",
+  "title": "Slow Thinker component declaration, format 1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["format", "type", "version", "label", "description", "icon", "placements", "state", "ports", "uses", "config_schema", "initial_config", "ui"],
+  "properties": {
+    "format": {"const": "slow-thinker.component/1"},
+    "type": {"type": "string", "pattern": "^[a-z][a-z0-9-]{0,63}$"},
+    "version": {"type": "string", "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)$"},
+    "label": {"$ref": "#/$defs/plainText", "maxLength": 40},
+    "description": {"$ref": "#/$defs/plainText", "maxLength": 300},
+    "icon": {"enum": ["trigger", "agent", "router", "output", "memory", "component"]},
+    "placements": {
+      "type": "array", "minItems": 1, "maxItems": 3, "uniqueItems": true,
+      "items": {"enum": ["node", "output", "memory"]}
+    },
+    "state": {"enum": ["stateless", "stateful"]},
+    "ports": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["inputs"],
+      "properties": {
+        "inputs": {"$ref": "#/$defs/portList", "maxItems": 16},
+        "outputs": {"$ref": "#/$defs/portList", "maxItems": 32},
+        "outputs_from": {"$ref": "#/$defs/pointer"}
+      },
+      "oneOf": [{"required": ["outputs"]}, {"required": ["outputs_from"]}]
+    },
+    "uses": {
+      "type": "array", "maxItems": 8,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["service", "pointer"],
+        "properties": {
+          "service": {"enum": ["llm"]},
+          "pointer": {"$ref": "#/$defs/pointer"}
+        }
+      }
+    },
+    "config_schema": {"type": "object"},
+    "initial_config": {"type": "object"},
+    "ui": {"$ref": "#/$defs/ui"}
+  },
+  "$defs": {
+    "plainText": {"type": "string", "minLength": 1, "pattern": "^[^<>]*$"},
+    "pointer": {"type": "string", "pattern": "^(/([^/~]|~[01])*)+$", "maxLength": 200},
+    "portList": {
+      "type": "array", "uniqueItems": true,
+      "items": {"type": "string", "pattern": "^[a-z][a-z0-9_]{0,31}$"}
+    },
+    "ui": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["card", "sections"],
+      "properties": {
+        "card": {"type": "array", "maxItems": 3, "items": {"$ref": "#/$defs/pointer"}},
+        "sections": {"type": "array", "maxItems": 12, "items": {"$ref": "#/$defs/section"}}
+      }
+    },
+    "section": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "title", "fields"],
+      "properties": {
+        "id": {"type": "string", "pattern": "^[a-z][a-z0-9_-]{0,31}$"},
+        "title": {"$ref": "#/$defs/plainText", "maxLength": 40},
+        "columns": {"enum": [1, 2]},
+        "fields": {"type": "array", "minItems": 1, "maxItems": 24, "items": {"$ref": "#/$defs/field"}}
+      }
+    },
+    "field": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "control", "label"],
+      "properties": {
+        "path": {"$ref": "#/$defs/pointer"},
+        "control": {"enum": ["text", "multiline", "number", "choice", "list", "code", "schema", "service"]},
+        "label": {"$ref": "#/$defs/plainText", "maxLength": 60},
+        "help": {"$ref": "#/$defs/plainText", "maxLength": 300},
+        "placeholder": {"$ref": "#/$defs/plainText", "maxLength": 120},
+        "options": {
+          "type": "array", "minItems": 1, "maxItems": 32,
+          "items": {
+            "type": "object", "additionalProperties": false, "required": ["value", "label"],
+            "properties": {
+              "value": {"type": "string", "maxLength": 64},
+              "label": {"$ref": "#/$defs/plainText", "maxLength": 60}
+            }
+          }
+        },
+        "language": {"enum": ["python", "json", "text"]},
+        "service": {"enum": ["llm"]},
+        "empty_label": {"$ref": "#/$defs/plainText", "maxLength": 60},
+        "item_label": {"$ref": "#/$defs/plainText", "maxLength": 40},
+        "when": {
+          "type": "object", "additionalProperties": false, "required": ["path", "equals"],
+          "properties": {
+            "path": {"$ref": "#/$defs/pointer"},
+            "equals": {"type": ["string", "number", "boolean"]}
+          }
+        },
+        "label_position": {"enum": ["top", "start"]},
+        "align": {"enum": ["start", "end", "center"]},
+        "width": {"enum": ["xs", "sm", "md", "lg", "full"]},
+        "format": {
+          "type": "object", "additionalProperties": false,
+          "properties": {
+            "decimals": {"type": "integer", "minimum": 0, "maximum": 6},
+            "grouping": {"type": "boolean"},
+            "prefix": {"$ref": "#/$defs/plainText", "maxLength": 8},
+            "suffix": {"$ref": "#/$defs/plainText", "maxLength": 8}
+          }
+        }
+      },
+      "allOf": [
+        {"if": {"properties": {"control": {"const": "choice"}}}, "then": {"required": ["options"]}},
+        {"if": {"properties": {"control": {"const": "code"}}}, "then": {"required": ["language"]}},
+        {"if": {"properties": {"control": {"const": "service"}}}, "then": {"required": ["service"]}}
+      ]
+    }
+  }
+}

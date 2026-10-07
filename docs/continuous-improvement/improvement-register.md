@@ -111,3 +111,47 @@ testing obligations; they do not remove checks or change product scope.
 | --- | --------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
 | P11 | Raw browser numeric conversion and the public library import policy were omitted from preparation.                                | Include transport representation fidelity and exact public dependency-entry policy in the existing representative handoff.                                                            | Count reopened shared decisions and representation/boundary defects, including preparation effort.                             |
 | P12 | Isolated tests missed complete collection/dead-code issues; heading-only historical checks missed a malformed activation fixture. | Check joint collection and dead-code integration before expensive shared analysis; require the representative saved-run browser path to render its actual canvas and linked evidence. | Classify integration/fixture escapes and necessary reruns; measure preparation and full delivery rather than test count alone. |
+
+## Proposal following C06 — 2026-10-02
+
+Status: proposed; owner decision pending. M06 remains approved.
+The [C06 evaluation](cycles/006-provider-resource-workspace/report.md) records
+a bootstrap defect that escaped representative fixture composition and was caught
+by the actual installed demonstration before any paid dispatch.
+
+| ID | Observation | Proposed refinement | Evaluation |
+| --- | --- | --- | --- |
+| P13 | Compiled plans and real application ports did not exercise installed mixed-resource host bootstrap. | Use one prepared-and-installed representative graph with agents and non-calling resources at test readiness, before expanding dependent tests. Keep simulated inference, exclusive ownership and all existing gates. | Record preparation cost, bootstrap/composition escapes, corrective reruns and total verified delivery; no saving is assumed. |
+
+This refines approved P10 without adopting a new method or activating a sprint.
+P11/P12 remain pending; none is approved merely by being used as an observed check.
+
+## Proposals following the 2026-10-04 assessment
+
+The [development assessment](../archive/previous-implementation/reviews/2026-10-04-development-assessment/README.md)
+and cycles C06–C11 provide the evidence below. The owner described M06's intent as
+a stricter, quality-protecting method and reported an observation that it took less
+time and fewer tokens by avoiding repeated analysis of the complete context. The
+cycle records contain no reconciled time or token comparison that confirms or
+refutes that observation; C05–C11 explicitly decline efficiency claims.
+
+| ID  | Evidence                                                                                                                                                                                 | Proposed change                                                                                                                                                                                             | Evaluation                                                                                                                        |
+| --- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------- |
+| P14 | Five S06 deliveries passed the complete local runner and were rejected or reopened by the owner. Derived contracts encoded an unsuitable user-facing interpretation (assessment A07). | Before deriving shared contracts for user-facing scope, the owner validates concrete journeys with mockups, representative definitions and visible results. Contracts and acceptance tests cite them.      | Count owner rejections and reopenings after validation, classified by cause; record validation preparation effort.                |
+| P15 | Branch coverage failed late in C08 (81.89%) and C11 (88.38%); C11 needed seven complete-runner attempts without a pass.                                                                 | Implementers write unit and contract tests with their code and pass the package's scoped gates before delivery. The final phase covers integration, end-to-end journeys and the complete runner.            | Record coverage failures by phase, complete-runner attempts and their causes, and defects found after delivery.                   |
+| P16 | Shared decisions were missing during implementation in C04–C06 and C08–C11 despite contract closure before delegation.                                                                  | Implement shared foundations with one implementer until their public contracts are implemented and checked against validated journeys; parallelize independent packages afterwards with exclusive ownership. | Count reopened shared decisions and integration defects; measure elapsed time to verified delivery.                               |
+| P17 | Documentation reached approximately 158,000 words; module specifications accumulated contradictory dated receipts and several indexes retained stale statuses (assessment A08).          | Follow the README documentation standards (arc42, C4, MADR); keep module specifications current-only; record status in sprint reports and the verification record; archive superseded documents.           | Record stale or contradictory statements found in review and the documentation volume per delivered scope.                         |
+| P18 | No efficiency audit exists after C03; C11 retains only an unreconciled service token counter.                                                                                           | Record per-phase start, end, pauses and elapsed time, token usage where reported, rework causes and runner attempts, with estimates labelled.                                                              | Compare cycles only with explicit scope differences; no causal productivity claim from time, volume, test counts or parallelism. |
+
+## Approval of M07 — 2026-10-04
+
+Owner: Cesar Zea. Status: P14–P18 approved as [M07](methods/007-validated-journeys.md),
+superseding M06 as the current method while retaining M05 verification and M06's
+P08–P10. Recorded owner statements, translated from Spanish: “OK to the journeys”;
+“the documentation must follow the engineering standards defined in the README”;
+and “Yes, formalize M07.” The earlier P11–P13 proposals remain pending.
+
+M07 applies to the new core delivery, planned as the next cycle. Approval activates
+no sprint and changes no historical cycle's method or measurements. Its expected
+evidence is fewer post-validation rejections, earlier detection of coverage and
+integration defects, and a reconciled time and token record for comparison.

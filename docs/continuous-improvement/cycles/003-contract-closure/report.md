@@ -11,7 +11,7 @@ are retained as process records within this project documentation section.
 | Record owner     | Cesar Zea                                                     |
 | Recorded date    | 2026-09-30                                                    |
 | Method           | M05, partially applied                                        |
-| Product sprint   | [Agent canvas](../../../specification/agent-canvas-sprint.md) |
+| Product sprint   | [Agent canvas](../../../archive/previous-implementation/specification/agent-canvas-sprint.md) |
 
 ## Scope and method
 
@@ -141,7 +141,7 @@ current [M06 working method](../../methods/006-delivery-preparation.md). Contrac
 and public interface skeletons preceded a package implementation assignment;
 coordinator review preceded the separate public-contract test assignment.
 
-The [verification record](../../../verification.md#shared-codeql-verification-and-commit-readiness--2026-10-01)
+The [verification record](../../../archive/previous-implementation/verification.md#shared-codeql-verification-and-commit-readiness--2026-10-01)
 records 155 gate tests, a successful real rejection probe and the complete local
 runner. Preparation corrections comprised document formatting, replacing an
 ineffective negative fixture with the documented subprocess example, and raising
@@ -158,7 +158,7 @@ remote CI has not been run; this checkpoint establishes local commit readiness.
 ## Browser CI regression follow-up — 2026-10-01
 
 After publication, the polling journey failed in GitHub CI despite the preceding
-local pass. The [diagnosis and correction](../../../verification.md#browser-polling-regression-and-publication-follow-up--2026-10-01)
+local pass. The [diagnosis and correction](../../../archive/previous-implementation/verification.md#browser-polling-regression-and-publication-follow-up--2026-10-01)
 identify a test-fixture and assertion defect: the attempted drag was outside the
 viewport, and whole-style comparison could pass on visibility changes. Four
 passing diagnostic repetitions showed no movement; a readiness assertion then
@@ -180,7 +180,7 @@ the original cycle measurements and method attribution remain unchanged.
 ## Geometry readiness follow-up — 2026-10-01
 
 The next remote run passed the corrected polling journey but failed the narrow
-geometry case. The [verification record](../../../verification.md#browser-geometry-readiness-follow-up--2026-10-01)
+geometry case. The [verification record](../../../archive/previous-implementation/verification.md#browser-geometry-readiness-follow-up--2026-10-01)
 retains the null bounding-box failure and readiness gaps: the helper could accept
 empty or hidden card samples during initialization/remount. A complete visible
 two-card sample now precedes containment and separation assertions.

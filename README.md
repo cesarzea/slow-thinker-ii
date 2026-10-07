@@ -24,21 +24,27 @@
 
 ## Documentation
 
-- [Architecture and specification](docs/README.md)
+- [Documentation index](docs/README.md)
+- [Requirements](docs/specification/requirements.md) and [roadmap](docs/specification/roadmap.md)
+- [Architecture](docs/architecture/README.md)
 - [Architecture decisions](docs/adr/README.md)
 - [Contracts and examples](docs/contracts/README.md)
-- [Personal experiment guide](docs/personal-experiments.md)
 - [Engineering process improvement](docs/continuous-improvement/README.md)
-- [Open questions](docs/specification/open-questions.md)
 
 ## Current Status
 
-The local prototype runs five bundled graphs, including a proposer–reviewer loop
-with conditional feedback. It records calls, results and costs, with configurable
-execution limits. Personal experiments can be imported and edited as JSON, saved
-as immutable revisions, and used to create manual variants. The
-[S03 report](docs/progress/sprint-03-status-report.md) records the verified scope.
-Deep collaboration analysis remains future work.
+A new execution core is under development. Its first step lets users build graphs
+of Trigger, LLM Call, Router and Output nodes, with agents that can have a Memory, in a
+visual editor that saves every change, run what is on screen under supervision with
+limits and budgets, and watch every message, activation and model call at the points
+of the graph they choose. The step's [user journeys](docs/specification/core-step-1-journeys/README.md)
+are validated, and step 1 is implemented, reviewed by the owner and locally verified
+([sprint report](docs/specification/step-1/sprint-report.md),
+[verification record](docs/specification/step-1/verification.md)) and accepted by the
+owner on 2026-10-07; no release is available. The previous prototype is
+[archived](docs/archive/previous-implementation/README.md).
+
+![The graph editor at the close of S06: an interviewer with a Memory and a Router talks to a character with its own Memory until the interview is done](docs/images/graph-editor-s06.png)
 
 ## Engineering standards
 
@@ -99,10 +105,19 @@ Technology stack: **Python + FastAPI** for the backend; **React + TypeScript, Re
 and Vite** for the browser interface. MCP and OpenAI-compatible interfaces
 support integration with agent tooling, including LangChain and LangGraph.
 
-See the [contributing guide](CONTRIBUTING.md), [local development guide](docs/development.md) and [verification record](docs/verification.md) for setup, tested behavior and current limitations. The complete platform remains under development.
+See the [contributing guide](CONTRIBUTING.md), the [local development guide](docs/development.md) and the [step 1 verification record](docs/specification/step-1/verification.md) for setup, tested behavior and current limitations. The complete platform remains under development.
 
 The [Changelog](CHANGELOG.md) records development progress and sprint report versions.
 
 ## License
 
-[Apache License 2.0](LICENSE). Copyright 2026 Cesar Zea.
+[Functional Source License 1.1, Apache 2.0 future license](LICENSE)
+(`FSL-1.1-ALv2`). Copyright 2026 Cesar Zea.
+
+You may use, change and redistribute Slow Thinker II for any purpose except a
+competing use: making it available to others in a commercial product or service that
+substitutes for it or offers the same or substantially similar functionality. Internal
+use, non-commercial education and research are permitted. Each version becomes
+available under the Apache License 2.0 two years after it is published. Versions
+published before 2026-10-05 remain available under Apache 2.0. See
+[ADR 0027](docs/adr/0027-functional-source-license.md).

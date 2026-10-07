@@ -1,0 +1,57 @@
+{
+  "schema_version": "1",
+  "recorded_at": "2026-10-02T05:54:39.508260+00:00",
+  "scope": "S04,S05,S06",
+  "command": "make verify",
+  "exit_code": 0,
+  "tests": {
+    "python": 2204,
+    "frontend": 340,
+    "browser_journeys": 20
+  },
+  "python_coverage": {
+    "covered_lines": 10649,
+    "num_statements": 10914,
+    "covered_branches": 2599,
+    "num_branches": 2806
+  },
+  "frontend_coverage_percent": {
+    "lines": 99.37,
+    "branches": 93.63,
+    "functions": 99.12,
+    "statements": 98.64
+  },
+  "codeql": {
+    "version": "2.27.1",
+    "python": {
+      "errors": 0,
+      "warnings": 0,
+      "notes": 97
+    },
+    "javascript_typescript": {
+      "errors": 0,
+      "warnings": 0,
+      "notes": 0
+    }
+  },
+  "mutation": {
+    "scope": "existing accounting baseline",
+    "killed": 141,
+    "timeout": 1,
+    "survived": 58,
+    "total": 200,
+    "all_killed_claimed": false
+  },
+  "log_sha256": "05ee83d986a172284f5c9bff01527a56807ba8a55851a2a5f986f7e067ff1c09",
+  "gate_thresholds_changed": false,
+  "vulture_false_positive_handling": "Exact inherited HTMLParser callback references; unchanged 60% confidence, no file or name-pattern exclusion.",
+  "paid_calls_in_required_tests": false,
+  "separate_actual_execution": "s04-s06-live-execution-20261002.json",
+  "publication": "hosted checks and owner review pending",
+  "boundary_audit": {
+    "accidental_importer_exemption_removed": true,
+    "real_negative_probe_demonstrated_before_after": true,
+    "boundary_probe_cases_passed": 14,
+    "final_complete_runner_attempt": 5
+  }
+}

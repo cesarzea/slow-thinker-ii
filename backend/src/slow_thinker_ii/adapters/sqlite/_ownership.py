@@ -1,4 +1,4 @@
-"""The local POSIX backend holds one kernel lease per canonical store path."""
+"""One backend owns a database: an exclusive kernel lock on `<canonical path>.owner`."""
 
 import fcntl
 from collections.abc import Generator
@@ -8,6 +8,7 @@ from pathlib import Path
 
 @contextmanager
 def own_store(path: Path) -> Generator[None]:
+    """Holds the lock until the block ends; the kernel releases it if the process exits."""
     canonical = path.resolve()
     canonical.parent.mkdir(parents=True, exist_ok=True)
     lease = canonical.with_name(f"{canonical.name}.owner")

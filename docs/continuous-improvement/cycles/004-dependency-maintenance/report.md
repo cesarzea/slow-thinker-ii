@@ -7,7 +7,7 @@
 | Record owner               | Cesar Zea                                                                       |
 | Recorded date and timezone | 2026-10-01, Europe/Lisbon                                                       |
 | Method                     | M06                                                                             |
-| Delivery                   | [Dependency maintenance plan](../../../progress/dependency-maintenance-plan.md) |
+| Delivery                   | [Dependency maintenance plan](../../../archive/previous-implementation/progress/dependency-maintenance-plan.md) |
 
 ## Context and hypothesis
 
@@ -32,7 +32,7 @@ C01–C03 as if scope, attribution and endpoints were equivalent.
 
 ## Delivery and process results
 
-The [plan](../../../progress/dependency-maintenance-plan.md#local-acceptance--2026-10-01)
+The [plan](../../../archive/previous-implementation/progress/dependency-maintenance-plan.md#local-acceptance--2026-10-01)
 records the representative installation and full local gate results. Production
 context-manager bodies are unchanged; new installations use uv 0.12.19 while
 previous immutable records remain verifiable. Strict typing and all existing

@@ -1,0 +1,42 @@
+{
+  "format": "slow-thinker.component/1",
+  "type": "router",
+  "version": "1.0.0",
+  "label": "Router",
+  "description": "Runs your script, which returns an output name and the content to send through it.",
+  "icon": "router",
+  "placements": ["node", "output"],
+  "state": "stateless",
+  "ports": {"inputs": ["in"], "outputs_from": "/outputs"},
+  "uses": [],
+  "config_schema": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "additionalProperties": false,
+    "required": ["outputs", "script"],
+    "properties": {
+      "outputs": {
+        "type": "array", "minItems": 1, "maxItems": 16, "uniqueItems": true,
+        "items": {"type": "string", "pattern": "^[a-z][a-z0-9_]{0,31}$"}
+      },
+      "script": {"type": "string", "minLength": 1, "maxLength": 20000}
+    }
+  },
+  "initial_config": {
+    "outputs": ["yes", "no"],
+    "script": "def route(received, node_input):\n    return \"yes\", received\n"
+  },
+  "ui": {
+    "card": ["/outputs"],
+    "sections": [
+      {"id": "outputs", "title": "Outputs", "fields": [
+        {"path": "/outputs", "control": "list", "label": "Output names", "item_label": "Output",
+         "help": "These names become the node's output ports."}
+      ]},
+      {"id": "script", "title": "Script", "fields": [
+        {"path": "/script", "control": "code", "language": "python", "label": "route(received, node_input)",
+         "help": "Return an output name declared above and the content to send through it."}
+      ]}
+    ]
+  }
+}

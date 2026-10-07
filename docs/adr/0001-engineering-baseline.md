@@ -31,7 +31,7 @@ The owner has approved this policy. Individual configurations and implementation
 
 Small functional cycles still need strict checks. Directory and dependency rules must be explicit. Exceptions require a reviewed rationale and architecture decision; weakening a gate to pass a change is prohibited.
 
-The [module-boundary proposal](../architecture/module-boundaries.md) now makes directory placement, public APIs and dependency direction concrete for Q14 review. Its particular package layout is proposed; this accepted baseline does not silently approve it or claim enforcement.
+The [module-boundary proposal](../archive/previous-implementation/architecture/module-boundaries.md) now makes directory placement, public APIs and dependency direction concrete for Q14 review. Its particular package layout is proposed; this accepted baseline does not silently approve it or claim enforcement.
 
 ## Confirmation
 

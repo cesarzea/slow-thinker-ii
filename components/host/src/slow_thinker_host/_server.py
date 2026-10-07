@@ -1,107 +1,111 @@
-"""Exact tool schemas and invocation isolation over the current MCP protocol."""
+"""MCP handlers of one host: its protocol tool, call budgets, concurrency and errors."""
 
 import asyncio
-import math
-import time
+import sys
+import traceback
+from collections.abc import Awaitable, Callable
 
 from mcp import types
-from mcp.server import Server, ServerRequestContext
-from mcp.server.stdio import stdio_server
+from mcp.server import ServerRequestContext
+from mcp.shared.exceptions import MCPError
 
-from ._contracts import HostedComponent, Invocation, Operation
-from ._json import encode_json, json_object
-from ._schemas import check_schema, validate_value
+from ._bootstrap import Bootstrap
+from ._calls import CallMeta, call_meta, describe, tool_error, tool_result
+from ._context import Context, InvocationContext
+from ._json import JsonObject, json_object
+from ._protocol import PROTOCOL_VERSION, HandlerError, position_tools
+from ._schemas import validate_value
 
-PROTOCOL_VERSION = "2026-07-28"
-GRANT_META = "slow-thinker-ii/invocation-grant"
-DEADLINE_META = "slow-thinker-ii/deadline-monotonic"
+type Invoke = Callable[[JsonObject, Context], Awaitable[JsonObject]]
 
 
-class ComponentServer:
-    def __init__(self, component: HostedComponent) -> None:
-        self._component = component
-        declared = tuple(
-            Operation(item.name, json_object(item.input_schema), json_object(item.output_schema))
-            for item in component.operations()
-        )
-        self._operations = {item.name: item for item in declared}
-        if not declared or len(declared) != len(self._operations):
-            raise ValueError("A component requires uniquely named operations")
-        for item in declared:
-            check_schema(item.input_schema)
-            check_schema(item.output_schema)
-        self._busy = False
+class HostServer:
+    """Serves the position's tools; waiting for a free slot counts against the budget."""
+
+    def __init__(self, bootstrap: Bootstrap, invokes: dict[str, Invoke], stateful: bool) -> None:
+        self._bootstrap = bootstrap
+        self._invokes = invokes
+        tools = position_tools(bootstrap.position)
+        self._tools = {name: (inputs, outputs) for name, inputs, outputs in tools}
+        self._slots = asyncio.Semaphore(1 if stateful else bootstrap.max_concurrent_invocations)
 
     async def list_tools(
         self, context: ServerRequestContext[object], params: types.PaginatedRequestParams | None
     ) -> types.ListToolsResult:
         del params
-        self._check_protocol(context)
-        return types.ListToolsResult(tools=[self._tool(item) for item in self._operations.values()])
+        _require_protocol(context)
+        tools = [
+            types.Tool(name=name, input_schema=inputs, output_schema=outputs)
+            for name, inputs, outputs in position_tools(self._bootstrap.position)
+        ]
+        return types.ListToolsResult(tools=tools)
 
     async def call_tool(
         self, context: ServerRequestContext[object], params: types.CallToolRequestParams
     ) -> types.CallToolResult:
-        self._check_protocol(context)
-        if self._busy:
-            raise ValueError("Component is already busy")
-        operation = self._operations.get(params.name)
-        if operation is None:
-            raise ValueError("Unknown operation")
-        invocation = self._invocation(context)
-        arguments = json_object(params.arguments or {})
-        validate_value(arguments, operation.input_schema)
-        self._busy = True
+        _require_protocol(context)
         try:
-            reply = await self._component.invoke(params.name, arguments, invocation)
-            validate_value(reply.value, operation.output_schema)
-            return types.CallToolResult(
-                content=[types.TextContent(type="text", text=encode_json(reply.value))],
-                structured_content=reply.value,
-                is_error=reply.is_error,
-            )
+            call, arguments = self._accept(context, params)
+            value = await self._run(params.name, call, arguments)
+        except HandlerError as error:
+            return tool_error(error.code, error.message)
+        return tool_result(value)
+
+    def _accept(
+        self, context: ServerRequestContext[object], params: types.CallToolRequestParams
+    ) -> tuple[CallMeta, JsonObject]:
+        schemas = self._tools.get(params.name)
+        if schemas is None:
+            served = ", ".join(self._tools)
+            raise HandlerError("unknown_tool", f"This host serves only {served}.")
+        call = call_meta(context.meta)
+        try:
+            arguments = json_object(params.arguments or {})
+            validate_value(arguments, schemas[0])
+        except ValueError as error:
+            message = f"The arguments do not match the {params.name} schema: {error}"
+            raise HandlerError("invalid_arguments", message) from error
+        return call, arguments
+
+    async def _run(self, tool: str, call: CallMeta, arguments: JsonObject) -> JsonObject:
+        deadline = asyncio.get_running_loop().time() + call.budget_seconds
+        context = InvocationContext(self._bootstrap, call, deadline)
+        budget = asyncio.timeout(call.budget_seconds)
+        try:
+            async with budget, self._slots:
+                value = await self._invokes[tool](arguments, context)
+        except HandlerError:
+            raise
+        except TimeoutError as error:
+            raise _expiry(budget, call, error) from error
+        except Exception as error:
+            self._log(tool, error)
+            raise HandlerError("component_error", describe(error)) from error
         finally:
-            self._busy = False
+            await context.close()
+        return self._checked(tool, value)
 
-    @staticmethod
-    def _invocation(context: ServerRequestContext[object]) -> Invocation:
-        grant = (context.meta or {}).get(GRANT_META)
-        if not isinstance(grant, str) or not grant:
-            raise ValueError("Invocation authority is required")
-        deadline: object = (context.meta or {}).get(DEADLINE_META)
-        if deadline is not None:
-            if isinstance(deadline, bool) or not isinstance(deadline, int | float):
-                raise ValueError("Invalid invocation deadline")
-            if not math.isfinite(deadline) or deadline <= time.monotonic():
-                raise ValueError("Invocation deadline has expired or is invalid")
-        return Invocation(grant, None if deadline is None else float(deadline))
+    def _log(self, tool: str, error: Exception) -> None:
+        """Unexpected exceptions keep their traceback in the host's standard error."""
+        header = f"Node {self._bootstrap.node_id}: {tool} raised an unexpected exception\n"
+        sys.stderr.write(header + "".join(traceback.format_exception(error)))
 
-    @staticmethod
-    def _check_protocol(context: ServerRequestContext[object]) -> None:
-        if context.protocol_version != PROTOCOL_VERSION:
-            raise ValueError("Unsupported component protocol")
-
-    @staticmethod
-    def _tool(operation: Operation) -> types.Tool:
-        return types.Tool(
-            name=operation.name,
-            input_schema=operation.input_schema,
-            output_schema=operation.output_schema,
-        )
+    def _checked(self, tool: str, value: JsonObject) -> JsonObject:
+        try:
+            validate_value(value, self._tools[tool][1])
+        except ValueError as error:
+            message = f"The result does not match the {tool} schema: {error}"
+            raise HandlerError("invalid_result", message) from error
+        return value
 
 
-def create_server(component: HostedComponent, name: str, version: str) -> Server[object]:
-    handler = ComponentServer(component)
-    return Server(
-        name, version=version, on_list_tools=handler.list_tools, on_call_tool=handler.call_tool
-    )
+def _expiry(budget: asyncio.Timeout, call: CallMeta, error: TimeoutError) -> HandlerError:
+    if not budget.expired():
+        return HandlerError("component_error", describe(error))
+    milliseconds = round(call.budget_seconds * 1000)
+    return HandlerError("timeout", f"The call exceeded its time budget of {milliseconds} ms.")
 
 
-async def serve_stdio(component: HostedComponent, name: str, version: str) -> None:
-    server = create_server(component, name, version)
-    async with stdio_server() as (read, write):
-        await server.run(read, write, server.create_initialization_options())
-
-
-def run_stdio(component: HostedComponent, name: str, version: str) -> None:
-    asyncio.run(serve_stdio(component, name, version))
+def _require_protocol(context: ServerRequestContext[object]) -> None:
+    if context.protocol_version != PROTOCOL_VERSION:
+        raise MCPError(code=types.INVALID_REQUEST, message="Unsupported component protocol")

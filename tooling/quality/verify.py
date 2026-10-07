@@ -1,5 +1,6 @@
 """Run the same mandatory local and CI checks, failing on missing tools."""
 
+import shutil
 import subprocess
 import sys
 from pathlib import Path
@@ -59,7 +60,7 @@ def main() -> int:
     if issues:
         sys.stderr.write("\n".join(issues) + "\n")
         return 1
-    (ROOT / "backend/mutants/mutmut-stats.json").unlink(missing_ok=True)
+    shutil.rmtree(ROOT / "backend/mutants", ignore_errors=True)
     for command in COMMANDS:
         sys.stdout.write(f"Checking: {' '.join(command)}\n")
         sys.stdout.flush()

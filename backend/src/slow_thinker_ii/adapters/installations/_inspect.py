@@ -1,52 +1,42 @@
-"""Standalone inspection executed by the installed environment's isolated interpreter."""
+"""Standalone inspection run as a script by an installed environment's isolated interpreter.
 
-import importlib
-import inspect
+It reads distribution metadata and the shipped declaration file only: nothing of the component
+is imported or executed. Arguments: distribution, distribution version, module. It is never
+imported: running the file prints its report.
+"""
+
 import json
 import sys
 import sysconfig
 from importlib import metadata
-from pathlib import Path
-from typing import cast
 
 
-def registered_class(distribution: str, version: str, entry_point: str) -> type[object]:
+def declaration(distribution: str, version: str, module: str) -> str:
+    """The text of `<module>/component.json`, which the registered distribution must ship."""
     package = metadata.distribution(distribution)
     if package.version != version:
         raise ValueError("Installed component version differs from registration")
-    module, name = entry_point.split(":")
-    component: object = getattr(importlib.import_module(module), name)
-    if not isinstance(component, type):
-        raise ValueError("Registered component must be a public class")
-    origin = Path(inspect.getfile(component)).resolve()
-    if origin not in {
-        Path(str(package.locate_file(file))).resolve() for file in package.files or ()
-    }:
-        raise ValueError("Registered class does not belong to its distribution")
-    return cast(type[object], component)
+    files = {file.as_posix(): file for file in package.files or ()}
+    folder = module.replace(".", "/")
+    if f"{folder}/__main__.py" not in files:
+        raise ValueError("The registered module has no __main__ in its distribution")
+    shipped = files.get(f"{folder}/component.json")
+    if shipped is None:
+        raise ValueError("The registered module ships no component.json")
+    return shipped.read_text(encoding="utf-8")
 
 
 def main() -> None:
-    distribution, version, entry_point, base_name, base_version, base_entry = sys.argv[1:]
-    component = registered_class(distribution, version, entry_point)
-    if base_name:
-        base = registered_class(base_name, base_version, base_entry)
-        if component is base or not issubclass(component, base):
-            raise ValueError("The component does not inherit from its registered base")
+    distribution, version, module = sys.argv[1:]
+    text = declaration(distribution, version, module)
     packages = {str(item.metadata["Name"]): item.version for item in metadata.distributions()}
-    sys.stdout.write(
-        json.dumps(
-            {
-                "python": sys.version,
-                "platform": sysconfig.get_platform(),
-                "packages": packages,
-                "entry_point": entry_point,
-                "requirements": metadata.requires(distribution) or [],
-                "base_entry_point": base_entry or None,
-            }
-        )
-    )
+    report = {
+        "python": sys.version,
+        "platform": sysconfig.get_platform(),
+        "packages": packages,
+        "declaration": text,
+    }
+    sys.stdout.write(json.dumps(report))
 
 
-if __name__ == "__main__":
-    main()
+main()

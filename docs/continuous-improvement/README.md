@@ -17,8 +17,8 @@ changes to that process without rewriting previous results.
 
 Process-improvement cycles and product sprints have distinct identities. A cycle
 records how work was organized and evaluated; a sprint defines the product delivery.
-The approved [delivery specifications](../specification/first-cycle-sprint.md) and
-[agent-canvas sprint](../specification/agent-canvas-sprint.md) define product scope.
+The approved [delivery specifications](../archive/previous-implementation/specification/first-cycle-sprint.md) and
+[agent-canvas sprint](../archive/previous-implementation/specification/agent-canvas-sprint.md) define product scope.
 The repository's [working rules](../../AGENTS.md) remain the operational authority.
 
 ## Method register
@@ -30,7 +30,8 @@ The repository's [working rules](../../AGENTS.md) remain the operational authori
 | [M03 — Contract closure before delegation](methods/003-contract-closure.md)                             | Approved on 2026-09-29; incorporated into M04              | Contract preparation for C03                                          |
 | [M04 — Contracts, test preparation and verification](methods/004-testing-and-verification.md)           | Approved on 2026-09-29; incorporated into M05              | Test preparation for C03                                              |
 | [M05 — Local verification equivalent to CI](methods/005-local-ci-verification.md)                       | Approved on 2026-09-29; partially applied                  | C03 local delivery; local CodeQL and publication effect not evaluated |
-| [M06 — Assignment preparation, review evidence and test readiness](methods/006-delivery-preparation.md) | Approved on 2026-10-01; current method                     | CodeQL gate follow-up applied; no efficiency audit                    |
+| [M06 — Assignment preparation, review evidence and test readiness](methods/006-delivery-preparation.md) | Approved on 2026-10-01; superseded by M07 on 2026-10-04    | CodeQL follow-up, C05–C11; no reconciled efficiency audit             |
+| [M07 — Validated journeys, tests with code and staged parallelism](methods/007-validated-journeys.md)    | Approved on 2026-10-04; current method                     | Not yet applied; planned for the new core delivery                    |
 
 Methods are retained as historical versions. A later method does not overwrite an
 earlier method or retroactively change which method was used for a cycle.
@@ -39,15 +40,38 @@ M06 incorporates approved P08–P10 and retains M05's obligations. Its approval
 does not activate a new sprint or cycle. See the
 [dated decision](improvement-register.md#approval-of-m06--2026-10-01).
 
+M07 incorporates approved P14–P18, supersedes M06 as the current method and retains
+M05 verification and M06's P08–P10. See the
+[dated decision](improvement-register.md#approval-of-m07--2026-10-04).
+
 ## Cycle register
 
-| Cycle                                                                                | Method                 | Observed active elapsed time                 | Accumulated participant activity                | Outcome                                                                          |
-| ------------------------------------------------------------------------------------ | ---------------------- | -------------------------------------------- | ----------------------------------------------- | -------------------------------------------------------------------------------- |
-| [C01 — Baseline](cycles/001-baseline-2026-09-28/report.md)                           | M01                    | 10 h 04 min 39 s                             | 10 h 04 min 39 s for the audited principal work | Execution, observation and control foundations; objective remained open          |
-| [C02 — Sprint through delivery](cycles/002-sprint-2026-09-29/report.md)              | M02                    | 1 h 53 min 26 s                              | 4 h 15 min 44 s across four participants        | First local cycle verified; PR #8 checks completed                               |
-| [C03 — Agent canvas and English presentation](cycles/003-contract-closure/report.md) | M05, partially applied | 36 min to initial handoff                    | 1 h 03 min 50 s across three participants       | Initial delivery audited; subsequent input/output correction verified            |
-| [C04 — Dependency maintenance](cycles/004-dependency-maintenance/report.md)          | M06                    | Not audited; checkpoint span recorded        | Not audited                                     | Selected updates locally verified; remote publication pending                    |
-| [C05 — Personal experiments](cycles/005-personal-experiments/report.md)              | M06                    | Not audited; 2 h 20 min 49 s checkpoint span | Not audited                                     | Personal authoring locally verified; delivery and preparation defects classified |
+Latest cycle: [C11 — S06 composition and component-owned dialogs](cycles/011-s06-composition-and-dialogs/report.md).
+Development is paused by the owner; current verification and product acceptance
+remain incomplete. The [2026-10-04 development assessment](../archive/previous-implementation/reviews/2026-10-04-development-assessment/README.md)
+records the subsequent findings and decision boundaries. Earlier measurements are
+preserved; no cycle closure or new method is declared.
+
+| Cycle                                                                                               | Method                 | Observed active elapsed time                                       | Accumulated participant activity                | Outcome                                                                                                |
+| --------------------------------------------------------------------------------------------------- | ---------------------- | ------------------------------------------------------------------ | ----------------------------------------------- | ------------------------------------------------------------------------------------------------------ |
+| [C01 — Baseline](cycles/001-baseline-2026-09-28/report.md)                                          | M01                    | 10 h 04 min 39 s                                                   | 10 h 04 min 39 s for the audited principal work | Execution, observation and control foundations; objective remained open                                |
+| [C02 — Sprint through delivery](cycles/002-sprint-2026-09-29/report.md)                             | M02                    | 1 h 53 min 26 s                                                    | 4 h 15 min 44 s across four participants        | First local cycle verified; PR #8 checks completed                                                     |
+| [C03 — Agent canvas and English presentation](cycles/003-contract-closure/report.md)                | M05, partially applied | 36 min to initial handoff                                          | 1 h 03 min 50 s across three participants       | Initial delivery audited; subsequent input/output correction verified                                  |
+| [C04 — Dependency maintenance](cycles/004-dependency-maintenance/report.md)                         | M06                    | Not audited; checkpoint span recorded                              | Not audited                                     | Selected updates locally verified; remote publication pending                                          |
+| [C05 — Personal experiments](cycles/005-personal-experiments/report.md)                             | M06                    | Not audited; 2 h 20 min 49 s checkpoint span                       | Not audited                                     | Personal authoring locally verified; delivery and preparation defects classified                       |
+| [C06 — Provider, resource and workspace delivery](cycles/006-provider-resource-workspace/report.md) | M06                    | Not audited; 2 h 53 min 48 s final checkpoint span                 | Not audited                                     | S04–S06 locally verified, including actual provider/resource execution; review pending                 |
+| [C07 — Product workspace completion](cycles/007-product-workspace-completion/report.md)             | M06                    | 51 min 44 s checkpoint span; active time not audited               | Not audited                                     | S06 product completion locally verified; owner review pending                                          |
+| [C08 — Workspace redesign](cycles/008-workspace-redesign/report.md)                                 | M06                    | 2 h 59 min 17 s observed checkpoint span; preparation excluded     | Not audited                                     | Technically verified; subsequently rejected by owner visual/usability review                           |
+| [C09 — S06 fidelity correction](cycles/009-s06-fidelity/report.md)                                  | M06                    | 1 h 15 min 54 s goal-to-verification span; active time not audited | Not audited                                     | Reference-based correction locally verified; actual desktop/narrow demonstration; owner review pending |
+| [C10 — Complete S06 product interface](cycles/010-s06-interface-completion/report.md)               | M06                    | 1 h 53 min 28 s goal-to-verification span; active time not audited | Not audited                                     | Whole current interface and installed Redirector composition verified; owner acceptance pending        |
+| [C11 — S06 composition and component-owned dialogs](cycles/011-s06-composition-and-dialogs/report.md) | M06 | 4 h 45 min 40 s activation-to-pause span; active effort not audited | Not audited | Paused for owner review; configuration issues and verification blockers remain; no delivery or efficiency claim |
+
+**C07 follow-up, 2026-10-02:** the owner subsequently rejected the workspace's
+usability. The [dated evaluation](cycles/007-product-workspace-completion/report.md#owner-usability-review-follow-up--2026-10-02)
+and [formal UI review](../archive/previous-implementation/reviews/2026-10-02-ui-usability/README.md) qualify the
+checkpoint outcome above. S06 usability remains unaccepted; the original timing
+and technical verification are preserved. Proposed corrections and process
+improvements are not approved by this record.
 
 C01 covers the audited windows on 2026-09-28 and the brief reactivation on
 2026-09-29. C02 covers 03:53:47–05:47:13 Europe/Lisbon on 2026-09-29. The initial C03
@@ -145,3 +169,59 @@ decision. Earlier pending statuses and checkpoint measurements remain preserved.
 including shared-contract omissions, review corrections and classified verification
 failures. Its checkpoints do not constitute an activity-duration audit. P11/P12
 remain proposals; no efficiency improvement or new method version is claimed.
+
+## S04–S06 evaluation — 2026-10-02
+
+[C06](cycles/006-provider-resource-workspace/report.md) records the complete
+provider/resource/workspace block, shared-decision omissions and classified
+verification corrections. Its final checkpoint span ends at final-verification confirmation, includes
+intervening documentation and import-policy correction, and excludes later
+publication work. The earlier 2 h 35 min 11 s checkpoint remains separately retained. Actual native costs
+and proposal/memory provenance were independently checked; automated browser
+journeys and live production execution are distinguished. P13 remains proposed.
+M06 is unchanged and no causal productivity improvement is established.
+
+## S06 redesign evaluation — 2026-10-03
+
+[C08](cycles/008-workspace-redesign/report.md) records the owner-authorized correction
+of the rejected interaction. Source review, browser-confirmed lifecycle defects,
+classified static/test failures and the coverage gap remain visible. The unchanged
+mandatory runner and isolated simulated demonstration pass. Its observed checkpoint
+span excludes initial preparation and is not active effort or a causal productivity
+comparison. M06 remains unchanged; owner usability acceptance and publication are
+separate from technical verification.
+
+### C08 owner rejection and C09 continuation — 2026-10-03
+
+The [C08 addendum](cycles/008-workspace-redesign/report.md#owner-usability-rejection--2026-10-03)
+records explicit owner rejection while preserving technical evidence and timing.
+[C09](cycles/009-s06-fidelity/report.md) continues the bounded S06 correction under
+unchanged M06. Product acceptance and mandatory verification were pending at that
+preparation checkpoint.
+
+**C09 verification follow-up:** the unchanged complete runner passes, with actual
+desktop/narrow evidence and immutable simulated execution recorded. Its checkpoint
+span includes preparation and verification but is not an activity-duration audit.
+Owner usability acceptance remains pending; the smaller corrective scope does not
+establish a productivity improvement over C08.
+
+## S06 composition correction — 2026-10-03
+
+[C11](cycles/011-s06-composition-and-dialogs/report.md) records the reopened S06
+scope after owner review identified missing generic composition and component-owned
+configuration. Complete contracts, public interface sketches and exclusive package
+assignments precede parallel source development. Review, testing and acceptance
+remain pending. M06 is unchanged; prior technical results are retained without
+claiming that they covered the missing functionality.
+
+## New core decision and M07 approval — 2026-10-04
+
+Following the [development assessment](../archive/previous-implementation/reviews/2026-10-04-development-assessment/README.md),
+the owner decided to build a new execution and orchestration core that reuses
+selected verified subsystems of the previous implementation. The unfinished C11
+working tree is preserved in a local archive and is not published. C11 remains
+paused and unaccepted; its measurements and conclusions are unchanged.
+
+The owner approved [M07](methods/007-validated-journeys.md) for the new core delivery.
+Its first application will be recorded as the next cycle using the cycle template.
+No efficiency improvement is claimed by this decision.

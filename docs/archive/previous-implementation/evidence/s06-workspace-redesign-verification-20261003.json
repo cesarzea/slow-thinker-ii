@@ -1,0 +1,76 @@
+{
+  "schema_version": "1",
+  "recorded_at": "2026-10-03T01:09:12+00:00",
+  "scope": "S06 usable experiment workspace redesign",
+  "baseline_commit": "a8445149e2615668f2aadda0563e81bbe6c7341e",
+  "tree_status": "uncommitted local delivery",
+  "command": "make verify",
+  "exit_code": 0,
+  "tests": {
+    "python": 2280,
+    "frontend": 747,
+    "browser_journeys": 33
+  },
+  "frontend_coverage_percent": {
+    "lines": 97.26,
+    "branches": 90.7,
+    "functions": 97.02,
+    "statements": 96.04
+  },
+  "python_coverage": {
+    "covered_lines": 11464,
+    "num_statements": 11771,
+    "covered_branches": 2774,
+    "num_branches": 3020
+  },
+  "codeql": {
+    "version": "2.27.1",
+    "report_id": "93b444eaafb748a49337beb573e227f1",
+    "python": {
+      "errors": 0,
+      "warnings": 0,
+      "notes": 100
+    },
+    "javascript_typescript": {
+      "errors": 0,
+      "warnings": 0,
+      "notes": 0
+    }
+  },
+  "mutation": {
+    "scope": "existing accounting baseline; see final verification log",
+    "total": 200,
+    "killed": 141,
+    "survived": 58,
+    "timed_out": 1,
+    "all_killed_claimed": false
+  },
+  "log_sha256": "e43ff6ff92740817cf4ec1203e1225a24521d67c1421e1c9f8e9b6a1805efa75",
+  "gate_thresholds_changed": false,
+  "new_paid_calls": 0,
+  "credential_changes": false,
+  "manual_demonstration": {
+    "environment": "isolated production HTTP/SQLite composition with simulated component providers",
+    "browser_url": "http://127.0.0.1:5191/",
+    "backend_port": 8101,
+    "saved_revision": "r-5604b31a965e40bdb8792300fae50ba7",
+    "run_id": "caf3751032914555a0e32bdd059a675b",
+    "result": "accepted after four activations",
+    "recorded_simulated_cost_usd": "0.0000003",
+    "real_cost_usd": "0",
+    "desktop_css_viewport": {
+      "width": 1440,
+      "height": 900,
+      "document_overflow": false,
+      "keyboard_prompt_focus_restored": true
+    },
+    "narrow_css_viewport": "390x844 covered by automated browser journey; earlier manual capture was 433x938",
+    "ordinary_prompt_edit_save": true,
+    "history_refresh_and_comparison": true,
+    "guided_resource_add_configure_and_discard": true,
+    "selected_activation_exact_published_output": true,
+    "existing_user_data_unchanged": true
+  },
+  "acceptance": "technical delivery verified; owner usability review pending",
+  "publication": "no commit, push, merge or release performed"
+}

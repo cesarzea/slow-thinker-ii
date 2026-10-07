@@ -1,54 +1,51 @@
-"""Explicit component preparation; experiment startup never installs or updates code."""
+"""Explicit component installation; running a graph never builds, resolves or downloads code."""
 
 import argparse
 import shutil
 import sys
 from pathlib import Path
 
-from slow_thinker_ii.adapters.installations import Resolution
-
 from tooling.components.bundle import write_bundle
-from tooling.components.prepare import prepare_component
+from tooling.components.install import install
+from tooling.components.prepare import Preparation, prepare_component
 from tooling.components.targets import TARGETS
 
 
 def _arguments(root: Path) -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="Prepare independent component installations")
-    parser.add_argument("--destination", type=Path, default=root / ".local/components")
-    parser.add_argument("--component", choices=(*TARGETS, "all"), default="sequence")
+    parser = argparse.ArgumentParser(description="Prepare and install component packages")
     parser.add_argument(
-        "--selector-project",
+        "--destination",
         type=Path,
-        help="Trusted src-layout selector package for redirector preparation",
+        default=root / ".local/components",
+        help="installation root, the configuration's components.installation_root",
     )
-    arguments = parser.parse_args()
-    if arguments.selector_project is not None and arguments.component not in {"redirector", "all"}:
-        parser.error("--selector-project requires --component redirector or all")
-    return arguments
+    parser.add_argument("--component", choices=(*TARGETS, "all"), default="all")
+    return parser.parse_args()
 
 
 def main() -> None:
     root = Path(__file__).resolve().parents[2]
     arguments = _arguments(root)
     destination = Path(str(arguments.destination)).resolve()
-    uv = shutil.which("uv")
-    if uv is None:
+    found = shutil.which("uv")
+    if found is None:
         raise RuntimeError("The pinned uv executable is required")
+    uv, python = Path(found).resolve(), Path(sys.executable)
     names = TARGETS if arguments.component == "all" else (str(arguments.component),)
-    records: dict[str, Resolution] = {}
+    preparations: dict[str, Preparation] = {}
+    identities: dict[str, str] = {}
     for name in names:
-        resolution = prepare_component(
-            root,
-            destination,
-            Path(uv),
-            Path(sys.executable),
-            name,
-            selector_project=arguments.selector_project if name == "redirector" else None,
+        preparation = prepare_component(root, destination, uv, python, name)
+        identity = install(preparation, destination, uv, python).identity
+        preparations[name], identities[name] = preparation, identity
+        registration = preparation.registration
+        sys.stdout.write(
+            f"Installed {registration.type}@{registration.type_version} "
+            f"({registration.distribution} {registration.version}): {identity}\n"
         )
-        records[name] = resolution
-        sys.stdout.write(f"Prepared {resolution.registration.type_id}: {resolution.identity}\n")
-    sys.stdout.write(f"Bundle: {write_bundle(destination, records)}\n")
+    sys.stdout.write(f"Bundle: {write_bundle(destination, preparations, identities)}\n")
+    listed = ", ".join(f'"{identity}"' for identity in identities.values())
+    sys.stdout.write(f"Put these identities into components.resolutions: [{listed}]\n")
 
 
-if __name__ == "__main__":
-    main()
+main()

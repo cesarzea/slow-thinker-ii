@@ -7,6 +7,8 @@ export default mergeConfig(
     test: {
       environment: 'jsdom',
       include: ['frontend/tests/**/*.test.{ts,tsx}'],
+      // obstacle-router ships extensionless ES imports that only a bundler resolves.
+      server: {deps: {inline: ['obstacle-router']}},
       coverage: {
         provider: 'v8',
         reportsDirectory: 'coverage/typescript',

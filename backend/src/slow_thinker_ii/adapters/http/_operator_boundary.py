@@ -1,25 +1,32 @@
-"""An execution-enabled application protects every operator route, including catalogue reads."""
+"""Every `/api/v2` request is authorized before routing; no operator reply is cached."""
 
-from fastapi import Request, Response
-from starlette.middleware.base import BaseHTTPMiddleware, RequestResponseEndpoint
-from starlette.types import ASGIApp
+from starlette.datastructures import MutableHeaders
+from starlette.types import ASGIApp, Message, Receive, Scope, Send
 
 from ._operator_auth import OperatorAccess
-from ._operator_errors import OperatorError, operator_error
+from ._operator_errors import operator_error, operator_path
 
 
-class OperatorBoundary(BaseHTTPMiddleware):
+class OperatorBoundary:
+    """ASGI middleware: refuses unauthorized operator requests before any body is read and
+    marks every operator response, refusals and failures included, `Cache-Control: no-store`."""
+
     def __init__(self, app: ASGIApp, access: OperatorAccess) -> None:
-        super().__init__(app, dispatch=self._dispatch)
+        self._app = app
         self._access = access
 
-    async def _dispatch(self, request: Request, call_next: RequestResponseEndpoint) -> Response:
-        if request.url.path.startswith("/api/v1/"):
-            try:
-                self._access.require(request)
-            except OperatorError as error:
-                return operator_error(error)
-        response = await call_next(request)
-        if request.url.path.startswith("/api/v1/"):
-            response.headers["cache-control"] = "no-store"
-        return response
+    async def __call__(self, scope: Scope, receive: Receive, send: Send) -> None:
+        if scope["type"] != "http" or not operator_path(str(scope["path"])):
+            await self._app(scope, receive, send)
+            return
+
+        async def no_store(message: Message) -> None:
+            if message["type"] == "http.response.start":
+                MutableHeaders(scope=message)["cache-control"] = "no-store"
+            await send(message)
+
+        denial = self._access.denial(scope)
+        if denial is None:
+            await self._app(scope, receive, no_store)
+        else:
+            await operator_error(denial)(scope, receive, no_store)

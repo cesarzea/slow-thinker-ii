@@ -1,86 +1,71 @@
 # Runtime scenarios
 
-**Status: Proposed behavior for review**, derived from R01, R05–R16 and R18–R20. State names and ordering are not yet approved wire contracts.
+The scenarios follow journey J3, [funny story with review](../contracts/examples/funny-story-with-review.graph.json).
 
-Detailed [component lifecycle](../contracts/component-lifecycle.md), [call authority](../contracts/call-authority.md) and [run transitions](../contracts/execution.md#transition-and-race-policy) specify the proposed operational rules behind these scenarios.
+## Save a version
 
-## Validate and start
+1. The editor sends the document to `POST /graphs/validate` while the user edits and
+   shows the diagnostics on the affected nodes and dialog sections.
+2. Save sends `POST /graphs/{id}/versions`. The application validates again, stores
+   version *n* and returns its number. Nothing else changes.
 
-### S03 authoring and saved revision selection
-
-1. Load exact definition text or import UTF-8 JSON. A manual draft changes only
-   identity and lineage on the backend; it does not reserve or save a revision.
-2. Validate structure, registered descriptors, supported profiles and static
-   bindings without starting components or making provider calls.
-3. Save canonical content atomically. Identical replay confirms the existing
-   revision; different content at the same identity fails without overwriting it.
-4. Refresh the bounded library and select the confirmed identity. If a reply is
-   uncertain, retry the identical content; if listing fails, retain confirmation
-   and recover selection separately. Unsaved drafts cannot start a run.
-
-The [authoring contract](../contracts/personal-experiments.md) is authoritative for
-this extension. It does not change run admission, accounting or retained evidence.
-
-### Run admission
-
-1. Resolve a saved work session and a graph revision.
-2. Validate structure, component availability, supported execution profile, input references, permissions, and effective limits.
-3. Freeze the graph, component versions/configurations, input, and pricing references for this run. Reject invalid or unsupported definitions before side effects.
-4. Persist admission and its command receipt together, then expose the run in the UI. Reserve costs before individual billable dispatches. The [operator API](../contracts/operator-api.md) proposes duplicate suppression, lost-reply lookup and withdrawal of an uncertain Start.
-
-Configuration validity does not authorize arbitrary network calls or grant all capabilities advertised by a component.
-
-## Proposal, review, revision
+## Start a run
 
 ```mermaid
 sequenceDiagram
-  participant U as Operator
-  participant P as Platform
-  participant A as Proposer
-  participant B as Reviewer
-  participant M as Managed model resource
-  U->>P: Start saved graph with problem
-  P->>A: Activation 1: problem
-  A->>P: Request model call
-  P->>M: Authorized and budget-reserved call
-  M-->>P: Result and usage
-  P-->>A: Result
-  A-->>P: Initial proposal
-  P->>B: Activation 2: problem and proposal
-  B->>P: Request model call
-  P->>M: Authorized and budget-reserved call
-  M-->>P: Result and usage
-  P-->>B: Result
-  B-->>P: Review
-  P->>A: Activation 3: problem, proposal and review
-  A->>P: Request model call
-  P->>M: Authorized and budget-reserved call
-  M-->>P: Result and usage
-  P-->>A: Result
-  A-->>P: Revised proposal
-  P-->>U: Completed run and inspectable evidence
+  participant UI as Interface
+  participant App as Application
+  participant Hosts as Host launcher
+  participant Eng as Engine
+  UI->>App: POST /runs (graph, version, input)
+  App->>App: validate version, compile plan, record run.started
+  App->>Hosts: launch Proposer, Reviewer and its Router (concurrently)
+  Hosts-->>App: ready (record host.ready)
+  App->>Eng: execute(plan, input)
+  App-->>UI: 202 run_id
+  Eng->>Eng: Trigger activation emits input on story.out
 ```
 
-Each arrow crossing a managed boundary is recorded with caller and causal identifiers. Model usage is charged once at the billable leaf; aggregate activation and run totals reference those charges. Trace recording does not add unrequested content to an agent's input.
+## Activation with an embedded Router
 
-## Nested requests
+```mermaid
+sequenceDiagram
+  participant Eng as Engine
+  participant Rev as Reviewer host (LLM Call)
+  participant GW as LLM gateway
+  participant Prov as DeepSeek adapter
+  participant Rt as Router host
+  Eng->>Rev: activate(message) with grant and time budget
+  Rev->>GW: POST /v1/chat/completions (grant, model deepseek/deepseek-flash)
+  GW->>GW: authorize grant, validate parameters, reserve run/day/month
+  GW->>Prov: one bounded request
+  Prov-->>GW: reply and usage
+  GW->>GW: settle, record llm.called
+  GW-->>Rev: Chat Completions reply
+  Rev->>GW: platform.report (step)
+  Rev-->>Eng: emissions [out: {"score": 5}]
+  Eng->>Rt: select_output(received {"score": 5}, node_input story)
+  Rt-->>Eng: port revise, payload story
+  Eng->>Eng: deliver to proposer.in (record message.sent)
+```
 
-While awaiting an agent response, the platform must remain able to serve that agent's authorized model/resource calls. Holding a global execution lock while waiting would deadlock this scenario. One active workflow must not be implemented as a prohibition on nested calls.
+## Loop and completion
 
-This requirement includes calls made with familiar clients inside independent component processes. Client configuration or a compatible adapter directs each call to the platform; the platform validates caller authority and parent-activation correlation before admission and MCP dispatch. A synchronous model invocation inside a worker must not block the orchestrator from servicing that invocation. Supported request and response shapes are specified in the [compatibility proposal](../contracts/mcp-profile.md#familiar-client-interfaces).
+The `revise` delivery starts Proposer's second activation, whose output starts
+Reviewer's second activation. When the Router selects `accepted`, the Output
+activation records `run.result`. The queue is empty and nothing is running, so the
+engine records `run.finished` with status `completed`, and the application stops the
+hosts.
 
-## Budget rejection
+## Activation limit
 
-Atomic reservation checks cover run, saved session, and month. A rejected reservation does not dispatch the call. It triggers a stop request for the whole run. Already dispatched work may still report usage; unsettled reservations remain visible. Starting a new run cannot erase existing obligations.
+If every review returns `revise`, the eleventh activation would exceed
+`max_activations` = 10. The engine refuses to start it, cancels running
+activations, records the pending delivery as dropped and finishes with status
+`stopped` and reason `activation_limit`.
 
-## Deadline or operator stop
+## Budget denial
 
-Stop scheduling new work, request cancellation on active calls, and record the reason. Use transport-appropriate cancellation without assuming immediate termination. Completed or late charge evidence can settle accounting without restarting graph execution. The proposed transition table separates terminal outcome, process cleanup and settlement; cancellation/cleanup periods remain configurable, with numeric defaults still open.
-
-## Failure and retries
-
-An unhandled activation failure stops the initial executor. A component may handle a nested failure internally within its declared policy. Every retry is a new billable attempt where applicable, linked to the original logical operation. Retries require configuration; ambiguous external side effects must not be repeated automatically.
-
-## Restart
-
-Closing the browser leaves the backend running. A backend restart marks unfinished runs interrupted and preserves evidence and unsettled spending. It must not replay paid calls automatically. [ADR 0011](../adr/0011-local-persistence.md) proposes concrete crash boundaries: release an unsent reservation only when dispatch was never authorized; retain obligations after ambiguous dispatch; never infer non-execution from a missing response. Storage selection and reconciliation approval remain in the [open questions](../specification/open-questions.md).
+If a reservation would exceed a budget, the gateway answers `402 budget_exhausted`,
+asks the application to stop the run with that scope, and the LLM Call activation
+fails. The run finishes `stopped` with `budget_run`, `budget_day` or `budget_month`.

@@ -1,98 +1,73 @@
-"""Single model invocation with overridable functional message and validation hooks."""
+"""One LLM call per activation: the prompt as system message, the received message as user."""
 
-from typing import cast
+from collections.abc import Sequence
 
-from openai import AsyncOpenAI
-from openai.types.chat.completion_create_params import CompletionCreateParamsNonStreaming
 from slow_thinker_host import (
-    JsonObject,
+    Context,
+    Emission,
+    HandlerError,
     JsonValue,
-    Operation,
     decode_json,
     encode_json,
-    json_object,
-    json_value,
+    validate_value,
 )
 
-from ._config import freeze, parse_config
-from ._output import failure, schema_issue
-from ._response import complete_text
-from ._schemas import effective_operation
-from ._types import (
-    CallResult,
-    JsonSuccess,
-    LLMCallConfig,
-    Message,
-    ModelResponse,
-    OutputIssue,
-    OutputValidationError,
-    TextSuccess,
-)
+from ._config import LLMCallConfig
+from ._model import Message, complete, request_body
 
 
 class LLMCall:
-    def __init__(self, config: LLMCallConfig, client: AsyncOpenAI, model: str) -> None:
-        if not model or client.max_retries != 0:
-            raise ValueError("LLMCall requires a bound model and no automatic retries")
-        self._config = freeze(config)
-        self._client, self._model = client, model
+    """The LLM Call node handler. Subclasses may override the three public hooks."""
 
-    @staticmethod
-    def describe(config: JsonObject) -> tuple[Operation, ...]:
-        return (effective_operation(parse_config(config)),)
+    def __init__(self, config: LLMCallConfig) -> None:
+        self.config = config
 
-    async def generate(self, arguments: JsonObject) -> CallResult:
-        isolated = json_object(arguments)
-        issue = schema_issue(isolated, json_object(decode_json(self._config.input_schema)))
-        if issue is not None:
-            raise ValueError(f"Invalid input at {issue.path}: {issue.message}")
-        messages = self.build_messages(json_object(isolated))
-        request = json_object(decode_json(self._config.parameters))
-        request.update(
-            model=self._model,
-            n=1,
-            stream=False,
-            messages=[{"role": item.role, "content": item.content} for item in messages],
-        )
-        response = await self._client.chat.completions.create(
-            **cast(CompletionCreateParamsNonStreaming, request)
-        )
-        return self._interpret(complete_text(response), isolated)
-
-    def build_messages(self, arguments: JsonObject) -> list[Message]:
-        messages = [Message("system", self._config.instructions)]
-        if self._config.output_schema is not None:
-            messages.append(
-                Message(
-                    "system",
-                    "Return exactly one JSON value conforming to this schema, "
-                    "with no surrounding text:\n" + self._config.output_schema,
-                )
-            )
-        return [*messages, Message("user", encode_json(arguments))]
-
-    def parse_response(self, response: ModelResponse) -> JsonValue:
-        return decode_json(response.text) if self._config.format == "json" else response.text
-
-    def validate_result(self, value: JsonValue, arguments: JsonObject) -> None:
-        return None
-
-    def _interpret(self, response: ModelResponse, arguments: JsonObject) -> CallResult:
+    async def activate(self, message: JsonValue, context: Context) -> Sequence[Emission]:
+        self._check_input(message)
+        messages = self.build_messages(message)
+        await context.report("step", f"messages built: {len(messages)} messages")
+        reply = await complete(context.llm_client(), request_body(self.config, messages))
+        await context.report("step", f"model replied: {len(reply)} characters")
         try:
-            value = json_value(self.parse_response(response))
+            value = self.parse_response(reply)
+            self.validate_result(value, reply)
+        except HandlerError as error:
+            await context.report("step", f"reply failed validation: {error.code}")
+            raise
+        json_output = self.config.output_schema is not None
+        await context.report("step", "reply validated" if json_output else "reply returned as text")
+        return [Emission("out", value)]
+
+    def build_messages(self, message: JsonValue) -> list[Message]:
+        """The prompt, then the message itself if it is text, else its canonical JSON."""
+        text = message if isinstance(message, str) else encode_json(message)
+        return [Message("system", self.config.prompt), Message("user", text)]
+
+    def parse_response(self, reply: str) -> JsonValue:
+        """The reply text for text output; the parsed reply for JSON output."""
+        if self.config.output_schema is None:
+            return reply
+        try:
+            return decode_json(reply)
         except ValueError as error:
-            return failure("invalid_json", response.text, (OutputIssue("", str(error)),))
-        schema = self._config.output_schema
-        if schema is not None:
-            issue = schema_issue(value, json_object(decode_json(schema)))
-            if issue is not None:
-                return failure("output_schema_mismatch", response.text, (issue,))
+            message = f"The reply is not valid JSON ({error}). Reply: {reply[:200]}"
+            raise HandlerError("invalid_json", message) from error
+
+    def validate_result(self, value: JsonValue, reply: str) -> None:
+        """Check a JSON reply against the output schema; text output is not checked."""
+        if self.config.output_schema is None:
+            return
         try:
-            self.validate_result(json_value(value), json_object(arguments))
-        except OutputValidationError as error:
-            return failure("output_validation_failed", response.text, error.issues)
-        if self._config.format == "text":
-            if not isinstance(value, str):
-                raise TypeError("Text parsing must return a string")
-            return TextSuccess(status="ok", format="text", value=value)
-        return JsonSuccess(status="ok", format="json", value=value)
+            validate_value(value, self.config.output_schema)
+        except ValueError as error:
+            message = f"The reply does not match the output schema: {error}. Reply: {reply[:200]}"
+            raise HandlerError("schema_mismatch", message) from error
+
+    def _check_input(self, message: JsonValue) -> None:
+        if self.config.input_format is None:
+            return
+        try:
+            validate_value(message, self.config.input_format)
+        except ValueError as error:
+            text = f"The received message does not match the input format: {error}"
+            raise HandlerError("input_format_mismatch", text) from error

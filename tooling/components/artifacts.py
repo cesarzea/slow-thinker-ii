@@ -1,22 +1,24 @@
-"""Record explicit resolution inputs and the provenance of prepared wheels."""
+"""Record explicit resolution inputs, the registration and the provenance of a preparation."""
 
 import json
 from importlib.metadata import version
 from pathlib import Path
 
 from tooling.components.build import command
-from tooling.components.targets import PreparationTarget
+from tooling.components.registration import Registration
 
 
-def write_inputs(recipe: PreparationTarget, preparation: Path) -> Path:
-    registration = recipe.registration
+def write_inputs(registration: Registration, preparation: Path) -> Path:
+    """The single exact requirement whose hash-locked closure is resolved."""
     inputs = preparation / "requirements.in"
-    requirements = (
-        f"{registration.distribution}=={registration.version}",
-        *recipe.additional_requirements,
-    )
-    inputs.write_text("\n".join(requirements) + "\n")
+    inputs.write_text(f"{registration.distribution}=={registration.version}\n")
     return inputs
+
+
+def write_registration(registration: Registration, preparation: Path) -> Path:
+    path = preparation / "registration.json"
+    path.write_text(json.dumps(registration.record(), indent=2) + "\n")
+    return path
 
 
 def record_provenance(

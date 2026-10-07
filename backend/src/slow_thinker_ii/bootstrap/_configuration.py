@@ -1,89 +1,116 @@
-"""JSON startup configuration contains references, never credential values."""
+"""The validated server configuration, with paths made absolute against the working directory."""
 
-import os
-import sys
-from hashlib import sha256
+from collections.abc import Mapping
+from dataclasses import dataclass
 from pathlib import Path
-from typing import Annotated, Literal
+from typing import Literal
 
-from pydantic import BaseModel, Field
+from slow_thinker_ii.accounting import parse_usd
+from slow_thinker_ii.application import BudgetLimits, LlmModel, RunSettings
 
-from slow_thinker_ii.adapters.http import OperatorAccess
-from slow_thinker_ii.adapters.installations import InstallationCatalog
-from slow_thinker_ii.adapters.preparation import (
-    EnvironmentSecrets,
-    ResourceSettings,
-    ServiceEndpoints,
+from ._document import (
+    ConfigurationDocument,
+    ProviderDocument,
+    ProvidersDocument,
+    invalid,
+    read_document,
 )
-from slow_thinker_ii.application import ExecutionConfiguration
-from slow_thinker_ii.contracts import decode_json, encode_json
-
-from ._execution import ExecutionSetup
-from ._public_limits import PublicLimits
-
-Positive = Annotated[int, Field(gt=0)]
+from ._models import SIMULATED, configured_models, scripted_replies
+from ._server import ServerSection, server_section
 
 
-class StartupConfiguration(BaseModel, extra="forbid", strict=True, frozen=True):
-    schema_version: Literal["1"]
-    revision: str = Field(min_length=1)
-    limits: PublicLimits
-    resources: ResourceSettings
-    installation_catalog: str
-    descriptors: tuple[str, ...] = Field(min_length=1)
-    runtime_directory: str
-    gateway_url: str
-    operator_origins: tuple[str, ...] = Field(min_length=1)
-    operator_hosts: tuple[str, ...] = Field(min_length=1)
-    operator_credential_env: str
-    provider_credentials: dict[str, str]
-    preparation_seconds: Positive
-    maximum_commands: Positive
+@dataclass(frozen=True)
+class ComponentsSection:
+    installation_root: Path
+    uv: Path
+    python: Path
+    resolutions: tuple[str, ...]  # installed resolution identities
 
 
-def read_document(path: Path) -> str:
-    if path.name == "slow-thinker.keys.json" or path.resolve().name == "slow-thinker.keys.json":
-        raise ValueError("This file cannot be used as startup configuration")
-    with path.open("rb") as source:
-        value = source.read(1_048_577)
-    if len(value) > 1_048_576:
-        raise ValueError("Startup documents must not exceed one MiB")
-    return encode_json(decode_json(value.decode("utf-8")))
+@dataclass(frozen=True)
+class ProviderSection:
+    name: Literal["openai", "deepseek"]
+    base_url: str
+    credential_env: str  # the environment variable that holds the key
+    timeout_seconds: float
 
 
-def load_execution_setup(path: Path) -> ExecutionSetup:
-    try:
-        record = StartupConfiguration.model_validate_json(read_document(path))
-        return compose_setup(record, path.resolve().parent)
-    except (OSError, ValueError):
-        raise ValueError("Invalid or unavailable execution configuration") from None
+@dataclass(frozen=True)
+class RuntimeSection:
+    runs: RunSettings  # max_active_runs, max_activation_seconds
+    host_startup_seconds: float
 
 
-def compose_setup(record: StartupConfiguration, directory: Path) -> ExecutionSetup:
-    limits = record.limits.internal()
-    credential = EnvironmentSecrets({"operator": record.operator_credential_env}).resolve(
-        "operator"
-    )
-    configuration = ExecutionConfiguration(
-        record.revision, limits, record.resources.model_dump_json()
-    )
-    python = Path(sys.executable)
-    return ExecutionSetup(
-        configuration,
-        InstallationCatalog(
-            (directory / record.installation_catalog).resolve(), python.with_name("uv"), python
+@dataclass(frozen=True)
+class ServerConfiguration:
+    database: Path
+    workspace: Path
+    server: ServerSection
+    components: ComponentsSection
+    providers: tuple[ProviderSection, ...]  # the network providers; `simulated` needs none
+    replies: Mapping[str, tuple[str, ...]]  # scripted replies of simulated models, by id
+    models: tuple[LlmModel, ...]
+    budgets: BudgetLimits
+    runtime: RuntimeSection
+
+
+def load_configuration(path: Path) -> ServerConfiguration:
+    """Reads and checks the configuration; `ValueError` names each invalid location."""
+    document = read_document(path)
+    providers = _providers(document.llm.providers)
+    names = {provider.name for provider in providers}
+    if document.llm.providers.simulated is not None:
+        names.add(SIMULATED)
+    runtime = document.runtime
+    return ServerConfiguration(
+        _absolute(document.database),
+        _absolute(document.workspace),
+        server_section(document.server),
+        _components(document),
+        providers,
+        scripted_replies(document.llm.models),
+        configured_models(document.llm.models, names),
+        _budgets(document),
+        RuntimeSection(
+            RunSettings(runtime.max_active_runs, runtime.max_activation_seconds),
+            runtime.host_startup_seconds,
         ),
-        tuple(read_document(directory / name) for name in record.descriptors),
-        ServiceEndpoints(record.gateway_url),
-        EnvironmentSecrets(record.provider_credentials),
-        OperatorAccess(credential, record.operator_origins, record.operator_hosts),
-        sha256(("operator-cursors:" + credential).encode()).digest(),
-        (directory / record.runtime_directory).resolve(),
-        record.preparation_seconds,
-        record.maximum_commands,
     )
 
 
-def configured_execution() -> ExecutionSetup | None:
-    path = os.environ.get("SLOW_THINKER_CONFIGURATION")
-    return None if path is None else load_execution_setup(Path(path))
+def _providers(document: ProvidersDocument) -> tuple[ProviderSection, ...]:
+    configured: tuple[tuple[Literal["openai", "deepseek"], ProviderDocument | None], ...] = (
+        ("openai", document.openai),
+        ("deepseek", document.deepseek),
+    )
+    return tuple(
+        ProviderSection(name, section.base_url, section.credential_env, section.timeout_seconds)
+        for name, section in configured
+        if section is not None
+    )
+
+
+def _components(document: ConfigurationDocument) -> ComponentsSection:
+    section = document.components
+    return ComponentsSection(
+        _absolute(section.installation_root),
+        _absolute(section.uv),
+        _absolute(section.python),
+        section.resolutions,
+    )
+
+
+def _budgets(document: ConfigurationDocument) -> BudgetLimits:
+    budgets = document.budgets
+    amounts: list[int] = []
+    for name, text in (("daily_usd", budgets.daily_usd), ("monthly_usd", budgets.monthly_usd)):
+        try:
+            amounts.append(parse_usd(text))
+        except ValueError as error:
+            raise invalid(f"/budgets/{name}", str(error)) from None
+    return BudgetLimits(*amounts)
+
+
+def _absolute(text: str) -> Path:
+    """A configured path; a relative one is taken from the working directory."""
+    return Path(text).absolute()

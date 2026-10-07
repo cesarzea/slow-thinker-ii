@@ -1,0 +1,20 @@
+{
+  "format": "slow-thinker.component/1",
+  "type": "output",
+  "version": "1.0.0",
+  "label": "Output",
+  "description": "A named result of the graph. Every message it receives is a run result.",
+  "icon": "output",
+  "placements": ["node"],
+  "state": "stateless",
+  "ports": {"inputs": ["in"], "outputs": []},
+  "uses": [],
+  "config_schema": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {}
+  },
+  "initial_config": {},
+  "ui": {"card": [], "sections": []}
+}

@@ -1,12 +1,13 @@
 # Working on Slow Thinker II
 
-Follow the [module workflow](docs/architecture/module-boundaries.md#module-documents-and-implementation-workflow)
+Follow the [module workflow](docs/archive/previous-implementation/architecture/module-boundaries.md#module-documents-and-implementation-workflow)
 and the mandatory [engineering standards](README.md#engineering-standards).
 
 The current approved working method is
-[M06](docs/continuous-improvement/methods/006-delivery-preparation.md), approved on
-2026-10-01. It retains M05 and all inherited phases and verification obligations.
-Apply it to subsequent authorized delivery work; it does not activate a sprint.
+[M07](docs/continuous-improvement/methods/007-validated-journeys.md), approved on
+2026-10-04. It supersedes M06 as the current method and retains M05's verification
+and M06's assignment preparation, delivery map and test readiness. Apply it to
+subsequent authorized delivery work; it does not activate a sprint.
 
 Every existing implementation module must have a brief `readme.md` (an existing
 `README.md` fulfils this role) and a `specification.md` in its own directory.
@@ -21,26 +22,36 @@ Keep final project objectives in view without expanding the agreed sprint scope.
 
 Work in distinct phases:
 
+0. **Journey validation:** for user-facing scope, prepare concrete journeys with
+   screen mockups, representative definitions and the results and activity the
+   user will see. The owner validates them before shared contracts are derived.
+   Record the validated version; contracts and acceptance criteria cite it. A change
+   to a validated journey requires renewed validation.
 1. **Analysis, specification and tasks:** the coordinator resolves the sprint's
    design and feasibility questions, updates all affected module documents and
    prepares implementation tickets. Include the testing scope, responsibilities
    and acceptance criteria. Review new public interface skeletons before assigning
    their implementation. Leave internal choices open within agreed contracts.
-2. **Development and delivery:** assign one or more complete components or packages
-   to each implementer, grouping them by cohesion, dependencies and workload.
-   Launch independent assignments in parallel with exclusive ownership. Each
-   implementer follows its specifications and tickets, then reports its delivery
+2. **Development with tests:** implement shared foundations, such as a new graph
+   model or execution engine, with one implementer until their public contracts
+   are implemented and checked against the validated journeys. Then assign one or
+   more complete components or packages to each implementer, grouping them by
+   cohesion, dependencies and workload, and launch independent assignments in
+   parallel with exclusive ownership. Implementers write unit and contract tests
+   with their code and pass the package's scoped gates before reporting delivery
    and any unresolved issues. Do not repeatedly reopen the architecture or
-   alternate development with functional testing.
+   alternate development with end-to-end functional testing.
 3. **Review and corrections:** when deliveries are complete, review them against
-   their contracts and review the whole result, including interactions and failure
-   paths. Group corrections into module tickets, delegate them and review the
-   corrected result. Repeat until the complete sprint appears ready for testing.
-4. **Testing:** finalize concrete test tickets from the planned scope; implement
-   module, integration and end-to-end tests, in parallel where independent. Run
-   verification, analyze results together, assign correction tickets and repeat
-   corrections and relevant verification until all acceptance criteria and
-   mandatory checks pass.
+   their contracts and the validated journeys, and review the whole result,
+   including interactions and failure paths. Group corrections into module tickets,
+   delegate them and review the corrected result. Repeat until the complete sprint
+   appears ready for integration and acceptance testing.
+4. **Integration and acceptance:** finalize concrete test tickets from the planned
+   scope; implement integration and end-to-end tests derived from the validated
+   journeys, in parallel where independent. Run verification, analyze results
+   together, assign correction tickets and repeat corrections and relevant
+   verification until all acceptance criteria and mandatory checks pass. Demonstrate
+   the journeys to the owner and record product acceptance separately.
 
 Each implementer receives the shared rules, module documents, relevant code,
 dependency contracts and a brief explanation of purpose and failure consequences.
@@ -76,12 +87,20 @@ when nothing remains. Keep contracts and usage documents current, and link share
 definitions instead of duplicating them.
 
 Do not weaken any existing verification gate. Avoid repeating broad verification
-without a relevant change or unresolved concern. Assess the method using elapsed
-time to a verified delivery, rework, integration
-defects and available resource usage; label estimates and do not infer efficiency
-from code volume or the number of parallel implementers.
+without a relevant change or unresolved concern. Record each phase's start, end,
+pauses, elapsed time and, where reported, token usage; classify rework causes and
+count complete-runner attempts with their causes. Assess the method using elapsed
+time to a verified delivery, rework, integration defects and resource usage; label
+estimates and do not infer efficiency from code volume, test counts or the number
+of parallel implementers.
 
 ## Documentation and improvement records
+
+Document architecture with arc42 and C4 views and record decisions as MADR records,
+as the README requires. Module specifications state the current specification only;
+dated delivery receipts and status belong in sprint status reports and the
+verification record. Archive and label superseded documents instead of amending
+them in place.
 
 Maintain the [engineering process improvement record](docs/continuous-improvement/README.md)
 as formal project documentation. On closing a relevant delivery cycle, update its

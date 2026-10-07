@@ -1,0 +1,8 @@
+{"occurred_at": "2026-10-02T03:14:37.206052+00:00", "phase": "analysis", "event": "block_activated", "measurement": "Observed checkpoint; not participant task duration"}
+{"occurred_at": "2026-10-02T03:45:32.057845+00:00", "phase": "development", "event": "contracts_reviewed_and_dispatch_started", "measurement": "Observed checkpoint; not participant task duration"}
+{"occurred_at": "2026-10-02T04:09:41.644523+00:00", "phase": "development", "event": "static_backend_ready", "measurement": "Observed checkpoint; not participant task duration"}
+{"occurred_at": "2026-10-02T04:28:11.199396+00:00", "phase": "review", "event": "model_resource_and_coordinator_review_complete", "measurement": "Observed checkpoint; not participant task duration"}
+{"occurred_at": "2026-10-02T04:31:24.883430+00:00", "phase": "testing", "event": "whole_system_review_complete_shared_fixture_preparation", "measurement": "Observed checkpoint; not participant task duration"}
+{"occurred_at": "2026-10-02T05:17:48.523049+00:00", "phase": "testing", "event": "targeted_model_and_resource_verification_complete", "measurement": "Observed checkpoint; not participant task duration"}
+{"occurred_at": "2026-10-02T05:49:48.691270+00:00", "phase": "delivery", "event": "complete_local_verification_confirmed", "measurement": "Observed checkpoint; not participant task duration"}
+{"occurred_at": "2026-10-02T06:08:26.074297+00:00", "phase": "delivery", "event": "final_verification_after_import_policy_audit_confirmed", "measurement": "Observed checkpoint; not participant task duration"}

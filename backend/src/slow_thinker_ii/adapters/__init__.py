@@ -1,1 +1,1 @@
-"""External I/O adapters, composed only by bootstrap."""
+"""Adapters of the application ports: persistence, HTTP, hosts, providers and installations."""

@@ -1,76 +1,33 @@
-# Project documentation
+# Documentation
 
-**Status: First-cycle specification approved; local implementation available.**
-
-This documentation records the approved first-cycle requirements, architecture and contracts, and keeps later capabilities explicitly deferred. The [delivery sprint](specification/first-cycle-sprint.md) identifies the implemented scope.
+**Status, 2026-10-05:** a new execution core is being built under the
+[M07 working method](continuous-improvement/methods/007-validated-journeys.md).
+Step 1 (build, run and inspect graphs) is implemented, reviewed by the owner and in
+acceptance; the [sprint report](specification/step-1/sprint-report.md) summarizes the
+review and the [verification record](specification/step-1/verification.md) lists the
+evidence. The [roadmap](specification/roadmap.md) plans the next steps. The
+[local development guide](development.md) explains how to run it. The previous
+implementation's documentation is [archived](archive/previous-implementation/README.md).
 
 ## Reading order
 
-1. [Requirements and scope](specification/requirements.md): the purpose, recorded commitments, and delivery boundaries.
-2. [Architecture, organized with arc42](architecture/README.md): structure, behavior, constraints, and quality requirements.
-3. [Architectural decisions](adr/README.md): accepted principles and proposed implementation choices.
-4. [Component and graph contracts](contracts/README.md): versioned formats and bundled examples.
-5. [Open questions](specification/open-questions.md): closed first-cycle decisions and unresolved future work.
-6. [Engineering process improvement](continuous-improvement/README.md): versioned working methods, cycle evaluations, measurements and approved improvement decisions.
+1. [Requirements](specification/requirements.md): purpose, stakeholders and the
+   CR01–CR18 requirements.
+2. [Step 1 journeys](specification/core-step-1-journeys/README.md): the validated
+   user journeys that step 1 delivers.
+3. [Step 1 delivery](specification/step-1/README.md): acceptance criteria, modules,
+   assignments, verification and the sprint report.
+4. [Architecture](architecture/README.md): arc42 description with C4 views,
+   runtime scenarios, module boundaries, security and quality scenarios.
+5. [Decisions](adr/README.md): the MADR log; records 0015–0023 define the core and
+   0024–0026 record the step 1 review; 0027 the project's license.
+6. [Contracts](contracts/README.md): graph documents, component declarations,
+   execution, component protocol, LLM service, accounting, recording and the
+   operator API.
+7. [Roadmap](specification/roadmap.md): the approved step and later candidates.
+8. [Engineering process improvement](continuous-improvement/README.md): working
+   methods, cycle evaluations and decisions.
 
-The [verification record](verification.md) identifies the implementation checks, live execution evidence and their limits.
-
-For development, start with the [contributing guide](../CONTRIBUTING.md).
-The [local development guide](development.md) covers running the application,
-preparing components and enabling model execution. Full verification requires
-the pinned [CodeQL bundle](../tooling/quality/codeql/readme.md#installation).
-
-The [personal experiment guide](personal-experiments.md) describes S03 JSON
-authoring, immutable revisions, recovery and saved-definition execution. The
-[S03 delivery specification](specification/personal-experiments-sprint.md) tracks
-acceptance verification separately from these usage instructions.
-
-The [central version register](../CHANGELOG.md) records development package versions
-and the history of versioned sprint reports.
-
-The [S02 Sprint Status Report](progress/sprint-02-status-report.md), version
-`0.0.2.5`, consolidates delivered progress, verification, owner-review corrections
-and outstanding items, with links to the sprint specification.
-
-The [S03 Sprint Status Report](progress/sprint-03-status-report.md), version
-`0.0.3.1`, records locally verified personal authoring and retained execution,
-with publication and owner review identified separately.
-
-The [sprint roadmap](specification/sprint-roadmap.md) records delivered scopes and
-proposes subsequent sprint scopes, delivery order, dependencies and milestones.
-Its future sprint scopes remain proposals until approved; planning does not activate
-implementation.
-
-The process-improvement record is part of the project documentation. It evaluates
-how development is organized; product requirements and architecture retain their
-own specifications and decision records. All maintained documents are in English.
-
-## Document states
-
-| State                    | Meaning                                                                                                             |
-| ------------------------ | ------------------------------------------------------------------------------------------------------------------- |
-| Recorded requirement     | A requirement stated or accepted in the design conversation. Its detailed implementation can still be open.         |
-| Accepted ADR             | An architectural principle already agreed with the project owner. This does not mean it has been implemented.       |
-| Proposed ADR or contract | A concrete recommendation for review. Examples and schemas do not make it an approved decision.                     |
-| Deferred capability      | Part of the intended evolution, excluded from the first functional cycle. Its extension boundary still matters now. |
-
-The project owner is Cesar Zea. Dates record documentation, not a claim that all decisions were made on that date. No proposed decision becomes accepted through omission, elapsed time, or a successful schema check.
-
-## Review and change procedure
-
-- Preserve requirement identifiers. Reference them from decisions and acceptance scenarios.
-- Keep requirements, architectural decisions, and implementation evidence distinct.
-- Record alternatives and consequences before selecting a new architectural mechanism.
-- Update affected diagrams, contracts, examples, and open questions together.
-- Keep the [engineering requirements](../README.md#engineering-standards) authoritative; do not paraphrase them into weaker rules.
-- Review schemas and examples for both structural validity and semantic constraints.
-
-## Gate for closing the first-cycle specification
-
-The owner must approve the applicable proposed ADRs and contract revisions. All first-cycle blockers in the open-question register must have decisions, measurable acceptance criteria, and a documented verification method. Deferred work must have an explicit boundary. Quality gates must be configured before application code is accepted.
-
-Specification closure and implementation verification are separate gates. Before closure, resolve the design choices, publish reviewable contracts/acceptance cases and investigate feasibility where an unsupported dependency could invalidate the design. Passing the future executor, storage, browser and cancellation tests is not a prerequisite for permission to implement those systems. Their criteria and verification method must be defined first; executable evidence is required before the corresponding functionality or conformance is claimed.
-
-Similarly, Q14 requires agreement on source boundaries and the verification entry point during specification review. Installing and demonstrating the quality gates belongs to the first approved implementation setup, before application code is accepted. A selected technology or passing temporary probe does not authorize skipping owner approval of the specification.
-
-Current state: **the first-cycle specification was approved on 2026-09-28**, with bounded conditional review added on 2026-09-29. Approval does not extend to deferred capabilities; the verification record tracks implementation delivery separately.
+All maintained documentation is in English. Requirements, decisions, contracts and
+implementation evidence are kept separate; a decision's acceptance does not imply
+that it is implemented or verified.

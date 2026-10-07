@@ -1,0 +1,35 @@
+{
+  "format": "slow-thinker.component/1",
+  "type": "trigger",
+  "version": "1.0.0",
+  "label": "Trigger",
+  "description": "Starts a run by sending its message.",
+  "icon": "trigger",
+  "placements": ["node"],
+  "state": "stateless",
+  "ports": {"inputs": [], "outputs": ["out"]},
+  "uses": [],
+  "config_schema": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "additionalProperties": false,
+    "required": ["message"],
+    "properties": {
+      "message": {"type": "string", "maxLength": 100000},
+      "manual_runs": {"enum": ["ask", "send"]}
+    }
+  },
+  "initial_config": {"message": "", "manual_runs": "ask"},
+  "ui": {
+    "card": ["/message"],
+    "sections": [
+      {"id": "message", "title": "Message", "fields": [
+        {"path": "/message", "control": "multiline", "label": "Message sent when the run starts"},
+        {"path": "/manual_runs", "control": "choice", "label": "On manual runs",
+         "help": "Ask lets you change the message before each run you start yourself.",
+         "options": [{"value": "ask", "label": "Ask for the message"},
+                     {"value": "send", "label": "Send this message"}]}
+      ]}
+    ]
+  }
+}

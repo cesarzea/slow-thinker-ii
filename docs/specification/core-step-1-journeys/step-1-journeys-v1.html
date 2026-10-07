@@ -1,0 +1,969 @@
+<title>Slow Thinker Core Journeys</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+Condensed:wght@500;600&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap">
+<style>
+/* Layout: one reading column for decisions, full-width framed screens for mockups,
+   code panels beside the screens they define. Lab-notebook restraint, one accent. */
+:root {
+  --bg: #f3f5f2;
+  --surface: #ffffff;
+  --surface-2: #eaeeea;
+  --ink: #18211d;
+  --muted: #56645e;
+  --line: #d3dbd5;
+  --accent: #1d5a77;
+  --accent-soft: #dceaf1;
+  --message: #9a5c0c;
+  --message-soft: #f5e8d3;
+  --ok: #2c7449;
+  --err: #a8372d;
+  --code-bg: #edf1ee;
+  --shadow: 0 1px 2px rgba(20, 30, 25, 0.06), 0 8px 24px rgba(20, 30, 25, 0.06);
+  --font-display: "IBM Plex Sans Condensed", "Arial Narrow", "Helvetica Neue", Arial, sans-serif;
+  --font-body: "IBM Plex Sans", "Helvetica Neue", Arial, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  --step--1: 0.8125rem;
+  --step-0: 0.9375rem;
+  --step-1: 1.125rem;
+  --step-2: 1.5rem;
+  --step-3: 2.25rem;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0f1412; --surface: #161d1a; --surface-2: #1d2622; --ink: #e2e9e5; --muted: #9aa8a1;
+    --line: #2b3631; --accent: #72b5d4; --accent-soft: #1a3340; --message: #e0a24a; --message-soft: #3a2b15;
+    --ok: #6cc290; --err: #e2786c; --code-bg: #121916; --shadow: 0 1px 2px rgba(0,0,0,0.4), 0 8px 24px rgba(0,0,0,0.3);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0f1412; --surface: #161d1a; --surface-2: #1d2622; --ink: #e2e9e5; --muted: #9aa8a1;
+  --line: #2b3631; --accent: #72b5d4; --accent-soft: #1a3340; --message: #e0a24a; --message-soft: #3a2b15;
+  --ok: #6cc290; --err: #e2786c; --code-bg: #121916; --shadow: 0 1px 2px rgba(0,0,0,0.4), 0 8px 24px rgba(0,0,0,0.3);
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+body { background: var(--bg); color: var(--ink); font-family: var(--font-body); font-size: var(--step-0); line-height: 1.55; }
+.page { max-width: 1120px; margin: 0 auto; padding-inline: 20px; padding-block: 40px 80px; display: grid; gap: 56px; }
+h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 600; line-height: 1.15; text-wrap: balance; margin: 0; }
+h1 { font-size: var(--step-3); letter-spacing: -0.01em; }
+h2 { font-size: var(--step-2); }
+h3 { font-size: var(--step-1); }
+p { margin: 0; max-width: 70ch; }
+a { color: var(--accent); }
+code, pre, .mono { font-family: var(--font-mono); font-size: 0.8125rem; }
+code { background: var(--code-bg); padding: 0.05em 0.35em; border-radius: 4px; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.eyebrow { font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+.section { display: grid; gap: 20px; }
+.prose { display: grid; gap: 12px; }
+.muted { color: var(--muted); }
+
+/* Header */
+.masthead { display: grid; gap: 16px; border-bottom: 1px solid var(--line); padding-bottom: 28px; }
+.status-row { display: flex; flex-wrap: wrap; gap: 8px; }
+.pill { display: inline-flex; align-items: center; gap: 6px; border: 1px solid var(--line); background: var(--surface); border-radius: 999px; padding: 2px 10px; font-size: var(--step--1); }
+.pill.await { border-color: var(--message); color: var(--message); background: var(--message-soft); }
+.toc { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: var(--step--1); }
+.toc a { text-decoration: none; border-bottom: 1px solid var(--line); color: var(--ink); }
+.toc a:hover { border-color: var(--accent); color: var(--accent); }
+
+/* Concepts */
+.concepts { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 12px; }
+.concept { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 14px 16px; display: grid; gap: 4px; min-width: 0; }
+.concept h4 { font-size: var(--step-0); font-family: var(--font-body); font-weight: 600; }
+.concept p { font-size: var(--step--1); color: var(--muted); }
+
+/* Components */
+.components { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
+.comp { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 16px; display: grid; gap: 10px; align-content: start; min-width: 0; }
+.comp-head { display: flex; align-items: center; gap: 10px; }
+.comp dl { margin: 0; display: grid; grid-template-columns: max-content 1fr; gap: 4px 12px; font-size: var(--step--1); }
+.comp dt { color: var(--muted); }
+.comp dd { margin: 0; }
+.tag { font-family: var(--font-mono); font-size: 0.6875rem; letter-spacing: 0.04em; text-transform: uppercase; color: var(--muted); border: 1px solid var(--line); border-radius: 4px; padding: 0 6px; }
+.tag.platform { color: var(--accent); border-color: var(--accent); }
+.glyph { width: 28px; height: 28px; flex: none; border-radius: 6px; display: grid; place-items: center; background: var(--accent-soft); color: var(--accent); }
+.glyph svg { width: 16px; height: 16px; }
+
+/* Journey layout */
+.journey { display: grid; gap: 22px; border-top: 1px solid var(--line); padding-top: 32px; }
+.journey-head { display: grid; gap: 8px; }
+.steps { margin: 0; padding-left: 1.4em; display: grid; gap: 6px; max-width: 76ch; }
+.steps li::marker { font-family: var(--font-mono); color: var(--muted); }
+.figure { display: grid; gap: 8px; }
+.figure > .caption { font-size: var(--step--1); color: var(--muted); max-width: 80ch; }
+.scroll-x { overflow-x: auto; padding-bottom: 4px; }
+
+/* Mock screen frame */
+.screen { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; box-shadow: var(--shadow); overflow: hidden; min-width: 860px; }
+.screen-bar { display: flex; align-items: center; gap: 12px; padding: 8px 14px; border-bottom: 1px solid var(--line); background: var(--surface-2); font-size: var(--step--1); }
+.screen-bar .crumbs { color: var(--muted); }
+.screen-bar .crumbs b { color: var(--ink); font-weight: 600; }
+.screen-bar .spacer { flex: 1; }
+.btn { font: inherit; font-size: var(--step--1); border: 1px solid var(--line); background: var(--surface); color: var(--ink); border-radius: 6px; padding: 4px 10px; cursor: pointer; }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: var(--surface); }
+.btn.ghost { background: transparent; }
+.editor { display: grid; grid-template-columns: 132px 1fr 250px; min-height: 290px; }
+.palette { border-right: 1px solid var(--line); padding: 12px; display: grid; gap: 8px; align-content: start; font-size: var(--step--1); }
+.palette .item { display: flex; align-items: center; gap: 8px; border: 1px dashed var(--line); border-radius: 6px; padding: 6px 8px; background: var(--surface); }
+.palette .item .glyph { width: 20px; height: 20px; border-radius: 4px; }
+.palette .item .glyph svg { width: 12px; height: 12px; }
+.canvas { position: relative; background-color: var(--surface); background-image: radial-gradient(var(--line) 1px, transparent 1px); background-size: 18px 18px; min-height: 290px; }
+.canvas svg.edges { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+.edges path { fill: none; stroke: var(--muted); stroke-width: 1.5; }
+.edges path.hot { stroke: var(--message); stroke-width: 2; }
+.edges text { fill: var(--muted); font-family: var(--font-mono); font-size: 10px; }
+.node { position: absolute; width: 170px; background: var(--surface); border: 1px solid var(--line); border-radius: 8px; box-shadow: var(--shadow); font-size: 0.75rem; }
+.node.selected { border-color: var(--accent); box-shadow: 0 0 0 2px var(--accent-soft), var(--shadow); }
+.node .n-body { padding: 8px 10px; display: grid; gap: 3px; position: relative; }
+.node .n-type { font-family: var(--font-mono); font-size: 0.625rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); }
+.node .n-name { font-weight: 600; font-size: 0.8125rem; }
+.node .n-meta { color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.node .chip { justify-self: start; font-family: var(--font-mono); font-size: 0.625rem; background: var(--accent-soft); color: var(--accent); border-radius: 4px; padding: 0 5px; }
+.node .band { border-top: 1px dashed var(--line); padding: 6px 10px; display: grid; gap: 4px; background: var(--surface-2); border-radius: 0 0 8px 8px; }
+.node .band .n-type { color: var(--accent); }
+.port { position: absolute; top: 50%; transform: translateY(-50%); width: 10px; height: 10px; border-radius: 50%; background: var(--surface); border: 2px solid var(--muted); z-index: 1; }
+.port.in { left: -6px; }
+.port.out { right: -6px; }
+.prow { position: relative; text-align: right; font-family: var(--font-mono); font-size: 0.625rem; color: var(--ink); line-height: 1.7; }
+.prow .port.out { right: -16px; border-color: var(--accent); }
+.edges .arrow { fill: var(--muted); }
+.edges .arrow.hot { fill: var(--message); }
+.count { position: absolute; top: -9px; right: -9px; background: var(--message); color: var(--surface); font-family: var(--font-mono); font-size: 0.625rem; border-radius: 999px; padding: 0 6px; }
+.inspector { border-left: 1px solid var(--line); padding: 12px; display: grid; gap: 10px; align-content: start; font-size: var(--step--1); }
+.inspector h5 { margin: 0; font-size: var(--step-0); font-family: var(--font-body); }
+.summary { border: 1px solid var(--line); border-radius: 6px; padding: 8px 10px; display: grid; gap: 4px; }
+.summary .row { display: flex; justify-content: space-between; gap: 8px; align-items: baseline; }
+.summary .label { color: var(--muted); font-size: 0.75rem; }
+.summary .value { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.link-btn { font: inherit; font-size: 0.75rem; background: none; border: 0; color: var(--accent); cursor: pointer; padding: 0; }
+.notice { border-radius: 6px; padding: 8px 10px; font-size: 0.75rem; background: var(--message-soft); color: var(--ink); border: 1px solid var(--message); }
+
+/* Dialog mock */
+.dialog-stage { background: var(--surface-2); padding: 24px; min-width: 860px; }
+.dialog { max-width: 640px; margin: 0 auto; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; box-shadow: var(--shadow); display: grid; }
+.dialog header { padding: 14px 18px 0; display: grid; gap: 2px; }
+.dialog header .sub { font-size: var(--step--1); color: var(--muted); }
+.tabs { display: flex; gap: 2px; padding: 10px 18px 0; border-bottom: 1px solid var(--line); flex-wrap: wrap; }
+.tab { font: inherit; font-size: var(--step--1); border: 0; background: none; color: var(--muted); padding: 6px 10px; border-bottom: 2px solid transparent; cursor: pointer; }
+.tab[aria-selected="true"] { color: var(--ink); border-bottom-color: var(--accent); font-weight: 500; }
+.tab .from { font-family: var(--font-mono); font-size: 0.625rem; color: var(--accent); margin-left: 4px; }
+.panel { padding: 16px 18px; display: grid; gap: 12px; min-height: 220px; align-content: start; }
+.field { display: grid; gap: 4px; }
+.field label, .field .flabel { font-size: var(--step--1); font-weight: 500; }
+.field .help { font-size: 0.75rem; color: var(--muted); }
+.field input, .field select, .field textarea { font: inherit; font-size: var(--step--1); color: var(--ink); background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 6px 8px; width: 100%; }
+.field textarea { min-height: 96px; resize: vertical; }
+.field input:disabled { background: var(--surface-2); color: var(--muted); }
+.field.inline { grid-template-columns: 160px 1fr; align-items: center; }
+.subgroup { border: 1px solid var(--line); border-radius: 8px; padding: 12px; display: grid; gap: 10px; background: var(--surface-2); }
+.subgroup .sg-head { font-size: 0.75rem; color: var(--muted); display: flex; justify-content: space-between; gap: 8px; }
+.code-edit { font-family: var(--font-mono); font-size: 0.75rem; background: var(--code-bg); border: 1px solid var(--line); border-radius: 6px; padding: 10px 12px; white-space: pre; overflow-x: auto; line-height: 1.6; margin: 0; }
+.list-edit { display: grid; gap: 6px; }
+.list-edit .li { display: flex; gap: 8px; align-items: center; }
+.list-edit .li input { flex: 1; }
+.dialog footer { display: flex; justify-content: flex-end; gap: 8px; padding: 12px 18px; border-top: 1px solid var(--line); }
+.hidden-field[hidden] { display: none !important; }
+
+/* Run and activity mocks */
+.run-layout { display: grid; grid-template-columns: 1fr 300px; min-height: 260px; }
+.result { border-left: 1px solid var(--line); padding: 14px; display: grid; gap: 10px; align-content: start; font-size: var(--step--1); }
+.state { display: inline-flex; align-items: center; gap: 6px; font-weight: 500; }
+.state::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--ok); }
+.state.stopped::before { background: var(--message); }
+.kv { display: grid; grid-template-columns: max-content 1fr; gap: 2px 12px; font-size: 0.75rem; }
+.kv dt { color: var(--muted); }
+.kv dd { margin: 0; font-variant-numeric: tabular-nums; }
+.out-msg { border: 1px solid var(--line); border-radius: 6px; padding: 10px; background: var(--surface-2); display: grid; gap: 4px; }
+.example { font-size: 0.6875rem; color: var(--muted); font-style: italic; }
+.activity { display: grid; grid-template-columns: 300px 1fr; min-height: 380px; }
+.activity .side { border-right: 1px solid var(--line); padding: 14px; display: grid; gap: 14px; align-content: start; font-size: var(--step--1); }
+.timeline { padding: 8px 14px 14px; display: grid; gap: 2px; font-size: 0.75rem; }
+.timeline .th, .timeline summary { display: grid; grid-template-columns: 54px 92px 1fr 196px; gap: 10px; align-items: baseline; padding: 6px 8px; }
+.timeline .th { color: var(--muted); font-family: var(--font-mono); font-size: 0.625rem; text-transform: uppercase; letter-spacing: 0.06em; border-bottom: 1px solid var(--line); }
+.timeline details { border-bottom: 1px solid var(--line); }
+.timeline summary { cursor: pointer; list-style: none; }
+.timeline summary::-webkit-details-marker { display: none; }
+.timeline summary:hover { background: var(--surface-2); }
+.timeline .t { font-family: var(--font-mono); color: var(--muted); font-variant-numeric: tabular-nums; }
+.timeline .who { font-weight: 500; }
+.timeline .num { font-family: var(--font-mono); text-align: right; color: var(--muted); font-variant-numeric: tabular-nums; }
+.kind { font-family: var(--font-mono); font-size: 0.625rem; text-transform: uppercase; letter-spacing: 0.05em; border-radius: 4px; padding: 0 5px; margin-right: 6px; border: 1px solid var(--line); color: var(--muted); }
+.kind.msg { border-color: var(--message); color: var(--message); background: var(--message-soft); }
+.kind.call { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); }
+.kind.route { border-color: var(--ok); color: var(--ok); }
+.timeline .detail { padding: 6px 8px 12px 164px; display: grid; gap: 6px; color: var(--muted); }
+.timeline .detail pre { margin: 0; background: var(--code-bg); border-radius: 6px; padding: 8px 10px; color: var(--ink); white-space: pre-wrap; }
+
+/* Definitions */
+.split { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 16px; align-items: start; }
+.codeblock { display: grid; gap: 6px; min-width: 0; }
+.codeblock .cb-head { display: flex; justify-content: space-between; gap: 8px; font-size: var(--step--1); color: var(--muted); }
+.codeblock pre { margin: 0; background: var(--code-bg); border: 1px solid var(--line); border-radius: 8px; padding: 12px 14px; overflow-x: auto; line-height: 1.55; color: var(--ink); }
+.k { color: var(--accent); }
+.s { color: var(--message); }
+.c { color: var(--muted); font-style: italic; }
+
+/* Tables */
+.table-wrap { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-size: var(--step--1); background: var(--surface); border: 1px solid var(--line); border-radius: 8px; }
+th, td { text-align: left; padding: 8px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { font-weight: 600; background: var(--surface-2); }
+tr:last-child td { border-bottom: 0; }
+
+/* Validation list */
+.validate { display: grid; gap: 8px; counter-reset: v; }
+.vitem { display: grid; grid-template-columns: 56px 1fr; gap: 12px; background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 10px 14px; align-items: baseline; }
+.vitem .vid { font-family: var(--font-mono); font-size: var(--step--1); color: var(--accent); }
+.scope { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 8px; }
+.scope div { border: 1px dashed var(--line); border-radius: 6px; padding: 8px 10px; font-size: var(--step--1); color: var(--muted); }
+
+@media (max-width: 640px) {
+  .page { padding-inline: 16px; gap: 44px; }
+  h1 { font-size: 1.75rem; }
+  .vitem { grid-template-columns: 1fr; gap: 2px; }
+}
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+
+<main class="page">
+
+<header class="masthead">
+  <div class="eyebrow">Slow Thinker II · new core · M07 phase 0</div>
+  <h1>Step 1 journeys for owner validation</h1>
+  <p>Three journeys show how a user builds, configures and runs a graph with the first components, and what the platform records (step 1.2). Each component's configuration screen is declared inside the component itself; the platform reads that declaration and builds the interface. Nothing here is implemented yet. Example texts, token counts and costs are illustrative.</p>
+  <div class="status-row">
+    <span class="pill await">Awaiting owner validation</span>
+    <span class="pill">Version 1 · 2026-10-04</span>
+    <span class="pill">Scope: step 1.1 build and run · step 1.2 activity</span>
+  </div>
+  <nav class="toc" aria-label="Contents">
+    <a href="#model">Model</a>
+    <a href="#components">Components</a>
+    <a href="#j1">J1 One agent</a>
+    <a href="#j2">J2 Agent with Router</a>
+    <a href="#j3">J3 Review loop</a>
+    <a href="#activity">Step 1.2 Activity</a>
+    <a href="#declarations">Where the screens come from</a>
+    <a href="#document">Saved graph</a>
+    <a href="#recorded">What is recorded</a>
+    <a href="#validate">Please validate</a>
+  </nav>
+</header>
+
+<section class="section" id="model">
+  <div class="prose">
+    <h2>The model in eight terms</h2>
+    <p>These are the only concepts a user meets in step 1. Permissions never appear: a connection, or the choice of a model, is itself the authorization. The platform mediates and records every call.</p>
+  </div>
+  <div class="concepts">
+    <div class="concept"><h4>Graph</h4><p>A versioned definition of nodes and connections, with limits: activations, running nodes, time and budget per run.</p></div>
+    <div class="concept"><h4>Node</h4><p>An instance of a component with its own configuration. It does not know where its output goes.</p></div>
+    <div class="concept"><h4>Port</h4><p>A named input or output of a node. An LLM Call has <code>in</code> and <code>out</code>; a Router's outputs are the names you declare.</p></div>
+    <div class="concept"><h4>Connection</h4><p>From an output port to an input port. It is the only path a message can take.</p></div>
+    <div class="concept"><h4>Message</h4><p>What travels on a connection: text or JSON. Messages are asynchronous; one output connected to several nodes reaches all of them at once.</p></div>
+    <div class="concept"><h4>Activation</h4><p>One execution of a node for one received message. Stateless nodes may run several activations at the same time.</p></div>
+    <div class="concept"><h4>Embedded component</h4><p>A component placed inside a node, here a Router at the node's output. The user sees one node; the platform runs both.</p></div>
+    <div class="concept"><h4>Platform service</h4><p>Something the platform provides, such as the configured LLMs. Calls to services are synchronous and also recorded.</p></div>
+  </div>
+</section>
+
+<section class="section" id="components">
+  <div class="prose">
+    <h2>Components in step 1</h2>
+    <p>Trigger and Output are small platform components. LLM Call and Router are the first ordinary components. The LLM list comes from the platform's model provider, configured on the server.</p>
+  </div>
+  <div class="components">
+    <article class="comp">
+      <div class="comp-head"><span class="glyph" aria-hidden="true"><svg viewBox="0 0 16 16"><path d="M3 2v12l10-6z" fill="currentColor"/></svg></span><h3>Trigger</h3><span class="tag platform">platform</span></div>
+      <p class="muted">Starts a run by sending its message.</p>
+      <dl><dt>Ports</dt><dd><code>out</code></dd><dt>Configures</dt><dd>Message</dd><dt>Later</dt><dd>API, schedule, webhook and queue triggers</dd></dl>
+    </article>
+    <article class="comp">
+      <div class="comp-head"><span class="glyph" aria-hidden="true"><svg viewBox="0 0 16 16"><circle cx="8" cy="8" r="5.5" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="8" cy="8" r="2" fill="currentColor"/></svg></span><h3>LLM Call</h3><span class="tag">component</span></div>
+      <p class="muted">Sends its prompt and the received message to one LLM and emits the reply.</p>
+      <dl><dt>Ports</dt><dd><code>in</code> → <code>out</code></dd><dt>Configures</dt><dd>Prompt, model and its parameters, optional input and output formats</dd><dt>State</dt><dd>None; activations can run in parallel</dd></dl>
+    </article>
+    <article class="comp">
+      <div class="comp-head"><span class="glyph" aria-hidden="true"><svg viewBox="0 0 16 16"><path d="M2 8h5l3-4h4M7 8l3 4h4" fill="none" stroke="currentColor" stroke-width="1.6"/></svg></span><h3>Router</h3><span class="tag">component</span></div>
+      <p class="muted">Runs your script, which returns an output name and the content to send through it.</p>
+      <dl><dt>Ports</dt><dd><code>in</code> → the outputs you declare</dd><dt>Configures</dt><dd>Output names, Python script</dd><dt>Embeddable</dt><dd>At a node's output, or used alone</dd></dl>
+    </article>
+    <article class="comp">
+      <div class="comp-head"><span class="glyph" aria-hidden="true"><svg viewBox="0 0 16 16"><rect x="3" y="3" width="10" height="10" rx="2" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M6 8h4" stroke="currentColor" stroke-width="1.6"/></svg></span><h3>Output</h3><span class="tag platform">platform</span></div>
+      <p class="muted">A named result of the graph. Every message it receives is a run result.</p>
+      <dl><dt>Ports</dt><dd><code>in</code></dd><dt>Configures</dt><dd>Only its name</dd><dt>Run ends</dt><dd>When no message is pending and no node is running, or a limit stops it</dd></dl>
+    </article>
+  </div>
+</section>
+
+<!-- ===================== J1 ===================== -->
+<section class="journey" id="j1">
+  <div class="journey-head">
+    <div class="eyebrow">Journey 1 · step 1.1</div>
+    <h2>One agent makes a story funny</h2>
+    <p>The smallest useful graph: a trigger sends a one-line story, one LLM Call rewrites it, the result arrives at an Output.</p>
+  </div>
+  <ol class="steps">
+    <li>Open <b>Graphs</b>, choose <b>New graph</b> and name it “Funny story”.</li>
+    <li>Drag <b>Trigger</b>, <b>LLM Call</b> and <b>Output</b> from the palette. Rename them Story, Proposer and Funny story.</li>
+    <li>Drag from Story's <code>out</code> to Proposer's <code>in</code>, then from Proposer's <code>out</code> to Funny story's <code>in</code>.</li>
+    <li>Select Proposer. The side panel shows read-only summaries; until a model is chosen it says “Model not selected” and <b>Run</b> is disabled with that reason.</li>
+    <li>Choose <b>Edit</b>. In <b>Prompt</b>, write the instructions. In <b>Model</b>, pick an LLM; its parameters appear below it. Choose <b>Apply</b>.</li>
+    <li>Select Story, choose <b>Edit</b> and write “A cat tried to learn to fly.”.</li>
+    <li>Choose <b>Save</b>. This creates version 1; runs always keep the version they used.</li>
+    <li>Choose <b>Run</b>. The run dialog shows the trigger's message, editable for this run. The run completes and the result appears under Funny story.</li>
+  </ol>
+
+  <div class="figure">
+    <div class="scroll-x">
+      <div class="screen" role="img" aria-label="Graph editor with Story, Proposer and Funny story connected in a line; Proposer is selected">
+        <div class="screen-bar"><span class="crumbs">Graphs / <b>Funny story</b> · version 1</span><span class="spacer"></span><button class="btn ghost" type="button">Limits</button><button class="btn" type="button">Save</button><button class="btn primary" type="button">Run</button></div>
+        <div class="editor">
+          <div class="palette">
+            <div class="eyebrow">Add</div>
+            <div class="item"><span class="glyph"><svg viewBox="0 0 16 16"><path d="M3 2v12l10-6z" fill="currentColor"/></svg></span>Trigger</div>
+            <div class="item"><span class="glyph"><svg viewBox="0 0 16 16"><circle cx="8" cy="8" r="5.5" fill="none" stroke="currentColor" stroke-width="1.6"/></svg></span>LLM Call</div>
+            <div class="item"><span class="glyph"><svg viewBox="0 0 16 16"><path d="M2 8h5l3-4h4M7 8l3 4h4" fill="none" stroke="currentColor" stroke-width="1.6"/></svg></span>Router</div>
+            <div class="item"><span class="glyph"><svg viewBox="0 0 16 16"><rect x="3" y="3" width="10" height="10" rx="2" fill="none" stroke="currentColor" stroke-width="1.6"/></svg></span>Output</div>
+          </div>
+          <div class="canvas" data-edges='[["story.out","proposer.in"],["proposer.out","result.in"]]'>
+            <svg class="edges" aria-hidden="true"></svg>
+            <div class="node" style="left:16px; top:100px;">
+              <div class="n-body"><span class="n-type">Trigger</span><span class="n-name">Story</span><span class="n-meta">A cat tried to learn to fly.</span><span class="port out" data-port="story.out"></span></div>
+            </div>
+            <div class="node selected" style="left:262px; top:86px; width:184px;">
+              <div class="n-body"><span class="port in" data-port="proposer.in"></span><span class="n-type">LLM Call</span><span class="n-name">Proposer</span><span class="n-meta">Rewrite this story so that it is funny…</span><span class="chip">OpenAI · GPT-6 Luna</span><span class="port out" data-port="proposer.out"></span></div>
+            </div>
+            <div class="node" style="left:522px; top:104px; width:150px;">
+              <div class="n-body"><span class="port in" data-port="result.in"></span><span class="n-type">Output</span><span class="n-name">Funny story</span></div>
+            </div>
+          </div>
+          <aside class="inspector">
+            <h5>Proposer <span class="muted">· LLM Call</span></h5>
+            <div class="summary"><div class="row"><span class="label">Prompt</span><button class="link-btn" type="button">Edit</button></div><span class="value">Rewrite this story so that it is funny. Keep it under 80 words.</span></div>
+            <div class="summary"><div class="row"><span class="label">Model</span><button class="link-btn" type="button">Edit</button></div><span class="value">OpenAI · GPT-6 Luna</span><span class="label">Max output tokens 300</span></div>
+            <div class="summary"><div class="row"><span class="label">Input format</span><button class="link-btn" type="button">Edit</button></div><span class="value">Any text</span></div>
+            <div class="summary"><div class="row"><span class="label">Output format</span><button class="link-btn" type="button">Edit</button></div><span class="value">Text</span></div>
+            <button class="btn" type="button">Add component</button>
+          </aside>
+        </div>
+      </div>
+    </div>
+    <p class="caption">Editor. The palette lists installed components; ports are dragged to connect. The side panel is read-only: summaries come from the component's declaration, and each one opens the same dialog at that section.</p>
+  </div>
+
+  <div class="figure">
+    <div class="scroll-x">
+      <div class="dialog-stage">
+        <div class="dialog" role="group" aria-label="Proposer configuration dialog mockup">
+          <header><h3>Proposer</h3><span class="sub">LLM Call · version 1.0.0</span></header>
+          <div class="tabs" role="tablist" data-tabs="j1">
+            <button class="tab" role="tab" type="button" aria-selected="false" data-tab="prompt">Prompt</button>
+            <button class="tab" role="tab" type="button" aria-selected="true" data-tab="model">Model</button>
+            <button class="tab" role="tab" type="button" aria-selected="false" data-tab="input">Input format</button>
+            <button class="tab" role="tab" type="button" aria-selected="false" data-tab="output">Output format</button>
+          </div>
+          <div class="panel" role="tabpanel" data-panel="prompt" hidden>
+            <div class="field"><label for="j1-prompt">Instructions</label><textarea id="j1-prompt">Rewrite this story so that it is funny. Keep it under 80 words.</textarea><span class="help">Sent to the model as system instructions. The received message is sent as the user message.</span></div>
+          </div>
+          <div class="panel" role="tabpanel" data-panel="model">
+            <div class="field"><label for="j1-llm">LLM</label>
+              <select id="j1-llm" data-llm-select="j1"></select>
+              <span class="help">Only LLMs configured on this platform are listed.</span>
+            </div>
+            <div class="subgroup">
+              <div class="sg-head"><span>Parameters declared by the provider</span><span class="mono" data-llm-id="j1"></span></div>
+              <div data-llm-params="j1" class="field-list" style="display:grid; gap:10px;"></div>
+            </div>
+          </div>
+          <div class="panel" role="tabpanel" data-panel="input" hidden>
+            <div class="field"><label for="j1-in">Expected input</label><select id="j1-in"><option>Any text</option><option>JSON matching a schema</option></select><span class="help">Optional. A schema lets the platform reject unexpected messages before calling the model.</span></div>
+          </div>
+          <div class="panel" role="tabpanel" data-panel="output" hidden>
+            <div class="field"><label for="j1-out">Format</label><select id="j1-out" data-when-source="j1-out"><option value="text">Text</option><option value="json">JSON</option></select></div>
+            <div class="field hidden-field" data-when="j1-out=json" hidden><span class="flabel">JSON schema</span><pre class="code-edit">{ "type": "object", "properties": { … } }</pre><span class="help">The reply is validated; an invalid reply fails the activation and is kept for inspection.</span></div>
+          </div>
+          <footer><button class="btn" type="button">Cancel</button><button class="btn primary" type="button">Apply</button></footer>
+        </div>
+      </div>
+    </div>
+    <p class="caption">Configuration dialog, interactive. Switch the LLM: the parameter fields are rendered from the schema that provider declares, so OpenAI shows one field and DeepSeek shows three. With DeepSeek, changing Reasoning away from “none” disables Temperature because the provider's schema says so. The platform contains no LLM-specific screen.</p>
+  </div>
+
+  <div class="figure">
+    <div class="scroll-x">
+      <div class="screen" role="img" aria-label="Completed run with the funny story as result">
+        <div class="screen-bar"><span class="crumbs">Graphs / Funny story / <b>Run 1</b> · version 1</span><span class="spacer"></span><button class="btn" type="button">Activity</button><button class="btn primary" type="button">Run again</button></div>
+        <div class="run-layout">
+          <div class="canvas" style="min-height:220px;" data-edges='[["story.out","proposer.in","hot"],["proposer.out","result.in","hot"]]'>
+            <svg class="edges" aria-hidden="true"></svg>
+            <div class="node" style="left:16px; top:76px;"><div class="n-body"><span class="n-type">Trigger</span><span class="n-name">Story</span><span class="port out" data-port="story.out"></span></div><span class="count">1</span></div>
+            <div class="node" style="left:262px; top:66px; width:184px;"><div class="n-body"><span class="port in" data-port="proposer.in"></span><span class="n-type">LLM Call</span><span class="n-name">Proposer</span><span class="chip">OpenAI · GPT-6 Luna</span><span class="port out" data-port="proposer.out"></span></div><span class="count">1</span></div>
+            <div class="node" style="left:522px; top:76px; width:150px;"><div class="n-body"><span class="port in" data-port="result.in"></span><span class="n-type">Output</span><span class="n-name">Funny story</span></div><span class="count">1</span></div>
+          </div>
+          <aside class="result">
+            <span class="state">Completed</span>
+            <dl class="kv"><dt>Duration</dt><dd>2.4 s</dd><dt>Activations</dt><dd>3</dd><dt>LLM calls</dt><dd>1</dd><dt>Cost</dt><dd>$0.000031</dd></dl>
+            <div class="out-msg"><span class="label muted">Funny story</span><span>Whiskers studied pigeons for a week, bought tiny goggles and launched from the sofa. He landed in the laundry basket, called it a controlled descent and demanded a medal.</span><span class="example">Example reply</span></div>
+          </aside>
+        </div>
+      </div>
+    </div>
+    <p class="caption">Run view. Badges count activations per node. Results are the messages received by Output nodes. Activity opens step 1.2.</p>
+  </div>
+</section>
+
+<!-- ===================== J2 ===================== -->
+<section class="journey" id="j2">
+  <div class="journey-head">
+    <div class="eyebrow">Journey 2 · step 1.1</div>
+    <h2>An agent gains two outputs with an embedded Router</h2>
+    <p>A judge scores the story and an embedded Router sends it to “Funny” or “Not funny”. The node stays one node; no wrapper or extra node appears anywhere.</p>
+  </div>
+  <ol class="steps">
+    <li>Create “Story triage” with Story → Judge (LLM Call). Judge's prompt asks for a score from 1 to 10; its output format is JSON with an integer <code>score</code>.</li>
+    <li>With Judge selected, choose <b>Add component</b>. Only components that can be embedded at a node's output are offered; choose <b>Router</b>.</li>
+    <li>Judge's dialog gains a <b>Router</b> section, declared by the Router component. Declare the outputs <code>funny</code> and <code>not_funny</code> and write the script.</li>
+    <li>On the canvas, Judge's single <code>out</code> port is replaced by <code>funny</code> and <code>not_funny</code>. Connect them to two Output nodes.</li>
+    <li>Run. The story arrives at exactly one of the two outputs, with the content the script returned.</li>
+    <li>To undo, choose <b>Remove component</b> in the Router section. The node returns to one <code>out</code> port; the dialog lists the connections that will be removed before you confirm.</li>
+  </ol>
+
+  <div class="figure">
+    <div class="scroll-x">
+      <div class="screen" role="img" aria-label="Judge node with an embedded Router band exposing two output ports connected to two Output nodes">
+        <div class="screen-bar"><span class="crumbs">Graphs / <b>Story triage</b> · unsaved changes</span><span class="spacer"></span><button class="btn" type="button">Save</button><button class="btn primary" type="button">Run</button></div>
+        <div class="editor" style="grid-template-columns: 1fr 250px;">
+          <div class="canvas" data-edges='[["story.out","judge.in"],["judge.funny","funny.in"],["judge.not_funny","notfunny.in"]]'>
+            <svg class="edges" aria-hidden="true"></svg>
+            <div class="node" style="left:16px; top:112px; width:150px;"><div class="n-body"><span class="n-type">Trigger</span><span class="n-name">Story</span><span class="port out" data-port="story.out"></span></div></div>
+            <div class="node selected" style="left:250px; top:80px; width:182px;">
+              <div class="n-body"><span class="port in" data-port="judge.in"></span><span class="n-type">LLM Call</span><span class="n-name">Judge</span><span class="n-meta">Rate how funny this story is…</span><span class="chip">DeepSeek · Flash</span></div>
+              <div class="band"><span class="n-type">Router · embedded</span><div class="prow">funny<span class="port out" data-port="judge.funny"></span></div><div class="prow">not_funny<span class="port out" data-port="judge.not_funny"></span></div></div>
+            </div>
+            <div class="node" style="left:530px; top:44px; width:140px;"><div class="n-body"><span class="port in" data-port="funny.in"></span><span class="n-type">Output</span><span class="n-name">Funny</span></div></div>
+            <div class="node" style="left:530px; top:200px; width:140px;"><div class="n-body"><span class="port in" data-port="notfunny.in"></span><span class="n-type">Output</span><span class="n-name">Not funny</span></div></div>
+          </div>
+          <aside class="inspector">
+            <h5>Judge <span class="muted">· LLM Call</span></h5>
+            <div class="summary"><div class="row"><span class="label">Prompt</span><button class="link-btn" type="button">Edit</button></div><span class="value">Rate how funny this story is from 1 to 10.</span></div>
+            <div class="summary"><div class="row"><span class="label">Model</span><button class="link-btn" type="button">Edit</button></div><span class="value">DeepSeek · DeepSeek Flash</span></div>
+            <div class="summary"><div class="row"><span class="label">Output format</span><button class="link-btn" type="button">Edit</button></div><span class="value">JSON · score</span></div>
+            <div class="summary"><div class="row"><span class="label">Router · outputs</span><button class="link-btn" type="button">Edit</button></div><span class="value">funny, not_funny</span></div>
+          </aside>
+        </div>
+      </div>
+    </div>
+    <p class="caption">The embedded Router appears as a band inside Judge, carrying the node's output ports. The saved graph stores “Judge with an embedded Router”; there is no hidden wrapper node to manage or remove.</p>
+  </div>
+
+  <div class="figure">
+    <div class="scroll-x">
+      <div class="dialog-stage">
+        <div class="dialog" role="group" aria-label="Judge dialog with the Router section selected">
+          <header><h3>Judge</h3><span class="sub">LLM Call · with embedded Router</span></header>
+          <div class="tabs" role="tablist" data-tabs="j2">
+            <button class="tab" role="tab" type="button" aria-selected="false" data-tab="prompt">Prompt</button>
+            <button class="tab" role="tab" type="button" aria-selected="false" data-tab="model">Model</button>
+            <button class="tab" role="tab" type="button" aria-selected="false" data-tab="output">Output format</button>
+            <button class="tab" role="tab" type="button" aria-selected="true" data-tab="router">Router<span class="from">embedded</span></button>
+          </div>
+          <div class="panel" role="tabpanel" data-panel="prompt" hidden><div class="field"><label for="j2-prompt">Instructions</label><textarea id="j2-prompt">Rate how funny this story is from 1 to 10.</textarea></div></div>
+          <div class="panel" role="tabpanel" data-panel="model" hidden><div class="field"><label for="j2-llm">LLM</label><select id="j2-llm"><option>DeepSeek · DeepSeek Flash</option></select></div><p class="muted" style="font-size:0.75rem;">Parameters render from the provider's schema, as in journey 1.</p></div>
+          <div class="panel" role="tabpanel" data-panel="output" hidden><div class="field"><label for="j2-out">Format</label><select id="j2-out"><option>JSON</option></select></div><pre class="code-edit">{
+  "type": "object",
+  "properties": { "score": { "type": "integer", "minimum": 1, "maximum": 10 } },
+  "required": ["score"]
+}</pre></div>
+          <div class="panel" role="tabpanel" data-panel="router">
+            <div class="field"><span class="flabel">Outputs</span>
+              <div class="list-edit">
+                <div class="li"><input id="j2-o1" value="funny" aria-label="Output 1"><button class="btn" type="button">Remove</button></div>
+                <div class="li"><input id="j2-o2" value="not_funny" aria-label="Output 2"><button class="btn" type="button">Remove</button></div>
+                <div><button class="btn" type="button">Add output</button></div>
+              </div>
+              <span class="help">These names become the node's output ports.</span>
+            </div>
+            <div class="field"><span class="flabel">Script</span>
+<pre class="code-edit"><span class="k">def</span> route(received, node_input):
+    <span class="c"># received: what the LLM Call produced, here {"score": 8}</span>
+    <span class="c"># node_input: the message that activated this node</span>
+    <span class="k">if</span> received[<span class="s">"score"</span>] &gt;= 7:
+        <span class="k">return</span> <span class="s">"funny"</span>, node_input
+    <span class="k">return</span> <span class="s">"not_funny"</span>, node_input</pre>
+              <span class="help">Must return an output name declared above and the content to send through it. Any other result fails the activation with a recorded error.</span>
+            </div>
+            <div><button class="btn" type="button">Remove component</button></div>
+          </div>
+          <footer><button class="btn" type="button">Cancel</button><button class="btn primary" type="button">Apply</button></footer>
+        </div>
+      </div>
+    </div>
+    <p class="caption">One dialog per node. Its sections come from LLM Call's declaration plus the embedded Router's declaration, marked “embedded”. The script receives the LLM Call's result and the node's input, and returns two values: the output and what to send.</p>
+  </div>
+</section>
+
+<!-- ===================== J3 ===================== -->
+<section class="journey" id="j3">
+  <div class="journey-head">
+    <div class="eyebrow">Journey 3 · step 1.1</div>
+    <h2>A review loop until the story is funny enough</h2>
+    <p>Proposer rewrites the story; Reviewer scores it. Its Router accepts the story or sends it back for another rewrite. The activation limit guarantees the loop ends.</p>
+  </div>
+  <ol class="steps">
+    <li>Build Story → Proposer → Reviewer. Embed a Router in Reviewer with outputs <code>accepted</code> and <code>revise</code>.</li>
+    <li>Connect <code>accepted</code> to an Output named “Funny story” and <code>revise</code> back to Proposer's <code>in</code>.</li>
+    <li>Open <b>Limits</b>: maximum activations 10, maximum running nodes 4, time limit 120 s, budget $0.05 per run.</li>
+    <li>Save and run. A typical run shows Proposer twice and Reviewer twice before the story is accepted.</li>
+    <li>If the story is never accepted, the run stops at the activation limit with the status “Stopped: activation limit reached”. Everything that happened remains visible.</li>
+  </ol>
+
+  <div class="figure">
+    <div class="scroll-x">
+      <div class="screen" role="img" aria-label="Review loop graph with a connection from Reviewer's revise port back to Proposer, and the limits panel open">
+        <div class="screen-bar"><span class="crumbs">Graphs / <b>Funny story with review</b> · version 3</span><span class="spacer"></span><button class="btn" type="button">Limits</button><button class="btn" type="button">Save</button><button class="btn primary" type="button">Run</button></div>
+        <div class="editor" style="grid-template-columns: 1fr 250px;">
+          <div class="canvas" style="min-height:300px;" data-edges='[["story.out","proposer.in"],["proposer.out","reviewer.in"],["reviewer.accepted","result.in"],["reviewer.revise","proposer.in","loop"]]'>
+            <svg class="edges" aria-hidden="true"></svg>
+            <div class="node" style="left:12px; top:76px; width:136px;"><div class="n-body"><span class="n-type">Trigger</span><span class="n-name">Story</span><span class="port out" data-port="story.out"></span></div></div>
+            <div class="node" style="left:212px; top:62px; width:176px;"><div class="n-body"><span class="port in" data-port="proposer.in"></span><span class="n-type">LLM Call</span><span class="n-name">Proposer</span><span class="chip">OpenAI · GPT-6 Luna</span><span class="port out" data-port="proposer.out"></span></div></div>
+            <div class="node" style="left:446px; top:62px; width:178px;">
+              <div class="n-body"><span class="port in" data-port="reviewer.in"></span><span class="n-type">LLM Call</span><span class="n-name">Reviewer</span><span class="chip">DeepSeek · Flash</span></div>
+              <div class="band"><span class="n-type">Router · embedded</span><div class="prow">accepted<span class="port out" data-port="reviewer.accepted"></span></div><div class="prow">revise<span class="port out" data-port="reviewer.revise"></span></div></div>
+            </div>
+            <div class="node" style="left:690px; top:40px; width:124px;"><div class="n-body"><span class="port in" data-port="result.in"></span><span class="n-type">Output</span><span class="n-name">Funny story</span></div></div>
+          </div>
+          <aside class="inspector">
+            <h5>Limits <span class="muted">· this graph</span></h5>
+            <div class="field inline" style="grid-template-columns: 1fr 84px;"><label for="j3-a">Maximum activations</label><input id="j3-a" value="10"></div>
+            <div class="field inline" style="grid-template-columns: 1fr 84px;"><label for="j3-r">Maximum running nodes</label><input id="j3-r" value="4"></div>
+            <div class="field inline" style="grid-template-columns: 1fr 84px;"><label for="j3-t">Time limit (s)</label><input id="j3-t" value="120"></div>
+            <div class="field inline" style="grid-template-columns: 1fr 84px;"><label for="j3-b">Budget per run ($)</label><input id="j3-b" value="0.05"></div>
+            <p class="muted" style="font-size:0.75rem;">Daily and monthly budgets are platform settings and apply to all runs.</p>
+          </aside>
+        </div>
+      </div>
+    </div>
+    <p class="caption">A connection may point backwards; loops are ordinary connections. Reviewer's script returns <code>("accepted", node_input)</code> or <code>("revise", node_input)</code>, so Proposer receives the story again without needing the original problem.</p>
+  </div>
+
+  <div class="figure">
+    <div class="scroll-x">
+      <div class="screen" role="img" aria-label="Run stopped by the activation limit">
+        <div class="screen-bar"><span class="crumbs">Graphs / Funny story with review / <b>Run 7</b> · version 3</span><span class="spacer"></span><button class="btn" type="button">Activity</button><button class="btn primary" type="button">Run again</button></div>
+        <div class="run-layout" style="grid-template-columns: 1fr 320px; min-height:150px;">
+          <div style="padding:14px; display:grid; gap:8px; align-content:start; font-size:0.8125rem;">
+            <span class="state stopped">Stopped: activation limit reached</span>
+            <p class="muted" style="font-size:0.75rem;">10 of 10 activations used. Proposer ran 5 times and Reviewer 4 times; the last score was 6. No message reached an Output, so the run has no result. The messages in flight when it stopped are listed in Activity.</p>
+          </div>
+          <aside class="result"><dl class="kv"><dt>Duration</dt><dd>14.8 s</dd><dt>LLM calls</dt><dd>9</dd><dt>Cost</dt><dd>$0.000197</dd><dt>Budget used</dt><dd>0.4% of $0.05</dd></dl></aside>
+        </div>
+      </div>
+    </div>
+    <p class="caption">The limit case. Stopping is a normal, explained outcome, never a silent failure.</p>
+  </div>
+</section>
+
+<!-- ===================== Activity ===================== -->
+<section class="journey" id="activity">
+  <div class="journey-head">
+    <div class="eyebrow">Step 1.2</div>
+    <h2>Seeing what happened in a run</h2>
+    <p>The activity view of a completed journey 3 run. Every message, activation, call and routing decision appears in order. Expanding a row shows the exact request, reply, tokens, cost and what the component reported about its internal work.</p>
+  </div>
+  <div class="figure">
+    <div class="scroll-x">
+      <div class="screen">
+        <div class="screen-bar"><span class="crumbs">Graphs / Funny story with review / Run 6 / <b>Activity</b></span><span class="spacer"></span><button class="btn ghost" type="button">Messages</button><button class="btn ghost" type="button">Calls</button><button class="btn ghost" type="button">All</button></div>
+        <div class="activity">
+          <div class="side">
+            <div><span class="state">Completed</span></div>
+            <dl class="kv"><dt>Duration</dt><dd>6.0 s</dd><dt>Activations</dt><dd>6</dd><dt>Messages</dt><dd>5</dd><dt>LLM calls</dt><dd>4</dd><dt>Tokens in / out</dt><dd>412 / 173</dd><dt>Cost</dt><dd>$0.000083</dd><dt>Budget used</dt><dd>0.2% of $0.05</dd></dl>
+            <div class="table-wrap"><table>
+              <thead><tr><th>Node</th><th>Activations</th><th>Cost</th></tr></thead>
+              <tbody>
+                <tr><td>Story</td><td>1</td><td>—</td></tr>
+                <tr><td>Proposer</td><td>2</td><td>$0.000064</td></tr>
+                <tr><td>Reviewer</td><td>2</td><td>$0.000019</td></tr>
+                <tr><td>Funny story</td><td>1</td><td>—</td></tr>
+              </tbody></table></div>
+            <p class="example">Example figures</p>
+          </div>
+          <div class="timeline">
+            <div class="th"><span>Time</span><span>Node</span><span>Event</span><span style="text-align:right;">Tokens · cost · time</span></div>
+            <details><summary><span class="t">0.00</span><span class="who">Story</span><span><span class="kind msg">message</span>to Proposer · “A cat tried to learn to fly.”</span><span class="num"></span></summary></details>
+            <details open><summary><span class="t">0.02</span><span class="who">Proposer</span><span><span class="kind call">LLM call</span>OpenAI · GPT-6 Luna · activation 1</span><span class="num">38/71 · $0.000031 · 1.3 s</span></summary>
+              <div class="detail"><span>Request sent through the platform</span><pre>system: Rewrite this story so that it is funny. Keep it under 80 words.
+user:   A cat tried to learn to fly.
+parameters: max_output_tokens 300</pre><span>Reply</span><pre>Whiskers studied pigeons for a week, bought tiny goggles…</pre><span>Reported by LLM Call: messages built, one call, reply returned as text.</span></div></details>
+            <details><summary><span class="t">1.34</span><span class="who">Proposer</span><span><span class="kind msg">message</span>to Reviewer · story, version 1</span><span class="num"></span></summary></details>
+            <details><summary><span class="t">1.36</span><span class="who">Reviewer</span><span><span class="kind call">LLM call</span>DeepSeek · DeepSeek Flash · activation 1 · {"score": 5}</span><span class="num">96/9 · $0.000009 · 0.9 s</span></summary><div class="detail"><span>Reply validated against the output schema.</span></div></details>
+            <details open><summary><span class="t">2.25</span><span class="who">Reviewer</span><span><span class="kind route">router</span>revise · script returned the received story</span><span class="num">4 ms</span></summary><div class="detail"><pre>route(received={"score": 5}, node_input="Whiskers studied…") → ("revise", "Whiskers studied…")</pre></div></details>
+            <details><summary><span class="t">2.25</span><span class="who">Reviewer</span><span><span class="kind msg">message</span>to Proposer · revise</span><span class="num"></span></summary></details>
+            <details><summary><span class="t">2.27</span><span class="who">Proposer</span><span><span class="kind call">LLM call</span>OpenAI · GPT-6 Luna · activation 2</span><span class="num">121/84 · $0.000033 · 1.4 s</span></summary></details>
+            <details><summary><span class="t">3.71</span><span class="who">Proposer</span><span><span class="kind msg">message</span>to Reviewer · story, version 2</span><span class="num"></span></summary></details>
+            <details><summary><span class="t">3.73</span><span class="who">Reviewer</span><span><span class="kind call">LLM call</span>DeepSeek · DeepSeek Flash · activation 2 · {"score": 8}</span><span class="num">157/9 · $0.000010 · 0.9 s</span></summary></details>
+            <details><summary><span class="t">4.66</span><span class="who">Reviewer</span><span><span class="kind route">router</span>accepted</span><span class="num">3 ms</span></summary></details>
+            <details><summary><span class="t">4.66</span><span class="who">Reviewer</span><span><span class="kind msg">message</span>to Funny story · result</span><span class="num"></span></summary></details>
+            <details><summary><span class="t">6.00</span><span class="who">Run</span><span><span class="kind">end</span>Completed: no message pending and no node running</span><span class="num"></span></summary></details>
+          </div>
+        </div>
+      </div>
+    </div>
+    <p class="caption">Rows are recorded by the platform, which sits between every pair of participants. Component reports, such as LLM Call's internal steps, are shown as reported evidence, separate from what the platform observed.</p>
+  </div>
+</section>
+
+<!-- ===================== Declarations ===================== -->
+<section class="section" id="declarations">
+  <div class="prose">
+    <h2>Where the screens come from</h2>
+    <p>Yes, as you described: what the interface shows for a component is defined inside that component's package. The platform reads the declaration and builds the summaries and dialogs with its own generic controls: text, multiline, number, choice, list, code, schema and service. Components never ship interface code. Ports and embedding positions are declared in the same package, beside the presentation.</p>
+    <p>The <b>service</b> control is what makes the model section work: it lists the platform's LLMs and renders the selected provider's parameter schema inline. Anything a component does not declare falls back to a form generated from its configuration schema.</p>
+  </div>
+  <div class="split">
+    <div class="codeblock"><div class="cb-head"><span>llm-call package · component declaration (excerpt)</span><span class="mono">1.0.0</span></div>
+<pre>{
+  <span class="k">"type"</span>: <span class="s">"llm-call"</span>,
+  <span class="k">"ports"</span>: { <span class="k">"inputs"</span>: [<span class="s">"in"</span>], <span class="k">"outputs"</span>: [<span class="s">"out"</span>] },
+  <span class="k">"state"</span>: <span class="s">"stateless"</span>,
+  <span class="k">"uses"</span>: [{ <span class="k">"service"</span>: <span class="s">"llm"</span>, <span class="k">"config"</span>: <span class="s">"/model"</span> }],
+  <span class="k">"ui"</span>: {
+    <span class="k">"label"</span>: <span class="s">"LLM Call"</span>,
+    <span class="k">"card"</span>: [<span class="s">"/prompt"</span>, <span class="s">"/model"</span>],
+    <span class="k">"sections"</span>: [
+      { <span class="k">"title"</span>: <span class="s">"Prompt"</span>, <span class="k">"fields"</span>: [
+        { <span class="k">"path"</span>: <span class="s">"/prompt"</span>, <span class="k">"control"</span>: <span class="s">"multiline"</span>, <span class="k">"label"</span>: <span class="s">"Instructions"</span> } ] },
+      { <span class="k">"title"</span>: <span class="s">"Model"</span>, <span class="k">"fields"</span>: [
+        { <span class="k">"path"</span>: <span class="s">"/model"</span>, <span class="k">"control"</span>: <span class="s">"service"</span>, <span class="k">"service"</span>: <span class="s">"llm"</span>, <span class="k">"label"</span>: <span class="s">"LLM"</span> } ] },
+      { <span class="k">"title"</span>: <span class="s">"Input format"</span>, <span class="k">"fields"</span>: [
+        { <span class="k">"path"</span>: <span class="s">"/input_format"</span>, <span class="k">"control"</span>: <span class="s">"schema"</span>, <span class="k">"optional"</span>: <span class="s">"Any text"</span> } ] },
+      { <span class="k">"title"</span>: <span class="s">"Output format"</span>, <span class="k">"fields"</span>: [
+        { <span class="k">"path"</span>: <span class="s">"/output_format/type"</span>, <span class="k">"control"</span>: <span class="s">"choice"</span>,
+          <span class="k">"options"</span>: [<span class="s">"text"</span>, <span class="s">"json"</span>] },
+        { <span class="k">"path"</span>: <span class="s">"/output_format/schema"</span>, <span class="k">"control"</span>: <span class="s">"schema"</span>,
+          <span class="k">"when"</span>: { <span class="k">"path"</span>: <span class="s">"/output_format/type"</span>, <span class="k">"equals"</span>: <span class="s">"json"</span> } } ] }
+    ]
+  }
+}</pre></div>
+    <div class="codeblock"><div class="cb-head"><span>router package · component declaration (excerpt)</span><span class="mono">1.0.0</span></div>
+<pre>{
+  <span class="k">"type"</span>: <span class="s">"router"</span>,
+  <span class="k">"ports"</span>: { <span class="k">"inputs"</span>: [<span class="s">"in"</span>], <span class="k">"outputs_from"</span>: <span class="s">"/outputs"</span> },
+  <span class="k">"state"</span>: <span class="s">"stateless"</span>,
+  <span class="k">"embeddable"</span>: [<span class="s">"output"</span>],
+  <span class="k">"ui"</span>: {
+    <span class="k">"label"</span>: <span class="s">"Router"</span>,
+    <span class="k">"card"</span>: [<span class="s">"/outputs"</span>],
+    <span class="k">"sections"</span>: [
+      { <span class="k">"title"</span>: <span class="s">"Outputs"</span>, <span class="k">"fields"</span>: [
+        { <span class="k">"path"</span>: <span class="s">"/outputs"</span>, <span class="k">"control"</span>: <span class="s">"list"</span>, <span class="k">"label"</span>: <span class="s">"Output names"</span> } ] },
+      { <span class="k">"title"</span>: <span class="s">"Script"</span>, <span class="k">"fields"</span>: [
+        { <span class="k">"path"</span>: <span class="s">"/script"</span>, <span class="k">"control"</span>: <span class="s">"code"</span>, <span class="k">"language"</span>: <span class="s">"python"</span> } ] }
+    ]
+  }
+}</pre>
+      <div class="cb-head" style="margin-top:10px;"><span>platform model provider · LLM list (server configuration)</span><span class="mono">private</span></div>
+<pre>[
+  { <span class="k">"id"</span>: <span class="s">"openai/gpt-6-luna"</span>, <span class="k">"label"</span>: <span class="s">"OpenAI · GPT-6 Luna"</span>,
+    <span class="k">"parameters"</span>: { <span class="k">"properties"</span>: {
+      <span class="k">"max_output_tokens"</span>: { <span class="k">"type"</span>: <span class="s">"integer"</span>, <span class="k">"minimum"</span>: 1 } } } },
+  { <span class="k">"id"</span>: <span class="s">"deepseek/deepseek-flash"</span>, <span class="k">"label"</span>: <span class="s">"DeepSeek · DeepSeek Flash"</span>,
+    <span class="k">"parameters"</span>: { <span class="k">"properties"</span>: {
+      <span class="k">"reasoning"</span>: { <span class="k">"enum"</span>: [<span class="s">"none"</span>, <span class="s">"low"</span>, <span class="s">"high"</span>, <span class="s">"max"</span>] },
+      <span class="k">"temperature"</span>: { <span class="k">"type"</span>: <span class="s">"number"</span>, <span class="k">"minimum"</span>: 0, <span class="k">"maximum"</span>: 2 },
+      <span class="k">"max_output_tokens"</span>: { <span class="k">"type"</span>: <span class="s">"integer"</span>, <span class="k">"minimum"</span>: 1 } },
+      <span class="k">"if"</span>: { <span class="k">"properties"</span>: { <span class="k">"reasoning"</span>: { <span class="k">"const"</span>: <span class="s">"none"</span> } } },
+      <span class="k">"else"</span>: { <span class="k">"properties"</span>: { <span class="k">"temperature"</span>: false } } } }
+]
+<span class="c">// Credentials stay on the server. The same schema validates
+// parameters when a graph is saved and again before each call.</span></pre></div>
+  </div>
+</section>
+
+<!-- ===================== Document ===================== -->
+<section class="section" id="document">
+  <div class="prose">
+    <h2>The saved graph for journey 3</h2>
+    <p>The graph is saved as one typed document. It contains what the user built and nothing else: no permissions, wrapper nodes or internal identifiers. The platform derives authorizations from the connections and the model choices.</p>
+  </div>
+  <div class="codeblock"><div class="cb-head"><span>funny-story-with-review · version 3</span><span class="mono">graph format 1</span></div>
+<pre>{
+  <span class="k">"format"</span>: <span class="s">"slow-thinker.graph/1"</span>,
+  <span class="k">"id"</span>: <span class="s">"funny-story-with-review"</span>,
+  <span class="k">"name"</span>: <span class="s">"Funny story with review"</span>,
+  <span class="k">"limits"</span>: { <span class="k">"max_activations"</span>: 10, <span class="k">"max_running_nodes"</span>: 4, <span class="k">"time_limit_seconds"</span>: 120, <span class="k">"budget_usd"</span>: <span class="s">"0.05"</span> },
+  <span class="k">"nodes"</span>: [
+    { <span class="k">"id"</span>: <span class="s">"story"</span>, <span class="k">"name"</span>: <span class="s">"Story"</span>, <span class="k">"component"</span>: <span class="s">"trigger@1.0.0"</span>,
+      <span class="k">"config"</span>: { <span class="k">"message"</span>: <span class="s">"A cat tried to learn to fly."</span> } },
+    { <span class="k">"id"</span>: <span class="s">"proposer"</span>, <span class="k">"name"</span>: <span class="s">"Proposer"</span>, <span class="k">"component"</span>: <span class="s">"llm-call@1.0.0"</span>,
+      <span class="k">"config"</span>: {
+        <span class="k">"prompt"</span>: <span class="s">"Rewrite this story so that it is funny. Keep it under 80 words."</span>,
+        <span class="k">"model"</span>: { <span class="k">"llm"</span>: <span class="s">"openai/gpt-6-luna"</span>, <span class="k">"parameters"</span>: { <span class="k">"max_output_tokens"</span>: 300 } },
+        <span class="k">"input_format"</span>: null,
+        <span class="k">"output_format"</span>: { <span class="k">"type"</span>: <span class="s">"text"</span> } } },
+    { <span class="k">"id"</span>: <span class="s">"reviewer"</span>, <span class="k">"name"</span>: <span class="s">"Reviewer"</span>, <span class="k">"component"</span>: <span class="s">"llm-call@1.0.0"</span>,
+      <span class="k">"config"</span>: {
+        <span class="k">"prompt"</span>: <span class="s">"Rate how funny this story is from 1 to 10."</span>,
+        <span class="k">"model"</span>: { <span class="k">"llm"</span>: <span class="s">"deepseek/deepseek-flash"</span>,
+                   <span class="k">"parameters"</span>: { <span class="k">"reasoning"</span>: <span class="s">"none"</span>, <span class="k">"temperature"</span>: 0.2, <span class="k">"max_output_tokens"</span>: 50 } },
+        <span class="k">"input_format"</span>: null,
+        <span class="k">"output_format"</span>: { <span class="k">"type"</span>: <span class="s">"json"</span>, <span class="k">"schema"</span>: {
+          <span class="k">"type"</span>: <span class="s">"object"</span>, <span class="k">"required"</span>: [<span class="s">"score"</span>],
+          <span class="k">"properties"</span>: { <span class="k">"score"</span>: { <span class="k">"type"</span>: <span class="s">"integer"</span>, <span class="k">"minimum"</span>: 1, <span class="k">"maximum"</span>: 10 } } } } },
+      <span class="k">"embedded"</span>: [
+        { <span class="k">"position"</span>: <span class="s">"output"</span>, <span class="k">"component"</span>: <span class="s">"router@1.0.0"</span>,
+          <span class="k">"config"</span>: {
+            <span class="k">"outputs"</span>: [<span class="s">"accepted"</span>, <span class="s">"revise"</span>],
+            <span class="k">"script"</span>: <span class="s">"def route(received, node_input):\n    if received['score'] &gt;= 7:\n        return 'accepted', node_input\n    return 'revise', node_input\n"</span> } } ] },
+    { <span class="k">"id"</span>: <span class="s">"result"</span>, <span class="k">"name"</span>: <span class="s">"Funny story"</span>, <span class="k">"component"</span>: <span class="s">"output@1.0.0"</span>, <span class="k">"config"</span>: {} }
+  ],
+  <span class="k">"connections"</span>: [
+    { <span class="k">"from"</span>: <span class="s">"story.out"</span>,          <span class="k">"to"</span>: <span class="s">"proposer.in"</span> },
+    { <span class="k">"from"</span>: <span class="s">"proposer.out"</span>,       <span class="k">"to"</span>: <span class="s">"reviewer.in"</span> },
+    { <span class="k">"from"</span>: <span class="s">"reviewer.revise"</span>,    <span class="k">"to"</span>: <span class="s">"proposer.in"</span> },
+    { <span class="k">"from"</span>: <span class="s">"reviewer.accepted"</span>,  <span class="k">"to"</span>: <span class="s">"result.in"</span> }
+  ],
+  <span class="k">"layout"</span>: { <span class="k">"story"</span>: [12, 76], <span class="k">"proposer"</span>: [212, 62], <span class="k">"reviewer"</span>: [446, 62], <span class="k">"result"</span>: [690, 40] }
+}</pre></div>
+</section>
+
+<!-- ===================== Recorded ===================== -->
+<section class="section" id="recorded">
+  <div class="prose">
+    <h2>What the platform records in every run</h2>
+    <p>Supervision and recording are on by default for every interaction. A pass-through mode may come later. Components add what they want analysed through reports; the predefined components report their internal steps.</p>
+  </div>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Record</th><th>Contents</th><th>Source</th></tr></thead>
+    <tbody>
+      <tr><td>Run</td><td>Graph version, input message, limits, start and end, final status and reason, totals</td><td>Platform</td></tr>
+      <tr><td>Message</td><td>From node and port, to node and port, content, time</td><td>Platform</td></tr>
+      <tr><td>Activation</td><td>Node, triggering message, start, end, status, error if any</td><td>Platform</td></tr>
+      <tr><td>Service call</td><td>Caller node, LLM, exact request and reply, tokens, cost, duration, errors</td><td>Platform</td></tr>
+      <tr><td>Embedded call</td><td>Router input, returned output and content, duration, script errors</td><td>Platform</td></tr>
+      <tr><td>Component report</td><td>Whatever the component chooses to report about its internal work</td><td>Component, labelled as reported</td></tr>
+      <tr><td>Spending</td><td>Cost per call and totals against the run, daily and monthly budgets</td><td>Platform</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<!-- ===================== Validate ===================== -->
+<section class="section" id="validate">
+  <div class="prose">
+    <h2>Please validate</h2>
+    <p>Answer each point with yes or a correction. Validated points become the acceptance criteria and end-to-end tests of step 1.</p>
+  </div>
+  <div class="validate">
+    <div class="vitem"><span class="vid">V01</span><span>The eight terms and the four step 1 components, including Trigger and Output as platform components.</span></div>
+    <div class="vitem"><span class="vid">V02</span><span>The trigger's message is set in the Trigger and can be edited when starting a run.</span></div>
+    <div class="vitem"><span class="vid">V03</span><span>A run ends when no message is pending and no node is running, or when a limit stops it; Output nodes collect the results.</span></div>
+    <div class="vitem"><span class="vid">V04</span><span>Editor: palette, drag to connect ports, read-only side panel, one dialog per node opened from Edit.</span></div>
+    <div class="vitem"><span class="vid">V05</span><span>LLM Call dialog sections: Prompt, Model with the provider's parameters inline, Input format, Output format.</span></div>
+    <div class="vitem"><span class="vid">V06</span><span>The prompt is sent as system instructions and the received message as the user message.</span></div>
+    <div class="vitem"><span class="vid">V07</span><span>Embedding: Add component on the node, the Router as a section of the same dialog, the node showing the Router's outputs, and removal listing affected connections.</span></div>
+    <div class="vitem"><span class="vid">V08</span><span>Router script contract: <code>route(received, node_input)</code> returns an output name and the content to send.</span></div>
+    <div class="vitem"><span class="vid">V09</span><span>Graph limits: activations, running nodes, time and budget per run; daily and monthly budgets as platform settings.</span></div>
+    <div class="vitem"><span class="vid">V10</span><span>Save creates a new version; a run uses the last saved version, and Run offers “Save and run” when there are unsaved changes.</span></div>
+    <div class="vitem"><span class="vid">V11</span><span>Step 1.2 activity view content and the records listed above.</span></div>
+    <div class="vitem"><span class="vid">V12</span><span>Interface text in English, as the project rules require.</span></div>
+  </div>
+  <div class="prose" style="margin-top:12px;">
+    <h3>Not in step 1</h3>
+  </div>
+  <div class="scope">
+    <div>Shared variables, shared context and memory</div>
+    <div>Joins, conversation threads and queues</div>
+    <div>Tools and MCP servers assigned to nodes</div>
+    <div>Several triggers and batch runs</div>
+    <div>API execution, subscriptions and containers</div>
+    <div>Editing credentials from the interface</div>
+  </div>
+</section>
+
+</main>
+
+<script type="application/json" id="llm-catalog">
+[
+  {"id": "openai/gpt-6-luna", "label": "OpenAI · GPT-6 Luna",
+   "parameters": {"type": "object", "properties": {
+     "max_output_tokens": {"type": "integer", "title": "Max output tokens", "minimum": 1, "default": 300}
+   }}},
+  {"id": "deepseek/deepseek-flash", "label": "DeepSeek · DeepSeek Flash",
+   "parameters": {"type": "object", "properties": {
+     "reasoning": {"title": "Reasoning", "enum": ["none", "low", "high", "max"], "default": "none"},
+     "temperature": {"type": "number", "title": "Temperature", "minimum": 0, "maximum": 2, "default": 0.2},
+     "max_output_tokens": {"type": "integer", "title": "Max output tokens", "minimum": 1, "default": 300}
+   },
+   "if": {"properties": {"reasoning": {"const": "none"}}},
+   "else": {"properties": {"temperature": false}}}}
+]
+</script>
+<script>
+(function () {
+  // Connections: draw each canvas's edges between the actual port positions.
+  function drawCanvas(canvas, index) {
+    var svg = canvas.querySelector('svg.edges');
+    var spec = [];
+    try { spec = JSON.parse(canvas.getAttribute('data-edges')); } catch (e) { return; }
+    if (!svg) return;
+    var box = canvas.getBoundingClientRect();
+    if (!box.width) return;
+    var bottom = 0;
+    canvas.querySelectorAll('.node').forEach(function (n) {
+      bottom = Math.max(bottom, n.getBoundingClientRect().bottom - box.top);
+    });
+    function centre(name) {
+      var el = canvas.querySelector('[data-port="' + name + '"]');
+      if (!el) return null;
+      var r = el.getBoundingClientRect();
+      return { x: r.left + r.width / 2 - box.left, y: r.top + r.height / 2 - box.top };
+    }
+    var plain = 'arrow-' + index, hot = 'arrow-hot-' + index;
+    var markup = '<defs>' +
+      '<marker id="' + plain + '" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path class="arrow" d="M0 0 L8 4 L0 8 z"/></marker>' +
+      '<marker id="' + hot + '" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path class="arrow hot" d="M0 0 L8 4 L0 8 z"/></marker>' +
+      '</defs>';
+    spec.forEach(function (edge) {
+      var a = centre(edge[0]), b = centre(edge[1]);
+      if (!a || !b) return;
+      var d;
+      if (edge[2] === 'loop' || b.x <= a.x) {
+        var lane = bottom + 26;
+        d = 'M' + a.x + ' ' + a.y + ' C' + (a.x + 50) + ' ' + a.y + ' ' + (a.x + 50) + ' ' + lane + ' ' + a.x + ' ' + lane +
+            ' L' + (b.x - 4) + ' ' + lane + ' C' + (b.x - 34) + ' ' + lane + ' ' + (b.x - 34) + ' ' + b.y + ' ' + (b.x - 7) + ' ' + b.y;
+      } else {
+        var dx = Math.max(30, (b.x - a.x) / 2);
+        d = 'M' + a.x + ' ' + a.y + ' C' + (a.x + dx) + ' ' + a.y + ' ' + (b.x - dx) + ' ' + b.y + ' ' + (b.x - 7) + ' ' + b.y;
+      }
+      var isHot = edge[2] === 'hot';
+      markup += '<path class="' + (isHot ? 'hot' : '') + '" d="' + d + '" marker-end="url(#' + (isHot ? hot : plain) + ')"/>';
+    });
+    svg.innerHTML = markup;
+  }
+  function drawAll() {
+    document.querySelectorAll('.canvas[data-edges]').forEach(drawCanvas);
+  }
+  drawAll();
+  window.addEventListener('resize', drawAll);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(drawAll);
+
+  // Tabs: one selected panel per dialog.
+  document.querySelectorAll('[data-tabs]').forEach(function (list) {
+    var dialog = list.closest('.dialog');
+    list.querySelectorAll('[data-tab]').forEach(function (tab) {
+      tab.addEventListener('click', function () {
+        list.querySelectorAll('[data-tab]').forEach(function (t) { t.setAttribute('aria-selected', String(t === tab)); });
+        dialog.querySelectorAll('[data-panel]').forEach(function (p) { p.hidden = p.getAttribute('data-panel') !== tab.getAttribute('data-tab'); });
+      });
+    });
+  });
+
+  // Conditional fields declared with "when".
+  document.querySelectorAll('[data-when-source]').forEach(function (source) {
+    var key = source.getAttribute('data-when-source');
+    function sync() {
+      document.querySelectorAll('[data-when^="' + key + '="]').forEach(function (el) {
+        el.hidden = source.value !== el.getAttribute('data-when').split('=')[1];
+      });
+    }
+    source.addEventListener('change', sync);
+    sync();
+  });
+
+  // Service control: list LLMs and render the selected provider's parameter schema.
+  var catalog = [];
+  try { catalog = JSON.parse(document.getElementById('llm-catalog').textContent); } catch (e) { catalog = []; }
+  var values = {};
+  function disabledKeys(schema, current) {
+    var off = {};
+    if (schema.if && schema.else && schema.if.properties) {
+      var holds = Object.keys(schema.if.properties).every(function (k) {
+        return current[k] === schema.if.properties[k].const;
+      });
+      if (!holds) {
+        Object.keys(schema.else.properties || {}).forEach(function (k) {
+          if (schema.else.properties[k] === false) off[k] = true;
+        });
+      }
+    }
+    return off;
+  }
+  function render(host, item) {
+    var schema = item.parameters;
+    var current = values[item.id] || (values[item.id] = {});
+    Object.keys(schema.properties).forEach(function (k) {
+      if (current[k] === undefined) current[k] = schema.properties[k].default;
+    });
+    var off = disabledKeys(schema, current);
+    host.innerHTML = '';
+    Object.keys(schema.properties).forEach(function (k) {
+      var prop = schema.properties[k];
+      var id = 'p-' + item.id.replace(/[^a-z0-9]/gi, '-') + '-' + k;
+      var row = document.createElement('div');
+      row.className = 'field inline';
+      var label = document.createElement('label');
+      label.setAttribute('for', id);
+      label.textContent = prop.title || k;
+      var control;
+      if (prop.enum) {
+        control = document.createElement('select');
+        prop.enum.forEach(function (v) {
+          var o = document.createElement('option');
+          o.value = v; o.textContent = v;
+          if (String(current[k]) === v) o.selected = true;
+          control.appendChild(o);
+        });
+      } else {
+        control = document.createElement('input');
+        control.type = 'number';
+        if (prop.minimum !== undefined) control.min = prop.minimum;
+        if (prop.maximum !== undefined) control.max = prop.maximum;
+        control.step = prop.type === 'integer' ? '1' : '0.1';
+        control.value = current[k];
+      }
+      control.id = id;
+      control.addEventListener('change', function () {
+        current[k] = prop.enum ? control.value : Number(control.value);
+        render(host, item);
+      });
+      row.appendChild(label);
+      var cell = document.createElement('div');
+      cell.style.display = 'grid';
+      cell.style.gap = '2px';
+      cell.appendChild(control);
+      if (off[k]) {
+        control.disabled = true;
+        var note = document.createElement('span');
+        note.className = 'help';
+        note.textContent = 'Not available with this reasoning setting.';
+        cell.appendChild(note);
+      }
+      row.appendChild(cell);
+      host.appendChild(row);
+    });
+  }
+  document.querySelectorAll('[data-llm-select]').forEach(function (select) {
+    var key = select.getAttribute('data-llm-select');
+    var host = document.querySelector('[data-llm-params="' + key + '"]');
+    var idLabel = document.querySelector('[data-llm-id="' + key + '"]');
+    catalog.forEach(function (item) {
+      var o = document.createElement('option');
+      o.value = item.id; o.textContent = item.label;
+      select.appendChild(o);
+    });
+    function update() {
+      var item = catalog.find(function (i) { return i.id === select.value; });
+      if (!item) return;
+      idLabel.textContent = item.id;
+      render(host, item);
+    }
+    select.addEventListener('change', update);
+    update();
+  });
+})();
+</script>

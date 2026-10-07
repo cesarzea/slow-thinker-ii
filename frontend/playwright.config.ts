@@ -1,6 +1,7 @@
 import {defineConfig} from '@playwright/test';
 import {resolve} from 'node:path';
-import {testPort} from './tests/support/ports.ts';
+import {OPERATOR_TOKEN} from './tests/journeys/support/token.ts';
+import {testPort} from './tests/journeys/support/ports.ts';
 
 const root = resolve(import.meta.dirname, '..');
 const [apiPort, browserPort] = await Promise.all([
@@ -15,10 +16,14 @@ export default defineConfig({
   use: {baseURL: browserUrl, browserName: 'chromium'},
   webServer: [
     {
-      command: `uv run --locked uvicorn support.offline_app:create_app --app-dir backend/tests --factory --host 127.0.0.1 --port ${apiPort}`,
+      command: `uv run --locked uvicorn journeys.app:create_app --app-dir backend/tests --factory --host 127.0.0.1 --port ${apiPort}`,
       cwd: root,
-      env: {SLOW_THINKER_TEST_API_ORIGIN: apiUrl, SLOW_THINKER_TEST_BROWSER_ORIGIN: browserUrl},
-      url: `${apiUrl}/api/v1/graphs`,
+      env: {
+        SLOW_THINKER_TEST_API_ORIGIN: apiUrl,
+        SLOW_THINKER_TEST_BROWSER_ORIGIN: browserUrl,
+        SLOW_THINKER_OPERATOR_TOKEN: OPERATOR_TOKEN,
+      },
+      url: `${apiUrl}/api/v2/catalog`,
       reuseExistingServer: false,
     },
     {

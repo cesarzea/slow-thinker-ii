@@ -1,26 +1,23 @@
-"""Pinned MCP handlers expose exact schemas only for the authenticated invocation."""
+"""The `platform.report` tool, served for the one grant that authenticated the request."""
 
 from mcp import types
 from mcp.server import Server, ServerRequestContext
 
-from slow_thinker_ii.application import GatewayTool, ManagedGatewayService
-from slow_thinker_ii.contracts import JsonObject, decode_json, encode_json, json_object
+from slow_thinker_ii.application import InvalidGrant, InvalidReport, ReportService
+from slow_thinker_ii.contracts import JsonObject, JsonValue, encode_json, json_object
 
-PROTOCOL = "2026-07-28"
+REPORT_TOOL = "platform.report"
+KINDS: tuple[JsonValue, ...] = ("step", "progress", "state", "explanation", "reasoning")
 
 
 def report_tool() -> types.Tool:
     return types.Tool(
-        name="platform.report",
+        name=REPORT_TOOL,
+        description="Records a report about the current activation as reported evidence.",
         input_schema={
             "type": "object",
-            "properties": {
-                "kind": {"enum": ["progress", "state", "explanation", "reasoning"]},
-                "schema_version": {"const": "1"},
-                "value": {},
-                "source_occurred_at": {"type": "number"},
-            },
-            "required": ["kind", "schema_version", "value"],
+            "properties": {"kind": {"enum": list(KINDS)}, "content": {}},
+            "required": ["kind", "content"],
             "additionalProperties": False,
         },
         output_schema={
@@ -32,75 +29,55 @@ def report_tool() -> types.Tool:
     )
 
 
-def tool(item: GatewayTool) -> types.Tool:
-    return types.Tool(
-        name=item.alias,
-        input_schema=json_object(decode_json(item.contract.input_schema_json)),
-        output_schema=json_object(decode_json(item.contract.output_schema_json)),
-    )
-
-
-class GatewayHandlers:
-    def __init__(self, service: ManagedGatewayService, grant: str) -> None:
-        self._service, self._grant = service, grant
-
-    def require(self, context: ServerRequestContext[object]) -> None:
-        self._service.deadline(self._grant)
-        if context.protocol_version != PROTOCOL:
-            self._service.reject(self._grant, context.method, "unsupported_protocol")
-            raise ValueError("Unsupported managed MCP protocol")
-
-    async def discover(
-        self, context: ServerRequestContext[object], params: types.RequestParams
-    ) -> types.DiscoverResult:
-        del params
-        self.require(context)
-        return types.DiscoverResult(
-            supported_versions=[PROTOCOL],
-            cache_scope="private",
-            capabilities=types.ServerCapabilities(tools=types.ToolsCapability()),
-        )
+class ReportHandlers:
+    def __init__(self, reports: ReportService, grant: str) -> None:
+        self._reports = reports
+        self._grant = grant
 
     async def list_tools(
         self, context: ServerRequestContext[object], params: types.PaginatedRequestParams | None
     ) -> types.ListToolsResult:
-        self.require(context)
-        if params is not None and params.cursor is not None:
-            raise ValueError("Unknown managed tool cursor")
-        return types.ListToolsResult(
-            tools=[*(tool(item) for item in self._service.tools(self._grant)), report_tool()]
-        )
+        del context, params
+        return types.ListToolsResult(tools=[report_tool()])
 
     async def call_tool(
         self, context: ServerRequestContext[object], params: types.CallToolRequestParams
     ) -> types.CallToolResult:
-        self.require(context)
-        arguments = encode_json(json_object(params.arguments or {}))
-        value: JsonObject
-        if params.name == "platform.report":
-            self._service.report(self._grant, arguments)
-            value = {"recorded": True}
-            is_error = False
-        else:
-            result = await self._service.invoke(self._grant, params.name, arguments)
-            value, is_error = (
-                json_object(decode_json(result.result.payload_json)),
-                result.result.is_error,
-            )
-        return types.CallToolResult(
-            content=[types.TextContent(type="text", text=encode_json(value))],
-            structured_content=value,
-            is_error=is_error,
-        )
+        """Refusals are tool errors with the text `{"code", "message"}`."""
+        del context
+        if params.name != REPORT_TOOL:
+            return failure("unknown_tool", f"The platform offers only the {REPORT_TOOL} tool.")
+        try:
+            arguments = json_object(params.arguments or {})
+        except ValueError:
+            arguments = {}
+        kind = arguments.get("kind")
+        if set(arguments) != {"kind", "content"} or not isinstance(kind, str):
+            return failure("invalid_arguments", "A report has exactly a kind and a JSON content.")
+        return self._report(kind, arguments["content"])
+
+    def _report(self, kind: str, content: JsonValue) -> types.CallToolResult:
+        try:
+            self._reports.report(self._grant, kind, content)
+        except InvalidGrant as error:  # the call ended after the request was admitted
+            return failure("invalid_grant", str(error))
+        except InvalidReport as error:
+            return failure("invalid_report", str(error))
+        recorded: JsonObject = {"recorded": True}
+        text = types.TextContent(type="text", text=encode_json(recorded))
+        return types.CallToolResult(content=[text], structured_content=recorded)
 
 
-def gateway_server(service: ManagedGatewayService, grant: str) -> Server[object]:
-    handlers = GatewayHandlers(service, grant)
-    server = Server[object](
+def failure(code: str, message: str) -> types.CallToolResult:
+    text = types.TextContent(type="text", text=encode_json({"code": code, "message": message}))
+    return types.CallToolResult(content=[text], is_error=True)
+
+
+def report_server(reports: ReportService, grant: str) -> Server[object]:
+    handlers = ReportHandlers(reports, grant)
+    return Server[object](
         "Slow Thinker II",
         version="0.1.0",
         on_list_tools=handlers.list_tools,
         on_call_tool=handlers.call_tool,
     )
-    server.add_request_handler("server/discover", types.RequestParams, handlers.discover)
-    return server

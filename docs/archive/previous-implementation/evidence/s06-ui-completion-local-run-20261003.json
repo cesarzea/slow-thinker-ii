@@ -1,0 +1,333 @@
+{
+  "scope": "S06 interface completion; production services and installed components with a deterministic local model",
+  "paid_provider_calls": 0,
+  "run_id": "149cb88d70664892986a514ee6fd138d",
+  "experiment": "bounded-review",
+  "revision": "example-1",
+  "state": "completed",
+  "event_sequence": 112,
+  "model_responses": "Illustrative; deterministic loopback upstream, not an actual LLM",
+  "accounting": {
+    "illustrative_recorded_usd": "0.0000108",
+    "pending_usd_for_this_run": "0",
+    "prior_fixture_run": "18e9b480ab0c477ab58845854b19208f",
+    "prior_fixture_pending_usd": "1.051152",
+    "prior_fixture_note": "Missing cache-write token count correctly preserved an unresolved obligation. Original run and evidence retained."
+  },
+  "calls": [
+    {
+      "call_id": "bc3b60f942bc4ac18eab48383953bdd3",
+      "parent_call_id": null,
+      "caller": null,
+      "target": {
+        "instance": "flow",
+        "operation": "next"
+      },
+      "depth": 1,
+      "state": "completed"
+    },
+    {
+      "call_id": "6f10b8eaa6fd4de8abbd0a0aa1f4f4e3",
+      "parent_call_id": null,
+      "caller": null,
+      "target": {
+        "instance": "proposer",
+        "operation": "generate"
+      },
+      "depth": 1,
+      "state": "completed"
+    },
+    {
+      "call_id": "4c4a6f05a2cf450e9a5ddf374f2cf381",
+      "parent_call_id": "6f10b8eaa6fd4de8abbd0a0aa1f4f4e3",
+      "caller": "proposer",
+      "target": {
+        "instance": "proposer-model",
+        "operation": "complete"
+      },
+      "depth": 2,
+      "state": "completed"
+    },
+    {
+      "call_id": "8a83b3a5a1b648ee905b6a1772883379",
+      "parent_call_id": null,
+      "caller": null,
+      "target": {
+        "instance": "flow",
+        "operation": "next"
+      },
+      "depth": 1,
+      "state": "completed"
+    },
+    {
+      "call_id": "118a8c25cee54fe39d043fa1babfd2ff",
+      "parent_call_id": null,
+      "caller": null,
+      "target": {
+        "instance": "reviewer",
+        "operation": "invoke"
+      },
+      "depth": 1,
+      "state": "completed"
+    },
+    {
+      "call_id": "01f386dab9264c8b9a1fddd69363fc08",
+      "parent_call_id": "118a8c25cee54fe39d043fa1babfd2ff",
+      "caller": "reviewer",
+      "target": {
+        "instance": "review-worker",
+        "operation": "generate"
+      },
+      "depth": 2,
+      "state": "completed"
+    },
+    {
+      "call_id": "89d85199c68f4d259e9b3eb44c238c1d",
+      "parent_call_id": "01f386dab9264c8b9a1fddd69363fc08",
+      "caller": "review-worker",
+      "target": {
+        "instance": "reviewer-model",
+        "operation": "complete"
+      },
+      "depth": 3,
+      "state": "completed"
+    },
+    {
+      "call_id": "f7b4d77e7b3b49ff98612fcb48fdf7e8",
+      "parent_call_id": "118a8c25cee54fe39d043fa1babfd2ff",
+      "caller": "reviewer",
+      "target": {
+        "instance": "review-router",
+        "operation": "route"
+      },
+      "depth": 2,
+      "state": "completed"
+    },
+    {
+      "call_id": "15ac79ce1c4a4fdfaebae19297391ecb",
+      "parent_call_id": null,
+      "caller": null,
+      "target": {
+        "instance": "flow",
+        "operation": "next"
+      },
+      "depth": 1,
+      "state": "completed"
+    },
+    {
+      "call_id": "1a0e36791beb4fce8ce3dc9dcbbb526d",
+      "parent_call_id": null,
+      "caller": null,
+      "target": {
+        "instance": "proposer",
+        "operation": "generate"
+      },
+      "depth": 1,
+      "state": "completed"
+    },
+    {
+      "call_id": "ef5d4832b3e04f4da3cff13add881080",
+      "parent_call_id": "1a0e36791beb4fce8ce3dc9dcbbb526d",
+      "caller": "proposer",
+      "target": {
+        "instance": "proposer-model",
+        "operation": "complete"
+      },
+      "depth": 2,
+      "state": "completed"
+    },
+    {
+      "call_id": "60ec46ced23e4dcca1832ad111f4409b",
+      "parent_call_id": null,
+      "caller": null,
+      "target": {
+        "instance": "flow",
+        "operation": "next"
+      },
+      "depth": 1,
+      "state": "completed"
+    },
+    {
+      "call_id": "17457529dc934556b261182cf02da114",
+      "parent_call_id": null,
+      "caller": null,
+      "target": {
+        "instance": "reviewer",
+        "operation": "invoke"
+      },
+      "depth": 1,
+      "state": "completed"
+    },
+    {
+      "call_id": "552dca5711ec489a81c573f73ad22110",
+      "parent_call_id": "17457529dc934556b261182cf02da114",
+      "caller": "reviewer",
+      "target": {
+        "instance": "review-worker",
+        "operation": "generate"
+      },
+      "depth": 2,
+      "state": "completed"
+    },
+    {
+      "call_id": "273f83eab18f46e0aca11f55ec086129",
+      "parent_call_id": "552dca5711ec489a81c573f73ad22110",
+      "caller": "review-worker",
+      "target": {
+        "instance": "reviewer-model",
+        "operation": "complete"
+      },
+      "depth": 3,
+      "state": "completed"
+    },
+    {
+      "call_id": "fe156efcb12f45d3893d8354019b6238",
+      "parent_call_id": "17457529dc934556b261182cf02da114",
+      "caller": "reviewer",
+      "target": {
+        "instance": "review-router",
+        "operation": "route"
+      },
+      "depth": 2,
+      "state": "completed"
+    },
+    {
+      "call_id": "9e441e6d2f4f4b4b9b8e50290c2a8f77",
+      "parent_call_id": null,
+      "caller": null,
+      "target": {
+        "instance": "flow",
+        "operation": "next"
+      },
+      "depth": 1,
+      "state": "completed"
+    }
+  ],
+  "processes": [
+    {
+      "instance": "flow",
+      "state": "stopped",
+      "reason": "owned_child_reaped"
+    },
+    {
+      "instance": "proposer",
+      "state": "stopped",
+      "reason": "owned_child_reaped"
+    },
+    {
+      "instance": "proposer-model",
+      "state": "stopped",
+      "reason": "owned_child_reaped"
+    },
+    {
+      "instance": "review-router",
+      "state": "stopped",
+      "reason": "owned_child_reaped"
+    },
+    {
+      "instance": "review-worker",
+      "state": "stopped",
+      "reason": "owned_child_reaped"
+    },
+    {
+      "instance": "reviewer",
+      "state": "stopped",
+      "reason": "owned_child_reaped"
+    },
+    {
+      "instance": "reviewer-model",
+      "state": "stopped",
+      "reason": "owned_child_reaped"
+    }
+  ],
+  "events": [
+    {
+      "event": "usage.recorded",
+      "payload": {
+        "receipt_id": "6ef308b3857b44a49733c40248423bf4",
+        "published": true,
+        "reason": null,
+        "settlement": "applied",
+        "late": false
+      }
+    },
+    {
+      "event": "activation.routed",
+      "payload": {
+        "activation_id": "5c9736be8854484ab74659de8ab70880",
+        "node": "propose",
+        "ordinal": 1,
+        "payload_id": "response:913b34d7d76045fc93acbc2c8ae93113",
+        "selected_port": "next"
+      }
+    },
+    {
+      "event": "usage.recorded",
+      "payload": {
+        "receipt_id": "ce6ac806c3bd4faf9fcc2225c1900f7d",
+        "published": true,
+        "reason": null,
+        "settlement": "applied",
+        "late": false
+      }
+    },
+    {
+      "event": "activation.routed",
+      "payload": {
+        "activation_id": "71c2764b77134ce29501865edd2ed996",
+        "node": "review",
+        "ordinal": 2,
+        "payload_id": "response:8ac158fe394a4d02a45b25a923d756e1",
+        "selected_port": "revise"
+      }
+    },
+    {
+      "event": "usage.recorded",
+      "payload": {
+        "receipt_id": "3ec47fdb34704f9f97041e8b2a64e2a1",
+        "published": true,
+        "reason": null,
+        "settlement": "applied",
+        "late": false
+      }
+    },
+    {
+      "event": "activation.routed",
+      "payload": {
+        "activation_id": "baf6c638a5a545eb85e13a01727562fd",
+        "node": "propose",
+        "ordinal": 3,
+        "payload_id": "response:1a6ba0f56a694945b33ccdbe4cc552ae",
+        "selected_port": "next"
+      }
+    },
+    {
+      "event": "usage.recorded",
+      "payload": {
+        "receipt_id": "bc2b80c0b0fd40968bde8c945030249a",
+        "published": true,
+        "reason": null,
+        "settlement": "applied",
+        "late": false
+      }
+    },
+    {
+      "event": "activation.routed",
+      "payload": {
+        "activation_id": "4bb307362c124efd91fb0cd70f09efb5",
+        "node": "review",
+        "ordinal": 4,
+        "payload_id": "response:dca9cecbefcf430eb833c739d20273c8",
+        "selected_port": "accept"
+      }
+    },
+    {
+      "event": "run.finished",
+      "payload": {
+        "state": "completed",
+        "reason": null,
+        "output_json": "{\"activation_count\":4,\"source_activation\":\"baf6c638a5a545eb85e13a01727562fd\",\"status\":\"accepted\",\"value\":\"Local test model response: run an encrypted backup at 02:00 every night; keep seven daily copies in separate storage. The operations owner performs a weekly restore test, records the outcome, and investigates failures.\"}"
+      }
+    }
+  ]
+}

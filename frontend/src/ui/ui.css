@@ -1,0 +1,817 @@
+/* Presentation primitives on the design tokens of app/styles/base.css. */
+
+/* Icons, buttons and tiles. Buttons that are rows or list items start their content at the
+   left and keep their own size, unlike the base button. */
+.icon {
+  flex: none;
+}
+.tabs-vertical [role='tab'],
+.section-row-toggle,
+.menu-item {
+  justify-content: flex-start;
+  min-height: 0;
+}
+.btn,
+.icon-button {
+  min-height: 0;
+}
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 30px;
+  padding: 0 11px;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+  font-weight: 500;
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+}
+.btn:hover:not(:disabled) {
+  border-color: var(--subtle);
+}
+.btn-primary {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: #fff;
+}
+.btn-primary:hover:not(:disabled) {
+  border-color: var(--accent-hover);
+  background: var(--accent-hover);
+}
+.btn-accent {
+  border-color: var(--accent-line);
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+.btn-accent:hover:not(:disabled) {
+  border-color: var(--accent);
+}
+.btn-ghost,
+.btn-danger {
+  border-color: transparent;
+  background: transparent;
+  color: var(--muted);
+}
+.btn-ghost:hover:not(:disabled) {
+  border-color: transparent;
+  background: var(--surface-2);
+  color: var(--text);
+}
+.btn-danger {
+  padding: 0 6px;
+  color: var(--danger);
+}
+.btn-danger:hover:not(:disabled) {
+  border-color: transparent;
+  background: color-mix(in srgb, var(--danger) 8%, transparent);
+}
+.btn-sm {
+  height: 26px;
+  padding: 0 8px;
+  font-size: 12px;
+}
+.btn:disabled,
+.icon-button:disabled {
+  cursor: default;
+  opacity: 0.5;
+}
+.icon-button {
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius);
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+}
+.icon-button:hover:not(:disabled) {
+  border-color: transparent;
+  background: var(--surface-2);
+  color: var(--text);
+}
+.icon-button-sm {
+  width: 26px;
+  height: 26px;
+}
+.icon-button-danger:hover:not(:disabled) {
+  color: var(--danger);
+}
+.tile {
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  width: 28px;
+  height: 28px;
+  border-radius: 7px;
+}
+.tile-sm {
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+}
+.tile-trigger {
+  background: var(--trigger-bg);
+  color: var(--trigger);
+}
+.tile-llm {
+  background: var(--llm-bg);
+  color: var(--llm);
+}
+.tile-memory {
+  background: var(--memory-bg);
+  color: var(--memory);
+}
+.tile-router {
+  background: var(--router-bg);
+  color: var(--router);
+}
+.tile-output {
+  background: var(--output-bg);
+  color: var(--output);
+}
+.tile-neutral {
+  background: var(--surface-2);
+  color: var(--muted);
+}
+.tag,
+.marker {
+  flex: none;
+  padding: 1px 5px;
+  border-radius: 4px;
+  background: var(--router-bg);
+  color: var(--router);
+  font-size: 10px;
+  font-weight: 650;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+/* Menus */
+.menu {
+  position: relative;
+}
+.menu-list {
+  position: absolute;
+  top: calc(100% + 4px);
+  right: 0;
+  z-index: 30;
+  display: grid;
+  min-width: 170px;
+  padding: 4px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+  box-shadow: var(--shadow-float);
+}
+.menu-list.align-start {
+  right: auto;
+  left: 0;
+}
+.menu-item {
+  height: 30px;
+  white-space: nowrap;
+  padding: 0 10px;
+  border: 0;
+  border-radius: var(--radius);
+  background: none;
+  color: var(--text);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.menu-item:hover:not(:disabled),
+.menu-item:focus-visible {
+  outline: none;
+  border-color: transparent;
+  background: var(--surface-2);
+}
+.menu-item.danger {
+  color: var(--danger);
+}
+.menu-group {
+  display: grid;
+}
+.menu-group + .menu-group {
+  margin-top: 4px;
+  padding-top: 4px;
+  border-top: 1px solid var(--line);
+}
+.menu-heading {
+  padding: 4px 10px 2px;
+  color: var(--subtle);
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+/* A set of choices: the chosen one is ticked, the others line up with it */
+.menu-item[role='menuitemradio'] {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding-left: 30px;
+}
+.menu-item[aria-checked='true'] {
+  padding-left: 10px;
+  color: var(--accent);
+}
+
+/* Dialogs */
+.dialog-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  background: rgb(15 23 32 / 32%);
+}
+.dialog {
+  display: grid;
+  gap: 14px;
+  width: min(40rem, 100%);
+  max-height: 92dvh;
+  overflow: auto;
+  padding: 16px 20px;
+  border-radius: 10px;
+  background: var(--surface);
+  box-shadow: 0 20px 50px rgb(16 24 40 / 25%);
+}
+.dialog-wide {
+  width: min(52rem, 100%);
+}
+.dialog-heading {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.dialog-titles {
+  flex: 1;
+  min-width: 0;
+}
+.dialog-heading h2 {
+  font-size: 16px;
+  font-weight: 650;
+}
+.dialog-subtitle,
+.dialog-description {
+  color: var(--muted);
+  font-size: 12px;
+}
+.dialog-fields {
+  display: grid;
+  gap: 18px;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+.dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 8px;
+  padding-top: 12px;
+  border-top: 1px solid var(--line);
+}
+.dialog-actions-start {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-right: auto;
+}
+.dialog-note {
+  color: var(--muted);
+  font-size: 12px;
+}
+/* A fixed dialog keeps its size and place: near the top, centred, whatever it shows. */
+.dialog-backdrop.anchored {
+  align-items: flex-start;
+  padding-top: 6vh;
+}
+.dialog-fixed {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  width: min(960px, 100vw - 2rem);
+  height: min(680px, 100dvh - 4rem);
+  max-height: none;
+  padding: 0;
+  overflow: hidden;
+}
+.dialog-fixed > * {
+  flex: none;
+}
+.dialog-fixed > .dialog-heading {
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--line);
+}
+.dialog-fixed > .dialog-fields {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 0;
+  min-height: 0;
+}
+.dialog-fixed > [role='alert'] {
+  margin: 0 20px 12px;
+}
+.dialog-fixed > .dialog-actions {
+  padding: 12px 20px;
+  background: color-mix(in srgb, var(--surface-2) 40%, var(--surface));
+}
+.dialog-fixed .tabs {
+  flex: 1;
+  min-height: 0;
+}
+.dialog-fixed .dialog-problems {
+  flex: none;
+  margin: 0 20px 12px;
+}
+
+/* Tabs: horizontal, or a grouped list of sections beside the panel */
+.tabs [role='tablist'] {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px;
+  border-bottom: 1px solid var(--line);
+}
+.tabs [role='tab'] {
+  border: 0;
+  border-bottom: 2px solid transparent;
+  border-radius: 0;
+  background: none;
+  color: var(--muted);
+}
+.tabs [role='tab'][aria-selected='true'] {
+  border-bottom-color: var(--accent);
+  color: var(--text);
+}
+.tab-panel {
+  display: grid;
+  gap: 18px;
+  padding-top: 14px;
+}
+.tabs-vertical {
+  display: grid;
+  grid-template-columns: 216px minmax(0, 1fr);
+  grid-template-rows: minmax(0, 1fr);
+}
+.tabs-vertical [role='tablist'] {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  gap: 1px;
+  min-height: 0;
+  padding: 14px 10px;
+  overflow: auto;
+  border-right: 1px solid var(--line);
+  border-bottom: 0;
+  background: color-mix(in srgb, var(--surface-2) 40%, var(--surface));
+}
+.tabs-vertical [role='tab'] {
+  height: auto;
+  padding: 7px 10px 7px 37px;
+  border: 0;
+  border-radius: var(--radius);
+  color: var(--text);
+  font-weight: 400;
+  text-align: left;
+}
+.tabs-vertical [role='tab']:hover:not(:disabled) {
+  border-color: transparent;
+  background: var(--surface-2);
+}
+.tabs-vertical [role='tab'][aria-selected='true'] {
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-weight: 600;
+}
+.tab-group {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 6px 8px;
+  color: var(--subtle);
+  font-size: 11px;
+  font-weight: 650;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+.tab-group:not(:first-child) {
+  margin-top: 12px;
+}
+.tabs-vertical .tab-panel {
+  align-content: start;
+  min-height: 0;
+  padding: 22px 28px;
+  overflow: auto;
+}
+.section-title {
+  font-size: 16px;
+  font-weight: 650;
+}
+
+/* Fields: label, help, then the control, at the width of what it holds */
+.section-form {
+  display: grid;
+  align-content: start;
+  gap: 18px;
+}
+.section-form.columns-2 {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: 24px;
+}
+.section-form.columns-2 > .width-full {
+  grid-column: 1 / -1;
+}
+.config-field {
+  --field-width: 100%;
+  display: grid;
+  min-width: 0;
+}
+.width-xs {
+  --field-width: 6rem;
+}
+.width-sm {
+  --field-width: 10rem;
+}
+.width-md {
+  --field-width: 20rem;
+}
+.width-lg {
+  --field-width: 32rem;
+}
+.control {
+  display: grid;
+  min-width: 0;
+}
+.control > label,
+.field-label,
+.config-field legend {
+  margin-bottom: 3px;
+  padding: 0;
+  font-weight: 600;
+}
+.field-help {
+  margin-bottom: 7px;
+  color: var(--muted);
+  font-size: 12px;
+}
+.field-note {
+  margin-top: 4px;
+  color: var(--muted);
+  font-size: 12px;
+}
+.config-field input:not([type='checkbox'], [type='radio']),
+.config-field select,
+.number-input {
+  width: 100%;
+  max-width: var(--field-width);
+}
+.number-input {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.number-input input {
+  flex: 1;
+  min-width: 0;
+}
+.affix {
+  color: var(--muted);
+  font-size: 12px;
+  white-space: nowrap;
+}
+.align-end input {
+  text-align: end;
+  font-variant-numeric: tabular-nums;
+}
+.align-center input {
+  text-align: center;
+}
+.label-start .control {
+  grid-template-columns: minmax(8rem, 12rem) minmax(0, 1fr);
+  align-items: center;
+  column-gap: 16px;
+}
+.label-start .control > label,
+.label-start .field-help {
+  grid-column: 1;
+  margin: 0;
+}
+.label-start .control > :not(label, .field-help) {
+  grid-row: 1 / span 2;
+  grid-column: 2;
+}
+.checkbox,
+.radio {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.parameter-form {
+  display: grid;
+  align-items: start;
+  grid-template-columns: repeat(2, minmax(0, 220px));
+  gap: 18px 24px;
+  margin-top: 8px;
+  padding-top: 18px;
+  border-top: 1px solid var(--line);
+}
+.form-subhead {
+  grid-column: 1 / -1;
+  margin: 0 0 -6px;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 650;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+.service-control {
+  display: grid;
+  gap: 18px;
+}
+.service-control > .control select {
+  max-width: 24rem;
+}
+.schema-properties .btn-ghost {
+  color: var(--accent);
+}
+
+/* Multi-line text and code */
+.expandable-text-area {
+  display: grid;
+}
+.text-area-box {
+  position: relative;
+}
+.text-area-box textarea {
+  display: block;
+  width: 100%;
+  padding-right: 2.2rem;
+}
+.expand-text {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 26px;
+  height: 26px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--muted);
+}
+.code-editor {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  overflow: hidden;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius);
+  background: var(--surface-2);
+}
+.code-gutter,
+textarea.code {
+  margin: 0;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  line-height: 1.5;
+}
+.code-gutter {
+  min-width: 2.75rem;
+  padding-right: 10px;
+  padding-left: 10px;
+  overflow: hidden;
+  border-right: 1px solid var(--line);
+  color: var(--subtle);
+  text-align: right;
+  user-select: none;
+}
+textarea.code {
+  min-height: 18rem;
+  padding-right: 12px;
+  padding-left: 12px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  white-space: pre;
+  resize: vertical;
+}
+
+/* Lists: compact rows with label and number, move up and down, and remove */
+.list-control {
+  justify-self: start;
+  width: min(var(--field-width), 100%);
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+.list-control ol {
+  display: grid;
+  gap: 6px;
+  margin: 0 0 8px;
+  padding: 0;
+  list-style: none;
+}
+.list-control li {
+  display: grid;
+  grid-template-columns: 4.5rem minmax(0, 1fr) auto auto auto;
+  align-items: center;
+  gap: 2px;
+}
+.list-control li label {
+  color: var(--muted);
+  font-size: 12px;
+  white-space: nowrap;
+}
+.list-control li input {
+  margin-right: 4px;
+}
+.list-add {
+  justify-self: start;
+}
+
+/* Schemas: a choice between free text and a JSON schema, and a table of properties */
+.schema-editor {
+  display: grid;
+  gap: 10px;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+.format-choice {
+  display: inline-flex;
+  justify-self: start;
+  overflow: hidden;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius);
+}
+.format-choice label {
+  position: relative;
+  padding: 5px 14px;
+  border-right: 1px solid var(--line-strong);
+  cursor: pointer;
+}
+.format-choice label:last-child {
+  border-right: 0;
+}
+.format-choice label:has(input:checked) {
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-weight: 600;
+}
+.format-choice label:has(input:focus-visible) {
+  outline: 2px solid var(--accent);
+  outline-offset: -2px;
+}
+.format-choice input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
+.schema-properties {
+  display: grid;
+  justify-items: start;
+  gap: 8px;
+}
+.property-table {
+  justify-self: stretch;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+}
+.property-row {
+  display: grid;
+  grid-template-columns: minmax(8rem, 1fr) 8.5rem 5rem 5.5rem 5.5rem 30px;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 10px;
+  border-bottom: 1px solid var(--line);
+}
+.property-row:last-child {
+  border-bottom: 0;
+}
+.property-headings {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  background: var(--surface-2);
+  color: var(--subtle);
+  font-size: 11px;
+  font-weight: 650;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+.property-row input[type='number'] {
+  text-align: end;
+}
+.schema-read-only pre,
+.evidence-text,
+.evidence-json {
+  margin: 0;
+  padding: 8px 10px;
+  border-radius: var(--radius);
+  background: var(--surface-2);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+/* Configuration sections as rows: a click shows the values, the pencil edits them */
+/* Each section is a cell of a list: a divider above it, the panel's padding inside it. */
+.section-row {
+  --cell-padding: 14px;
+  background: var(--surface);
+}
+.section-row + .section-row {
+  border-top: 1px solid var(--line);
+}
+.section-row-head {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  min-width: 0;
+  padding-right: calc(var(--cell-padding) - 6px);
+}
+.section-row-head:hover {
+  background: var(--surface-2);
+}
+.section-row-toggle {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  height: 36px;
+  padding: 0 4px 0 var(--cell-padding);
+  border: 0;
+  border-radius: 0;
+  background: none;
+  color: var(--text);
+  font: inherit;
+  text-align: left;
+}
+button.section-row-toggle {
+  cursor: pointer;
+}
+button.section-row-toggle:hover:not(:disabled) {
+  border-color: transparent;
+  background: none;
+}
+.section-row-title {
+  font-weight: 550;
+  white-space: nowrap;
+}
+.section-row-preview {
+  min-width: 0;
+  margin-left: auto;
+  overflow: hidden;
+  color: var(--muted);
+  font-size: 12px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.section-row-values {
+  display: grid;
+  gap: 6px;
+  margin: 0;
+  padding: 2px var(--cell-padding) 12px;
+}
+.section-row-values dt,
+.evidence-fields dt {
+  color: var(--subtle);
+  font-size: 11px;
+}
+.section-row-values dd,
+.evidence-fields dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+.evidence-fields {
+  display: grid;
+  gap: 4px;
+  margin: 0;
+}
+.evidence-list {
+  margin: 0;
+  padding-left: 1.2rem;
+}
+.empty-value {
+  color: var(--muted);
+  font-style: italic;
+}

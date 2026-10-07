@@ -9,8 +9,12 @@
     "test:e2e": "playwright test"
   },
   "dependencies": {
+    "@dagrejs/dagre": "3.1.1",
+    "@tisoap/react-flow-smart-edge": "5.0.0",
     "@xyflow/react": "^12.9.0",
     "ajv": "8.20.0",
+    "elkjs": "0.12.0",
+    "obstacle-router": "0.1.2",
     "react": "19.3.0",
     "react-dom": "19.3.0",
     "zod": "^4.0.0"
@@ -25,6 +29,6 @@
     "@vitejs/plugin-react": "6.1.1",
     "vite": "8.3.1"
   },
-  "license": "Apache-2.0",
+  "license": "FSL-1.1-ALv2",
   "author": "Cesar Zea"
 }

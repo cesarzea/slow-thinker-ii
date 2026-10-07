@@ -1,0 +1,21 @@
+{
+  "format": "slow-thinker.graph/1",
+  "id": "funny-story",
+  "name": "Funny story",
+  "limits": {"max_activations": 20, "max_running_nodes": 4, "time_limit_seconds": 300, "budget_usd": "0.10"},
+  "nodes": [
+    {"id": "story", "name": "Story", "component": "trigger@1.0.0", "config": {"message": "A cat tried to learn to fly."}},
+    {"id": "proposer", "name": "Proposer", "component": "llm-call@1.0.0", "config": {
+      "prompt": "Rewrite this story so that it is funny. Keep it under 80 words.",
+      "model": {"llm": "openai/gpt-6-luna", "parameters": {"max_completion_tokens": 300}},
+      "input_format": null,
+      "output_format": {"type": "text"}
+    }},
+    {"id": "result", "name": "Funny story", "component": "output@1.0.0", "config": {}}
+  ],
+  "connections": [
+    {"from": "story.out", "to": "proposer.in"},
+    {"from": "proposer.out", "to": "result.in"}
+  ],
+  "layout": {"story": [16, 100], "proposer": [262, 86], "result": [522, 104]}
+}

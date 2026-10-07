@@ -1,0 +1,111 @@
+{
+  "schema_version": 1,
+  "verification_confirmed_at": "2026-10-03T06:57:11Z",
+  "scope": "S06-UI-COMPLETE / 1; complete interface for implemented architecture",
+  "baseline_commit": "a8445149e2615668f2aadda0563e81bbe6c7341e",
+  "tree_status": "Uncommitted local working tree; prior changes preserved",
+  "command": "make verify",
+  "exit_code": 0,
+  "tests": {
+    "python": 2280,
+    "frontend": 868,
+    "frontend_files": 153,
+    "browser": 39,
+    "installed_components": 20
+  },
+  "installed_checks": {
+    "bounded_acceptance_and_exhaustion": {
+      "passed": 2,
+      "seconds": 136.2
+    },
+    "remaining_configured_checks": {
+      "passed": 18,
+      "seconds": 474.23
+    }
+  },
+  "frontend_coverage": {
+    "statements": {
+      "percent": 96.68,
+      "covered": 5337,
+      "total": 5520
+    },
+    "branches": {
+      "percent": 91.08,
+      "covered": 3962,
+      "total": 4350
+    },
+    "functions": {
+      "percent": 97.62,
+      "covered": 1974,
+      "total": 2022
+    },
+    "lines": {
+      "percent": 97.85,
+      "covered": 4700,
+      "total": 4803
+    }
+  },
+  "python_coverage": {
+    "lines": {
+      "covered": 11464,
+      "total": 11771,
+      "percent": 97.39189533599524
+    },
+    "branches": {
+      "covered": 2774,
+      "total": 3020,
+      "percent": 91.8543046357616
+    }
+  },
+  "codeql": {
+    "version": "2.27.1",
+    "errors": 0,
+    "warnings": 0,
+    "python_notes": 100,
+    "javascript_notes": 0,
+    "report_id": "42a49907ffa64b149d100d0a020a21ce"
+  },
+  "mutation": {
+    "scope": "Existing accounting baseline",
+    "total": 200,
+    "killed": 141,
+    "survived": 58,
+    "timed_out": 1,
+    "all_killed_claimed": false
+  },
+  "log_sha256": "d84a42edf1683c828e0e8b3eacb5a725e16c1deae590802a95af8890b0d692ab",
+  "earlier_attempt": {
+    "status": "Failed at five frontend expectations in three omitted scoped-test files",
+    "python_passed": 2280,
+    "frontend_passed": 855,
+    "frontend_failed": 5,
+    "log_sha256": "6330d25bd0909dbf0024c06043afefb2e46f0ae9b68563bdfdfa4e86f28b528e"
+  },
+  "gate_thresholds_changed": false,
+  "new_paid_calls": 0,
+  "credential_changes": false,
+  "manual_demonstration": {
+    "runtime_evidence": "s06-ui-completion-local-run-20261003.json",
+    "run_id": "149cb88d70664892986a514ee6fd138d",
+    "execution": "Production services, SQLite, installed component processes and mediated MCP",
+    "model": "Deterministic local upstream; illustrative responses and costs",
+    "paid_provider_validation": false,
+    "saved_experiment": "backup-review-demo",
+    "saved_revision": "r-0302466056c941e2a60c43a6f9e82002",
+    "desktop_css_pixels": [1422, 800],
+    "narrow_css_width": 390,
+    "horizontal_overflow_observed": false,
+    "original_owner_draft": "Preserved separately; not overwritten"
+  },
+  "image_sha256": {
+    "completed-run.png": "a52cca4f8b29777d9e48a79803e29bda5da1f8821e9e382c5278106087a75755",
+    "composed-agent.png": "83c256077c9d26f8db23e9115503297d77234e0f097968b3311127380124b01e",
+    "experiments.png": "a1dce351558bd94983f85b43e7b82c97cfb81f91a3a9edf93b543d3e7b722035",
+    "narrow-inspector.png": "1c2cfad5d61d61b06de01987c7fbe6f82d699d55d99317f29b504a7e65e67d3d",
+    "redirector-evidence.png": "ae3eff2ffc948e7103c7ee55d164176668b54c2f12371537c4000e8c3a52b45d",
+    "resources.png": "dc4c9ff9138934582775b1d44599bfa3c9fbb58329eee3fd2cb2c48faf73eba7",
+    "versions.png": "db9ac9c0f090d51831d8a849c2f74081476d432d910596a21cc599872acca432"
+  },
+  "acceptance": "Local delivery verified; owner usability acceptance pending",
+  "publication": "No commit, push, merge or release performed"
+}

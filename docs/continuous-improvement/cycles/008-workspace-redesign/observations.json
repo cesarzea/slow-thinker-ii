@@ -1,0 +1,83 @@
+{
+  "schema_version": "1",
+  "cycle": "C08",
+  "scope": "S06 workspace redesign",
+  "owner": "Cesar Zea",
+  "timezone": "UTC",
+  "measurement_kind": "direct checkpoint observations; not an activity-duration audit",
+  "observations": [
+    {
+      "at": "2026-10-02T22:09:23Z",
+      "phase": "parallel development",
+      "source": "clock sample; earlier preparation and handoffs excluded"
+    },
+    {
+      "at": "2026-10-02T22:22:32Z",
+      "phase": "parallel development and shared-contract clarification",
+      "source": "clock sample before active process record creation"
+    },
+    {
+      "at": "2026-10-02T22:47:23Z",
+      "phase": "individual and combined source review",
+      "source": "clock sample; backend and observation source deliveries received; authoring and shell development still overlap"
+    },
+    {
+      "at": "2026-10-02T23:19:51Z",
+      "phase": "final combined source review and verification preparation",
+      "source": "direct clock sample; backend, definition editor, collection, shell and observation reviewed; workspace static cleanup remains; no functional tests run"
+    },
+    {
+      "at": "2026-10-02T23:24:06Z",
+      "phase": "testing released after combined source review",
+      "source": "direct clock sample; A production SQLite/HTTP representatives and C production-metadata ordinary-save browser case precede dependent test expansion"
+    },
+    {
+      "at": "2026-10-02T23:59:57Z",
+      "phase": "scoped testing and browser correction",
+      "source": "direct clock sample; editor/library65, workspace76 and observation146 scoped tests pass; shell source frozen after two browser-confirmed composition corrections; current browser migrations and mandatory whole-project verification remain"
+    },
+    {
+      "at": "2026-10-03T00:15:39Z",
+      "phase": "mandatory shared verification started",
+      "source": "direct clock sample; corrected editor/library, workspace and observation source reviewed; shell lifetime correction reviewed; browser migration focused rerun overlaps the initial static checks; coordinator owns make verify through completion"
+    },
+    {
+      "at": "2026-10-03T00:18:37Z",
+      "phase": "mandatory verification resumed after browser-test lint corrections",
+      "source": "direct clock sample; unchanged entry point stopped at unused exports and types; private symbols made local and genuine typed public-contract consumers retained"
+    },
+    {
+      "at": "2026-10-03T00:27:46Z",
+      "phase": "mandatory verification resumed after dead-code cleanup",
+      "source": "direct clock sample; all source and tests frozen; runner stopped at formatting in three newly updated module tickets"
+    },
+    {
+      "at": "2026-10-03T00:28:49Z",
+      "phase": "mandatory verification resumed after ticket formatting",
+      "source": "direct clock sample; same configured make verify; coordinator owns process through completion"
+    },
+    {
+      "at": "2026-10-03T00:37:02Z",
+      "phase": "premature runner restart before scoped correction result was inspected",
+      "source": "direct clock sample; known process subsequently interrupted; sequencing mistake and failed exact-source assertion documented separately"
+    },
+    {
+      "at": "2026-10-03T00:44:51Z",
+      "phase": "parallel module coverage correction",
+      "source": "Direct clock sample; all 574 frontend tests pass but mandatory branch coverage fails at 81.89%; no production changes in this test-expansion phase."
+    },
+    {
+      "at": "2026-10-03T00:53:48Z",
+      "phase": "combined frontend coverage preflight passed",
+      "source": "Direct clock sample; 747 tests in 125 files pass with 96.04% statement, 90.70% branch, 97.02% function and 97.26% line coverage under the original thresholds; final mandatory runner pending."
+    },
+    {
+      "at": "2026-10-03T01:08:40Z",
+      "phase": "mandatory technical verification complete",
+      "source": "Direct clock sample after coordinator-owned make verify returned exit code 0; 2,280 Python tests, 747 frontend tests and 33 browser journeys pass. Documentation closure follows; owner usability acceptance and publication remain pending."
+    }
+  ],
+  "verification_status": "locally verified; owner usability review pending",
+  "observed_checkpoint_span_seconds": 10757,
+  "complete_active_duration_audited": false
+}

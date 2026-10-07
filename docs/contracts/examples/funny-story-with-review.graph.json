@@ -1,0 +1,37 @@
+{
+  "format": "slow-thinker.graph/1",
+  "id": "funny-story-with-review",
+  "name": "Funny story with review",
+  "limits": {"max_activations": 10, "max_running_nodes": 4, "time_limit_seconds": 120, "budget_usd": "0.05"},
+  "nodes": [
+    {"id": "story", "name": "Story", "component": "trigger@1.0.0", "config": {"message": "A cat tried to learn to fly."}},
+    {"id": "proposer", "name": "Proposer", "component": "llm-call@1.0.0", "config": {
+      "prompt": "Rewrite this story so that it is funny. Keep it under 80 words.",
+      "model": {"llm": "openai/gpt-6-luna", "parameters": {"max_completion_tokens": 300}},
+      "input_format": null,
+      "output_format": {"type": "text"}
+    }},
+    {"id": "reviewer", "name": "Reviewer", "component": "llm-call@1.0.0", "config": {
+      "prompt": "Rate how funny this story is from 1 to 10.",
+      "model": {"llm": "deepseek/deepseek-flash", "parameters": {"reasoning_effort": "none", "temperature": 0.2, "max_completion_tokens": 50}},
+      "input_format": null,
+      "output_format": {"type": "json", "schema": {
+        "type": "object", "additionalProperties": false, "required": ["score"],
+        "properties": {"score": {"type": "integer", "minimum": 1, "maximum": 10}}
+      }}
+    }, "embedded": [
+      {"position": "output", "component": "router@1.0.0", "config": {
+        "outputs": ["accepted", "revise"],
+        "script": "def route(received, node_input):\n    if received[\"score\"] >= 7:\n        return \"accepted\", node_input\n    return \"revise\", node_input\n"
+      }}
+    ]},
+    {"id": "result", "name": "Funny story", "component": "output@1.0.0", "config": {}}
+  ],
+  "connections": [
+    {"from": "story.out", "to": "proposer.in"},
+    {"from": "proposer.out", "to": "reviewer.in"},
+    {"from": "reviewer.revise", "to": "proposer.in"},
+    {"from": "reviewer.accepted", "to": "result.in"}
+  ],
+  "layout": {"story": [12, 76], "proposer": [262, 62], "reviewer": [520, 62], "result": [790, 40]}
+}

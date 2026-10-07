@@ -1,0 +1,15 @@
+[build-system]
+requires = ["hatchling>=1.27,<2"]
+build-backend = "hatchling.build"
+
+[project]
+license = "FSL-1.1-ALv2"
+name = "slow-thinker-memory"
+version = "0.1.0.dev1"
+description = "Conversation memory component for Slow Thinker II."
+requires-python = ">=3.13,<3.14"
+authors = [{name = "Cesar Zea"}]
+dependencies = ["slow-thinker-host==0.1.0.dev1"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/slow_thinker_memory"]

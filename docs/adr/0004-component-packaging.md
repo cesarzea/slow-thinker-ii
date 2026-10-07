@@ -35,7 +35,7 @@ Separate component type, configured instance, process, node and activation ident
 
 Need a local registry, package path resolution, a launch handshake, scoped credentials, and process teardown policy. A local process is not a security sandbox. Launch commands belong to a trusted installation profile, not arbitrary graph input.
 
-The candidate manifest in the [component contract](../contracts/components.md) describes capabilities; executable launch details remain deliberately outside its current schema until approved. Compatibility adapters and MCP routing must share authorization, deadlines, accounting and trace correlation, including nested calls while a component is serving an activation.
+The candidate manifest in the [component contract](../archive/previous-implementation/contracts/components.md) describes capabilities; executable launch details remain deliberately outside its current schema until approved. Compatibility adapters and MCP routing must share authorization, deadlines, accounting and trace correlation, including nested calls while a component is serving an activation.
 
 ## Confirmation
 

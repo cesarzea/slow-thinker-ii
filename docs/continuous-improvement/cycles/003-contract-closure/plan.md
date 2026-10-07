@@ -83,7 +83,7 @@ this delivery is not published.
 The coordinator resolved shared UI identity, configuration provenance and API
 compatibility before delegating two independent module groups. The complete
 contract and acceptance scope are in the
-[agent-canvas sprint specification](../../../specification/agent-canvas-sprint.md).
+[agent-canvas sprint specification](../../../archive/previous-implementation/specification/agent-canvas-sprint.md).
 No provider calls or publication were needed. Review preceded the separate test
 implementation phase.
 

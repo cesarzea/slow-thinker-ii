@@ -1,78 +1,49 @@
-"""Every bundled target prepares production wheels and real inherited class metadata offline."""
+"""Each target prepares its own closure with the host SDK; real wheels ship the contract."""
 
 import json
 import runpy
 import sys
 from pathlib import Path
+from zipfile import ZipFile
 
 import pytest
 
 from tooling.components import prepare
-from tooling.components.targets import TARGETS, target
-from tooling.tests.component_fixtures import offline_command, patch_preparation, project
+from tooling.components.build import build_wheels
+from tooling.components.registration import Registration, read_registration
+from tooling.components.targets import TARGETS, PreparationTarget, target
+from tooling.tests.component_fixtures import (
+    component_projects,
+    locked,
+    offline_command,
+    patch_preparation,
+)
+
+ROOT = Path(__file__).resolve().parents[2]
 
 
-def projects(root: Path) -> None:
-    routing_projects(root)
-    project(root, "host", "slow_thinker_host", "class Host: pass\n", "[]")
-    project(
-        root,
-        "llm-call",
-        "slow_thinker_llm_call",
-        "class LLMCall: pass\n",
-        '["slow-thinker-host==0.1.0.dev1"]',
+def test_targets_are_the_packaged_components() -> None:
+    assert TARGETS == ("llm-call", "router", "memory")
+    assert target("llm-call") == PreparationTarget(
+        ("components/host", "components/llm-call"), "slow_thinker_llm_call"
     )
-    project(
-        root,
-        "openai-model",
-        "slow_thinker_openai_model",
-        "class OpenAIModelHost: pass\n",
-        '["slow-thinker-host==0.1.0.dev1"]',
-    )
-    project(
-        root,
-        "grounded-review",
-        "example_grounded_review",
-        "from slow_thinker_llm_call import LLMCall\nclass GroundedReview(LLMCall): pass\n",
-        '["slow-thinker-llm-call==0.1.0.dev1"]',
-        group="examples",
-    )
-
-
-def routing_projects(root: Path) -> None:
-    for folder, class_name in [
-        ("redirector", "RedirectorHost"),
-        ("routed-call", "RoutedCallHost"),
-        ("bounded-flow", "BoundedFlowHost"),
-        ("sequence", "SequenceHost"),
-    ]:
-        project(
-            root,
-            folder,
-            "slow_thinker_" + folder.replace("-", "_"),
-            f"class {class_name}: pass\n",
-            '["slow-thinker-host==0.1.0.dev1"]',
-            version="0.1.0.dev1" if folder == "sequence" else "0.1.0",
-        )
 
 
 @pytest.mark.parametrize("name", TARGETS)
-def test_component_targets_use_separate_exact_production_closures(
+def test_each_target_has_an_exact_production_closure(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch, name: str
 ) -> None:
-    projects(tmp_path)
+    component_projects(tmp_path)
     monkeypatch.setattr(prepare, "command", offline_command)
     python = Path(sys.executable)
     record = prepare.prepare_component(
         tmp_path, tmp_path / "installed", python.with_name("uv"), python, name
     )
-    assert record.registration == target(name).registration
-    assert "slow-thinker-ii" not in record.inspection.packages
-    assert "pytest" not in record.inspection.packages
-    assert record.inspection.base_entry_point == (
-        "slow_thinker_llm_call:LLMCall" if name == "grounded-review" else None
-    )
-    assert (tmp_path / "installed/catalog" / f"{record.identity}.json").is_file()
+    assert (record.registration.type, record.registration.type_version) == (name, "1.0.0")
+    assert set(locked(record.directory / "requirements.txt")) == {
+        "slow-thinker-host==0.1.0.dev1",
+        f"slow-thinker-{name}==0.1.0.dev1",
+    }
 
 
 def test_unknown_preparation_target_is_rejected_without_writing(tmp_path: Path) -> None:
@@ -83,33 +54,33 @@ def test_unknown_preparation_target_is_rejected_without_writing(tmp_path: Path) 
     assert not list(tmp_path.iterdir())
 
 
-def test_all_components_cli_retains_an_explicit_bundle(
+def test_all_components_are_installed_and_retained_in_a_bundle(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
-    projects(tmp_path)
+    component_projects(tmp_path)
     patch_preparation(tmp_path, monkeypatch)
     destination = tmp_path / "installed"
-    monkeypatch.setattr(
-        sys, "argv", ["prepare", "--component", "all", "--destination", str(destination)]
-    )
+    monkeypatch.setattr(sys, "argv", ["prepare", "--destination", str(destination)])
     runpy.run_module("tooling.components", run_name="__main__")
-    assert_bundle(destination)
+    (bundle,) = (destination / "bundles").glob("*.json")
+    record = json.loads(bundle.read_text())
+    assert record["schema_version"] == "3" and record["installation_root"] == str(destination)
+    assert set(record["components"]) == set(TARGETS)
+    for name, entry in record["components"].items():
+        assert entry["registration"]["type"] == name
+        assert (destination / "catalog" / f"{entry['resolution']}.json").is_file()
+        assert (Path(entry["preparation"]) / "requirements.txt").is_file()
 
 
-def assert_bundle(destination: Path) -> None:
-    bundles = list((destination / "bundles").glob("*.json"))
-    assert len(bundles) == 1
-    record = json.loads(bundles[0].read_text())
-    assert set(record["resolutions"]) == {
-        "sequence",
-        "llm-call",
-        "openai-model",
-        "grounded-review",
-        "redirector",
-        "routed-call",
-        "bounded-flow",
-    }
-    assert all(
-        (destination / "catalog" / f"{identity}.json").is_file()
-        for identity in record["resolutions"].values()
+@pytest.mark.parametrize("name", TARGETS)
+def test_real_component_wheels_ship_the_contract_declaration(tmp_path: Path, name: str) -> None:
+    recipe = target(name)
+    build_wheels((ROOT / f"components/{name}",), tmp_path, Path(sys.executable))
+    assert read_registration(tmp_path, recipe.module) == Registration(
+        name, "1.0.0", f"slow-thinker-{name}", "0.1.0.dev1", recipe.module
     )
+    (wheel,) = tmp_path.glob("*.whl")
+    with ZipFile(wheel) as archive:
+        shipped = json.loads(archive.read(f"{recipe.module}/component.json"))
+    example = ROOT / f"docs/contracts/examples/{name}.component.json"
+    assert shipped == json.loads(example.read_text(encoding="utf-8"))

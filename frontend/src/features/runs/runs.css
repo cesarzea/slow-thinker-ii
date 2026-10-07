@@ -1,0 +1,155 @@
+.run-view {
+  --run-header-height: 2.5rem;
+  display: grid;
+  gap: 1rem;
+  padding: 1rem 1.25rem 2rem;
+}
+.run-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.75rem;
+  min-height: var(--run-header-height);
+}
+.run-header h1 {
+  font-size: var(--step-2);
+}
+/* The body fills the window below the run header: its top padding, the header and one gap,
+   with 1rem left at the bottom. Previous runs follow below. */
+.run-body {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 340px;
+  grid-template-rows: minmax(0, 1fr);
+  gap: 1rem;
+  height: calc(100dvh - var(--header-height) - var(--run-header-height) - 3rem);
+  min-height: 420px;
+}
+.run-canvas {
+  min-height: 0;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  overflow: hidden;
+  background: var(--surface);
+}
+.run-side {
+  display: grid;
+  align-content: start;
+  gap: 0.9rem;
+  padding: 0.9rem;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface);
+  overflow: auto;
+  min-height: 0;
+  font-size: var(--step--1);
+}
+.run-status {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-weight: 600;
+}
+.run-status::before {
+  content: '';
+  width: 8px;
+  height: 8px;
+  flex: none;
+  border-radius: 50%;
+  background: var(--accent);
+}
+.run-status.completed::before {
+  background: var(--ok);
+}
+.run-status.stopped::before,
+.run-status.cancelled::before {
+  background: var(--message);
+}
+.run-status.failed::before {
+  background: var(--err);
+}
+.run-detail {
+  margin-top: -0.4rem;
+  color: var(--muted);
+}
+.figures,
+.run-limits {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 0.2rem 0.9rem;
+  margin: 0;
+}
+.figures dt,
+.run-limits dt {
+  color: var(--muted);
+}
+.figures dd,
+.run-limits dd {
+  margin: 0;
+  font-variant-numeric: tabular-nums;
+}
+.results h2,
+.run-history h2 {
+  font-size: var(--step-0);
+}
+.results ul {
+  display: grid;
+  gap: 0.6rem;
+  margin: 0.4rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+.result {
+  display: grid;
+  gap: 0.3rem;
+  padding: 0.6rem;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: var(--surface-2);
+}
+.run-history ul {
+  display: grid;
+  gap: 0.25rem;
+  margin: 0.4rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+@media (max-width: 960px) {
+  .run-body {
+    grid-template-columns: 1fr;
+    grid-template-rows: none;
+    height: auto;
+  }
+  .run-canvas {
+    height: 420px;
+  }
+}
+
+/* A run shown in place in the editor */
+.run-panel-body {
+  display: grid;
+  gap: 12px;
+  align-content: start;
+  padding: 14px;
+}
+.run-panel-links {
+  display: flex;
+  gap: 12px;
+  margin: 0;
+  font-size: 13px;
+}
+.run-panel-foot {
+  margin-top: auto;
+  padding: 12px 14px;
+  border-top: 1px solid var(--line);
+}
+.run-panel-foot .btn {
+  width: 100%;
+  justify-content: center;
+}
+.run-panel-actions {
+  display: flex;
+  gap: 8px;
+}
+.run-panel-actions:empty {
+  display: none;
+}

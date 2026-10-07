@@ -49,7 +49,7 @@ T3 is the durable authorization boundary. A stop accepted before T3 prevents dis
 
 Uniqueness constraints cover attempt identity, source usage/settlement identity and per-run event sequence. One attempt has one accounting contribution, referenced by its ancestors. Conditional state updates prevent two senders from claiming the same attempt. The backend is the identity authority; caller-provided request IDs alone cannot create another charge or authorize a retry.
 
-The [operator API proposal](../contracts/operator-api.md#start-command-and-durable-receipts) adds unique command identities and retained receipts/tombstones. Concurrent duplicate Starts resolve to one T1 result. Withdrawing an unconfirmed Start serializes against that same boundary: either it prevents admission, or it stops the already admitted run without erasing its receipt. A lost browser reply cannot authorize another execution.
+The [operator API proposal](../archive/previous-implementation/contracts/operator-api.md#start-command-and-durable-receipts) adds unique command identities and retained receipts/tombstones. Concurrent duplicate Starts resolve to one T1 result. Withdrawing an unconfirmed Start serializes against that same boundary: either it prevents admission, or it stops the already admitted run without erasing its receipt. A lost browser reply cannot authorize another execution.
 
 ### Crash and storage-failure cases
 

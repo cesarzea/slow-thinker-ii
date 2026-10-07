@@ -1,52 +1,53 @@
-"""Versioned schema installation retains a verified SQLite backup before migration."""
+"""Schema installation and migration; refuses newer or foreign databases and backs up before change.
+
+`MIGRATIONS[n]` is the SQL script that brings a database from version `n` to `n + 1`. The version is
+`PRAGMA user_version`; `PRAGMA application_id` marks databases created by this package, so that a
+file with an unrelated schema is never mistaken for one of ours, whatever its user version.
+"""
 
 import sqlite3
 from contextlib import closing
 from pathlib import Path
 from uuid import uuid4
 
+APPLICATION_ID = 0x53543249  # "ST2I"
+MIGRATIONS = (
+    Path(__file__).with_name("schema-1.sql"),
+    Path(__file__).with_name("schema-2.sql"),
+    Path(__file__).with_name("schema-3.sql"),
+    Path(__file__).with_name("schema-4.sql"),
+)
+
 
 def migrate(connection: sqlite3.Connection, path: Path) -> None:
-    version = connection.execute("PRAGMA user_version").fetchone()[0]
-    if version not in (0, 1, 2, 3, 4, 5, 6):
-        raise ValueError("Unsupported database schema version")
-    if version == 6:
+    """Brings the database to the current version in one transaction, after a verified backup."""
+    version = _version(connection, path)
+    if version == len(MIGRATIONS):
         return
-    before = connection.execute("PRAGMA data_version").fetchone()[0]
+    before = _scalar(connection, "PRAGMA data_version")
     if version > 0:
-        backup(connection, path)
+        backup(connection, path, version)
+    connection.execute("PRAGMA foreign_keys=OFF")  # scripts rebuild tables; checked below
     connection.execute("BEGIN IMMEDIATE")
     try:
-        if connection.execute("PRAGMA data_version").fetchone()[0] != before:
-            raise RuntimeError("Database changed during migration preparation")
-        if version == 2:
-            require_stopped(connection)
-        names = (
-            "schema.sql",
-            "execution.sql",
-            "receipts.sql",
-            "operator.sql",
-            "runtime.sql",
-            "definitions.sql",
-        )
-        for name in names[version:]:
-            execute_schema(connection, Path(__file__).with_name(name).read_text())
-        connection.execute("PRAGMA user_version=6")
+        if _scalar(connection, "PRAGMA data_version") != before:
+            raise RuntimeError("The database changed while its migration was prepared")
+        for script in MIGRATIONS[version:]:
+            execute_script(connection, script.read_text(encoding="utf-8"))
+        if connection.execute("PRAGMA foreign_key_check").fetchone() is not None:
+            raise RuntimeError("The migration would break a foreign key")
+        connection.execute(f"PRAGMA application_id={APPLICATION_ID}")
+        connection.execute(f"PRAGMA user_version={len(MIGRATIONS)}")
         connection.commit()
     except BaseException:
         connection.rollback()
         raise
+    finally:
+        connection.execute("PRAGMA foreign_keys=ON")
 
 
-def require_stopped(connection: sqlite3.Connection) -> None:
-    active = connection.execute(
-        "SELECT 1 FROM managed_runs WHERE state IN ('created','running','stopping') LIMIT 1"
-    ).fetchone()
-    if active is not None:
-        raise ValueError("Schema migration requires recovered or terminal runs")
-
-
-def execute_schema(connection: sqlite3.Connection, source: str) -> None:
+def execute_script(connection: sqlite3.Connection, source: str) -> None:
+    """Executes complete statements one by one, inside the caller's transaction."""
     statement = ""
     for line in source.splitlines(keepends=True):
         statement += line
@@ -57,12 +58,33 @@ def execute_schema(connection: sqlite3.Connection, source: str) -> None:
         raise ValueError("Incomplete migration statement")
 
 
-def backup(connection: sqlite3.Connection, path: Path) -> None:
-    original = connection.execute("PRAGMA user_version").fetchone()[0]
-    backup = path.with_name(f"{path.name}.v{original}.{uuid4().hex}.backup")
-    with closing(sqlite3.connect(backup)) as destination:
+def backup(connection: sqlite3.Connection, path: Path, version: int) -> None:
+    """Copies the database next to it and checks the copy before anything is changed."""
+    target = path.with_name(f"{path.name}.v{version}.{uuid4().hex}.backup")
+    with closing(sqlite3.connect(target)) as destination:
         connection.backup(destination)
-        integrity = destination.execute("PRAGMA integrity_check").fetchone()[0]
-        version = destination.execute("PRAGMA user_version").fetchone()[0]
-        if integrity != "ok" or version != original:
-            raise RuntimeError("Pre-migration backup failed validation")
+        integrity = _scalar(destination, "PRAGMA integrity_check")
+        copied = _scalar(destination, "PRAGMA user_version")
+    if integrity != "ok" or copied != version:
+        raise RuntimeError("Pre-migration backup failed validation")
+
+
+def _version(connection: sqlite3.Connection, path: Path) -> int:
+    application = _scalar(connection, "PRAGMA application_id")
+    version = _scalar(connection, "PRAGMA user_version")
+    objects = _scalar(connection, "SELECT count(*) FROM sqlite_schema")
+    if application == version == objects == 0:
+        return 0
+    if application != APPLICATION_ID:
+        raise ValueError(
+            f"Unsupported database {path}: it was created by another application or an earlier "
+            "Slow Thinker II implementation. Move it away or configure another database file."
+        )
+    if not isinstance(version, int) or version > len(MIGRATIONS):
+        raise ValueError(f"Unsupported database schema version in {path}: newer than this release")
+    return version
+
+
+def _scalar(connection: sqlite3.Connection, query: str) -> object:
+    value: object = connection.execute(query).fetchone()[0]
+    return value

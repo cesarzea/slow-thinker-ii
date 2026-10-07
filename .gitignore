@@ -19,7 +19,11 @@ build/
 .local/
 test-results/
 playwright-report/
+*.tsbuildinfo
 mutants/
 .DS_Store
-.idea/
+.idea/*
+!.idea/runConfigurations/
+.idea/runConfigurations/*
+!.idea/runConfigurations/*.xml
 slow-thinker.keys.json
