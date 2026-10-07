@@ -91,10 +91,12 @@ async def test_one_failure_stops_hosts_that_are_still_starting(tmp_path: Path) -
 
     def remember() -> None:
         seen.update(host_pids(run_directory))
+        (run_directory / "exit.now").write_text("")
 
     log = RecordingLog()
     log.when("host.ready", remember)
-    detail, _ = await failed_start(tmp_path, fixture_plan("serve", "hang", "exit"), log=log)
+    plan = fixture_plan("serve", "hang", "exit_when_told")
+    detail, _ = await failed_start(tmp_path, plan, log=log)
     assert detail == "Fixture in Worker 3 could not start: Fixture startup failed: told to exit."
     outcomes = {event.node_id: event.kind for event in log.events}
     assert outcomes == {"w1": "host.ready", "w2": "host.failed", "w3": "host.failed"}

@@ -62,9 +62,19 @@ class Fixture:
         return self._facts if request.get("facts") else message
 
 
+def wait_until_told(deadline_seconds: float = 30) -> None:
+    """Block until the test writes `exit.now` in the run directory."""
+    deadline = time.monotonic() + deadline_seconds
+    while not Path("exit.now").exists() and time.monotonic() < deadline:
+        time.sleep(0.05)
+
+
 def start(bootstrap: Bootstrap, mode: str) -> None:
     Path(f"{bootstrap.node_id}.{bootstrap.position}.pid").write_text(str(os.getpid()))
     Path(f"{bootstrap.node_id}.{bootstrap.position}.started").write_text(repr(time.time()))
+    if mode == "exit_when_told":
+        wait_until_told()
+        mode = "exit"
     if mode == "exit":
         sys.stderr.write("Starting the fixture.\nFixture startup failed: told to exit.\n")
         raise SystemExit(3)
