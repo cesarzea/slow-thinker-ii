@@ -36,7 +36,7 @@
     "eslint-config-prettier": "10.1.8",
     "eslint-plugin-react-hooks": "7.1.1",
     "eslint-plugin-sonarjs": "4.2.1",
-    "knip": "6.38.0",
+    "knip": "6.39.0",
     "prettier": "3.9.9",
     "pyright": "1.1.414",
     "typescript": "6.0.3",
