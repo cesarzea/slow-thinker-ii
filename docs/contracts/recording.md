@@ -4,7 +4,7 @@
 | ---------------- | --------------------------------------------------------------------- |
 | Contract ID      | CORE-RECORDING-1                                                      |
 | Decisions        | [ADR 0021](../adr/0021-supervision-and-recording.md)                  |
-| Journeys         | V11, the step 1.2 activity view                                       |
+| Journeys         | V11, the S06 part two activity view                                       |
 
 Every run has an append-only event log. The platform writes it as it mediates the
 run; nothing is reconstructed afterwards. Activity views, results and totals are
@@ -62,4 +62,4 @@ Grants, provider credentials and authorization headers are never recorded.
 
 ## Retention
 
-Events are kept until the operator deletes the run; step 1 provides no deletion.
+Events are kept until the operator deletes the run; S06 provides no deletion.

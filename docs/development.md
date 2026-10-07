@@ -1,6 +1,6 @@
 # Local development and operation
 
-This guide covers running the step 1 platform on one machine. For contribution rules
+This guide covers running the S06 platform on one machine. For contribution rules
 and complete verification, see [CONTRIBUTING.md](../CONTRIBUTING.md).
 
 ## Prepare the environment

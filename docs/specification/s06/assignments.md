@@ -1,4 +1,4 @@
-# Step 1 assignments
+# S06 assignments
 
 Assignments follow [M07](../../continuous-improvement/methods/007-validated-journeys.md):
 shared foundations first with one implementer (F1, then F2), then independent packages

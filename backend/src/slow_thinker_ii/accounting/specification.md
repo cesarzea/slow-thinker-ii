@@ -98,7 +98,7 @@ def month_key(at: datetime) -> str             # "2026-10", UTC
 
 ## Acceptance
 
-Tests cover the GPT-6 Luna and DeepSeek Flash tariffs of the step 1 configuration,
+Tests cover the GPT-6 Luna and DeepSeek Flash tariffs of the S06 configuration,
 the long-context threshold, each DeepSeek window boundary, a call spanning a window
 edge, rounding up, range errors, and every `parse_tariff` error. Mutation testing of
 the package keeps at least the previous killed ratio (141 of 200).

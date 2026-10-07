@@ -53,7 +53,7 @@ def main(arguments: Sequence[str], serve: Serve = run_host) -> None
 - The script runs synchronously in a daemon thread so that the host stays responsive
   and a script that never returns cannot keep the process alive once standard input
   closes; when the call's budget expires, the late result is discarded. The script is
-  trusted user code in step 1.
+  trusted user code in S06.
 
 ## Acceptance
 

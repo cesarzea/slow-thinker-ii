@@ -34,7 +34,7 @@ lists package declarations only; the platform's Trigger and Output are always ad
 ## Server configuration
 
 A JSON document of at most 1 MiB; the file `slow-thinker.keys.json` is refused. The
-[example](../../../../examples/server-configuration.json) is the step 1 reference.
+[example](../../../../examples/server-configuration.json) is the S06 reference.
 
 | Field           | Content                                                                                     |
 | --------------- | ------------------------------------------------------------------------------------------- |

@@ -1,6 +1,6 @@
 # Working on Slow Thinker II
 
-Follow the [module workflow](docs/archive/previous-implementation/architecture/module-boundaries.md#module-documents-and-implementation-workflow)
+Follow the [module workflow](docs/architecture/module-boundaries.md#module-documents-and-implementation-workflow)
 and the mandatory [engineering standards](README.md#engineering-standards).
 
 The current approved working method is
@@ -100,7 +100,9 @@ Document architecture with arc42 and C4 views and record decisions as MADR recor
 as the README requires. Module specifications state the current specification only;
 dated delivery receipts and status belong in sprint status reports and the
 verification record. Archive and label superseded documents instead of amending
-them in place.
+them in place. List every new maintained document in the
+[documentation index](docs/README.md); `make verify` rejects an unlisted document or a
+broken link between documents.
 
 Maintain the [engineering process improvement record](docs/continuous-improvement/README.md)
 as formal project documentation. On closing a relevant delivery cycle, update its

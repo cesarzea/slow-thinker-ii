@@ -1,6 +1,6 @@
 # ADR 0008: Support optional implementation inheritance with bounded versions
 
-- Status: Proposed
+- Status: Proposed; recovered by the [scope review of 2026-10-06](../specification/scope-review-2026-10-06.md) and scheduled for S22
 - Recorded: 2026-09-27
 - Decision-maker: Cesar Zea
 - Requirements: R02–R03, R16, R24, R27

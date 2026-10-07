@@ -13,6 +13,8 @@ def prepare_root(root: Path) -> None:
     (root / "tooling").mkdir()
     manifest = {"roots": [], "files": [], "excluded": ["mutants"], "extensions": [".py"]}
     (root / "tooling/locations.json").write_text(json.dumps(manifest))
+    (root / "docs").mkdir()
+    (root / "docs/README.md").write_text("# Documentation\n")
     (root / "coverage").mkdir()
     (root / "coverage/python.json").write_text(
         json.dumps(
@@ -38,6 +40,16 @@ def test_stops_on_command_failure(tmp_path: Path, monkeypatch: pytest.MonkeyPatc
 def test_rejects_source_before_commands(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     prepare_root(tmp_path)
     (tmp_path / "misplaced.py").write_text("")
+    monkeypatch.setattr(verify, "ROOT", tmp_path)
+    monkeypatch.setattr(verify, "COMMANDS", (("must-not-execute",),))
+    assert verify.main() == 1
+
+
+def test_rejects_unindexed_documents_before_commands(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    prepare_root(tmp_path)
+    (tmp_path / "docs/orphan.md").write_text("Missing from the index.\n")
     monkeypatch.setattr(verify, "ROOT", tmp_path)
     monkeypatch.setattr(verify, "COMMANDS", (("must-not-execute",),))
     assert verify.main() == 1

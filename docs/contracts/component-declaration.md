@@ -141,7 +141,7 @@ connections that leave the ports it provided; confirming removes them.
 The trigger's `manual_runs` is `ask` (the default: a run started by hand asks for the
 message, prefilled with `message`) or `send` (it sends `message` as it is).
 
-Their declarations are part of the platform. Examples of all step 1 declarations
+Their declarations are part of the platform. Examples of all S06 declarations
 are in [examples](examples/): [trigger](examples/trigger.component.json),
 [output](examples/output.component.json), [LLM Call](examples/llm-call.component.json),
 [Router](examples/router.component.json) and [Memory](examples/memory.component.json),

@@ -1,4 +1,4 @@
-# Step 1 sprint report
+# S06 sprint report
 
 | Document control | Value                                                                        |
 | ---------------- | ---------------------------------------------------------------------------- |
@@ -7,13 +7,13 @@
 | Report version   | `0.0.6.7`, sprint S06                                                         |
 | Owner            | Cesar Zea                                                                    |
 | Date             | 2026-10-05                                                                   |
-| Delivery         | [Step 1](README.md), cycle [C12](../../continuous-improvement/cycles/012-core-step-1/report.md) |
+| Delivery         | [S06](README.md), cycle [C12](../../continuous-improvement/cycles/012-core-step-1/report.md) |
 | Source state     | Working tree of branch `core-foundation`, not committed                      |
 | Status           | Locally verified after the owner's review; accepted by the owner on 2026-10-07 |
 
 ## Summary
 
-Step 1 delivered the validated journeys J1–J3 and the activity view, and passed the
+S06 delivered the validated journeys J1–J3 and the activity view, and passed the
 complete runner on 2026-10-04. The owner then reviewed the running product with quick
 changes, deferring testing and validation to the close. The review reshaped how graphs
 are edited and run: every edit is saved, versions are activated on purpose, runs execute
@@ -79,15 +79,14 @@ Grouped by functional unit; decisions are recorded in ADRs 0024–0026.
 | Trigger declaration | `manual_runs` was added to `trigger@1.0.0` as an optional field, without a version change. | Decided by the owner on 2026-10-07: it stays in `trigger@1.0.0`. |
 | Activity page | Reachable only by the run's address followed by `/activity`. | Redesign in a later sprint. |
 | Interface branch coverage | 90.59%, just above the 90% threshold. | Add tests in the next sprint to restore a margin. |
-| Memory nodes and simultaneous messages | A memory is stateful, so its node takes one activation at a time; a second message that arrives while the first is being handled fails its activation with `node_busy`, and the run with it (for example, two writers feeding one Editor in parallel). | Input queues at node inputs (step 4) will hold the second message instead. |
+| Memory nodes and simultaneous messages | A memory is stateful, so its node takes one activation at a time; a second message that arrives while the first is being handled fails its activation with `node_busy`, and the run with it (for example, two writers feeding one Editor in parallel). | Input queues at node inputs (S14) will hold the second message instead. |
 | Demonstration servers | The real-provider server on port 8765 has stopped; its configurations in `.local/showcase` still name the earlier component resolutions. | Update the resolutions before starting it again. |
 
 ## Next sprints
 
-Replanned with the owner on 2026-10-05; see the [roadmap](../roadmap.md).
-
-- **Next sprint (step 2).** Labs, a workspace per objective that groups its graphs,
-  runs and results; mem0 as a memory component, to validate how persistent memory will
-  work; then shared context and variables as resources.
-- **Later, without a sprint yet.** Pre-warmed component hosts, agents in separate
-  containers (step 8), and memory that lasts across runs.
+Replanned with the owner on 2026-10-07 after the
+[scope review](../scope-review-2026-10-06.md); see [roadmap revision 3](../roadmap.md).
+The next sprint is S07: companies, users and workspaces with isolation between
+companies, and Labs with experiments, variants and work sessions. S08 follows with
+isolated execution in local Docker containers, and S09 with the resources view, JSON
+import and export, and mem0.

@@ -1,9 +1,9 @@
-# Step 1 verification record
+# S06 verification record
 
 | Document control | Value                                                                       |
 | ---------------- | --------------------------------------------------------------------------- |
 | Document ID      | STEP-1-VERIFICATION                                                         |
-| Delivery         | [Step 1](README.md), acceptance criteria AC01–AC13                          |
+| Delivery         | [S06](README.md), acceptance criteria AC01–AC13                          |
 | Cycle            | [C12](../../continuous-improvement/cycles/012-core-step-1/report.md)        |
 | Date             | 2026-10-05                                                                  |
 | Source state     | Working tree of branch `core-foundation`, not committed                     |
@@ -99,6 +99,6 @@ application's ports. The three surviving mutants are equivalent:
 - A canvas card taller than 200 px, such as a Router with three or more outputs, can
   be placed less than 24 px above the next automatically placed card.
 - A node with a Memory is stateful and takes one activation at a time; until input
-  queues exist (step 4), a second message that arrives while it is busy fails that
+  queues exist (S14), a second message that arrives while it is busy fails that
   activation with `node_busy`, and the run with it.
 - Interface branch coverage is 90.59%, close to the 90% threshold.

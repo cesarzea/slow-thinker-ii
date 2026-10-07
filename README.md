@@ -6,21 +6,34 @@
 
 **Original Slow Thinker (previous version):** [Project website](https://www.cesarzea.com/slow-thinker) · [Source code](https://github.com/cesarzea/slow-thinker) · [Example experiment report](https://www.cesarzea.com/assets/slow-thinker/reports/d7442a5f-fd3b-438a-8816-91f4625f2492/report.html#process)
 
+## What it is
+
+Slow Thinker II is a laboratory and an execution platform for systems of collaborating
+agents: it designs them, shows what happens inside them, improves them against each
+client's objectives and puts them to work. A graph can be proposed by the platform,
+imported or designed by hand, and all three are run, analysed and improved the same
+way. It does not promise the best graph; it lets you search for a better one with
+comparisons proved on data. See the [requirements](docs/specification/requirements.md)
+for the full purpose and rationale.
+
 ## Principles
 
-- **Configurable, dynamic graphs.** Each experiment defines its own collaboration graph, which can change during execution.
-- **Extensible components.** Agents, resources, memory providers, flow controllers,
-  and collaboration techniques can be supplied by users through defined contracts.
-- **Mediated communication.** The platform routes MCP calls between components,
-  controls access, records interactions, and applies execution limits.
-- **Optional memory and context.** Resources can be private or shared. Each agent
-  determines what context it sends.
-- **Observable execution.** Graphs are visible from the first version, with
-  inspectable calls, outputs, errors, duration, and cost.
-- **Explicit limits.** Configurable call and run deadlines, with spending budgets
-  per run, saved work session, and month.
-- **Small functional releases.** Start locally with trusted components and simple
-  workflows, while preserving room for richer execution models.
+- **Graphs of any shape.** Loops, parallel branches, waits and conversations; graphs
+  that change while they run, and reusable subgraphs.
+- **An experimentation lab.** Labs, one per objective, for manual, supervised or
+  automatic experimentation; every improvement is a hypothesis proved on incremental
+  test sets the optimizer has never seen.
+- **See inside the collaboration.** Every message, call, report and cost is recorded,
+  so that the analysis of how agents collaborate can guide the improvements.
+- **Encapsulated, extensible components.** Each component sits behind a protocol in its
+  own process or thread; users publish their own and bring agents written with OpenAI,
+  LangChain or LangGraph.
+- **Mediated and isolated.** Every interaction goes through the platform; runs execute
+  in containers that never mix workspaces, and credentials never leave the platform.
+- **Explicit limits, known costs.** Deadlines per call and per run; budgets per run,
+  work session, day and month; prepaid credits.
+- **Small, verified sprints.** Each sprint closes with validated journeys, the complete
+  verification runner and the owner's acceptance.
 
 ## Documentation
 
@@ -33,18 +46,18 @@
 
 ## Current Status
 
-A new execution core is under development. Its first step lets users build graphs
+Sprint S06 delivered a new execution core, accepted by the owner on 2026-10-07: graphs
 of Trigger, LLM Call, Router and Output nodes, with agents that can have a Memory, in a
-visual editor that saves every change, run what is on screen under supervision with
-limits and budgets, and watch every message, activation and model call at the points
-of the graph they choose. The step's [user journeys](docs/specification/core-step-1-journeys/README.md)
-are validated, and step 1 is implemented, reviewed by the owner and locally verified
-([sprint report](docs/specification/step-1/sprint-report.md),
-[verification record](docs/specification/step-1/verification.md)) and accepted by the
-owner on 2026-10-07; no release is available. The previous prototype is
-[archived](docs/archive/previous-implementation/README.md).
+visual editor that saves every change; runs of what is on screen under supervision
+with limits and budgets; and live observation of every message, activation and model
+call at the points of the graph the user chooses
+([sprint report](docs/specification/s06/sprint-report.md),
+[verification record](docs/specification/s06/verification.md)). The next sprint, S07,
+adds companies, users and workspaces with isolation between companies, and Labs; the
+[roadmap](docs/specification/roadmap.md) plans S07–S25. No release is available. The
+previous prototype is [archived](docs/archive/previous-implementation/README.md).
 
-![The graph editor at the close of S06: an interviewer with a Memory and a Router talks to a character with its own Memory until the interview is done](docs/images/graph-editor-s06.png)
+![The graph editor at the close of S06: an interviewer with a Memory and a Router talks to a character with its own Memory until the interview is done; the panel shows the selected node's configuration and connections](docs/images/graph-editor-s06.png)
 
 ## Engineering standards
 
@@ -105,7 +118,7 @@ Technology stack: **Python + FastAPI** for the backend; **React + TypeScript, Re
 and Vite** for the browser interface. MCP and OpenAI-compatible interfaces
 support integration with agent tooling, including LangChain and LangGraph.
 
-See the [contributing guide](CONTRIBUTING.md), the [local development guide](docs/development.md) and the [step 1 verification record](docs/specification/step-1/verification.md) for setup, tested behavior and current limitations. The complete platform remains under development.
+See the [contributing guide](CONTRIBUTING.md), the [local development guide](docs/development.md) and the [S06 verification record](docs/specification/s06/verification.md) for setup, tested behavior and current limitations. The complete platform remains under development.
 
 The [Changelog](CHANGELOG.md) records development progress and sprint report versions.
 

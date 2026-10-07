@@ -1,6 +1,6 @@
 # ADR 0017: Message-driven asynchronous execution
 
-- Status: Accepted; the activation-failure policy is proposed
+- Status: Accepted; the activation-failure policy was accepted on 2026-10-07 with S06
 - Recorded: 2026-10-04
 - Decision-maker: Cesar Zea
 - Requirements: CR01–CR03, CR07, CR12
@@ -8,7 +8,7 @@
 ## Context and problem statement
 
 Graphs must eventually take any shape, run nodes in parallel and change at runtime.
-Step 1 needs simple semantics that do not block those goals.
+S06 needs simple semantics that do not block those goals.
 
 ## Decision outcome
 
@@ -25,7 +25,7 @@ Execution follows the [execution contract](../contracts/execution.md):
   component, and selects the port and content to emit.
 - A run completes when no delivery is pending and no activation is running. It
   stops when a limit is reached or the operator stops it.
-- Proposed: a failed activation stops the run with status `failed`, cancelling
+- Accepted: a failed activation stops the run with status `failed`, cancelling
   activations still running. A future option may let a graph continue on errors.
 
 ## Consequences

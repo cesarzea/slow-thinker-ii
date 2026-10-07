@@ -1,6 +1,6 @@
 # Component preparation commands: specification
 
-Builds and installs the step 1 component packages before any run. Running a graph never
+Builds and installs the S06 component packages before any run. Running a graph never
 builds, resolves, downloads or installs code.
 
 ## Public boundary

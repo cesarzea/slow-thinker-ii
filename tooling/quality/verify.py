@@ -6,6 +6,7 @@ import sys
 from pathlib import Path
 
 from tooling.quality.coverage_gate import require_coverage
+from tooling.quality.documentation import check_documentation
 from tooling.quality.inventory import read_locations
 from tooling.quality.source_rules import check_source
 
@@ -56,7 +57,7 @@ COMMANDS = (
 
 
 def main() -> int:
-    issues = check_source(ROOT, read_locations(ROOT))
+    issues = check_source(ROOT, read_locations(ROOT)) + check_documentation(ROOT)
     if issues:
         sys.stderr.write("\n".join(issues) + "\n")
         return 1

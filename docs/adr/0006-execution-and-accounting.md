@@ -1,6 +1,6 @@
 # ADR 0006: Separate execution state, spending reservations and evidence
 
-- Status: Proposed
+- Status: Accepted on 2026-10-07 with S06, as amended by [ADR 0017](0017-message-driven-execution.md), [ADR 0021](0021-supervision-and-recording.md) and [ADR 0022](0022-budgets-and-request-reservations.md)
 - Recorded: 2026-09-27
 - Decision-maker: Cesar Zea
 - Requirements: R11–R16, R20, R23

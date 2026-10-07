@@ -1,6 +1,6 @@
 # ADR 0023: Container-ready component boundary
 
-- Status: Proposed
+- Status: Accepted on 2026-10-07 with S06; placement of nodes in containers is decided in [ADR 0029](0029-node-placement.md)
 - Recorded: 2026-10-04
 - Decision-maker: Cesar Zea
 - Requirements: CR02, CR17
@@ -8,7 +8,7 @@
 
 ## Context and problem statement
 
-Components will later run in isolated containers without losing monitoring. Step 1
+Components will later run in isolated containers without losing monitoring. S06
 runs trusted local processes, but its protocol must not depend on sharing a machine
 with the platform.
 
@@ -27,6 +27,6 @@ with the platform.
 
 ## Consequences
 
-The step 1 local launcher is one implementation of the launcher interface.
+The S06 local launcher is one implementation of the launcher interface.
 Container images per installed component version, network policies and a
-container launcher are delivered in the container step without protocol changes.
+container launcher are delivered in sprints S08 and S18 without protocol changes.

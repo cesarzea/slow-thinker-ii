@@ -40,7 +40,7 @@ entry through the platform. Provider credentials never leave the platform proces
 | ----------------------- | -------------------------------------------------------------------------------------------- |
 | `id`                    | `^[a-z][a-z0-9-]*/[a-z0-9][a-z0-9.-]*$`, unique                                              |
 | `label`                 | 1–60 characters, shown to users                                                              |
-| `provider`              | A configured provider with a platform adapter: `openai` or `deepseek` in step 1, plus `simulated` for tests and demonstrations |
+| `provider`              | A configured provider with a platform adapter: `openai` or `deepseek` in S06, plus `simulated` for tests and demonstrations |
 | `model`                 | The provider's model name                                                                    |
 | `max_output_tokens`     | Reviewed provider maximum                                                                    |
 | `default_output_tokens` | Default for new selections, at most `max_output_tokens`                                     |
@@ -66,7 +66,7 @@ The catalog served to the interface lists each model as
 For `without_reasoning`, the schema adds `"if": {"properties": {"reasoning_effort":
 {"const": "none"}}}, "else": {"properties": {"temperature": false}}`. Parameter names
 follow the Chat Completions convention so that ordinary client libraries work.
-The [catalog example](examples/llm-catalog.json) shows both step 1 providers.
+The [catalog example](examples/llm-catalog.json) shows both S06 providers.
 
 ## Selection in a graph
 

@@ -10,3 +10,7 @@ The [CodeQL gate](codeql/readme.md) uses the pinned bundle policy in local runs 
 CI. Set `CODEQL_EXECUTABLE` to that bundle's CLI, install it in the documented project
 cache, or put it on PATH. The runner fails if the required tool is missing; it does
 not download or skip it. Reports and logs stay in ignored local verification data.
+
+Before any command, the runner also checks that every maintained Markdown document is
+listed in the [documentation index](../../docs/README.md) and that links between
+documents resolve.

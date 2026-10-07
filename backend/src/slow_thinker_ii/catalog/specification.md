@@ -152,6 +152,6 @@ class Catalog:
 ## Acceptance
 
 - The four example declarations parse; the LLM catalog example equals the entries
-  generated from the step 1 model settings.
+  generated from the S06 model settings.
 - Each declaration rule above has a failing example with its issue text.
 - 100% of public functions are covered; branch coverage of the package is at least 90%.

@@ -1,4 +1,4 @@
-# Step 1 delivery: build, run and inspect graphs
+# S06 delivery: build, run and inspect graphs
 
 | Document control | Value                                                                        |
 | ---------------- | ---------------------------------------------------------------------------- |
@@ -8,14 +8,14 @@
 | Date             | 2026-10-04                                                                   |
 | Status           | Accepted by the owner on 2026-10-07 — see the [sprint report](sprint-report.md) |
 | Method           | [M07](../../continuous-improvement/methods/007-validated-journeys.md); cycle [C12](../../continuous-improvement/cycles/012-core-step-1/report.md) |
-| Journeys         | [Validated version 1](../core-step-1-journeys/README.md), V01–V12            |
+| Journeys         | [Validated version 1](../s06-journeys/README.md), V01–V12            |
 
 ## Objective
 
 Deliver the validated journeys end to end: build and configure graphs of Trigger,
 LLM Call, Router and Output nodes in the editor, save versions, run them under
-supervision with limits and budgets (step 1.1), and inspect each run's activity
-(step 1.2). The [architecture](../../architecture/README.md), decisions 0015–0023
+supervision with limits and budgets (S06 part one), and inspect each run's activity
+(S06 part two). The [architecture](../../architecture/README.md), decisions 0015–0023
 and the [contracts](../../contracts/README.md) define the design.
 
 ## Acceptance criteria

@@ -1,6 +1,6 @@
 # ADR 0005: Separate versioned component, graph and run contracts
 
-- Status: Proposed
+- Status: Accepted on 2026-10-07 with S06, as amended by [ADR 0016](0016-graph-document-model.md) and [ADR 0020](0020-declared-component-configuration.md)
 - Recorded: 2026-09-27
 - Decision-maker: Cesar Zea
 - Requirements: R02–R04, R09–R10, R16–R19, R24

@@ -10,8 +10,8 @@
 
 ## Context and problem
 
-In step 1 as validated, edits stayed in the browser until Save created a new version,
-and leaving the editor warned about unsaved changes. During the step 1 review the owner
+In S06 as validated, edits stayed in the browser until Save created a new version,
+and leaving the editor warned about unsaved changes. During the S06 review the owner
 asked that every change be saved when it is made, into a history that allows going
 back, and that the user activate the version to use, normally the latest, as a new
 numbered version whose number is visible. The owner then asked for branches that can
@@ -35,6 +35,6 @@ be visualized, without merge for now.
 ## Consequences
 
 - No edit is lost when leaving the editor, and no unsaved-changes warning is needed.
-- Storage grows with every edit. The documents are small, so step 1 keeps each change
+- Storage grows with every edit. The documents are small, so S06 keeps each change
   in full; compaction can come later.
 - Journeys J1–J3 activate a version instead of saving one.

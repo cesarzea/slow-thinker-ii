@@ -1,6 +1,6 @@
 # ADR 0011: Use one local transactional store behind persistence interfaces
 
-- Status: Proposed
+- Status: Accepted on 2026-10-07 with S06 for local operation; PostgreSQL replaces SQLite from S08 (local) and S17 (cloud) under a later decision
 - Recorded: 2026-09-28
 - Decision-maker: Cesar Zea
 - Accepted scope, 2026-09-28: local SQLite, backend-mediated storage, transactional reservations/state/evidence and no automatic paid replay. Detailed settings and recovery mechanics below remain proposed.

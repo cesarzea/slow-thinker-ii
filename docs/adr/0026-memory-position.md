@@ -34,7 +34,7 @@ about memory. A first in-engine memory was rejected for that reason.
 - Every component package was rebuilt, because the host SDK now serves the `memory`
   position; installations need new resolutions.
 - A memory is stateful, so its node takes one activation at a time. Until input queues
-  exist (step 4), a message that reaches the node while it is still handling another
+  exist (S14), a message that reaches the node while it is still handling another
   fails its activation with `node_busy`, and the run with it; graphs that feed such a
   node from parallel branches cannot use memory yet.
 - History reaches the model as text inside the message, not as chat turns; a memory

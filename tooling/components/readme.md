@@ -1,6 +1,6 @@
 # Component preparation commands
 
-Builds the LLM Call and Router packages, each with the host SDK, into hash-locked,
+Builds the LLM Call, Router and Memory packages, each with the host SDK, into hash-locked,
 provenance-recorded artifacts, then installs them into the platform's installation
 catalog, before any run.
 

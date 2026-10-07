@@ -1,4 +1,4 @@
-# Core step 1 journeys — validation record
+# S06 journeys — validation record
 
 | Document control | Value                                                                                         |
 | ---------------- | --------------------------------------------------------------------------------------------- |
@@ -8,10 +8,10 @@
 | Owner            | Cesar Zea                                                                                     |
 | Method           | [M07](../../continuous-improvement/methods/007-validated-journeys.md), phase 0                |
 | Published        | 2026-10-04T04:34:48Z as a private artifact: <https://claude.ai/artifact/EKdGosFoSdQm4H5NnwFBUa> |
-| Source           | [step-1-journeys-v1.html](step-1-journeys-v1.html), SHA-256 `3d54d21f…0d18736`                |
+| Source           | [s06-journeys-v1.html](s06-journeys-v1.html), SHA-256 `3d54d21f…0d18736`                |
 
-The page presents three step 1.1 journeys (one agent, an agent with an embedded
-Router, and a review loop), the step 1.2 activity view, the component declarations
+The page presents three S06 part one journeys (one agent, an agent with an embedded
+Router, and a review loop), the S06 part two activity view, the component declarations
 from which the platform builds each configuration screen, the saved graph document
 and the records kept for every run. The source file is published inside the
 artifact viewer's document skeleton; example texts, token counts and costs are
@@ -21,7 +21,7 @@ illustrative.
 
 The owner answers points V01–V12 on the page. Each answer is recorded here with
 its date and the original statement, labelled when translated. Contracts and
-acceptance criteria for step 1 cite the validated version only. A change to a
+acceptance criteria for S06 cite the validated version only. A change to a
 validated journey requires a new version and renewed validation.
 
 | Date       | Points    | Original statement   | Translation            |

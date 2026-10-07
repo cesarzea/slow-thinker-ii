@@ -49,7 +49,7 @@ listed UTC weekday intervals (Monday is 1). A missing category rate means that
 category is not billed by the provider. Holidays are not modelled; a provider
 discount on holidays is therefore not applied.
 
-The step 1 configuration contains the reviewed OpenAI GPT-6 Luna rates of
+The S06 configuration contains the reviewed OpenAI GPT-6 Luna rates of
 2026-09-28 and the DeepSeek Flash rates of 2026-10-02 from the previous record.
 Automatic daily tariff import is deferred.
 
@@ -64,7 +64,7 @@ For one model call:
   bound × the highest output rate, over default, long-context and window rates.
 
 The input bound relies on byte-level tokenization, in which every token encodes at
-least one byte; both step 1 providers use it. A provider configured without that
+least one byte; both S06 providers use it. A provider configured without that
 property uses its reviewed input capacity instead.
 
 ## Settlement

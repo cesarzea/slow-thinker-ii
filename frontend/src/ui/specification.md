@@ -86,7 +86,7 @@ of any raw JSON editor.
 
 ## Schema editor scope and accessible names
 
-Step 1 edits object schemas with typed top-level properties, which covers the
+S06 edits object schemas with typed top-level properties, which covers the
 validated journeys. Other valid schemas are preserved and shown read-only with the
 note “This schema can be kept but not edited here.”
 

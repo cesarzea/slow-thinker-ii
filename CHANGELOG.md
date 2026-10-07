@@ -12,7 +12,7 @@ release is recorded here yet.
 | -------------------- | ------------- | ------------------------------------------------------------- |
 | Python application   | `0.1.0.dev1`  | [pyproject.toml](pyproject.toml)                              |
 | Frontend application | `0.1.0-dev.1` | [package.json](package.json)                                  |
-| Latest sprint report | `0.0.6.7`     | [S06 sprint report](docs/specification/step-1/sprint-report.md) |
+| Latest sprint report | `0.0.6.7`     | [S06 sprint report](docs/specification/s06/sprint-report.md) |
 
 The report identifier follows `<series-major>.<series-minor>.<sprint>.<revision>`:
 `0.0.2.1` means report series V0.0, Sprint 2, Revision 1. It does not change package
@@ -20,21 +20,25 @@ versions or identify a published software release.
 
 ## Unreleased development progress
 
-- New execution core, step 1 (cycle C12, method M07): graphs of Trigger, LLM Call,
+- New execution core, S06 (cycle C12, method M07): graphs of Trigger, LLM Call,
   Router and Output nodes built in a visual editor with component-declared dialogs,
   run under supervision with limits and run, daily and monthly budgets, and inspected
   in an activity view; OpenAI, DeepSeek and simulated providers behind the platform's
   LLM service; components installed as separate packages and run as MCP hosts.
   Locally verified and accepted by the owner on 2026-10-07:
-  [verification record](docs/specification/step-1/verification.md). The previous
+  [verification record](docs/specification/s06/verification.md). The previous
   implementation and its documentation are archived; the entries below describe it.
-- Step 1 owner review (2026-10-04 and 05), closed with the complete runner: every edit
+- S06 owner review (2026-10-04 and 05), closed with the complete runner: every edit
   saved with activated versions and branches; a reworked editor with arrangement modes,
   connection styles, port sides, collapsible and resizable panels; Components and Runs
   pages; run mode executing what is on screen in the editor, with observation points
   saved with the graph and a live feed; Memory as an isolated component at a new
   `memory` position of the component protocol. Decisions in ADRs 0024–0026; report:
-  [step 1 sprint report](docs/specification/step-1/sprint-report.md).
+  [S06 sprint report](docs/specification/s06/sprint-report.md).
+- Scope review and replan (2026-10-06 and 07): requirements revision 3 (CR01–CR29),
+  roadmap revision 3 with sprints S07–S25, ADRs 0028 (companies, users and workspaces)
+  and 0029 (placement of nodes in containers), a complete documentation index checked
+  by `make verify`: [scope review](docs/specification/scope-review-2026-10-06.md).
 - License changed from Apache 2.0 to the Functional Source License 1.1 with an Apache 2.0
   future license (`FSL-1.1-ALv2`): [ADR 0027](docs/adr/0027-functional-source-license.md).
 
@@ -123,7 +127,7 @@ historical checkpoint statements; the latest sprint reports describe local deliv
 
 | Version     | Recorded date | Sprint | Progress status                                                                                                         | Report and specification                                                                                                                            |
 | ----------- | ------------- | ------ | ----------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **0.0.6.7** | 2026-10-07 | S06 | New execution core, reviewed and accepted by the owner; it replaces the earlier S06 scope. | [Sprint report](docs/specification/step-1/sprint-report.md) · [Verification record](docs/specification/step-1/verification.md) |
+| **0.0.6.7** | 2026-10-07 | S06 | New execution core, reviewed and accepted by the owner; it replaces the earlier S06 scope. | [Sprint report](docs/specification/s06/sprint-report.md) · [Verification record](docs/specification/s06/verification.md) |
 | 0.0.6.6 | 2026-10-03 | S06 | Configurable composition and component-owned dialogs; final verification active. | [Status report](docs/archive/previous-implementation/progress/sprint-06-status-report.md) · [Correction scope](docs/archive/previous-implementation/specification/s06-composition-and-dialogs.md) |
 | 0.0.6.5 | 2026-10-03    | S06    | Earlier interface checkpoint; reopened after configurable composition review.         | [Status report](docs/archive/previous-implementation/progress/sprint-06-status-report-0.0.6.5.md) · [Completion scope](docs/archive/previous-implementation/specification/s06-ui-completion.md)                             |
 | 0.0.6.4     | 2026-10-03    | S06    | Reference-based correction verified; subsequent owner review required further interface completion.                     | [Revision 4 snapshot](docs/archive/previous-implementation/progress/sprint-06-status-report-0.0.6.4.md) · [Fidelity contract](docs/archive/previous-implementation/reviews/2026-10-03-s06-fidelity/README.md)       |

@@ -29,7 +29,7 @@ mandatory engineering standards.
   [ADR 0007](../adr/0007-mcp-profile.md)); the protocol stays container-ready
   ([ADR 0023](../adr/0023-container-ready-component-boundary.md)).
 - Local SQLite persistence behind backend ports ([ADR 0011](../adr/0011-local-persistence.md)).
-- Step 1 is single-user and local, with trusted components.
+- S06 is single-user and local, with trusted components.
 
 ## 3. Context and scope
 
@@ -111,7 +111,7 @@ define the core. Earlier records remain in the [decision log](../adr/README.md).
 
 | Risk                                                                                   | Mitigation                                                                          |
 | -------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
-| Local processes are not a sandbox; a Router script runs user code                      | Step 1 is single-user and trusted; container isolation is a planned step            |
+| Local processes are not a sandbox; a Router script runs user code                      | S06 is single-user and trusted; container isolation is planned for S08 and S18            |
 | The byte-level tokenization assumption under-reserves a provider that breaks it         | Recorded per provider; overruns are recorded and stop the run when a budget is exceeded |
 | Reused subsystems carry assumptions of the previous model                              | Each reused module is reviewed against the new contracts and keeps its tests         |
 | Concurrent activations expose races in the engine and the ledger                       | Pure engine tests with controlled scheduling; ledger admission in one transaction    |

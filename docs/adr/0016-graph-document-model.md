@@ -31,4 +31,4 @@ Validation is a pure function of the document, the installed component
 declarations and the platform's LLM catalog, and is used both when saving and
 before a run. Exact-text patching, composition plans and restoration journals are
 not needed. Large-integer preservation across the browser is not required by the
-step 1 components.
+S06 components.

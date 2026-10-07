@@ -1,6 +1,6 @@
 # features/editor: specification
 
-The graph editor of journeys J1–J3 ([validated page](../../../../docs/specification/core-step-1-journeys/README.md)),
+The graph editor of journeys J1–J3 ([validated page](../../../../docs/specification/s06-journeys/README.md)),
 with the working copy and activated versions of
 [ADR 0024](../../../../docs/adr/0024-working-copy-and-activated-versions.md).
 

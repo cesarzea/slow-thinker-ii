@@ -11,7 +11,7 @@
 
 With [ADR 0024](0024-working-copy-and-activated-versions.md), Run executed the active
 version, which could come from another branch and differ from what the editor showed.
-During the step 1 review the owner asked that Run execute what is on screen, that a run
+During the S06 review the owner asked that Run execute what is on screen, that a run
 be watched on the same screen, only slightly changed, and that the operator choose
 where in the graph to watch, with the choice kept for the next time.
 

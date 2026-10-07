@@ -1,6 +1,6 @@
 # Application
 
-The step 1 use cases — graph library, runs, the LLM gateway, component reports and usage — and
+The S06 use cases — graph library, runs, the LLM gateway, component reports and usage — and
 the ports that the adapters implement: stores, the budget ledger, host launching, LLM providers
 and the clock. No framework, persistence, process, network or provider imports.
 

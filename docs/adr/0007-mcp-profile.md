@@ -1,6 +1,6 @@
 # ADR 0007: Define a current MCP profile with explicit call directions
 
-- Status: Proposed
+- Status: Accepted on 2026-10-07 with S06, as amended by [ADR 0023](0023-container-ready-component-boundary.md) and [ADR 0026](0026-memory-position.md)
 - Recorded: 2026-09-27
 - Decision-maker: Cesar Zea
 - Requirements: R05–R08, R11, R13

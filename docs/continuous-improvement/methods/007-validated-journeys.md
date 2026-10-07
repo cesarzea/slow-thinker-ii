@@ -3,7 +3,7 @@
 | Document control     | Value                                                                                                   |
 | -------------------- | ------------------------------------------------------------------------------------------------------- |
 | Method ID            | M07                                                                                                     |
-| Status at recording  | Approved; not yet applied                                                                               |
+| Status at recording  | Approved; applied from cycle C12 (sprint S06); amended 2026-10-07                                         |
 | Approval recorded    | 2026-10-04, Europe/Lisbon                                                                               |
 | Owner                | Cesar Zea                                                                                               |
 | Supersedes           | [M06](006-delivery-preparation.md) as the current method; retains M05 verification and M06 P08–P10      |
@@ -72,3 +72,16 @@ missing shared decision, implementation defect, or test, fixture or environment
 failure. Count complete-runner attempts with their causes. Label estimates. Compare
 with earlier cycles only with scope differences explicit; do not infer causal
 productivity from elapsed time, code volume, test counts or parallelism.
+
+## Amendment — 2026-10-07
+
+Approved by the owner after the [scope review of 2026-10-06](../../specification/scope-review-2026-10-06.md):
+
+- **Sprints, not steps.** Work is planned as sprints that continue the project's
+  numbering (S06 onwards) and are grouped in milestones. A sprint is a stopping point,
+  not a fixed size: journeys validated before work starts; at the close, everything
+  put in order, the complete runner, a sprint report, a reflection, and the owner's
+  acceptance before the next sprint begins.
+- **Scope rewrites list their removals.** Any new revision of requirements, roadmap or
+  another scope document includes the items it removes, reduces or changes against
+  the previous revision, and the owner approves each before it applies.

@@ -9,6 +9,7 @@ The [public entry point](verify.py) is authoritative for exported names and sign
 - python -m tooling.quality.verify is the verification entry point used by make verify.
 - Source, dependency, typing, dead-code, coverage and test checks enforce the configured repository rules.
 - The [CodeQL gate](codeql/specification.md) is a mandatory command in the same runner, before functional tests.
+- The documentation gate (`documentation.py`) runs with the source rules, before any command: every maintained Markdown document must be listed in `docs/README.md`, and every relative link between maintained documents must resolve. Archives, hidden, dependency and generated directories are excluded.
 
 ## Required behavior
 
@@ -26,7 +27,7 @@ Pinned development tools and the repository location manifest; never imported by
 
 ## Acceptance criteria
 
-- Deliberate boundary, typing, size and coverage violations fail the corresponding gates.
+- Deliberate boundary, typing, size, coverage and documentation violations fail the corresponding gates.
 - Local and CI execution use the same verification entry point.
 
 ## Shared contracts

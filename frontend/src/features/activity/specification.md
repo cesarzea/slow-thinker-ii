@@ -1,6 +1,6 @@
 # features/activity: specification
 
-The step 1.2 activity view of a run, and the live feed of the observed points that run
+The S06 part two activity view of a run, and the live feed of the observed points that run
 mode shows in its panel.
 
 - Reads `GET /runs/<id>/events` in pages until `finished`, polling while the run is

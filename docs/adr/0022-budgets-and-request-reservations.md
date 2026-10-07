@@ -1,6 +1,6 @@
 # ADR 0022: Run, daily and monthly budgets with request-size reservations
 
-- Status: Proposed
+- Status: Accepted on 2026-10-07 with S06
 - Recorded: 2026-10-04
 - Decision-maker: Cesar Zea
 - Requirements: CR12, CR13

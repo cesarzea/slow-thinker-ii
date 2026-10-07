@@ -6,7 +6,7 @@
 | Format           | `slow-thinker.graph/1`                                                 |
 | Schema           | [graph-document-1.schema.json](schemas/graph-document-1.schema.json)  |
 | Decisions        | [ADR 0016](../adr/0016-graph-document-model.md), [ADR 0018](../adr/0018-derived-authorization.md) |
-| Journeys         | [Step 1 journeys](../specification/core-step-1-journeys/README.md), V01, V03, V07, V09, V10 |
+| Journeys         | [S06 journeys](../specification/s06-journeys/README.md), V01, V03, V07, V09, V10 |
 
 A graph document is what the user builds and saves. It contains nodes, their
 configuration, embedded components, connections, run limits and layout. It never

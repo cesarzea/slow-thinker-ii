@@ -16,7 +16,7 @@ were written with. JSON Schemas use draft 2020-12 and reject unknown fields.
 | [Recording](recording.md)                        | The event log of every run                                           |
 | [Operator API](operator-api.md)                  | The HTTP interface used by the browser                               |
 
-[Examples](examples/) contain the three validated journey graphs, the four step 1
+[Examples](examples/) contain the three validated journey graphs, the four S06
 component declarations and an LLM catalog. They are checked against the schemas in
 [schemas](schemas/) by the test suite.
 

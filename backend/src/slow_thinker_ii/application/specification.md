@@ -1,6 +1,6 @@
 # application: specification
 
-Use cases of step 1 and the ports adapters implement. No framework, persistence,
+Use cases of S06 and the ports adapters implement. No framework, persistence,
 process, network or provider imports.
 
 ## Ports (`slow_thinker_ii.application`)

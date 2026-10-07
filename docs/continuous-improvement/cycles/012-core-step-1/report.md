@@ -7,7 +7,7 @@
 | Record owner                            | Cesar Zea                                                              |
 | Recorded date and timezone              | 2026-10-04, UTC                                                        |
 | Method identifier and version           | [M07](../../methods/007-validated-journeys.md)                         |
-| Product sprint / delivery specification | [Step 1 delivery](../../../specification/step-1/README.md)             |
+| Product sprint / delivery specification | [Step 1 delivery](../../../specification/s06/README.md)             |
 
 ## Context and hypothesis
 
@@ -36,11 +36,11 @@ they are not an activity audit. Token usage is recorded where the tooling report
 
 | Phase                                   | Start                | End                  | Evidence                                   |
 | --------------------------------------- | -------------------- | -------------------- | ------------------------------------------ |
-| 0 — Journey preparation and validation  | 2026-10-04T04:22:48Z | 2026-10-04T05:0x (owner validation; exact time not captured) | [Journey record](../../../specification/core-step-1-journeys/README.md) |
+| 0 — Journey preparation and validation  | 2026-10-04T04:22:48Z | 2026-10-04T05:0x (owner validation; exact time not captured) | [Journey record](../../../specification/s06-journeys/README.md) |
 | 1 — Analysis, specification and tasks   | after validation, first record at 2026-10-04T05:08:55Z | 2026-10-04T05:37:21Z (F1 launched) | Requirements, ADRs 0015–0023, architecture, contracts, module specifications, assignments |
 | 2 — Development with tests              | 2026-10-04T05:37:21Z | 2026-10-04T08:26:55Z (last package, A1, delivered) | Deliveries recorded below                  |
 | 3 — Review and corrections              | Interleaved: each delivery reviewed on arrival | Continues during phase 4 | Corrections recorded with each delivery    |
-| 4 — Integration and acceptance          | 2026-10-04T08:26:55Z | Complete runner passed 2026-10-04T09:11:23Z; accepted by the owner on 2026-10-07 after the review | [Verification record](../../../specification/step-1/verification.md) |
+| 4 — Integration and acceptance          | 2026-10-04T08:26:55Z | Complete runner passed 2026-10-04T09:11:23Z; accepted by the owner on 2026-10-07 after the review | [Verification record](../../../specification/s06/verification.md) |
 
 ## Delivery and process results
 
@@ -238,7 +238,7 @@ Observations recorded during the cycle:
   run dialog and run page, and the documentation. New tests cover change runs, the
   memory position with real host processes, observation points, run mode, side panels
   and a memory browser journey. The complete runner then passed; figures are in the
-  [verification record](../../../specification/step-1/verification.md#complete-runner).
+  [verification record](../../../specification/s06/verification.md#complete-runner).
 
 ## Evaluation and limitations
 
@@ -287,3 +287,13 @@ the first implementation. Proposed process changes for the next cycle:
 - check assigned test directory names against the standard library;
 - during quick review changes, run the source rules (file and function size) with each
   build, since they are cheap and their debt grows fastest.
+
+### Addendum, 2026-10-07
+
+Step 1 is sprint S06 under the project's sprint numbering. After the
+[scope review of 2026-10-06](../../../specification/scope-review-2026-10-06.md) the owner
+replanned the work as sprints S07–S25 ([roadmap revision 3](../../../specification/roadmap.md));
+the next sprint is S07, not the step 2 described above. The review also showed that
+rewriting requirements without listing what they drop lets scope disappear unnoticed;
+every scope rewrite now lists removed, reduced and changed items for the owner's
+approval.

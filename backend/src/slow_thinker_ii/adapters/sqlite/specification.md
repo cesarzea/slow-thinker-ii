@@ -1,6 +1,6 @@
 # adapters.sqlite: specification
 
-Persistence for step 1 behind the application ports `GraphStore`, `RunStore` and
+Persistence for S06 behind the application ports `GraphStore`, `RunStore` and
 `Ledger` ([application specification](../../application/specification.md)).
 
 ## Public interface (`slow_thinker_ii.adapters.sqlite`)
