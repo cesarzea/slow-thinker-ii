@@ -1,6 +1,6 @@
 # ADR 0009: Export evaluated graphs as standalone Python programs
 
-- Status: Proposed
+- Status: Proposed; recovered by the [scope review of 2026-10-06](../specification/scope-review-2026-10-06.md) and scheduled for S24, as readable, professional and reviewable code
 - Recorded: 2026-09-27
 - Decision-maker: Cesar Zea
 - Requirements: R04–R06, R13–R16, R24, R27–R28

@@ -26,7 +26,7 @@ Visible failure, retained evidence, predictable model-call count, explicit spend
 
 The owner accepted text or JSON validated against a configured schema. On invalid structured output, return a structured error and retain the original received response. Do not implicitly coerce the response or make a repair call. Any additional call requires explicit configuration and normal accounting/admission.
 
-The [LLMCall contract](../contracts/llm-call.md) proposes concrete configuration fields, result envelopes and validation rules. Acceptance of this policy does not approve every detailed schema, provider mapping or installation mechanism in that proposal.
+The [LLMCall contract](../archive/previous-implementation/contracts/llm-call.md) proposes concrete configuration fields, result envelopes and validation rules. Acceptance of this policy does not approve every detailed schema, provider mapping or installation mechanism in that proposal.
 
 ## Consequences
 

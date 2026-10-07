@@ -1,78 +1,54 @@
-"""Freeze validated configuration without retaining caller-owned mutable objects."""
+"""The LLM Call configuration, checked against the packaged declaration at startup."""
 
 from dataclasses import dataclass
-from typing import Literal
 
-from openai.types.chat.completion_create_params import CompletionCreateParamsNonStreaming
-from slow_thinker_host import JsonObject, check_schema, encode_json, json_object
-
-from ._types import JsonOutput, LLMCallConfig, TextOutput
-
-RESERVED = {
-    "model",
-    "messages",
-    "stream",
-    "response_format",
-    "n",
-    "base_url",
-    "api_key",
-    "timeout",
-    "max_retries",
-    "extra_body",
-    "extra_headers",
-    "extra_query",
-}
+from slow_thinker_host import (
+    JsonObject,
+    JsonValue,
+    check_schema,
+    json_object,
+    read_declaration,
+    validate_value,
+)
 
 
 @dataclass(frozen=True)
-class FrozenConfig:
-    instructions: str
-    input_schema: str
-    parameters: str
-    format: Literal["text", "json"]
-    output_schema: str | None
+class LLMCallConfig:
+    """A valid configuration; `output_schema` is set exactly when the output is JSON."""
+
+    prompt: str
+    llm: str
+    parameters: JsonObject
+    input_format: JsonObject | None
+    output_schema: JsonObject | None
 
 
-def _output(record: JsonObject) -> TextOutput | JsonOutput:
-    if record == {"format": "text"}:
-        return TextOutput(format="text")
-    if set(record) != {"format", "schema"} or record["format"] != "json":
-        raise ValueError("Unsupported output configuration")
-    schema = json_object(record["schema"])
-    check_schema(schema)
-    return JsonOutput(format="json", schema=schema)
-
-
-def parse_config(value: object) -> LLMCallConfig:
-    record = json_object(value)
-    if set(record) != {"instructions", "input_schema", "parameters", "output"}:
-        raise ValueError("Unsupported LLMCall configuration fields")
-    instructions = record["instructions"]
-    if not isinstance(instructions, str) or not instructions:
-        raise ValueError("Instructions must be a non-empty string")
-    schema = json_object(record["input_schema"])
-    if schema.get("type") != "object":
-        raise ValueError("LLMCall input must have an object schema")
-    check_schema(schema)
-    parameters = json_object(record["parameters"])
-    allowed = set(CompletionCreateParamsNonStreaming.__annotations__) - RESERVED
-    if set(parameters) - allowed:
-        raise ValueError("Unsupported or reserved generation parameters")
+def parse_config(config: JsonObject) -> LLMCallConfig:
+    """Raise ValueError unless `config` is a complete, runnable LLM Call configuration."""
+    declared = read_declaration("slow_thinker_llm_call")["config_schema"]
+    try:
+        validate_value(config, json_object(declared))
+    except ValueError as error:
+        raise ValueError(f"The LLM Call configuration is invalid: {error}") from error
+    model = config["model"]
+    if not isinstance(model, dict):
+        raise ValueError("No LLM is selected")
+    llm, parameters = model.get("llm"), model.get("parameters", {})
+    if not isinstance(llm, str) or not llm or not isinstance(parameters, dict):
+        raise ValueError("The LLM selection must name a catalog entry and its parameters")
+    output = json_object(config["output_format"])
     return LLMCallConfig(
-        instructions=instructions,
-        input_schema=schema,
-        parameters=parameters,
-        output=_output(json_object(record["output"])),
+        prompt=str(config["prompt"]),
+        llm=llm,
+        parameters=json_object(parameters),
+        input_format=_schema(config["input_format"]),
+        output_schema=_schema(output["schema"]) if output["type"] == "json" else None,
     )
 
 
-def freeze(config: LLMCallConfig) -> FrozenConfig:
-    isolated = parse_config(config)
-    output = isolated["output"]
-    return FrozenConfig(
-        isolated["instructions"],
-        encode_json(isolated["input_schema"]),
-        encode_json(isolated["parameters"]),
-        output["format"],
-        encode_json(output["schema"]) if output["format"] == "json" else None,
-    )
+def _schema(value: JsonValue) -> JsonObject | None:
+    if value is None:
+        return None
+    schema = json_object(value)
+    check_schema(schema)
+    return schema

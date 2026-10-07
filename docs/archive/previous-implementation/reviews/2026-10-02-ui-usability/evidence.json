@@ -1,0 +1,272 @@
+{
+  "review_id": "UX-S06-001",
+  "version": "1.0",
+  "date": "2026-10-02",
+  "timezone": "Europe/Lisbon",
+  "baseline_commit": "a8445149e2615668f2aadda0563e81bbe6c7341e",
+  "url": "http://127.0.0.1:5174/",
+  "method": [
+    "Expert walkthrough of live saved examples",
+    "Read-only frontend and relevant backend/component source inspection",
+    "Independent source-accuracy review by configuration, graph-authoring and execution reviewers"
+  ],
+  "definitions": [
+    {
+      "graph_id": "resource-collaboration",
+      "revision": "example-2"
+    },
+    {
+      "graph_id": "bounded-review",
+      "revision": "example-1"
+    }
+  ],
+  "saved_runs": [
+    {
+      "run_id": "1a6a889893f54851842a912da1c02554",
+      "status": "completed",
+      "recorded_cost_usd": "0.0002215",
+      "purpose": "Inspect an existing actual OpenAI/DeepSeek collaboration result."
+    },
+    {
+      "run_id": "aa507c6599e44a8fbff102754e4405d6",
+      "status": "failed",
+      "reason": "startup_failure",
+      "purpose": "Inspect failure presentation and historical identity."
+    }
+  ],
+  "operations": {
+    "local_services_restarted": true,
+    "existing_operator_credential_used": true,
+    "saved_credentials_changed": false,
+    "saved_definitions_changed": false,
+    "permissions_changed": false,
+    "budgets_changed": false,
+    "new_runs_started": 0,
+    "new_paid_model_calls": 0,
+    "product_source_changed": false
+  },
+  "observations": [
+    {
+      "id": "OBS-01",
+      "findings": [
+        "UX01",
+        "UX02"
+      ],
+      "result": "Clicking Reviewer exposed node: review while the Agent editor still selected proposer. The graph and editor use independent selection.",
+      "verification": "Live DOM selection and source inspection; no edits made."
+    },
+    {
+      "id": "OBS-02",
+      "findings": [
+        "UX06"
+      ],
+      "result": "Sequence Connections exposes output-port selection, optional feedback and final result review /value.",
+      "verification": "Live controls; validation and runtime consequences established by source only."
+    },
+    {
+      "id": "OBS-03",
+      "findings": [
+        "UX09",
+        "UX10"
+      ],
+      "result": "Calculator and Memory choices include model resources; memory retention uses an advanced JSON editor.",
+      "verification": "Live forms plus descriptors and rendering source."
+    },
+    {
+      "id": "OBS-04",
+      "findings": [
+        "UX17",
+        "UX19",
+        "UX21",
+        "UX22"
+      ],
+      "result": "Run entry displays immediate required-field errors; saved sequence result exposes draft/review aggregate; history lacks visible date/task summaries.",
+      "verification": "Live saved-state inspection."
+    },
+    {
+      "id": "OBS-05",
+      "findings": [
+        "UX25"
+      ],
+      "result": "Inspect run begins with technical events; Escape did not close the panel; its Close button did.",
+      "verification": "Live interaction; complementary panel/focus behavior also inspected in source."
+    },
+    {
+      "id": "OBS-06",
+      "findings": [
+        "UX24"
+      ],
+      "result": "Unavailable local services coincided with catalog failure; empty-state and operator-connected labels were misleading. During later definition loading a source-repair fallback appeared.",
+      "verification": "Live observation; no inference of a backend catalog implementation defect."
+    }
+  ],
+  "source_only_failure_paths": [
+    "Unapplied field buffers omitted from dirty/readiness state",
+    "Draft/buffer loss on experiment or agent/node changes",
+    "Immutable revision conflict after editing before deriving a revision",
+    "Sequence mapping metadata rejected and sequence final-result setting ignored",
+    "Model/effort compatibility can strand temperature overrides",
+    "Result response.json then JSON.stringify can lose numeric precision and source bytes",
+    "Use latest server limits restores cached values",
+    "Extension field-name heuristics can select inappropriate editors"
+  ],
+  "geometry": {
+    "unit": "CSS pixels",
+    "viewport": {
+      "height": 1815,
+      "width": 1367
+    },
+    "document_height": 5681,
+    "landmarks": [
+      {
+        "height": 1303,
+        "name": "Agent collaboration graph",
+        "top": 780
+      },
+      {
+        "height": 732,
+        "name": "Experiment graph",
+        "top": 780
+      },
+      {
+        "height": 555,
+        "name": "Selected object",
+        "top": 1527
+      },
+      {
+        "height": 3408,
+        "name": "Agents",
+        "top": 2209
+      },
+      {
+        "height": 1207,
+        "name": "Configure component proposer-worker",
+        "top": 2344
+      },
+      {
+        "height": 1206,
+        "name": "Configure component proposer",
+        "top": 3568
+      }
+    ],
+    "qualification": "One recorded desktop layout, not a responsive benchmark. Counts and geometry for descendants of closed disclosures were excluded because DOM rectangles alone do not establish visible controls."
+  },
+  "published_capture": {
+    "file": "agent-selection.png",
+    "sha256": "1be9e9cd55c0cd086b7114f61b842195b40803ef3d9737f242e03815e0e9c583",
+    "description": "Unedited viewport capture after selecting Reviewer; shows the raw selected-object summary and substantial separation from the agent editor. It does not by itself show the editor selection below the viewport."
+  },
+  "local_captures": [
+    {
+      "file": ".local/usability-audit-20261002/00-disconnected.txt",
+      "description": "Disconnected view with unavailable services, catalog error and empty-state text.",
+      "sha256": "c8010b682cc9135a3f404fbbe66e383e6cc7a54297240e91bd05284f19179b17",
+      "distribution": "Local working evidence; excluded from publication."
+    },
+    {
+      "file": ".local/usability-audit-20261002/01-selection.txt",
+      "description": "Definition loading after selecting the saved resource-collaboration experiment.",
+      "sha256": "de34405a28e15e110e32aa630df723b287c3f2031f61de2161e8b2cd30356635",
+      "distribution": "Local working evidence; excluded from publication."
+    },
+    {
+      "file": ".local/usability-audit-20261002/02-agent-selected.txt",
+      "description": "Agent selection, raw object summary and configuration sections.",
+      "sha256": "19ca1ae72e21aa956f3d181cbf9616ab47ca97348185d1b2de757ca962d6b7db",
+      "distribution": "Local working evidence; excluded from publication."
+    },
+    {
+      "file": ".local/usability-audit-20261002/03-connections-sequence.txt",
+      "description": "Sequence connection controls including conditional-only choices and final-result selector.",
+      "sha256": "2743bb5ba1d261e73617afe4203af0e193e55e6e57b7a85ddb3bf29a9d8932f6",
+      "distribution": "Local working evidence; excluded from publication."
+    },
+    {
+      "file": ".local/usability-audit-20261002/04-task-inputs.txt",
+      "description": "Task-input schema authoring and nested schema controls.",
+      "sha256": "da0a072b38621d49d73fdea06ba614f38f44627f936c5ea8839940a2dfbbde7d",
+      "distribution": "Local working evidence; excluded from publication."
+    },
+    {
+      "file": ".local/usability-audit-20261002/05-components.txt",
+      "description": "Registered component type, version, roles, installation and operations.",
+      "sha256": "cdec33c6f33798fdb60f4a11d213ad7596ff551f191b754831efdadf6bf8292d",
+      "distribution": "Local working evidence; excluded from publication."
+    },
+    {
+      "file": ".local/usability-audit-20261002/06-resources.txt",
+      "description": "Resource consumers, retention, namespace, model profile and activity.",
+      "sha256": "70857d620c2f2a72da9a091c277f33a931a3d0018f234ae7b5e00be543f82700",
+      "distribution": "Local working evidence; excluded from publication."
+    },
+    {
+      "file": ".local/usability-audit-20261002/07-settings.txt",
+      "description": "Model capability catalog and all ten effective limit fields.",
+      "sha256": "335dabf560edb3a929c57665c35c55ea4a729cf9b4e009a675ee8f20c8a41526",
+      "distribution": "Local working evidence; excluded from publication."
+    },
+    {
+      "file": ".local/usability-audit-20261002/08-runs-start.txt",
+      "description": "Run setup and immediate validation of untouched required fields.",
+      "sha256": "416dfcae2138e21820583689c97b21ea8927c218259775e047d8bf9e6fdad18d",
+      "distribution": "Local working evidence; excluded from publication."
+    },
+    {
+      "file": ".local/usability-audit-20261002/09-session-selection.txt",
+      "description": "Saved session selection and history loading.",
+      "sha256": "ac2d2ce6b88a9bdef48768d4d64df13ff7a621b3354fc85854d4f1b6b022069f",
+      "distribution": "Local working evidence; excluded from publication."
+    },
+    {
+      "file": ".local/usability-audit-20261002/10-completed-run.txt",
+      "description": "Saved real collaboration result, node outputs, budgets and history.",
+      "sha256": "7a86a239a8523a53bceeac90e5ce4e40c8f58f40cbe69245dd7ba9067b570a22",
+      "distribution": "Local working evidence; excluded from publication."
+    },
+    {
+      "file": ".local/usability-audit-20261002/11-run-inspector.txt",
+      "description": "Technical inspector and first page of execution events.",
+      "sha256": "f526f5450872046fa896fb59af3893bc1d4de845b3a84f6e2570e06fed582618",
+      "distribution": "Local working evidence; excluded from publication."
+    },
+    {
+      "file": ".local/usability-audit-20261002/12-failed-run.txt",
+      "description": "Saved startup failure and independent current experiment context.",
+      "sha256": "ed1135d5719afeb1eb23debc262458519f596494ca41538cd912b1261c1faa09",
+      "distribution": "Local working evidence; excluded from publication."
+    },
+    {
+      "file": ".local/usability-audit-20261002/13-bounded-connections.txt",
+      "description": "Bounded review mappings, entry, activation bound, routes, Finish and final result.",
+      "sha256": "da8ba84bd8768ba491f526ca99b6beff650c6deb206f91d9bd7c9ad2ebd39341",
+      "distribution": "Local working evidence; excluded from publication."
+    },
+    {
+      "file": ".local/usability-audit-20261002/14-routed-agent.txt",
+      "description": "Composed reviewer, worker and router configuration.",
+      "sha256": "b937fce0766050252302538edaa0f001c44d4d3d969bcbce9fd0cbf11b849f9c",
+      "distribution": "Local working evidence; excluded from publication."
+    },
+    {
+      "file": ".local/usability-audit-20261002/15-router.txt",
+      "description": "Router outputs and Python callable reference selector.",
+      "sha256": "7672cb1e8aa528a47f2db511c0141ea76a0165d3a6e22b0bc08fa189fb65192f",
+      "distribution": "Local working evidence; excluded from publication."
+    },
+    {
+      "file": ".local/usability-audit-20261002/16-memory.txt",
+      "description": "Shared-memory capacity, namespace and retention JSON fallback.",
+      "sha256": "c80687c97ee3d41dd89930d458b6decfdcb5579f6aa760e156422789aaca7230",
+      "distribution": "Local working evidence; excluded from publication."
+    }
+  ],
+  "limitations": [
+    "No representative-user study or measured completion/error rates",
+    "No end-to-end mutation tests during this audit",
+    "No observed numeric corruption in the inspected run",
+    "No complete keyboard, mobile, contrast, zoom/reflow or assistive-technology audit",
+    "No WCAG conformance claim",
+    "No audited activity duration or productivity comparison",
+    "No changes to runtime behavior or approval of proposed corrections"
+  ]
+}

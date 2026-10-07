@@ -1,0 +1,23 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Slow Thinker II Backend" type="PythonConfigurationType" factoryName="Python">
+    <module name="slow-thinker-ii-development@1" />
+    <option name="ENV_FILES" value="$PROJECT_DIR$/.env" />
+    <option name="INTERPRETER_OPTIONS" value="" />
+    <option name="PARENT_ENVS" value="true" />
+    <envs>
+      <env name="PYTHONUNBUFFERED" value="1" />
+      <env name="SLOW_THINKER_CONFIGURATION" value="$PROJECT_DIR$/.local/server-configuration.json" />
+    </envs>
+    <option name="SDK_HOME" value="$PROJECT_DIR$/.venv/bin/python" />
+    <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+    <option name="IS_MODULE_SDK" value="false" />
+    <option name="ADD_CONTENT_ROOTS" value="false" />
+    <option name="ADD_SOURCE_ROOTS" value="false" />
+    <option name="SCRIPT_NAME" value="uvicorn" />
+    <option name="MODULE_MODE" value="true" />
+    <option name="PARAMETERS" value="slow_thinker_ii.bootstrap:configured_app --factory --host 127.0.0.1 --port 8000" />
+    <option name="SHOW_COMMAND_LINE" value="false" />
+    <option name="EMULATE_TERMINAL" value="false" />
+    <method v="2" />
+  </configuration>
+</component>

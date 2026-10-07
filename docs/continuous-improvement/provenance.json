@@ -532,6 +532,51 @@
           "change": "Append dated S03 functional closure and real-provider follow-up; preserve original measurements, method decisions and checkpoint claims."
         }
       ]
+    },
+    {
+      "recorded_on": "2026-10-04",
+      "timezone": "Europe/Lisbon",
+      "purpose": "Owner approval of P14-P18 as M07 after the 2026-10-04 development assessment; no historical cycle, measurement or method version changed.",
+      "previous_edition_retention": "Previous editions, including the unpublished C06-C11 records carried forward unchanged, retained in local archive commit 705317f (branch archive/s06-c11-wip) and a verified local git bundle.",
+      "previous_edition_archive_sha256": "f871ba0390ddadef114b6cf80ff539c43f2b0a9e47ffb3be306663bb6e65cc62",
+      "source_statements": [
+        {
+          "language": "es",
+          "original": "Ok a los recorridos. La documentaci\u00f3n debe ser acorde a los est\u00e1ndares de ingenier\u00eda definidos en el readme.md",
+          "translation": "OK to the journeys. The documentation must follow the engineering standards defined in the README."
+        },
+        {
+          "language": "es",
+          "original": "Si, formaliza M07",
+          "translation": "Yes, formalize M07."
+        }
+      ],
+      "records": [
+        {
+          "file": "../../AGENTS.md",
+          "previous_edition_sha256": "b71adb8ebf11ecceab84fded347f25e95f8fbfad892c8715c9e5af74f7a08340",
+          "current_sha256": "4f57c7a6219c979eb58341021e4a083e45a6f53edb104453438c2551888228d9",
+          "change": "Record M07 as the current working method: journey validation phase, tests with code, staged parallelism, documentation and measurement rules; retained obligations unchanged."
+        },
+        {
+          "file": "README.md",
+          "previous_edition_sha256": "803ea49f69f2ef59ae034c881d84a7f1409c0374393649e404040667f0acb718",
+          "current_sha256": "5a03781e06422182254b4e182fb938bebe94ee30229182e82663e5b3f084a3f2",
+          "change": "Add M07 to the method register, mark M06 superseded and append the dated new core decision; historical cycle data and follow-ups preserved."
+        },
+        {
+          "file": "improvement-register.md",
+          "previous_edition_sha256": "2c4653edbf7c7a9fb9ec6ee16496e0830afca521515103fe500a7ba255dc0963",
+          "current_sha256": "5ffaf77d8913ab36d4721b790bd8d9e160c347a44295aa5d248983b285e35991",
+          "change": "Append P14-P18 with their evidence and the dated M07 approval; earlier proposals and decisions preserved."
+        },
+        {
+          "file": "methods/007-validated-journeys.md",
+          "previous_edition_sha256": null,
+          "current_sha256": "fb5083f6e35de031ae1f0eca5bf5c74ab1996f0facb09458d275f6909d196983",
+          "change": "New method version M07; M06 retained unchanged as a historical version."
+        }
+      ]
     }
   ]
 }

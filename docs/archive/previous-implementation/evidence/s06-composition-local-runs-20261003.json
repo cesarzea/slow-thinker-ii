@@ -1,0 +1,764 @@
+{
+  "schema_version": 1,
+  "scope": "S06-COMPOSITION / 1; manually authored through the ordinary UI",
+  "owner": "Cesar Zea",
+  "paid_provider_calls": 0,
+  "upstream": "Deterministic loopback model; production HTTP/SQLite, installed process hosts and mediated MCP remain real",
+  "accounting_note": "Illustrative native usage and costs; not paid-provider or answer-quality validation",
+  "runs": [
+    {
+      "run_id": "765817c3124e428993ea51587ba85d3c",
+      "graph_id": "single-agent",
+      "revision": "r-bbcafcfb03304d969b3e4f4d5de4e5df",
+      "state": "completed",
+      "definition_sha256_canonical": "7bfa4fe7c957b18a2ce10b87f06d89d2741898e9d5036e0c86e42f7a01b42413",
+      "ports": [
+        "next"
+      ],
+      "activation_count": 1,
+      "calls": [
+        {
+          "call_id": "bff28dbfa36b49de945ba4214a69e219",
+          "parent_call_id": null,
+          "state": "completed",
+          "caller": null,
+          "target": {
+            "instance": "sequence",
+            "operation": "next"
+          },
+          "depth": 1
+        },
+        {
+          "call_id": "02d3880c6db940a2b52f20162751d2c7",
+          "parent_call_id": null,
+          "state": "completed",
+          "caller": null,
+          "target": {
+            "instance": "proposer",
+            "operation": "invoke"
+          },
+          "depth": 1
+        },
+        {
+          "call_id": "a2802d8d938a478386c7fafb2b58e5c4",
+          "parent_call_id": "02d3880c6db940a2b52f20162751d2c7",
+          "state": "completed",
+          "caller": "proposer",
+          "target": {
+            "instance": "proposer-worker-1",
+            "operation": "generate"
+          },
+          "depth": 2
+        },
+        {
+          "call_id": "f6498683a97849fd80b228694c65370a",
+          "parent_call_id": "a2802d8d938a478386c7fafb2b58e5c4",
+          "state": "completed",
+          "caller": "proposer-worker-1",
+          "target": {
+            "instance": "model",
+            "operation": "complete"
+          },
+          "depth": 3
+        },
+        {
+          "call_id": "40fe94eee7ce457b87d730735142e830",
+          "parent_call_id": "02d3880c6db940a2b52f20162751d2c7",
+          "state": "completed",
+          "caller": "proposer",
+          "target": {
+            "instance": "proposer-component-1",
+            "operation": "route"
+          },
+          "depth": 2
+        },
+        {
+          "call_id": "9626e59bcc9e4583be61380c39287bea",
+          "parent_call_id": null,
+          "state": "completed",
+          "caller": null,
+          "target": {
+            "instance": "sequence",
+            "operation": "next"
+          },
+          "depth": 1
+        }
+      ],
+      "call_count": 6,
+      "owned_processes": [
+        {
+          "instance_id": "model",
+          "state": "stopped",
+          "reason": "owned_child_reaped"
+        },
+        {
+          "instance_id": "proposer",
+          "state": "stopped",
+          "reason": "owned_child_reaped"
+        },
+        {
+          "instance_id": "proposer-component-1",
+          "state": "stopped",
+          "reason": "owned_child_reaped"
+        },
+        {
+          "instance_id": "proposer-worker-1",
+          "state": "stopped",
+          "reason": "owned_child_reaped"
+        },
+        {
+          "instance_id": "sequence",
+          "state": "stopped",
+          "reason": "owned_child_reaped"
+        }
+      ],
+      "accounting": {
+        "synthetic_recorded_usd": "0.0000027",
+        "pending_for_run": 0,
+        "receipts": [
+          {
+            "call_id": "f6498683a97849fd80b228694c65370a",
+            "receipt_id": "78e20958da0a4fd4967437e243dcc9c9",
+            "synthetic_amount_nano_usd": 2700,
+            "settlement": "applied",
+            "disposition": "recorded"
+          }
+        ]
+      },
+      "cleanup_pending_calls": []
+    },
+    {
+      "run_id": "26cb9f9c87bb456ea55e239f4ccb9607",
+      "graph_id": "s06-composable-review",
+      "revision": "local-demo-1",
+      "state": "completed",
+      "definition_sha256_canonical": "b41a9098f5ee58b5d0c123dbfa6bcbae6dc73ccde0d0b2e5f2cd444071d2350e",
+      "ports": [
+        "next",
+        "revise",
+        "next",
+        "accept"
+      ],
+      "activation_count": 4,
+      "calls": [
+        {
+          "call_id": "18b983a206014184b7d7453ed6b1b422",
+          "parent_call_id": null,
+          "state": "completed",
+          "caller": null,
+          "target": {
+            "instance": "flow",
+            "operation": "next"
+          },
+          "depth": 1
+        },
+        {
+          "call_id": "8a143c9c9a804929821ad3e1de15d97a",
+          "parent_call_id": null,
+          "state": "completed",
+          "caller": null,
+          "target": {
+            "instance": "proposer",
+            "operation": "generate"
+          },
+          "depth": 1
+        },
+        {
+          "call_id": "2befccd5fba4474a96f98a9e9ea00535",
+          "parent_call_id": "8a143c9c9a804929821ad3e1de15d97a",
+          "state": "completed",
+          "caller": "proposer",
+          "target": {
+            "instance": "proposer-model",
+            "operation": "complete"
+          },
+          "depth": 2
+        },
+        {
+          "call_id": "716ccf88cd15435d9ad56ae3b197c367",
+          "parent_call_id": null,
+          "state": "completed",
+          "caller": null,
+          "target": {
+            "instance": "flow",
+            "operation": "next"
+          },
+          "depth": 1
+        },
+        {
+          "call_id": "d5a90754dad84fe5b0a1e52c291feac2",
+          "parent_call_id": null,
+          "state": "completed",
+          "caller": null,
+          "target": {
+            "instance": "reviewer",
+            "operation": "invoke"
+          },
+          "depth": 1
+        },
+        {
+          "call_id": "ca440578539c4b5d96b7aaf83566cd00",
+          "parent_call_id": "d5a90754dad84fe5b0a1e52c291feac2",
+          "state": "completed",
+          "caller": "reviewer",
+          "target": {
+            "instance": "reviewer-worker-1",
+            "operation": "generate"
+          },
+          "depth": 2
+        },
+        {
+          "call_id": "8fe33fd7a5d64ff6be0b457993162557",
+          "parent_call_id": "ca440578539c4b5d96b7aaf83566cd00",
+          "state": "completed",
+          "caller": "reviewer-worker-1",
+          "target": {
+            "instance": "reviewer-model",
+            "operation": "complete"
+          },
+          "depth": 3
+        },
+        {
+          "call_id": "ad25b0ad5351445ab379883eb5603694",
+          "parent_call_id": "d5a90754dad84fe5b0a1e52c291feac2",
+          "state": "completed",
+          "caller": "reviewer",
+          "target": {
+            "instance": "reviewer-component-1",
+            "operation": "route"
+          },
+          "depth": 2
+        },
+        {
+          "call_id": "6a3b8dbaaee246568105d6426c151b76",
+          "parent_call_id": null,
+          "state": "completed",
+          "caller": null,
+          "target": {
+            "instance": "flow",
+            "operation": "next"
+          },
+          "depth": 1
+        },
+        {
+          "call_id": "f78e897447794c8a84be824952921ba0",
+          "parent_call_id": null,
+          "state": "completed",
+          "caller": null,
+          "target": {
+            "instance": "proposer",
+            "operation": "generate"
+          },
+          "depth": 1
+        },
+        {
+          "call_id": "2b70ede0a5d049a39562255838f54c0e",
+          "parent_call_id": "f78e897447794c8a84be824952921ba0",
+          "state": "completed",
+          "caller": "proposer",
+          "target": {
+            "instance": "proposer-model",
+            "operation": "complete"
+          },
+          "depth": 2
+        },
+        {
+          "call_id": "7466aea030e345f5b8ad2be310621540",
+          "parent_call_id": null,
+          "state": "completed",
+          "caller": null,
+          "target": {
+            "instance": "flow",
+            "operation": "next"
+          },
+          "depth": 1
+        },
+        {
+          "call_id": "fcb6d4735a654a68bf5154bb5683f60c",
+          "parent_call_id": null,
+          "state": "completed",
+          "caller": null,
+          "target": {
+            "instance": "reviewer",
+            "operation": "invoke"
+          },
+          "depth": 1
+        },
+        {
+          "call_id": "53a5296daa0a42b6b5e741eb4cbe67c3",
+          "parent_call_id": "fcb6d4735a654a68bf5154bb5683f60c",
+          "state": "completed",
+          "caller": "reviewer",
+          "target": {
+            "instance": "reviewer-worker-1",
+            "operation": "generate"
+          },
+          "depth": 2
+        },
+        {
+          "call_id": "98dc7716653b42258687937eadbbae46",
+          "parent_call_id": "53a5296daa0a42b6b5e741eb4cbe67c3",
+          "state": "completed",
+          "caller": "reviewer-worker-1",
+          "target": {
+            "instance": "reviewer-model",
+            "operation": "complete"
+          },
+          "depth": 3
+        },
+        {
+          "call_id": "e210c1bf4c2d4e77af4da2941167e382",
+          "parent_call_id": "fcb6d4735a654a68bf5154bb5683f60c",
+          "state": "completed",
+          "caller": "reviewer",
+          "target": {
+            "instance": "reviewer-component-1",
+            "operation": "route"
+          },
+          "depth": 2
+        },
+        {
+          "call_id": "655092e1cadf40c58011cbcb62b7fc02",
+          "parent_call_id": null,
+          "state": "completed",
+          "caller": null,
+          "target": {
+            "instance": "flow",
+            "operation": "next"
+          },
+          "depth": 1
+        }
+      ],
+      "call_count": 17,
+      "owned_processes": [
+        {
+          "instance_id": "flow",
+          "state": "stopped",
+          "reason": "owned_child_reaped"
+        },
+        {
+          "instance_id": "proposer",
+          "state": "stopped",
+          "reason": "owned_child_reaped"
+        },
+        {
+          "instance_id": "proposer-model",
+          "state": "stopped",
+          "reason": "owned_child_reaped"
+        },
+        {
+          "instance_id": "reviewer",
+          "state": "stopped",
+          "reason": "owned_child_reaped"
+        },
+        {
+          "instance_id": "reviewer-component-1",
+          "state": "stopped",
+          "reason": "owned_child_reaped"
+        },
+        {
+          "instance_id": "reviewer-model",
+          "state": "stopped",
+          "reason": "owned_child_reaped"
+        },
+        {
+          "instance_id": "reviewer-worker-1",
+          "state": "stopped",
+          "reason": "owned_child_reaped"
+        }
+      ],
+      "accounting": {
+        "synthetic_recorded_usd": "0.0000108",
+        "pending_for_run": 0,
+        "receipts": [
+          {
+            "call_id": "2befccd5fba4474a96f98a9e9ea00535",
+            "receipt_id": "ef8674c83f1e4b6886663930998b8a13",
+            "synthetic_amount_nano_usd": 2700,
+            "settlement": "applied",
+            "disposition": "recorded"
+          },
+          {
+            "call_id": "8fe33fd7a5d64ff6be0b457993162557",
+            "receipt_id": "85a9ca09e0e9441ca18da95e30bddd08",
+            "synthetic_amount_nano_usd": 2700,
+            "settlement": "applied",
+            "disposition": "recorded"
+          },
+          {
+            "call_id": "2b70ede0a5d049a39562255838f54c0e",
+            "receipt_id": "8b84ac832bf2467bbc10478c53f8658f",
+            "synthetic_amount_nano_usd": 2700,
+            "settlement": "applied",
+            "disposition": "recorded"
+          },
+          {
+            "call_id": "98dc7716653b42258687937eadbbae46",
+            "receipt_id": "cd466dcaf9734dc3803b178c1c1e8936",
+            "synthetic_amount_nano_usd": 2700,
+            "settlement": "applied",
+            "disposition": "recorded"
+          }
+        ]
+      },
+      "cleanup_pending_calls": []
+    },
+    {
+      "run_id": "f5917c2601fa4c4f83f200c51fa8ce61",
+      "graph_id": "s06-composable-review",
+      "revision": "r-2c0c2a57e05940439e67c42b985bd23f",
+      "state": "completed",
+      "definition_sha256_canonical": "598c28b6b6e7c228215a1d97763dfa0cd2e08a083e63779f596ffcc2dd9f58e5",
+      "ports": [
+        "next",
+        "revise",
+        "next",
+        "accept"
+      ],
+      "activation_count": 4,
+      "calls": [
+        {
+          "call_id": "8e6be3e32c3049e5bd899e8c8423bb55",
+          "parent_call_id": null,
+          "state": "completed",
+          "caller": null,
+          "target": {
+            "instance": "flow",
+            "operation": "next"
+          },
+          "depth": 1
+        },
+        {
+          "call_id": "3b0717459d074e85b716f84cb00e49e9",
+          "parent_call_id": null,
+          "state": "completed",
+          "caller": null,
+          "target": {
+            "instance": "proposer",
+            "operation": "invoke"
+          },
+          "depth": 1
+        },
+        {
+          "call_id": "a715b8ba58b446148e1ea3511aa77314",
+          "parent_call_id": "3b0717459d074e85b716f84cb00e49e9",
+          "state": "completed",
+          "caller": "proposer",
+          "target": {
+            "instance": "proposer-worker-1",
+            "operation": "generate"
+          },
+          "depth": 2
+        },
+        {
+          "call_id": "4e794caa4c06491aba04354ee3397656",
+          "parent_call_id": "a715b8ba58b446148e1ea3511aa77314",
+          "state": "completed",
+          "caller": "proposer-worker-1",
+          "target": {
+            "instance": "proposer-model",
+            "operation": "complete"
+          },
+          "depth": 3
+        },
+        {
+          "call_id": "a9d3616dcf9e4dc7a3b347744c36c994",
+          "parent_call_id": "3b0717459d074e85b716f84cb00e49e9",
+          "state": "completed",
+          "caller": "proposer",
+          "target": {
+            "instance": "response-marker",
+            "operation": "mark"
+          },
+          "depth": 2
+        },
+        {
+          "call_id": "633e3f522e7148ef9e63195fc6e747fd",
+          "parent_call_id": null,
+          "state": "completed",
+          "caller": null,
+          "target": {
+            "instance": "flow",
+            "operation": "next"
+          },
+          "depth": 1
+        },
+        {
+          "call_id": "6a54cdb57a2e4b629b92bbc851e29833",
+          "parent_call_id": null,
+          "state": "completed",
+          "caller": null,
+          "target": {
+            "instance": "reviewer",
+            "operation": "invoke"
+          },
+          "depth": 1
+        },
+        {
+          "call_id": "c34e9db8ea854a9d82d44b68d074d7b3",
+          "parent_call_id": "6a54cdb57a2e4b629b92bbc851e29833",
+          "state": "completed",
+          "caller": "reviewer",
+          "target": {
+            "instance": "reviewer-worker-1",
+            "operation": "generate"
+          },
+          "depth": 2
+        },
+        {
+          "call_id": "79f8ea0174ec4af38761893679e4a04f",
+          "parent_call_id": "c34e9db8ea854a9d82d44b68d074d7b3",
+          "state": "completed",
+          "caller": "reviewer-worker-1",
+          "target": {
+            "instance": "reviewer-model",
+            "operation": "complete"
+          },
+          "depth": 3
+        },
+        {
+          "call_id": "60daa66659f34fea999e60ea7ac3a210",
+          "parent_call_id": "6a54cdb57a2e4b629b92bbc851e29833",
+          "state": "completed",
+          "caller": "reviewer",
+          "target": {
+            "instance": "reviewer-component-1",
+            "operation": "route"
+          },
+          "depth": 2
+        },
+        {
+          "call_id": "50efbbdffe874fd99f16e9a1d788004b",
+          "parent_call_id": null,
+          "state": "completed",
+          "caller": null,
+          "target": {
+            "instance": "flow",
+            "operation": "next"
+          },
+          "depth": 1
+        },
+        {
+          "call_id": "be8a82682ecb44da8109af7ea8bf89f6",
+          "parent_call_id": null,
+          "state": "completed",
+          "caller": null,
+          "target": {
+            "instance": "proposer",
+            "operation": "invoke"
+          },
+          "depth": 1
+        },
+        {
+          "call_id": "76a00b3685ed4dbd8279b39cf50106f0",
+          "parent_call_id": "be8a82682ecb44da8109af7ea8bf89f6",
+          "state": "completed",
+          "caller": "proposer",
+          "target": {
+            "instance": "proposer-worker-1",
+            "operation": "generate"
+          },
+          "depth": 2
+        },
+        {
+          "call_id": "c974927d84dc4699acb098a37f3581ba",
+          "parent_call_id": "76a00b3685ed4dbd8279b39cf50106f0",
+          "state": "completed",
+          "caller": "proposer-worker-1",
+          "target": {
+            "instance": "proposer-model",
+            "operation": "complete"
+          },
+          "depth": 3
+        },
+        {
+          "call_id": "66ce1c340706432e9bd879b9a3f4e70f",
+          "parent_call_id": "be8a82682ecb44da8109af7ea8bf89f6",
+          "state": "completed",
+          "caller": "proposer",
+          "target": {
+            "instance": "response-marker",
+            "operation": "mark"
+          },
+          "depth": 2
+        },
+        {
+          "call_id": "6632fbc4bce64600af4902dbd90fd40d",
+          "parent_call_id": null,
+          "state": "completed",
+          "caller": null,
+          "target": {
+            "instance": "flow",
+            "operation": "next"
+          },
+          "depth": 1
+        },
+        {
+          "call_id": "e6c27e4aca4f4c09a13b14fa5626031c",
+          "parent_call_id": null,
+          "state": "completed",
+          "caller": null,
+          "target": {
+            "instance": "reviewer",
+            "operation": "invoke"
+          },
+          "depth": 1
+        },
+        {
+          "call_id": "8626c80fe8b8445bafa307ac383e7dc4",
+          "parent_call_id": "e6c27e4aca4f4c09a13b14fa5626031c",
+          "state": "completed",
+          "caller": "reviewer",
+          "target": {
+            "instance": "reviewer-worker-1",
+            "operation": "generate"
+          },
+          "depth": 2
+        },
+        {
+          "call_id": "4f1c01fe345f4368b8935059f2b1a37b",
+          "parent_call_id": "8626c80fe8b8445bafa307ac383e7dc4",
+          "state": "completed",
+          "caller": "reviewer-worker-1",
+          "target": {
+            "instance": "reviewer-model",
+            "operation": "complete"
+          },
+          "depth": 3
+        },
+        {
+          "call_id": "5ad97676778a4872b88dab6a7137cc8a",
+          "parent_call_id": "e6c27e4aca4f4c09a13b14fa5626031c",
+          "state": "completed",
+          "caller": "reviewer",
+          "target": {
+            "instance": "reviewer-component-1",
+            "operation": "route"
+          },
+          "depth": 2
+        },
+        {
+          "call_id": "42a5e44e23cd4e1c9dc0029409a5c185",
+          "parent_call_id": null,
+          "state": "completed",
+          "caller": null,
+          "target": {
+            "instance": "flow",
+            "operation": "next"
+          },
+          "depth": 1
+        }
+      ],
+      "call_count": 21,
+      "owned_processes": [
+        {
+          "instance_id": "flow",
+          "state": "stopped",
+          "reason": "owned_child_reaped"
+        },
+        {
+          "instance_id": "proposer",
+          "state": "stopped",
+          "reason": "owned_child_reaped"
+        },
+        {
+          "instance_id": "proposer-model",
+          "state": "stopped",
+          "reason": "owned_child_reaped"
+        },
+        {
+          "instance_id": "proposer-worker-1",
+          "state": "stopped",
+          "reason": "owned_child_reaped"
+        },
+        {
+          "instance_id": "response-marker",
+          "state": "stopped",
+          "reason": "owned_child_reaped"
+        },
+        {
+          "instance_id": "reviewer",
+          "state": "stopped",
+          "reason": "owned_child_reaped"
+        },
+        {
+          "instance_id": "reviewer-component-1",
+          "state": "stopped",
+          "reason": "owned_child_reaped"
+        },
+        {
+          "instance_id": "reviewer-model",
+          "state": "stopped",
+          "reason": "owned_child_reaped"
+        },
+        {
+          "instance_id": "reviewer-worker-1",
+          "state": "stopped",
+          "reason": "owned_child_reaped"
+        }
+      ],
+      "accounting": {
+        "synthetic_recorded_usd": "0.0000108",
+        "pending_for_run": 0,
+        "receipts": [
+          {
+            "call_id": "4e794caa4c06491aba04354ee3397656",
+            "receipt_id": "66df7191ef3d4c9fa0511038f404d06a",
+            "synthetic_amount_nano_usd": 2700,
+            "settlement": "applied",
+            "disposition": "recorded"
+          },
+          {
+            "call_id": "79f8ea0174ec4af38761893679e4a04f",
+            "receipt_id": "74d128a2609b4887b179153e24cfd5b4",
+            "synthetic_amount_nano_usd": 2700,
+            "settlement": "applied",
+            "disposition": "recorded"
+          },
+          {
+            "call_id": "c974927d84dc4699acb098a37f3581ba",
+            "receipt_id": "3b63b69e49854e42a982e6ef6ffe0b4c",
+            "synthetic_amount_nano_usd": 2700,
+            "settlement": "applied",
+            "disposition": "recorded"
+          },
+          {
+            "call_id": "4f1c01fe345f4368b8935059f2b1a37b",
+            "receipt_id": "baf6e7dd43074f0cb91bbce82fe3e63c",
+            "synthetic_amount_nano_usd": 2700,
+            "settlement": "applied",
+            "disposition": "recorded"
+          }
+        ]
+      },
+      "cleanup_pending_calls": []
+    }
+  ],
+  "external_component": {
+    "type_id": "example.response-marker",
+    "version": "0.1.0",
+    "configured_prefix": "Recorded externally: ",
+    "platform_specific_adapter_added": false,
+    "installed_marker_call_count": 2,
+    "recorded_outputs": [
+      {
+        "call_id": "a9d3616dcf9e4dc7a3b347744c36c994",
+        "status": "ok",
+        "value": "Recorded externally: Local test model response: run a daily backup and retain seven copies."
+      },
+      {
+        "call_id": "66ce1c340706432e9bd879b9a3f4e70f",
+        "status": "ok",
+        "value": "Recorded externally: Local test model response: run an encrypted backup at 02:00 every night; keep seven daily copies in separate storage. The operations owner performs a weekly restore test, records the outcome, and investigates failures."
+      }
+    ]
+  },
+  "owner_draft": {
+    "bytes": 1746,
+    "sha256": "ad41cb5854411ca19644b826d9a3645a30ec395ab241347e955456eda1bbc47f",
+    "restored_separate_unsaved_tab": true,
+    "existing_missing_permission_issue_preserved": true
+  },
+  "earlier_failures": "Prior missing input-schema503 and unsupported legacy provider selection retained locally; corrected without retroactive alteration",
+  "publication": "No commit, push or release performed"
+}

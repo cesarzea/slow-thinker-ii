@@ -76,7 +76,9 @@ EXCLUDED_PATTERNS = (
     "*.sarif",
     "*.bqrs",
     "jquery*",
-    "bootstrap*",
+    "bootstrap*.js",
+    "bootstrap*.css",
+    "bootstrap*.map",
 )
 
 
@@ -87,5 +89,8 @@ def excluded(path: PurePosixPath) -> bool:
     return name in SECRET_NAMES or any(fnmatchcase(name, pattern) for pattern in EXCLUDED_PATTERNS)
 
 
+EXCLUDED_DIRECTORY_PREFIXES = ("ext-", "jquery", "bootstrap-", "bootstrap.")
+
+
 def _excluded_directory(name: str) -> bool:
-    return name in EXCLUDED_DIRECTORIES or name.startswith(("ext-", "jquery", "bootstrap"))
+    return name in EXCLUDED_DIRECTORIES or name.startswith(EXCLUDED_DIRECTORY_PREFIXES)

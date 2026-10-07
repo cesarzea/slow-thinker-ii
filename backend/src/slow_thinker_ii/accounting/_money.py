@@ -1,6 +1,7 @@
 """Exact USD accounting in billionths of a dollar."""
 
 from decimal import Decimal, InvalidOperation
+from fractions import Fraction
 
 QUANTA_PER_USD = 1_000_000_000
 MAX_QUANTA = (1 << 63) - 1
@@ -16,9 +17,9 @@ def _exact_quanta(amount: Decimal) -> tuple[int, int]:
     return divmod(numerator * QUANTA_PER_USD, denominator)
 
 
-def parse_limit(value: str) -> int:
+def parse_usd(text: str) -> int:
     try:
-        amount = Decimal(value)
+        amount = Decimal(text)
     except InvalidOperation as error:
         raise ValueError("A budget must be a decimal amount") from error
     quanta, remainder = _exact_quanta(amount)
@@ -27,12 +28,15 @@ def parse_limit(value: str) -> int:
     return quanta
 
 
-def rounded_charge(amount: Decimal) -> int:
-    quanta, remainder = _exact_quanta(amount)
-    return quanta + int(remainder != 0)
-
-
-def display_amount(quanta: int) -> str:
+def format_usd(quanta: int) -> str:
     if quanta < 0 or quanta > MAX_QUANTA:
         raise ValueError("Invalid ledger amount")
     return f"{quanta // QUANTA_PER_USD}.{quanta % QUANTA_PER_USD:09d}"
+
+
+def account_fraction(amount: Fraction) -> int:
+    scaled = amount * QUANTA_PER_USD
+    accounted = -(-scaled.numerator // scaled.denominator)
+    if amount < 0 or accounted > MAX_QUANTA:
+        raise ValueError("Charge exceeds ledger range")
+    return accounted

@@ -1,62 +1,69 @@
-"""Optional reports require a durable boolean receipt under invocation authority."""
+"""Reports reach `platform.report` under the call's grant; failures never fail the call."""
+
+from collections.abc import Sequence
+from dataclasses import replace
 
 import pytest
-from slow_thinker_host import Invocation, JsonObject, McpEndpoint, ToolReply, report_component
-
-from tooling.tests.mcp_gateway_fixture import GatewayFixture
-
-ENDPOINT = McpEndpoint("http://127.0.0.1:8000/mcp", 2, 1)
-REPORT: JsonObject = {"kind": "state", "schema_version": "1", "value": {"stage": "reviewing"}}
+from host_fixtures import bootstrap, connect, meta
+from host_platform import fake_platform
+from slow_thinker_host import Context, Emission, JsonValue, create_server
 
 
-@pytest.mark.parametrize("kind", ["state", "progress", "explanation", "reasoning"])
-async def test_report_uses_reserved_tool_and_preserves_optional_timestamp(
-    monkeypatch: pytest.MonkeyPatch, kind: str
+class Reporter:
+    def __init__(self, kind: str, content: JsonValue) -> None:
+        self.kind, self.content = kind, content
+
+    async def activate(self, message: JsonValue, context: Context) -> Sequence[Emission]:
+        await context.report(self.kind, self.content)
+        return [Emission("out", message)]
+
+
+@pytest.mark.parametrize("kind", ["step", "progress", "state", "explanation", "reasoning"])
+async def test_reports_are_sent_with_the_call_grant(kind: str) -> None:
+    async with fake_platform() as platform:
+        host = replace(bootstrap(), mcp_url=platform.mcp_url)
+        reporter = Reporter(kind, {"messages": 2})
+        async with connect(create_server(host, node=reporter)) as client:
+            result = await client.call_tool("activate", {"message": 1}, meta=meta(grant="g-7"))
+    assert not result.is_error
+    assert platform.reports == [({"kind": kind, "content": {"messages": 2}}, "Bearer g-7")]
+
+
+async def test_a_rejected_report_is_swallowed_after_one_attempt(
+    capsys: pytest.CaptureFixture[str],
 ) -> None:
-    fixture = GatewayFixture()
-    fixture.add("platform.report", ToolReply({"recorded": True}))
-    fixture.install(monkeypatch)
-    value = {**REPORT, "kind": kind, "source_occurred_at": 123.5}
-    assert await report_component(ENDPOINT, Invocation("g"), value) == {"recorded": True}
-    assert fixture.calls == [("platform.report", value, "Bearer g")]
+    async with fake_platform() as platform:
+        platform.reject_reports = True
+        host = replace(bootstrap(), mcp_url=platform.mcp_url)
+        async with connect(create_server(host, node=Reporter("step", "built"))) as client:
+            result = await client.call_tool("activate", {"message": 1}, meta=meta())
+    assert result.structured_content == {"emissions": [{"port": "out", "payload": 1}]}
+    assert len(platform.reports) == 1
+    assert "Node echo: report not recorded: ValueError" in capsys.readouterr().err
+
+
+async def test_an_unreachable_platform_does_not_fail_the_call() -> None:
+    async with fake_platform() as platform:
+        unreachable = platform.mcp_url
+    host = replace(bootstrap(), mcp_url=unreachable)
+    async with connect(create_server(host, node=Reporter("step", "built"))) as client:
+        result = await client.call_tool("activate", {"message": 1}, meta=meta())
+    assert not result.is_error
 
 
 @pytest.mark.parametrize(
-    "report",
+    ("kind", "content", "reason"),
     [
-        {},
-        {**REPORT, "extra": 1},
-        {**REPORT, "kind": "unknown"},
-        {**REPORT, "schema_version": "2"},
-        {**REPORT, "source_occurred_at": True},
-        {**REPORT, "source_occurred_at": "now"},
+        ("debug", "text", "ValueError: unsupported kind 'debug'"),
+        ("step", float("inf"), "ValueError: Expected a finite JSON value"),
     ],
 )
-async def test_invalid_report_never_dispatches(
-    monkeypatch: pytest.MonkeyPatch, report: JsonObject
+async def test_invalid_reports_are_logged_and_never_sent(
+    capsys: pytest.CaptureFixture[str], kind: str, content: JsonValue, reason: str
 ) -> None:
-    fixture = GatewayFixture()
-    fixture.install(monkeypatch)
-    with pytest.raises(ValueError):
-        await report_component(ENDPOINT, Invocation("g"), report)
-    assert not fixture.clients
-
-
-@pytest.mark.parametrize(
-    "reply",
-    [
-        ToolReply({"recorded": False}),
-        ToolReply({"recorded": 1}),
-        ToolReply({"recorded": True, "extra": 1}),
-        ToolReply({"error": "refused"}, True),
-    ],
-)
-async def test_non_durable_report_reply_is_not_success(
-    monkeypatch: pytest.MonkeyPatch, reply: ToolReply
-) -> None:
-    fixture = GatewayFixture()
-    fixture.add("platform.report", reply)
-    fixture.install(monkeypatch)
-    with pytest.raises(ValueError):
-        await report_component(ENDPOINT, Invocation("g"), REPORT)
-    assert len(fixture.calls) == 1
+    async with fake_platform() as platform:
+        host = replace(bootstrap(), mcp_url=platform.mcp_url)
+        async with connect(create_server(host, node=Reporter(kind, content))) as client:
+            result = await client.call_tool("activate", {"message": 1}, meta=meta())
+    assert not result.is_error and not platform.reports
+    assert f"Node echo: report not recorded: {reason}" in capsys.readouterr().err

@@ -1,50 +1,119 @@
-"""Strict, bounded command envelopes contain intentions, never prepared runtime objects."""
+"""Strict, bounded operator input: JSON object bodies, known fields and query parameters."""
 
-from typing import Annotated, Literal
+import re
+from collections.abc import Collection
 
-from fastapi import Request
-from pydantic import BaseModel, Field, ValidationError
+from fastapi import Request, Response
 
-from slow_thinker_ii.contracts import JsonObject, decode_json, json_object
+from slow_thinker_ii.contracts import JsonObject, JsonValue, decode_json, encode_json
 
+from ._bodies import JSON_MEDIA_TYPE, bounded_body, media_type
 from ._operator_errors import OperatorError
 
-Identity = Annotated[str, Field(min_length=1, max_length=128, pattern=r"^[a-zA-Z0-9_.-]+$")]
+_SIGNED = re.compile(r"-?[0-9]{1,18}")
+_UNSIGNED = re.compile(r"[0-9]{1,18}")
+_NUMBER = re.compile(r"[1-9][0-9]{0,8}")
+MAX_NUMBER = 999_999_999  # versions and changes
 
 
-class CommandBody(BaseModel, extra="forbid", strict=True):
-    schema_version: Literal["0.1-draft"]
-    command_id: Identity
-
-
-class SessionBody(CommandBody):
-    name: str = Field(min_length=1, max_length=200)
-
-
-class StartBody(CommandBody):
-    session_id: Identity
-    graph_id: str = Field(pattern=r"^[a-z][a-z0-9_.-]*$")
-    graph_revision: str = Field(min_length=1)
-    configuration_revision: Identity
-    input: JsonObject
-
-
-async def command_body[T: BaseModel](request: Request, model: type[T], limit: int) -> T:
-    if request.query_params or request.headers.getlist("content-encoding"):
-        raise OperatorError("unsupported_transport_options", 400)
-    if request.headers.get("content-type", "").split(";")[0].strip().lower() != "application/json":
-        raise OperatorError("json_content_required", 415)
-    chunks: list[bytes] = []
-    size = 0
-    async for chunk in request.stream():
-        size += len(chunk)
-        if size > limit:
-            raise OperatorError("request_too_large", 413)
-        chunks.append(chunk)
+async def json_body(request: Request, limit: int) -> JsonObject:
+    """The body as a JSON object; an empty body counts as `{}`."""
+    content = await bounded_body(request, limit)
+    if content is None:
+        raise OperatorError(413, "request_too_large", f"The request body exceeds {limit} bytes.")
+    if not content:
+        return {}
+    if media_type(request) != JSON_MEDIA_TYPE or request.headers.getlist("content-encoding"):
+        message = "Send the body as uncompressed JSON with Content-Type: application/json."
+        raise OperatorError(415, "json_content_required", message)
     try:
-        value = json_object(decode_json(b"".join(chunks).decode("utf-8")))
-        return model.model_validate(value)
-    except ValidationError as error:
-        raise OperatorError("invalid_command", 422) from error
-    except ValueError as error:
-        raise OperatorError("invalid_json", 400) from error
+        value = decode_json(content.decode("utf-8"))
+    except (ValueError, RecursionError) as error:
+        raise OperatorError(400, "invalid_json", "The request body is not valid JSON.") from error
+    if not isinstance(value, dict):
+        raise invalid_request("The request body must be a JSON object.")
+    return value
+
+
+def known_fields(
+    body: JsonObject, required: Collection[str], optional: Collection[str] = ()
+) -> None:
+    """Refuses unknown and missing fields with `422 invalid_request`."""
+    unknown = sorted(set(body) - {*required, *optional})
+    if unknown:
+        raise invalid_request(f"The field “{unknown[0]}” is not supported.")
+    missing = [name for name in required if name not in body]
+    if missing:
+        raise invalid_request(f"The field “{missing[0]}” is required.")
+
+
+async def document_field(request: Request, limit: int) -> JsonValue:
+    """The `document` of a body that has exactly that field and no query parameters."""
+    query(request)
+    body = await json_body(request, limit)
+    known_fields(body, ("document",))
+    return body["document"]
+
+
+def number_field(body: JsonObject, name: str) -> int:
+    """A version or change number from 1."""
+    number = body[name]
+    if type(number) is not int or not 1 <= number <= MAX_NUMBER:
+        raise invalid_request(f"The field “{name}” must be a whole number from 1.")
+    return number
+
+
+def start_field(body: JsonObject) -> tuple[str, int]:
+    """The `from` of a new branch: exactly `{"version": n}` or `{"change": n}`."""
+    start = body["from"]
+    if not isinstance(start, dict) or len(start) != 1 or not set(start) <= {"version", "change"}:
+        raise invalid_request("The field “from” must name exactly one version or one change.")
+    kind = next(iter(start))
+    return kind, number_field(start, kind)
+
+
+def text_field(body: JsonObject, name: str) -> str:
+    value = body[name]
+    if not isinstance(value, str):
+        raise invalid_request(f"The field “{name}” must be a string.")
+    return value
+
+
+def query(request: Request, allowed: Collection[str] = ()) -> dict[str, str]:
+    """The query parameters; unknown or repeated ones are refused with `422 invalid_query`."""
+    parameters = request.query_params
+    for name in parameters:
+        if name not in allowed or len(parameters.getlist(name)) > 1:
+            raise invalid_query(f"The query parameter “{name}” is not supported here.")
+    return dict(parameters)
+
+
+def integer(parameters: dict[str, str], name: str, default: int, *, signed: bool = True) -> int:
+    value = parameters.get(name)
+    if value is None:
+        return default
+    pattern = _SIGNED if signed else _UNSIGNED
+    if pattern.fullmatch(value) is None:
+        kind = "an integer" if signed else "a non-negative integer"
+        raise invalid_query(f"The query parameter “{name}” must be {kind}.")
+    return int(value)
+
+
+def numbered(text: str, kind: str, graph_id: str) -> int:
+    """A `version` or `change` path segment; anything but a number from 1 names none."""
+    if _NUMBER.fullmatch(text) is None:
+        message = f"Graph “{graph_id}” has no {kind} {text}."
+        raise OperatorError(404, f"{kind}_not_found", message)
+    return int(text)
+
+
+def reply(value: JsonValue, status: int = 200) -> Response:
+    return Response(encode_json(value), status, media_type="application/json")
+
+
+def invalid_request(message: str) -> OperatorError:
+    return OperatorError(422, "invalid_request", message)
+
+
+def invalid_query(message: str) -> OperatorError:
+    return OperatorError(422, "invalid_query", message)

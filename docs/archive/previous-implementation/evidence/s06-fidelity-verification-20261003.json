@@ -1,0 +1,114 @@
+{
+  "schema_version": "1",
+  "recorded_at": "2026-10-03T03:49:22.071763+00:00",
+  "verification_confirmed_at": "2026-10-03T03:46:19Z",
+  "scope": "S06 owner-rejected workspace visual fidelity correction",
+  "baseline_commit": "a8445149e2615668f2aadda0563e81bbe6c7341e",
+  "tree_status": "uncommitted local delivery",
+  "command": "make verify",
+  "exit_code": 0,
+  "tests": {
+    "python": 2280,
+    "frontend": 791,
+    "frontend_files": 133,
+    "browser_journeys": 34
+  },
+  "frontend_coverage_percent": {
+    "lines": 97.61,
+    "branches": 90.96,
+    "functions": 97.55,
+    "statements": 96.43
+  },
+  "python_coverage": {
+    "covered_lines": 11464,
+    "num_statements": 11771,
+    "covered_branches": 2774,
+    "num_branches": 3020,
+    "lines_percent": 97.39,
+    "branches_percent": 91.85
+  },
+  "codeql": {
+    "version": "2.27.1",
+    "report_id": "bc5854ad2cfb4d23bf07c0bcfadaefda",
+    "python": {
+      "errors": 0,
+      "warnings": 0,
+      "notes": 100
+    },
+    "javascript_typescript": {
+      "errors": 0,
+      "warnings": 0,
+      "notes": 0
+    }
+  },
+  "mutation": {
+    "scope": "existing accounting baseline",
+    "total": 200,
+    "killed": 141,
+    "survived": 58,
+    "timed_out": 1,
+    "all_killed_claimed": false
+  },
+  "log_sha256": "222fbbf8d2dcb2990c45fd7a75bcba67be6ed73d1e92dafc0d20ef6f29590575",
+  "earlier_attempt": {
+    "exit_code": 2,
+    "python_passed": 2280,
+    "frontend_passed": 791,
+    "browser_passed": 31,
+    "browser_failed": 3,
+    "cause": "Three Refresh configuration consumers did not open the new native disclosure",
+    "focused_recovery_cases_passed": 5,
+    "log_sha256": "d05cbbdb3a9c6109109a3f7c864a03d5e43cf65a627fa87510549d9ab5326e4a"
+  },
+  "gate_thresholds_changed": false,
+  "new_paid_calls": 0,
+  "credential_changes": false,
+  "manual_demonstration": {
+    "environment": "isolated production HTTP/SQLite composition with simulated component providers",
+    "browser_url": "http://127.0.0.1:5191/",
+    "backend_port": 8101,
+    "saved_revision": "r-29cf65fcaf50411bb3d5e9b40a53abff",
+    "parent_revision": "r-5604b31a965e40bdb8792300fae50ba7",
+    "run_id": "e82dd456cb394d30ac7d0ee46658f049",
+    "result": "accepted after four activations",
+    "recorded_simulated_cost_usd": "0.0000003",
+    "real_cost_usd": "0",
+    "viewports": [
+      {
+        "width": 1440,
+        "height": 900,
+        "document_overflow": false
+      },
+      {
+        "width": 1920,
+        "height": 1080,
+        "document_overflow": false
+      },
+      {
+        "width": 390,
+        "height": 844,
+        "document_overflow": false
+      }
+    ],
+    "viewport_measurement": "CSS innerWidth/innerHeight measured from the actual page; screenshot pixel dimensions differ at browser zoom",
+    "narrow_graph_framing": "Explicit Arrange after changing viewport; user graph viewport otherwise preserved",
+    "ordinary_prompt_and_model_edit_save": true,
+    "immutable_history_and_comparison": true,
+    "historical_run_admitted_definition_preserved": true,
+    "exact_published_output_inspected": true,
+    "reasoning_unavailable_reported": true,
+    "reopen_retains_selected_saved_revision_and_configuration": true,
+    "existing_user_data_unchanged": true,
+    "temporary_viewport_override_reset": true
+  },
+  "image_sha256": {
+    "corrected-desktop-1440.jpg": "63760818d786809cb554fce2a869f7f4e8f29429d1e4e3710bd0c37697b6e633",
+    "design-reference.png": "b8902c69a826b61369a3e15871eff4f3fddae932fd16907d911530dd5f33927b",
+    "corrected-mobile-graph-390.jpg": "b2d954578f42feb4661035d9f4c166a1e7b516f7f9cc86e144487dad2223e0f1",
+    "rejected-checkpoint.jpg": "ed77bcbf390339da9660eb9ed49b895111536e9610273b7f42eb749f613773d0",
+    "corrected-mobile-390.jpg": "001a98077839d965e50c8837788ba9354ba50ac03b0fa253343c017c1e7acf36",
+    "corrected-desktop-1920.jpg": "cf9519435a46c213d0dca3d1585b090e942f2c63fbcdba864bed4d4e928fed79"
+  },
+  "acceptance": "local correction verified; owner usability acceptance pending",
+  "publication": "no commit, push, merge or release performed"
+}

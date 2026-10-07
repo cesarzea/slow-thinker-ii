@@ -1,0 +1,58 @@
+{
+  "schema_version": "1",
+  "recorded_at": "2026-10-02T12:09:58+00:00",
+  "scope": "S06 owner-review completion",
+  "baseline_commit": "da310ab3bcf558c7752ef9eb0acccb811052836e",
+  "command": "make verify",
+  "exit_code": 0,
+  "tests": {
+    "python": 2204,
+    "frontend": 439,
+    "browser_journeys": 22
+  },
+  "frontend_coverage_percent": {
+    "lines": 99.56,
+    "branches": 93.86,
+    "functions": 99.44,
+    "statements": 98.74
+  },
+  "python_coverage": {
+    "covered_lines": 10649,
+    "num_statements": 10914,
+    "covered_branches": 2599,
+    "num_branches": 2806
+  },
+  "codeql": {
+    "version": "2.27.1",
+    "python": {
+      "errors": 0,
+      "warnings": 0,
+      "notes": 97
+    },
+    "javascript_typescript": {
+      "errors": 0,
+      "warnings": 0,
+      "notes": 0
+    }
+  },
+  "mutation": {
+    "scope": "existing accounting baseline",
+    "killed": 141,
+    "timeout": 1,
+    "survived": 58,
+    "total": 200,
+    "all_killed_claimed": false
+  },
+  "log_sha256": "109cb39d28173ea5800413e4b9f048f522e8e2b9880c04d0e66b647ac9af7471",
+  "gate_thresholds_changed": false,
+  "new_paid_calls": 0,
+  "credential_changes": false,
+  "manual_inspection": {
+    "saved_real_run_id": "1a6a889893f54851842a912da1c02554",
+    "recorded_cost_usd": "0.0002215",
+    "readable_named_node_results": true,
+    "original_response_disclosure": true,
+    "viewport": "desktop; narrow layout verified in automated 390px journeys"
+  },
+  "publication": "local correction; owner review and publication remain separate"
+}

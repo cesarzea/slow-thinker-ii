@@ -27,7 +27,7 @@ Use FastAPI with Python; React, TypeScript and React Flow with Vite for the brow
 
 Begin with one active workflow and saved history. Component processes, storage technology, browser status transport, and the JSON editing location remain separate decisions.
 
-Subsequent decisions: [ADR 0004](0004-component-packaging.md) selects independent component processes. [Q02](../specification/open-questions.md) selects bundled graph examples for the first UI, with editing tools and manual JSON upload later. Storage and browser status transport remain open.
+Subsequent decisions: [ADR 0004](0004-component-packaging.md) selects independent component processes. [Q02](../archive/previous-implementation/specification/open-questions.md) selects bundled graph examples for the first UI, with editing tools and manual JSON upload later. Storage and browser status transport remain open.
 
 ## Consequences
 

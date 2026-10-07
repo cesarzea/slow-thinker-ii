@@ -1,17 +1,13 @@
-"""Resolve production dependencies, retain their wheels, then install strictly offline."""
+"""Build first-party wheels, then resolve and fetch a hash-locked production closure."""
 
+from dataclasses import dataclass
 from pathlib import Path
 from uuid import uuid4
 
-from slow_thinker_ii.adapters.installations import (
-    InstallationCatalog,
-    Resolution,
-)
-
-from tooling.components.artifacts import record_provenance, write_inputs
+from tooling.components.artifacts import record_provenance, write_inputs, write_registration
 from tooling.components.build import build_wheels, command, verify_built_wheels, wheel_hashes
-from tooling.components.selector import with_selector
-from tooling.components.targets import PreparationTarget, target
+from tooling.components.registration import Registration, read_registration
+from tooling.components.targets import target
 
 RESOLVE_FLAGS = (
     "--no-config",
@@ -43,41 +39,31 @@ FETCH_FLAGS = (
 )
 
 
-def prepare_sequence(root: Path, destination: Path, uv: Path, python: Path) -> Resolution:
-    return prepare_component(root, destination, uv, python, "sequence")
+@dataclass(frozen=True)
+class Preparation:
+    """A directory with `wheels/`, `requirements.txt`, `registration.json` and provenance."""
+
+    directory: Path
+    registration: Registration
+    provenance: dict[str, str]
 
 
 def prepare_component(
-    root: Path,
-    destination: Path,
-    uv: Path,
-    python: Path,
-    name: str,
-    *,
-    selector_project: Path | None = None,
-) -> Resolution:
-    recipe = _recipe(name, selector_project)
+    root: Path, destination: Path, uv: Path, python: Path, name: str
+) -> Preparation:
+    recipe = target(name)
     preparation = destination / "preparations" / uuid4().hex
     wheels = preparation / "wheels"
     wheels.mkdir(parents=True, exist_ok=False)
     sources = build_wheels(tuple(root / path for path in recipe.projects), wheels, python)
     built = wheel_hashes(wheels)
-    inputs = write_inputs(recipe, preparation)
-    lock = preparation / "requirements.txt"
-    resolve_and_fetch(uv, python, inputs, lock, wheels)
+    registration = read_registration(wheels, recipe.module)
+    inputs = write_inputs(registration, preparation)
+    resolve_and_fetch(uv, python, inputs, preparation / "requirements.txt", wheels)
     verify_built_wheels(wheels, built)
     provenance = record_provenance(sources, built, uv, preparation)
-    catalog = InstallationCatalog(destination, uv, python)
-    return catalog.prepare(lock, wheels, recipe.registration, provenance)
-
-
-def _recipe(name: str, selector_project: Path | None) -> PreparationTarget:
-    recipe = target(name)
-    if selector_project is not None:
-        if name != "redirector":
-            raise ValueError("Selector projects are only valid for Redirector preparation")
-        recipe = with_selector(recipe, selector_project)
-    return recipe
+    write_registration(registration, preparation)
+    return Preparation(preparation, registration, provenance)
 
 
 def resolve_and_fetch(uv: Path, python: Path, inputs: Path, lock: Path, wheels: Path) -> None:

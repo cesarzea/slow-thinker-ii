@@ -1,100 +1,122 @@
-# Architecture overview
+# Architecture of the core
 
-**Status: Approved first-cycle architecture.** This view follows [arc42](https://arc42.org/overview/). Architectural requirements are binding; mechanisms marked proposed remain subject to approval.
+| Document control | Value                                                              |
+| ---------------- | ------------------------------------------------------------------ |
+| Document ID      | ARCH-CORE                                                          |
+| Revision         | 1                                                                  |
+| Owner            | Cesar Zea                                                          |
+| Date             | 2026-10-04                                                         |
+| Structure        | [arc42](https://arc42.org) with [C4](https://c4model.com) views    |
+| Previous edition | [Architecture of the previous implementation](../archive/previous-implementation/architecture/README.md) |
 
 ## 1. Introduction and goals
 
-The system supports experiments that improve agent collaboration according to task-specific quality, time, cost, and other objectives. Initial work establishes a configurable execution and observation foundation. Later cycles compare graph variants and automate experimentation.
-
-The [requirements](../specification/requirements.md) identify stakeholders, functional scope, and the distinction between first-cycle work and future capabilities. Principal quality goals are extensibility, traceability, bounded execution, clear visual inspection, and maintainability.
+Slow Thinker II lets users build graphs of collaborating components, run them under
+supervision and analyse what happened, as defined in the
+[requirements](../specification/requirements.md). The core's quality goals, in
+order: complete and truthful recording of every interaction; extensibility by
+independently packaged components; bounded execution (time, activations, money);
+a configuration experience free of technical plumbing; maintainability under the
+mandatory engineering standards.
 
 ## 2. Constraints
 
-- The local application implements the approved first cycle; later capabilities remain deferred.
-- Start locally, with one user, trusted components, and one active workflow.
-- Use Python/FastAPI for the backend and React/TypeScript/React Flow/Vite for the frontend.
-- Graph definitions are editable, versioned JSON, independent of React Flow serialization.
-- Managed communication, including model access, passes through platform control.
-- Preserve the [mandatory engineering baseline](../../README.md#engineering-standards), including the seven reference TypeScript rules without narrowing their scope.
-- Budget and deadline values are configurable; no project defaults have been selected.
+- The [engineering standards](../../README.md#engineering-standards) apply without
+  exception, including small units, coverage and the single verification command.
+- Python 3.13 with FastAPI for the platform; React, TypeScript, React Flow and Vite
+  for the browser interface ([ADR 0003](../adr/0003-local-application-stack.md)).
+- Components run as separate processes speaking MCP ([ADR 0004](../adr/0004-component-packaging.md),
+  [ADR 0007](../adr/0007-mcp-profile.md)); the protocol stays container-ready
+  ([ADR 0023](../adr/0023-container-ready-component-boundary.md)).
+- Local SQLite persistence behind backend ports ([ADR 0011](../adr/0011-local-persistence.md)).
+- S06 is single-user and local, with trusted components.
 
 ## 3. Context and scope
 
-See the [C4 context and container views](views.md). The browser is an operator interface; components have independently controlled access to platform capabilities. External providers receive explicitly supplied inputs. Local deployment is not a claim that all experiment data stay on the machine.
+See the [context and container views](views.md). The operator uses the browser
+interface. The platform calls model providers over HTTPS with server-side
+credentials. Component hosts are local processes launched per run.
 
 ## 4. Solution strategy
 
-Use a small orchestration core with extension contracts. Separate definitions, configured instances, activations, graph revisions, and recorded evidence. Centralize authorization, scheduling, deadlines, spending reservations, and event persistence. Keep provider integrations and visual layout outside the domain model.
-
-The first cycle supports finite sequences and bounded conditional routing. Policy-specific data belongs to versioned controller configuration, preserving room for future scheduling mechanisms.
-
-Future [standalone Python export](../adr/0009-standalone-python-export.md) motivates keeping functional component logic independent of instrumentation, application services and client routing. The selected export profile generates direct calls and removes platform logging, intermediation and supervision. Export implementation is deferred; platform-managed execution retains its first-cycle process, mediation and supervision requirements.
+- A pure, asynchronous **engine** schedules message deliveries and activations of
+  a compiled graph and knows nothing of HTTP, SQLite or processes
+  ([ADR 0017](../adr/0017-message-driven-execution.md)).
+- A pure **graph** module parses and validates [graph documents](../contracts/graph-document.md)
+  against component declarations and the LLM catalog, and compiles run plans
+  ([ADR 0016](../adr/0016-graph-document-model.md)).
+- **Authorization** is derived from the plan: grants identify an activation and
+  allow exactly the deliveries and service entries the graph declares
+  ([ADR 0018](../adr/0018-derived-authorization.md)).
+- The **LLM gateway** mediates every model call: authorize, validate, reserve,
+  dispatch, settle, record ([ADR 0019](../adr/0019-platform-llm-service.md),
+  [ADR 0022](../adr/0022-budgets-and-request-reservations.md)).
+- An append-only **event log** per run is the single source for results, totals
+  and activity ([ADR 0021](../adr/0021-supervision-and-recording.md)).
+- The interface renders component declarations with a fixed control vocabulary
+  ([ADR 0020](../adr/0020-declared-component-configuration.md)).
 
 ## 5. Building block view
 
-These are logical responsibilities. The source layout and enforced dependency direction are defined in the module-boundary contract; they do not imply independently deployed microservices.
+The [module boundaries](module-boundaries.md) define packages, dependency rules and
+public entry points. In summary:
 
-| Responsibility | Owns | Public interactions |
-| --- | --- | --- |
-| Definitions and registry | Component descriptors, immutable graph versions, static validation and manual lineage | Resolve types, read bundled/personal definitions and save validated revisions |
-| Execution | Run and activation lifecycle, scheduling, deadlines | Start, request stop, receive authorized outcomes |
-| Access and routing | Caller identity, scoped discovery, invocation policy | Resolve permitted capabilities and dispatch requests |
-| Accounting | Reservations, usage, charges, scope balances | Authorize bounded spending and settle actual usage |
-| Observation | Events, payload references, read models | Append evidence and supply authorized inspection |
-| Integration adapters | MCP, model providers, compatibility APIs, persistence | Translate external formats at validated boundaries |
-| Browser features | JSON authoring, revision selection, graph views, inspectors and session/run navigation | Use bounded application APIs and status updates |
-
-Only public module APIs may be used across responsibilities. Domain code must not import web frameworks, provider SDKs, UI types, or storage implementations. A composition root wires implementations. The [module-boundary contract](module-boundaries.md) defines the implemented directories, dependency direction, public entry points and placement checks.
-
-S03's [personal experiment library](../contracts/personal-experiments.md) composes
-bundled definitions with SQLite-owned personal revisions behind a common reader.
-Static authoring validation checks declared contracts without launching installed
-components. Execution preparation independently resolves installations, effective
-schemas and limits, then freezes the selected exact revision. Browser authoring
-uses raw canonical text and backend-generated drafts to preserve numeric values
-across Python and JavaScript. Runtime evidence continues to refer to the admitted
-snapshot rather than the current editor or library selection.
+| Layer         | Packages                                                       | Responsibility                                                         |
+| ------------- | -------------------------------------------------------------- | ---------------------------------------------------------------------- |
+| Composition   | `bootstrap`                                                    | Configuration and wiring                                               |
+| Adapters      | `adapters.http`, `adapters.sqlite`, `adapters.hosts`, `adapters.providers`, `adapters.installations` | HTTP, persistence, component processes, provider transports, installed packages |
+| Application   | `application`                                                  | Use cases: graph library, runs, LLM gateway, reports, usage; port definitions |
+| Engine        | `engine`                                                       | Run scheduling, activation pipeline, limits and termination            |
+| Domain        | `graphs`, `catalog`, `access`, `accounting`, `contracts`       | Graph documents and plans, declarations and LLM catalog, grants, money and budgets, JSON values |
+| Components    | `components/host`, `components/llm-call`, `components/router`, `components/memory` | Host SDK and the component packages                      |
+| Interface     | `frontend/src/{app,features,api,ui}`                           | Graph list, editor, run and activity views                             |
 
 ## 6. Runtime view
 
-The [runtime scenarios](runtime.md) cover validation, the three-activation example, nested calls, budget denial, cancellation, and restart. The [execution and evidence contract](../contracts/execution.md) proposes state and event semantics.
+The [runtime scenarios](runtime.md) follow journey J3: saving a graph, starting a run,
+an activation with an embedded Router, a model call, a loop, completion and the
+activation-limit stop.
 
 ## 7. Deployment view
 
-Initially the operator runs the backend on the local machine and opens a browser interface served by it. The owner selected local SQLite behind backend persistence interfaces; [ADR 0011](../adr/0011-local-persistence.md) records that choice and proposes its detailed settings and recovery semantics. Independent local component processes are required from the first cycle by [ADR 0004](../adr/0004-component-packaging.md).
-
-The [MCP profile proposal](../contracts/mcp-profile.md) distinguishes the platform-to-component transport from calls made by components back to the platform. Components use familiar model/tool client interfaces through platform adapters with the same authorization, accounting and observation controls. One component process is not inherently one agent, session, or activation.
-
-Server hosting, container isolation, remote component deployment, and multiple users require later deployment decisions. No claim of untrusted-code isolation applies to the initial local process model.
+One backend process serves the compiled interface and the APIs on loopback. It
+launches component hosts from installed, hash-verified environments under
+`.local/components` and stores state in `.local/state.sqlite3`. Model providers are
+reached over HTTPS from the backend process only.
 
 ## 8. Crosscutting concepts
 
-| Concept | Specification |
-| --- | --- |
-| Component identities, state, memory bindings | [Component contract](../contracts/components.md) |
-| Host readiness, invocation reuse, process teardown | [Component lifecycle](../contracts/component-lifecycle.md) |
-| Caller identity, permissions and causal context | [Call authority](../contracts/call-authority.md) |
-| Graph definitions, revisions, control policy | [Graph contract](../contracts/graphs.md) |
-| Protocol, discovery, and interoperability | [MCP profile](../contracts/mcp-profile.md) |
-| Accounting, cancellation, observability | [Execution contract](../contracts/execution.md) |
-| Tariffs, monetary precision, periods and settlement | [Accounting policy](../contracts/accounting-policy.md) |
-| Persistence transactions and crash recovery | [Storage proposal](../adr/0011-local-persistence.md) |
-| Event catalog, capture completeness and reported internals | [Observation contract](../contracts/observation.md) |
-| Live graph and historical inspection | [Visual model](visual-model.md) |
-| Secrets, instruction boundaries, trust | [Initial threat model](security.md) |
+| Concept                              | Specification                                              |
+| ------------------------------------ | ---------------------------------------------------------- |
+| Graph documents and diagnostics      | [Graph document](../contracts/graph-document.md)           |
+| Component declarations and screens   | [Component declaration](../contracts/component-declaration.md) |
+| Messages, activations and limits     | [Execution](../contracts/execution.md)                     |
+| Host launch, operations and reports  | [Component protocol](../contracts/component-protocol.md)   |
+| Model calls and providers            | [LLM service](../contracts/llm-service.md)                 |
+| Money, budgets and tariffs           | [Accounting](../contracts/accounting.md)                   |
+| Event log                            | [Recording](../contracts/recording.md)                     |
+| Browser API                          | [Operator API](../contracts/operator-api.md)               |
+| Threats and controls                 | [Security](security.md)                                    |
 
 ## 9. Architectural decisions
 
-The [MADR index](../adr/README.md) records accepted principles and independent-process packaging separately from proposed detailed contracts, execution mechanisms, and transport choices. Accepted means an agreed decision, not an implemented feature.
+[ADR 0015](../adr/0015-new-execution-core.md) to [ADR 0023](../adr/0023-container-ready-component-boundary.md)
+define the core. Earlier records remain in the [decision log](../adr/README.md).
 
 ## 10. Quality requirements
 
-[Quality scenarios](quality.md) give stimuli, required responses, and proposed acceptance checks. Numeric limits remain operator-configured where agreed; performance and scale targets still need selection.
+[Quality scenarios](quality.md) give stimuli, expected responses and their checks.
 
 ## 11. Risks and technical debt
 
-[Risks](risks.md) record uncertainty about SDK support, incomplete instrumentation, cancellation, shared state, trace volume, visual complexity, and evaluation validity. There is no implementation debt yet. Open decisions are not silently represented as resolved design choices.
+| Risk                                                                                   | Mitigation                                                                          |
+| -------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
+| Local processes are not a sandbox; a Router script runs user code                      | S06 is single-user and trusted; container isolation is planned for S08 and S18            |
+| The byte-level tokenization assumption under-reserves a provider that breaks it         | Recorded per provider; overruns are recorded and stop the run when a budget is exceeded |
+| Reused subsystems carry assumptions of the previous model                              | Each reused module is reviewed against the new contracts and keeps its tests         |
+| Concurrent activations expose races in the engine and the ledger                       | Pure engine tests with controlled scheduling; ledger admission in one transaction    |
+| Holidays are not modelled in DeepSeek tariffs                                           | Charges stay at or above the provider's price; documented                           |
 
 ## 12. Glossary
 
-The [glossary](glossary.md) distinguishes terms that must not become interchangeable: graph versus result graph, component type versus instance, node versus activation, and work session versus agent conversation.
+See the [glossary](glossary.md).

@@ -1,36 +1,27 @@
-import {useState} from 'react';
 import type {ReactElement} from 'react';
-import {AccessPanel} from './access-panel.tsx';
-import {CatalogPanel} from './catalog-panel.tsx';
+import {AccessEntry} from './access-entry.tsx';
+import {useConnection} from './use-connection.ts';
+import {Workspace} from './workspace.tsx';
+import './styles/base.css';
+import './styles/shell.css';
+import './styles/pages.css';
 
-interface Connection {
-  readonly credential: string | undefined;
-  readonly generation: number;
-}
-
+/**
+ * The interface: the product at once on a server without operator authentication;
+ * otherwise the access entry until an operator token is given or kept for this tab.
+ */
 export function App(): ReactElement {
-  const [connection, setConnection] = useState<Connection>({credential: undefined, generation: 0});
-  const connect = (credential: string | undefined): void => {
-    setConnection({credential, generation: connection.generation + 1});
-  };
+  const {connection, connect, disconnect} = useConnection();
+  if (connection.checking) return <p className="muted page-loading">Connecting…</p>;
+  if (connection.credential === undefined)
+    return (
+      <AccessEntry key={connection.generation} notice={connection.notice} onConnect={connect} />
+    );
   return (
-    <main>
-      <header>
-        <p>Agent collaboration lab</p>
-        <h1>Slow Thinker II</h1>
-      </header>
-      <AccessPanel
-        connected={connection.credential !== undefined}
-        onConnect={connect}
-        onDisconnect={() => {
-          connect(undefined);
-        }}
-      />
-      <CatalogPanel
-        key={connection.generation}
-        credential={connection.credential}
-        generation={connection.generation}
-      />
-    </main>
+    <Workspace
+      key={connection.generation}
+      credential={connection.credential}
+      onDisconnect={connection.credential === null ? null : disconnect}
+    />
   );
 }

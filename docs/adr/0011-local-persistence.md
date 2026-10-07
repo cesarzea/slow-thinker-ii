@@ -1,6 +1,6 @@
 # ADR 0011: Use one local transactional store behind persistence interfaces
 
-- Status: Proposed
+- Status: Accepted on 2026-10-07 with S06 for local operation; PostgreSQL replaces SQLite from S08 (local) and S17 (cloud) under a later decision
 - Recorded: 2026-09-28
 - Decision-maker: Cesar Zea
 - Accepted scope, 2026-09-28: local SQLite, backend-mediated storage, transactional reservations/state/evidence and no automatic paid replay. Detailed settings and recovery mechanics below remain proposed.
@@ -49,7 +49,7 @@ T3 is the durable authorization boundary. A stop accepted before T3 prevents dis
 
 Uniqueness constraints cover attempt identity, source usage/settlement identity and per-run event sequence. One attempt has one accounting contribution, referenced by its ancestors. Conditional state updates prevent two senders from claiming the same attempt. The backend is the identity authority; caller-provided request IDs alone cannot create another charge or authorize a retry.
 
-The [operator API proposal](../contracts/operator-api.md#start-command-and-durable-receipts) adds unique command identities and retained receipts/tombstones. Concurrent duplicate Starts resolve to one T1 result. Withdrawing an unconfirmed Start serializes against that same boundary: either it prevents admission, or it stops the already admitted run without erasing its receipt. A lost browser reply cannot authorize another execution.
+The [operator API proposal](../archive/previous-implementation/contracts/operator-api.md#start-command-and-durable-receipts) adds unique command identities and retained receipts/tombstones. Concurrent duplicate Starts resolve to one T1 result. Withdrawing an unconfirmed Start serializes against that same boundary: either it prevents admission, or it stops the already admitted run without erasing its receipt. A lost browser reply cannot authorize another execution.
 
 ### Crash and storage-failure cases
 

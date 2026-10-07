@@ -1,5 +1,5 @@
 [project]
-license = "Apache-2.0"
+license = "FSL-1.1-ALv2"
 name = "slow-thinker-ii-development"
 version = "0.1.0.dev1"
 requires-python = ">=3.13,<3.14"
@@ -11,19 +11,14 @@ package = false
 [dependency-groups]
 dev = [
   "slow-thinker-ii",
-  "slow-thinker-host[langchain]",
-  "slow-thinker-sequence",
-  "slow-thinker-redirector",
-  "slow-thinker-routed-call",
-  "slow-thinker-bounded-flow",
+  "slow-thinker-host",
   "slow-thinker-llm-call",
-  "slow-thinker-openai-model",
-  "example-grounded-review",
+  "slow-thinker-router",
+  "slow-thinker-memory",
   "hatchling>=1.27,<2",
   "pip>=25,<27",
   "uv==0.12.19",
   "types-jsonschema>=4,<5",
-  "types-psutil>=7,<8",
   "pytest>=8.3,<10",
   "pytest-asyncio>=1,<2",
   "pytest-cov>=6,<8",
@@ -33,33 +28,26 @@ dev = [
   "mypy>=1.15,<3",
   "mutmut>=3,<4",
   "httpx>=0.28,<1",
-  "langchain-openai==1.6.6",
-  "langgraph==1.2.12",
+  "httpx2>=2.13,<3",
 ]
 
 [tool.uv.sources]
 slow-thinker-ii = { path = "backend", editable = true }
 slow-thinker-host = { path = "components/host", editable = true }
-slow-thinker-sequence = { path = "components/sequence", editable = true }
-slow-thinker-redirector = { path = "components/redirector", editable = true }
-slow-thinker-routed-call = { path = "components/routed-call", editable = true }
-slow-thinker-bounded-flow = { path = "components/bounded-flow", editable = true }
 slow-thinker-llm-call = { path = "components/llm-call", editable = true }
-
-slow-thinker-openai-model = { path = "components/openai-model", editable = true }
-
-example-grounded-review = { path = "examples/grounded-review", editable = true }
+slow-thinker-router = { path = "components/router", editable = true }
+slow-thinker-memory = { path = "components/memory", editable = true }
 
 [tool.pytest.ini_options]
 addopts = "-ra --strict-markers --strict-config"
-testpaths = ["backend/tests", "tooling/tests", "components/host/tests", "components/sequence/tests", "components/redirector/tests", "components/routed-call/tests", "components/bounded-flow/tests", "components/llm-call/tests", "components/openai-model/tests", "examples/grounded-review/tests"]
+testpaths = ["backend/tests", "tooling/tests", "components/host/tests", "components/llm-call/tests", "components/router/tests", "components/memory/tests"]
 pythonpath = ["backend/tests"]
 asyncio_mode = "auto"
 filterwarnings = ["error"]
 
 [tool.coverage.run]
 branch = true
-source = ["backend/src/slow_thinker_ii", "tooling/quality", "tooling/components", "components/host/src/slow_thinker_host", "components/sequence/src/slow_thinker_sequence", "components/redirector/src/slow_thinker_redirector", "components/routed-call/src/slow_thinker_routed_call", "components/bounded-flow/src/slow_thinker_bounded_flow", "components/llm-call/src/slow_thinker_llm_call", "components/openai-model/src/slow_thinker_openai_model", "examples/grounded-review/src/example_grounded_review"]
+source = ["backend/src/slow_thinker_ii", "tooling/quality", "tooling/components", "components/host/src/slow_thinker_host", "components/llm-call/src/slow_thinker_llm_call", "components/router/src/slow_thinker_router", "components/memory/src/slow_thinker_memory"]
 
 [tool.coverage.report]
 fail_under = 90
@@ -80,7 +68,7 @@ max-complexity = 8
 [tool.pyright]
 pythonVersion = "3.13"
 typeCheckingMode = "strict"
-include = ["backend/src", "backend/tests", "tooling", "components", "examples"]
+include = ["backend/src", "backend/tests", "tooling", "components"]
 extraPaths = ["backend/tests"]
 exclude = ["**/.cache", "**/.venv", "**/__pycache__", "**/node_modules", "**/site-packages", "**/dist", "**/build", "**/mutants", "docs"]
 venvPath = "."
@@ -88,7 +76,7 @@ venv = ".venv"
 
 [tool.mypy]
 python_version = "3.13"
-files = ["backend/src/slow_thinker_ii/contracts", "backend/src/slow_thinker_ii/accounting", "backend/src/slow_thinker_ii/access", "backend/src/slow_thinker_ii/definitions", "backend/src/slow_thinker_ii/execution", "backend/src/slow_thinker_ii/application", "components/sequence/src/slow_thinker_sequence/_sequence.py"]
+files = ["backend/src/slow_thinker_ii/contracts", "backend/src/slow_thinker_ii/accounting", "backend/src/slow_thinker_ii/access", "backend/src/slow_thinker_ii/catalog", "backend/src/slow_thinker_ii/graphs", "backend/src/slow_thinker_ii/engine", "backend/src/slow_thinker_ii/application"]
 strict = true
 disallow_any_explicit = true
 disallow_any_expr = true
@@ -97,27 +85,32 @@ disallow_any_unimported = true
 warn_unused_ignores = true
 
 [tool.vulture]
-paths = ["backend/src", "backend/tests", "tooling", "components", "examples"]
+paths = ["backend/src", "backend/tests", "tooling", "components"]
 exclude = ["*/.cache/*", "*/.venv/*", "*/__pycache__/*", "*/node_modules/*", "*/site-packages/*", "*/dist/*", "*/build/*", "*/mutants/*"]
 min_confidence = 60
 sort_by_size = true
 
 [tool.importlinter]
-root_packages = ["slow_thinker_ii", "slow_thinker_host", "slow_thinker_sequence", "slow_thinker_redirector", "slow_thinker_routed_call", "slow_thinker_bounded_flow", "slow_thinker_llm_call", "slow_thinker_openai_model", "example_grounded_review"]
+root_packages = ["slow_thinker_ii", "slow_thinker_host", "slow_thinker_llm_call", "slow_thinker_router", "slow_thinker_memory"]
 include_external_packages = true
 
 [[tool.importlinter.contracts]]
-name = "Boundary values have no framework dependencies"
+name = "Domain and engine have no framework dependencies"
 type = "forbidden"
-source_modules = ["slow_thinker_ii.contracts", "slow_thinker_ii.accounting", "slow_thinker_ii.definitions", "slow_thinker_ii.access", "slow_thinker_ii.execution", "slow_thinker_ii.application"]
+source_modules = ["slow_thinker_ii.contracts", "slow_thinker_ii.accounting", "slow_thinker_ii.access", "slow_thinker_ii.catalog", "slow_thinker_ii.graphs", "slow_thinker_ii.engine", "slow_thinker_ii.application"]
 forbidden_modules = ["fastapi", "sqlite3", "mcp", "openai", "httpx", "pydantic"]
 
 [[tool.importlinter.contracts]]
 name = "All backend capabilities follow the dependency direction"
 type = "layers"
 containers = ["slow_thinker_ii"]
-layers = ["bootstrap", "adapters", "application", "accounting | definitions | access | execution", "contracts"]
+layers = ["bootstrap", "adapters", "application", "engine", "graphs", "catalog | accounting | access", "contracts"]
 exhaustive = true
+
+[[tool.importlinter.contracts]]
+name = "Adapters are independent"
+type = "independence"
+modules = ["slow_thinker_ii.adapters.sqlite", "slow_thinker_ii.adapters.http", "slow_thinker_ii.adapters.hosts", "slow_thinker_ii.adapters.providers", "slow_thinker_ii.adapters.installations"]
 
 [[tool.importlinter.contracts]]
 name = "No Python module cycles"
@@ -125,68 +118,94 @@ type = "acyclic_siblings"
 ancestors = ["slow_thinker_ii"]
 
 [[tool.importlinter.contracts]]
-name = "Accounting internals are private"
+name = "contracts internals are private"
+type = "protected"
+protected_modules = ["slow_thinker_ii.contracts.*"]
+allowed_importers = ["slow_thinker_ii.contracts"]
+
+[[tool.importlinter.contracts]]
+name = "accounting internals are private"
 type = "protected"
 protected_modules = ["slow_thinker_ii.accounting.*"]
 allowed_importers = ["slow_thinker_ii.accounting"]
 
 [[tool.importlinter.contracts]]
-name = "Definition internals are private"
+name = "access internals are private"
 type = "protected"
-protected_modules = ["slow_thinker_ii.definitions.*"]
-allowed_importers = ["slow_thinker_ii.definitions"]
+protected_modules = ["slow_thinker_ii.access.*"]
+allowed_importers = ["slow_thinker_ii.access"]
 
 [[tool.importlinter.contracts]]
-name = "Application internals are private"
+name = "catalog internals are private"
+type = "protected"
+protected_modules = ["slow_thinker_ii.catalog.*"]
+allowed_importers = ["slow_thinker_ii.catalog"]
+
+[[tool.importlinter.contracts]]
+name = "graphs internals are private"
+type = "protected"
+protected_modules = ["slow_thinker_ii.graphs.*"]
+allowed_importers = ["slow_thinker_ii.graphs"]
+
+[[tool.importlinter.contracts]]
+name = "engine internals are private"
+type = "protected"
+protected_modules = ["slow_thinker_ii.engine.*"]
+allowed_importers = ["slow_thinker_ii.engine"]
+
+[[tool.importlinter.contracts]]
+name = "application internals are private"
 type = "protected"
 protected_modules = ["slow_thinker_ii.application.*"]
 allowed_importers = ["slow_thinker_ii.application"]
-ignore_imports = [
-    "slow_thinker_ii.adapters.** -> slow_thinker_ii.application.library",
-    "slow_thinker_ii.bootstrap.** -> slow_thinker_ii.application.library",
-]
 
 [[tool.importlinter.contracts]]
-name = "Library internals are private"
-type = "protected"
-protected_modules = ["slow_thinker_ii.application.library.*"]
-allowed_importers = ["slow_thinker_ii.application.library"]
-
-[[tool.importlinter.contracts]]
-name = "Catalogue adapter internals are private"
-type = "protected"
-protected_modules = ["slow_thinker_ii.adapters.catalog.*"]
-allowed_importers = ["slow_thinker_ii.adapters.catalog"]
-
-[[tool.importlinter.contracts]]
-name = "HTTP adapter internals are private"
-type = "protected"
-protected_modules = ["slow_thinker_ii.adapters.http.*"]
-allowed_importers = ["slow_thinker_ii.adapters.http"]
-
-[[tool.importlinter.contracts]]
-name = "SQLite adapter internals are private"
+name = "adapters.sqlite internals are private"
 type = "protected"
 protected_modules = ["slow_thinker_ii.adapters.sqlite.*"]
 allowed_importers = ["slow_thinker_ii.adapters.sqlite"]
 
 [[tool.importlinter.contracts]]
-name = "Tariff adapter internals are private"
+name = "adapters.http internals are private"
 type = "protected"
-protected_modules = ["slow_thinker_ii.adapters.tariffs.*"]
-allowed_importers = ["slow_thinker_ii.adapters.tariffs"]
+protected_modules = ["slow_thinker_ii.adapters.http.*"]
+allowed_importers = ["slow_thinker_ii.adapters.http"]
 
 [[tool.importlinter.contracts]]
-name = "Component packages cannot import the application"
+name = "adapters.hosts internals are private"
+type = "protected"
+protected_modules = ["slow_thinker_ii.adapters.hosts.*"]
+allowed_importers = ["slow_thinker_ii.adapters.hosts"]
+
+[[tool.importlinter.contracts]]
+name = "adapters.providers internals are private"
+type = "protected"
+protected_modules = ["slow_thinker_ii.adapters.providers.*"]
+allowed_importers = ["slow_thinker_ii.adapters.providers"]
+
+[[tool.importlinter.contracts]]
+name = "adapters.installations internals are private"
+type = "protected"
+protected_modules = ["slow_thinker_ii.adapters.installations.*"]
+allowed_importers = ["slow_thinker_ii.adapters.installations"]
+
+[[tool.importlinter.contracts]]
+name = "bootstrap internals are private"
+type = "protected"
+protected_modules = ["slow_thinker_ii.bootstrap.*"]
+allowed_importers = ["slow_thinker_ii.bootstrap"]
+
+[[tool.importlinter.contracts]]
+name = "Component packages cannot import the backend"
 type = "forbidden"
-source_modules = ["slow_thinker_host", "slow_thinker_sequence", "slow_thinker_redirector", "slow_thinker_routed_call", "slow_thinker_bounded_flow", "slow_thinker_llm_call", "slow_thinker_openai_model", "example_grounded_review"]
+source_modules = ["slow_thinker_host", "slow_thinker_llm_call", "slow_thinker_router", "slow_thinker_memory"]
 forbidden_modules = ["slow_thinker_ii"]
 
 [[tool.importlinter.contracts]]
 name = "Backend never imports component implementations"
 type = "forbidden"
 source_modules = ["slow_thinker_ii"]
-forbidden_modules = ["slow_thinker_sequence", "slow_thinker_redirector", "slow_thinker_routed_call", "slow_thinker_bounded_flow", "slow_thinker_llm_call", "slow_thinker_openai_model", "example_grounded_review"]
+forbidden_modules = ["slow_thinker_host", "slow_thinker_llm_call", "slow_thinker_router", "slow_thinker_memory"]
 
 [[tool.importlinter.contracts]]
 name = "Host SDK internals are private"
@@ -195,79 +214,19 @@ protected_modules = ["slow_thinker_host.*"]
 allowed_importers = ["slow_thinker_host"]
 
 [[tool.importlinter.contracts]]
-name = "Sequence internals are private"
-type = "protected"
-protected_modules = ["slow_thinker_sequence.*"]
-allowed_importers = ["slow_thinker_sequence"]
-
-[[tool.importlinter.contracts]]
-name = "Process adapter internals are private"
-type = "protected"
-protected_modules = ["slow_thinker_ii.adapters.process.*"]
-allowed_importers = ["slow_thinker_ii.adapters.process"]
-
-[[tool.importlinter.contracts]]
-name = "Installation adapter internals are private"
-type = "protected"
-protected_modules = ["slow_thinker_ii.adapters.installations.*"]
-allowed_importers = ["slow_thinker_ii.adapters.installations"]
-
-[[tool.importlinter.contracts]]
-name = "LLMCall internals are private"
+name = "LLM Call internals are private"
 type = "protected"
 protected_modules = ["slow_thinker_llm_call.*"]
 allowed_importers = ["slow_thinker_llm_call"]
 
 [[tool.importlinter.contracts]]
-name = "Derived example internals are private"
+name = "Router internals are private"
 type = "protected"
-protected_modules = ["example_grounded_review.*"]
-allowed_importers = ["example_grounded_review"]
+protected_modules = ["slow_thinker_router.*"]
+allowed_importers = ["slow_thinker_router"]
 
 [[tool.importlinter.contracts]]
-name = "Access internals are private"
+name = "Memory internals are private"
 type = "protected"
-protected_modules = ["slow_thinker_ii.access.*"]
-allowed_importers = ["slow_thinker_ii.access"]
-
-[[tool.importlinter.contracts]]
-name = "Execution internals are private"
-type = "protected"
-protected_modules = ["slow_thinker_ii.execution.*"]
-allowed_importers = ["slow_thinker_ii.execution"]
-
-[[tool.importlinter.contracts]]
-name = "OpenAI adapter internals are private"
-type = "protected"
-protected_modules = ["slow_thinker_ii.adapters.openai.*"]
-allowed_importers = ["slow_thinker_ii.adapters.openai"]
-
-[[tool.importlinter.contracts]]
-name = "OpenAI model resource internals are private"
-type = "protected"
-protected_modules = ["slow_thinker_openai_model.*"]
-allowed_importers = ["slow_thinker_openai_model"]
-
-[[tool.importlinter.contracts]]
-name = "Preparation adapter internals are private"
-type = "protected"
-protected_modules = ["slow_thinker_ii.adapters.preparation.*"]
-allowed_importers = ["slow_thinker_ii.adapters.preparation"]
-
-[[tool.importlinter.contracts]]
-name = "Redirector internals are private"
-type = "protected"
-protected_modules = ["slow_thinker_redirector.*"]
-allowed_importers = ["slow_thinker_redirector"]
-
-[[tool.importlinter.contracts]]
-name = "RoutedCall internals are private"
-type = "protected"
-protected_modules = ["slow_thinker_routed_call.*"]
-allowed_importers = ["slow_thinker_routed_call"]
-
-[[tool.importlinter.contracts]]
-name = "BoundedFlow internals are private"
-type = "protected"
-protected_modules = ["slow_thinker_bounded_flow.*"]
-allowed_importers = ["slow_thinker_bounded_flow"]
+protected_modules = ["slow_thinker_memory.*"]
+allowed_importers = ["slow_thinker_memory"]

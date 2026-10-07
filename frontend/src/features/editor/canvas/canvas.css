@@ -1,0 +1,465 @@
+.graph-canvas {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 420px;
+  background: var(--bg);
+}
+
+/* Cards: kind tile, kind and name, values, the ports row, and the band of an embedded component */
+.node-card {
+  position: relative;
+  box-sizing: border-box;
+  display: grid;
+  width: 220px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+  box-shadow: var(--shadow);
+  color: var(--text);
+  font-size: 12px;
+}
+.node-card.selected {
+  border-color: var(--accent);
+  box-shadow:
+    0 0 0 3px var(--accent-soft),
+    var(--shadow);
+}
+.node-card.invalid {
+  border-color: var(--danger);
+}
+.card-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  padding: 9px 10px 4px;
+}
+/* The kind and the name together are as tall as the 28px tile beside them. */
+.card-titles {
+  display: grid;
+  min-width: 0;
+}
+.card-kind {
+  color: var(--subtle);
+  font-size: 10px;
+  font-weight: 500;
+  line-height: 12px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.card-name {
+  overflow: hidden;
+  color: var(--text);
+  font-size: 13px;
+  font-weight: 650;
+  line-height: 16px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.card-values {
+  display: grid;
+  justify-items: start;
+  gap: 4px;
+  min-width: 0;
+  padding: 2px 10px 6px;
+}
+.card-value {
+  max-width: 100%;
+  overflow: hidden;
+  color: var(--muted);
+  font-size: 11.5px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.card-chip {
+  max-width: 100%;
+  height: 19px;
+  padding: 0 6px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 5px;
+  background: var(--surface-2);
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 17px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+/* Left and right ports: listed in a row below a thin divider, with handles on the card's edges */
+.card-ports {
+  display: flex;
+  justify-content: space-between;
+  min-width: 0;
+  padding: 4px 0 6px;
+  border-top: 1px solid var(--line);
+}
+.ports {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.port-row {
+  position: relative;
+  padding: 0 10px;
+  color: var(--subtle);
+  font-size: 10.5px;
+  line-height: 1.8;
+  white-space: nowrap;
+}
+.port-row .port-label {
+  display: inline-block;
+  max-width: 96px;
+  vertical-align: top;
+}
+.ports-right .port-row {
+  text-align: right;
+}
+.card-band {
+  display: grid;
+  gap: 2px;
+  padding: 6px 0 8px;
+  border-top: 1px dashed var(--line-strong);
+  border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+  background: var(--surface-2);
+}
+.band-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding-left: 10px;
+  color: var(--router);
+  font-size: 10.5px;
+  font-weight: 650;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+.card-band .card-ports {
+  padding: 0;
+  border-top: 0;
+}
+.card-band .port-row {
+  color: var(--muted);
+}
+.card-problem {
+  padding: 0 10px 8px;
+  color: var(--danger);
+  font-size: 11px;
+}
+.card-count {
+  position: absolute;
+  top: -9px;
+  right: -9px;
+  padding: 0 6px;
+  border-radius: 999px;
+  background: var(--warning);
+  color: #fff;
+  font-size: 10.5px;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Top and bottom ports: spread evenly along the edge, named under or over their handles */
+.port-rail {
+  display: flex;
+  justify-content: space-evenly;
+  min-width: 0;
+  margin: 0;
+  padding: 0 4px;
+  color: var(--subtle);
+  font-size: 10.5px;
+  line-height: 18px;
+  list-style: none;
+}
+.port {
+  position: relative;
+  display: flex;
+  flex: 1 1 0;
+  justify-content: center;
+  min-width: 0;
+  white-space: nowrap;
+}
+.rail-top .port {
+  padding: 7px 4px 0;
+}
+.rail-bottom .port {
+  padding: 0 4px 7px;
+}
+.port-label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Handles and connections; every handle shows its tip, also on a read-only canvas */
+.graph-canvas .react-flow__handle {
+  width: 9px;
+  height: 9px;
+  border: 2px solid var(--subtle);
+  background: var(--surface);
+  pointer-events: all;
+}
+.graph-canvas .band .react-flow__handle,
+.graph-canvas .card-band .react-flow__handle {
+  border-color: var(--router);
+}
+.graph-canvas .react-flow__handle:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+.graph-canvas .react-flow__node:focus-visible .node-card {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+/* Thin lines in React Flow's neutral grey */
+.graph-canvas .react-flow__edge-path {
+  stroke: #b1b1b7;
+  stroke-width: 1;
+}
+.graph-canvas .react-flow__edge-text {
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+}
+.graph-canvas.editable .react-flow__edge {
+  cursor: pointer;
+}
+.graph-canvas .react-flow__edge:hover .react-flow__edge-path,
+.graph-canvas .react-flow__edge.selected .react-flow__edge-path {
+  stroke: var(--accent);
+  stroke-width: 1.5;
+}
+/* A connection's source port name beside its route, placed clear of lines, ports and cards */
+.edge-port {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1001;
+  box-sizing: border-box;
+  overflow: hidden;
+  padding: 0 4px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  background: color-mix(in srgb, var(--surface) 88%, transparent);
+  color: var(--accent);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  line-height: 15px;
+  text-align: center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  pointer-events: none;
+}
+.edge-port.active {
+  border-color: var(--accent-soft);
+}
+.edge-remove {
+  position: absolute;
+  display: grid;
+  min-height: 0;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  padding: 0;
+  border: 1px solid var(--danger);
+  border-radius: 50%;
+  background: var(--surface);
+  color: var(--danger);
+  font-size: 15px;
+  line-height: 1;
+  pointer-events: all;
+  cursor: pointer;
+}
+/* A selected card's delete button, over its top right corner, like a connection's × */
+.card-delete {
+  position: absolute;
+  top: -11px;
+  right: -11px;
+  display: grid;
+  min-height: 0;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  padding: 0;
+  border: 1px solid var(--danger);
+  border-radius: 50%;
+  background: var(--surface);
+  color: var(--danger);
+  cursor: pointer;
+}
+.card-delete:hover {
+  background: color-mix(in srgb, var(--danger) 10%, var(--surface));
+}
+.card-menu {
+  right: auto;
+}
+/* The connection styles, then the curvature of curved connections */
+.connections-menu {
+  min-width: 220px;
+}
+.connections-menu [role='menuitemradio'] {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+}
+.curvature {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 8px;
+  margin-top: 4px;
+  padding: 8px 10px 6px;
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 12px;
+}
+.curvature input {
+  width: 100%;
+  accent-color: var(--accent);
+}
+.curvature output {
+  font-variant-numeric: tabular-nums;
+}
+.edge-remove:hover:not(:disabled) {
+  border-color: var(--danger);
+  background: color-mix(in srgb, var(--danger) 10%, var(--surface));
+}
+
+/* A port's full name and connections, beside its handle and above everything on the canvas */
+.port-tip {
+  position: absolute;
+  z-index: 20;
+  display: grid;
+  gap: 1px;
+  max-width: 280px;
+  padding: 5px 8px;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius);
+  background: var(--surface);
+  box-shadow: var(--shadow);
+  color: var(--muted);
+  font-size: 11.5px;
+  pointer-events: none;
+}
+.port-tip strong {
+  color: var(--text);
+  font-family: var(--font-mono);
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+.port-tip.tip-left {
+  transform: translate(-100%, -50%);
+}
+.port-tip.tip-right {
+  transform: translate(0, -50%);
+}
+.port-tip.tip-top {
+  transform: translate(-50%, -100%);
+}
+.port-tip.tip-bottom {
+  transform: translate(-50%, 0);
+}
+
+/* The floating toolbar over a canvas, in the editor and in a run */
+.canvas-toolbar {
+  position: absolute;
+  top: 12px;
+  left: 26px;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 3px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface);
+  box-shadow: var(--shadow-float);
+}
+.canvas-toolbar .icon-button {
+  width: 28px;
+  height: 28px;
+}
+.canvas-toolbar .btn {
+  height: 28px;
+  color: var(--text);
+}
+.canvas-toolbar .btn[aria-pressed='true'] {
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+.toolbar-separator {
+  width: 1px;
+  height: 18px;
+  margin: 0 2px;
+  background: var(--line);
+}
+.zoom-level {
+  min-width: 44px;
+  color: var(--muted);
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+}
+.split-button {
+  display: inline-flex;
+  align-items: center;
+}
+.split-button .icon-button {
+  width: 20px;
+  height: 28px;
+}
+
+.graph-preview {
+  position: relative;
+  height: 100%;
+}
+
+/* Run mode: a connection's observation point at its middle */
+.observation-dot {
+  position: absolute;
+  display: grid;
+  place-items: center;
+  min-width: 14px;
+  height: 14px;
+  min-height: 0;
+  padding: 0 3px;
+  border: 1.5px solid var(--muted);
+  border-radius: 7px;
+  background: var(--surface);
+  color: var(--muted);
+  font-size: 9px;
+  font-weight: 650;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  pointer-events: all;
+  cursor: pointer;
+}
+.observation-dot:hover {
+  border-color: var(--accent);
+}
+.observation-dot.observed {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: var(--surface);
+}
+.observation-dot:not(:empty) {
+  min-width: 18px;
+  height: 18px;
+  border-radius: 9px;
+  font-size: 10px;
+}
+
+/* A node's memory, under its card values */
+.card-memory {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin: 0 10px 6px;
+  padding: 2px 6px;
+  border-radius: 5px;
+  background: var(--memory-bg);
+  color: var(--memory);
+  font-size: 10.5px;
+  font-weight: 600;
+}

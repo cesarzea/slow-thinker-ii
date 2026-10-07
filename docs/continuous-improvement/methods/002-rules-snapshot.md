@@ -22,7 +22,7 @@ for the observed application and its limits.
 
 ### Working on Slow Thinker II
 
-Follow the [module workflow](../../architecture/module-boundaries.md#module-documents-and-implementation-workflow)
+Follow the [module workflow](../../archive/previous-implementation/architecture/module-boundaries.md#module-documents-and-implementation-workflow)
 and the mandatory [engineering standards](../../../README.md#engineering-standards).
 
 Every existing implementation module must have a brief `readme.md` (an existing

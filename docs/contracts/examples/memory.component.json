@@ -1,0 +1,29 @@
+{
+  "format": "slow-thinker.component/1",
+  "type": "memory",
+  "version": "1.0.0",
+  "label": "Memory",
+  "description": "Remembers what its node received and replied, and adds that conversation to each new message.",
+  "icon": "memory",
+  "placements": ["memory"],
+  "state": "stateful",
+  "ports": {"inputs": [], "outputs": []},
+  "uses": [],
+  "config_schema": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "additionalProperties": false,
+    "required": ["max_exchanges"],
+    "properties": {"max_exchanges": {"type": "integer", "minimum": 1, "maximum": 100}}
+  },
+  "initial_config": {"max_exchanges": 10},
+  "ui": {
+    "card": ["/max_exchanges"],
+    "sections": [
+      {"id": "memory", "title": "Memory", "fields": [
+        {"path": "/max_exchanges", "control": "number", "label": "Exchanges remembered",
+         "help": "The latest exchanges added to each new message. Memory lasts for the run."}
+      ]}
+    ]
+  }
+}

@@ -1,38 +1,35 @@
-"""Bounded platform failures cannot impersonate actual provider responses."""
+"""Refusals of component requests use the LLM service error body and never pass as replies."""
+
+from types import MappingProxyType
 
 from fastapi import Response
 
-from slow_thinker_ii.access import AccessDenied
-from slow_thinker_ii.accounting import BudgetExceeded
-from slow_thinker_ii.application import GatewayError, RecordingError
 from slow_thinker_ii.contracts import JsonObject, encode_json
 
-
-def platform_error(error: Exception) -> Response:
-    code, status = error_code(error)
-    payload: JsonObject = {
-        "error": {
-            "message": code,
-            "type": "platform_error",
-            "code": code,
-            "param": None,
-            "origin": "platform",
-        }
+_TYPES = MappingProxyType(
+    {
+        400: "invalid_request_error",
+        401: "authentication_error",
+        403: "permission_error",
+        413: "invalid_request_error",
+        415: "invalid_request_error",
     }
-    return Response(encode_json(payload), status_code=status, media_type="application/json")
+)
+INVALID_GRANT = "The grant is missing, unknown or expired."
 
 
-def error_code(error: Exception) -> tuple[str, int]:
-    if isinstance(error, GatewayError):
-        return error.code, error.status
-    if isinstance(error, AccessDenied):
-        return "invocation_authority_denied", 403
-    if isinstance(error, BudgetExceeded):
-        return "budget_denied", 429
-    if isinstance(error, RecordingError):
-        return "recording_unavailable", 503
-    if isinstance(error, TimeoutError):
-        return "invocation_deadline", 408
-    if isinstance(error, ValueError):
-        return "invalid_model_request", 400
-    return "model_gateway_failure", 502
+class GatewayRefusal(Exception):
+    """A component request refused by the adapter before it reaches a use case."""
+
+    def __init__(self, status: int, code: str, message: str) -> None:
+        super().__init__(message)
+        self.status = status
+        self.code = code
+        self.message = message
+
+
+def refusal_reply(refusal: GatewayRefusal) -> Response:
+    """`{"error": {"code", "message", "type"}}`, as the LLM service contract shapes errors."""
+    kind = _TYPES.get(refusal.status, "invalid_request_error")
+    body: JsonObject = {"error": {"code": refusal.code, "message": refusal.message, "type": kind}}
+    return Response(encode_json(body), refusal.status, media_type="application/json")

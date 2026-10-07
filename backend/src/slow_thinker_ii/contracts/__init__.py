@@ -1,7 +1,7 @@
-"""Validated JSON values and immutable contracts shared across application boundaries."""
+"""Validated JSON values and JSON Pointers shared across application boundaries."""
 
-from ._json import JsonObject, JsonValue, decode_json, encode_json, json_object
-from ._operations import OperationContract, OperationResult
+from ._json import JsonObject, JsonValue, decode_json, encode_json, json_object, json_value
+from ._pointers import format_pointer, parse_pointer, value_at_pointer
 
 __all__ = [
     "JsonObject",
@@ -9,6 +9,8 @@ __all__ = [
     "decode_json",
     "encode_json",
     "json_object",
-    "OperationContract",
-    "OperationResult",
+    "json_value",
+    "format_pointer",
+    "parse_pointer",
+    "value_at_pointer",
 ]

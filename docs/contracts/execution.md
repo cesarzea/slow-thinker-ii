@@ -1,87 +1,106 @@
-# Execution, accounting and evidence
+# Execution semantics
 
-**Status: Approved first-cycle contract.** Limits, central mediation, lifecycle and persistence semantics are part of the approved baseline. References: R05, R11–R16, R23; [ADR 0006](../adr/0006-execution-and-accounting.md).
+| Contract control | Value                                                                  |
+| ---------------- | ---------------------------------------------------------------------- |
+| Contract ID      | CORE-EXECUTION-1                                                       |
+| Decisions        | [ADR 0017](../adr/0017-message-driven-execution.md), [ADR 0018](../adr/0018-derived-authorization.md), [ADR 0022](../adr/0022-budgets-and-request-reservations.md), [ADR 0025](../adr/0025-runs-of-changes-and-run-mode.md), [ADR 0026](../adr/0026-memory-position.md) |
+| Journeys         | V02, V03, V08, V09, J1–J3                                              |
 
-## Admission and identity
+A run executes one saved graph document, an activated version or a change of the
+working copy, with one input message. The platform
+mediates every step and records it as defined in the [recording contract](recording.md).
 
-A run selects an immutable graph revision, separate input, saved work session and effective limit policy. Save resolved type versions, model settings, tariff references and enabled capabilities. The platform assigns run, activation, logical-call and attempt identities; component assertions cannot overwrite authoritative identity.
+## Run lifecycle
 
-A single work session may contain many runs and survive restarts. It does not grant state sharing or identify an MCP transport session.
+| Status      | Meaning                                                                                  |
+| ----------- | ---------------------------------------------------------------------------------------- |
+| `starting`  | Admitted; component hosts are being launched                                            |
+| `running`   | The trigger has fired; deliveries and activations are in progress                       |
+| `completed` | No delivery is pending and no activation is running                                     |
+| `stopped`   | A limit was reached: `activation_limit`, `time_limit`, `budget_run`, `budget_day` or `budget_month` |
+| `failed`    | `startup_failed`, `activation_failed`, `interrupted` (backend restart) or `internal_error` |
+| `cancelled` | The operator stopped the run                                                            |
 
-## Candidate execution states
+Terminal statuses are `completed`, `stopped`, `failed` and `cancelled`. Each
+terminal status records a reason code and an English detail naming the node,
+limit or error, for example `Reviewer activation 2 failed: the script returned
+the undeclared output "maybe".`
 
-| State | Meaning |
-| --- | --- |
-| `created` | Admitted and recorded; execution has not started. |
-| `running` | Work is eligible or active. |
-| `stopping` | New dispatch is prohibited; cancellation/finalization is in progress. |
-| `completed` | Required work completed successfully. |
-| `failed` | An unhandled execution failure ended the run. |
-| `cancelled` | Operator or control policy requested termination. |
-| `timed_out` | Effective deadline expired. |
-| `interrupted` | Backend continuity was lost; no automatic paid replay. |
+## Admission and startup
 
-### Transition and race policy
+1. The operator starts a run with a graph identifier, a version and an input
+   message. The input defaults to the Trigger's configured message.
+2. The platform validates the version against the current catalog. A version that
+   is no longer valid, for example because an LLM entry was removed, is rejected
+   with its diagnostics.
+3. The platform launches one component host for each node and each embedded
+   component that comes from a package, concurrently, and checks each host's
+   readiness as defined in the [component protocol](component-protocol.md).
+   Trigger and Output run inside the platform. Any launch or readiness failure
+   fails the run with `startup_failed`.
+4. The run's deadline starts when it becomes `running`.
 
-The following proposal makes Q08 reviewable. The platform serializes terminal decisions with dispatch admission; callbacks do not set run state directly. Preserve a structured primary reason and subsequent observations independently of the terminal label.
+## Messages and activations
 
-| Current state and condition | Proposed transition and effect |
-| --- | --- |
-| `created`; all required hosts ready | `running`; graph work becomes eligible. |
-| `created`/`running`; operator stop | `stopping`, target `cancelled`, reason `operator_stop`. |
-| `created`/`running`; run deadline expires | `stopping`, target `timed_out`, reason `run_deadline`. |
-| `created`/`running`; any budget admission is refused | `stopping`, target `failed`, reason `budget_denied`; no rejected call is dispatched. |
-| `created`/`running`; startup or unhandled operation failure | `stopping`, target `failed`, preserving the specific cause. An unhandled call deadline instead targets `timed_out` with reason `call_deadline`. |
-| `running`; controller completes and all required outputs are valid | Atomically commit `completed` only if no stop decision exists, the run deadline is still open and no managed execution is outstanding. |
-| `stopping`; local call dispositions recorded | Commit the chosen terminal outcome. Cleanup can still be pending/failed and accounting can remain unsettled; neither is represented as successful work. |
-| Nonterminal state on backend recovery | `interrupted`; invalidate old work authority and reconcile outstanding calls/processes without replay. |
-| Any terminal state; later response, stop or cost evidence | Preserve the outcome; append the observation or settle the original charge. No graph advancement. |
+- **Trigger.** The run's first activation is the Trigger's. It emits the input
+  message on `out`.
+- **Emission and delivery.** When a node emits a payload on a port, the platform
+  creates one delivery per connection leaving that port, in document order, and
+  records each as a message. An emission on a port without connections is
+  recorded as discarded.
+- **Scheduling.** Deliveries wait in a first-in, first-out queue. A delivery
+  starts an activation of its target node when the number of running activations
+  is below `max_running_nodes`. Starting an activation when `max_activations`
+  activations have already started stops the run with `activation_limit`.
+- **Concurrency.** A stateless node may have several activations running. A
+  delivery to a stateful node that is still running an activation fails that
+  activation with `node_busy`.
+- **Embedded memory.** When the node has one, the platform first calls its `recall`
+  operation with the delivered message, and the host receives what it returns. After
+  the host's `activate`, the platform calls `remember` with the delivered message and
+  each emission's payload, before any embedded output component. A memory is
+  stateful, so the node is too.
+- **Package node activation.** The platform calls the host's `activate` operation
+  with the delivered message, or what the memory recalled. The result lists emissions; each must name one of
+  the host component's declared outputs.
+- **Embedded output component.** When the node has one, each emission of the host
+  is passed to it: the platform calls its `select_output` operation with the
+  emission's payload as `received` and the activation's message as `node_input`.
+  The returned port must be one of the embedded component's configured outputs,
+  and the returned payload is emitted on that port. The host's own port is not
+  visible outside the node.
+- **Output node.** Its activation records the received payload as a run result,
+  named after the node, and emits nothing.
+- **Payloads.** Messages are JSON values: text is a JSON string, structured data
+  a JSON object or array. A payload is limited to 256 KiB when serialized.
 
-The first durably accepted stop cause determines the target outcome. At every admission/completion decision, check the effective run deadline first; work cannot succeed after expiry merely because its timeout callback is late. If success was already committed before a later stop request, the run stays completed. Store later causes as secondary observations without overwriting the first. Recovery of an uncommitted stop becomes `interrupted`, retaining its recorded intended outcome and reason.
+## Limits and termination
 
-Output publication and permission to schedule its dependent step share the same stop/deadline gate. A late validated response may be retained as evidence but cannot become a new successful binding after that gate closes. An ambiguous dispatch remains potentially performed; reconnecting never proves it safe to retry.
+- The run completes when the queue is empty and no activation is running. Its
+  results are the payloads received by Output nodes, in order of arrival.
+- When a limit is reached, when an activation fails, or when the operator stops
+  the run, no further activation starts. Running activations are cancelled and
+  recorded as cancelled; pending deliveries are recorded as dropped. The run ends
+  with the corresponding status. The first cause recorded wins.
+- An activation fails when its component returns an error, when its result
+  violates the protocol, when an emission names an undeclared port, when a model
+  call it depends on fails, or when its time budget expires. Under the proposed
+  policy of [ADR 0017](../adr/0017-message-driven-execution.md), a failed
+  activation fails the run with `activation_failed`.
+- Every activation receives a time budget equal to the smaller of the run's
+  remaining time and the platform's maximum activation time (default 300 s).
+- A budget denial for a model call stops the run with the scope that was
+  exhausted; see the [accounting contract](accounting.md).
 
-Shutdown progress (`pending`, `complete`, `failed`) and charge settlement are separate from the run outcome. The UI must show unresolved cleanup and spending explicitly. See [component lifecycle](component-lifecycle.md) for process ownership and bounded teardown. Cancellation/cleanup durations and their numeric defaults remain configurable profile choices under Q18.
+## Several runs
 
-## Accounting invariants
+Several runs may be active at the same time, up to a platform limit (default 4).
+Each run has its own component hosts, queue and limits. Daily and monthly budgets
+are shared by all runs.
 
-**Accepted scope (Q12, 2026-09-28):** run, saved work-session and monthly totals cover only managed Slow Thinker II calls. Spending by the original Slow Thinker or other tools is outside these budgets, even when they use the same provider account or API key. These limits are not provider-account spending caps. No accounting import, bridge or shared ledger with the original executor is in scope.
+## Restart
 
-1. Before dispatch, atomically reserve a defensible maximum charge in run, session and monthly scopes.
-2. Reservations compete against both settled charges and outstanding obligations. Multiple callers cannot spend the same balance.
-3. Parent totals aggregate charge references; they do not create duplicate charges for child attempts.
-4. An unknown or unbounded cost is not zero. Strict-cap execution rejects such an operation before it starts.
-5. Save exact quantities, currency, rates and calculation policy. The [accounting policy](accounting-policy.md) proposes decimal-string boundaries, integer ledger units, upward rounding and admission-month attribution under Q07.
-6. Failed, retried, cancelled and interrupted calls can still incur costs. Do not release obligations merely because a deadline or connection ended.
-7. Reconciliation is idempotent and can append late evidence after execution becomes terminal, without restarting the graph.
-8. Technical protocol round trips or continuations do not automatically constitute separately billable work. Correlate actual provider attempts and their authoritative usage.
-
-A complete tariff file cannot alone guarantee a maximum charge; provider limits and the dispatched request must support the bound. Unresolved reservations remain unavailable until settled or resolved through an approved policy. Unexpected excess charges must be recorded and surfaced, never discarded to make the cap appear satisfied.
-
-## Deadlines and failure behavior
-
-Per-call and per-run deadlines include queueing, retries and nested work within their applicable scope. Descendants cannot extend the parent's remaining deadline. Use a monotonic duration source during execution and recorded wall-clock timestamps for inspection; restart recovery needs a separate explicit policy.
-
-A budget refusal stops the entire run. Unhandled failures also stop the initial executor. Components may handle subcall errors within their allowed behavior. Retry policy must be explicit and must not automatically duplicate ambiguous side effects.
-
-Proposed failure categories are invalid configuration/input, denied authority, unsupported capability, lifecycle violation, component failure, provider refusal/failure, invalid model output, deadline expiry and uncertain dispatch. Keep the original provider status/reference when available, with secrets removed. LLMCall's completed-response validation errors retain their [specific result envelope](llm-call.md#success-and-failure); transport errors are not converted into empty successful responses. The [provider matrix](openai-initial-profile.md#http-errors-and-uncertain-outcomes) proposes native HTTP error preservation; platform-generated errors and SDK verification remain Q04/Q06.
-
-## Evidence envelope proposal
-
-The [event schema](schemas/event.schema.json) defines a versioned envelope, not the entire event catalog. It requires an event ID, run and graph revision, sequence, timestamp, actor, event type, evidence classification and payload. Call and activation references are optional where inapplicable.
-
-| Evidence value | Interpretation |
-| --- | --- |
-| `observed` | A platform-observed boundary or control event. |
-| `reported` | A component's own statement about internal reasoning, state or progress. |
-| `inferred` | An analytical interpretation tied to evidence and an analyzer version. |
-
-The actor records the source; the platform records receipt. Proposed ordering is a durable per-run sequence assigned by the platform, not a claim that timestamps from different processes share a perfect clock. The [observation contract](observation.md) proposes the event catalog, causal identities, capture statuses and completeness rules; machine-readable per-event payload schemas remain Q10.
-
-## Persistence and replay
-
-Persist authorization and reservation evidence before external side effects. SQLite is selected. [ADR 0011](../adr/0011-local-persistence.md) proposes its detailed reservation, dispatch-intent and result/settlement boundaries, bounded payloads in the same store and explicit crash cases. These detailed semantics await approval; retention/deletion rules remain Q10. No event-sourcing framework is proposed.
-
-Dispatch authorization is durable before sending. A stop committed before that authorization prevents it; afterward, cancellation is best effort because the request may already be in transit. Local transactions cannot atomically stop a remote provider. The accounting proposal keeps possibly dispatched attempts reserved until reconciled.
-
-Analysis may read history without rerunning providers. Re-executing a graph creates a new run and new spending authorization; it is not a free replay. Missing usage and redacted payloads remain explicitly distinguishable from zero usage or empty output.
+When the backend starts, runs that are not terminal are marked `failed` with
+`interrupted`, their open reservations are settled at the reserved amount and
+marked estimated, and their component processes are terminated. Runs are never
+resumed or replayed automatically.

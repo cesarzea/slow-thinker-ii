@@ -1,0 +1,68 @@
+{
+  "database": ".local/state.sqlite3",
+  "workspace": ".local/runs",
+  "server": {
+    "public_url": "http://127.0.0.1:8000",
+    "allowed_hosts": ["127.0.0.1:8000", "localhost:8000"],
+    "allowed_origins": ["http://127.0.0.1:5173", "http://localhost:5173", "http://127.0.0.1:8000", "http://localhost:8000"],
+    "static_directory": "frontend/dist",
+    "operator_authentication": "token"
+  },
+  "components": {
+    "installation_root": ".local/components",
+    "uv": ".venv/bin/uv",
+    "python": ".venv/bin/python",
+    "resolutions": ["llm-call-resolution-from-make-components", "router-resolution-from-make-components", "memory-resolution-from-make-components"]
+  },
+  "llm": {
+    "providers": {
+      "openai": {"base_url": "https://api.openai.com/v1", "credential_env": "OPENAI_API_KEY", "timeout_seconds": 120},
+      "deepseek": {"base_url": "https://api.deepseek.com", "credential_env": "DEEPSEEK_API_KEY", "timeout_seconds": 120}
+    },
+    "models": [
+      {
+        "id": "openai/gpt-6-luna",
+        "label": "OpenAI · GPT-6 Luna",
+        "provider": "openai",
+        "model": "gpt-6-luna",
+        "max_output_tokens": 128000,
+        "default_output_tokens": 1024,
+        "reasoning_efforts": ["none"],
+        "temperature": "unsupported",
+        "tariff": {
+          "reviewed_on": "2026-09-28",
+          "source": "https://developers.openai.com/api/docs/pricing",
+          "rates": {"input": "0.10", "cached_input": "0.01", "cache_write": "0.125", "output": "0.50"},
+          "long_context": {
+            "above_input_tokens": 272000,
+            "rates": {"input": "0.20", "cached_input": "0.02", "cache_write": "0.25", "output": "0.75"}
+          },
+          "windows": []
+        }
+      },
+      {
+        "id": "deepseek/deepseek-flash",
+        "label": "DeepSeek · DeepSeek Flash",
+        "provider": "deepseek",
+        "model": "deepseek-flash",
+        "max_output_tokens": 384000,
+        "default_output_tokens": 1024,
+        "reasoning_efforts": ["none", "low", "high", "max"],
+        "temperature": "without_reasoning",
+        "tariff": {
+          "reviewed_on": "2026-10-02",
+          "source": "https://api-docs.deepseek.com/quick_start/pricing/",
+          "rates": {"input": "0.15", "cached_input": "0.003", "output": "0.60"},
+          "windows": [
+            {"weekdays": [1, 2, 3, 4, 5], "start": "01:00", "end": "04:00",
+             "rates": {"input": "0.30", "cached_input": "0.006", "output": "1.20"}},
+            {"weekdays": [1, 2, 3, 4, 5], "start": "06:00", "end": "10:00",
+             "rates": {"input": "0.30", "cached_input": "0.006", "output": "1.20"}}
+          ]
+        }
+      }
+    ]
+  },
+  "budgets": {"daily_usd": "1.00", "monthly_usd": "5.00"},
+  "runtime": {"max_active_runs": 4, "max_activation_seconds": 300, "host_startup_seconds": 20}
+}

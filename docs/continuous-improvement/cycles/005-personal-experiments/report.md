@@ -7,7 +7,7 @@
 | Record owner               | Cesar Zea                                                    |
 | Recorded date and timezone | 2026-10-02, Europe/Lisbon                                    |
 | Method                     | M06                                                          |
-| Product sprint             | [S03](../../../specification/personal-experiments-sprint.md) |
+| Product sprint             | [S03](../../../archive/previous-implementation/specification/personal-experiments-sprint.md) |
 
 ## Context and hypothesis
 
@@ -39,7 +39,7 @@ Publication and preparation outside the retained boundaries remain excluded.
 
 ## Delivery and process results
 
-The [S03 status report](../../../progress/sprint-03-status-report.md) records
+The [S03 status report](../../../archive/previous-implementation/progress/sprint-03-status-report.md) records
 functionality and verification separately from this process evaluation. Contracts,
 module specifications and tickets preceded delegation. Development receipts were
 reviewed before functional tests; corrections retained the same package ownership.
@@ -101,7 +101,7 @@ representative browser path. These remain proposals in the
 After the initial handoff, the owner requested a real task before closure. The
 original acceptance plan explicitly used simulated providers; its passing tests
 did not establish an actual provider execution in S03. This follow-up adds the
-[live validation](../../../progress/sprint-03-live-validation.md) without changing
+[live validation](../../../archive/previous-implementation/progress/sprint-03-live-validation.md) without changing
 the earlier verification claims or measurement window.
 
 The browser saved and executed a personal conditional proposer/reviewer graph.

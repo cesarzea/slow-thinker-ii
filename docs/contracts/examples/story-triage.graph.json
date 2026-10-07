@@ -1,0 +1,31 @@
+{
+  "format": "slow-thinker.graph/1",
+  "id": "story-triage",
+  "name": "Story triage",
+  "limits": {"max_activations": 20, "max_running_nodes": 4, "time_limit_seconds": 300, "budget_usd": "0.10"},
+  "nodes": [
+    {"id": "story", "name": "Story", "component": "trigger@1.0.0", "config": {"message": "A cat tried to learn to fly."}},
+    {"id": "judge", "name": "Judge", "component": "llm-call@1.0.0", "config": {
+      "prompt": "Rate how funny this story is from 1 to 10.",
+      "model": {"llm": "deepseek/deepseek-flash", "parameters": {"reasoning_effort": "none", "temperature": 0.2, "max_completion_tokens": 50}},
+      "input_format": null,
+      "output_format": {"type": "json", "schema": {
+        "type": "object", "additionalProperties": false, "required": ["score"],
+        "properties": {"score": {"type": "integer", "minimum": 1, "maximum": 10}}
+      }}
+    }, "embedded": [
+      {"position": "output", "component": "router@1.0.0", "config": {
+        "outputs": ["funny", "not_funny"],
+        "script": "def route(received, node_input):\n    if received[\"score\"] >= 7:\n        return \"funny\", node_input\n    return \"not_funny\", node_input\n"
+      }}
+    ]},
+    {"id": "funny", "name": "Funny", "component": "output@1.0.0", "config": {}},
+    {"id": "not-funny", "name": "Not funny", "component": "output@1.0.0", "config": {}}
+  ],
+  "connections": [
+    {"from": "story.out", "to": "judge.in"},
+    {"from": "judge.funny", "to": "funny.in"},
+    {"from": "judge.not_funny", "to": "not-funny.in"}
+  ],
+  "layout": {"story": [16, 112], "judge": [250, 80], "funny": [530, 44], "not-funny": [530, 200]}
+}

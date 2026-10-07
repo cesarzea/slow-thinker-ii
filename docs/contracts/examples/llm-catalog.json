@@ -1,0 +1,32 @@
+[
+  {
+    "id": "openai/gpt-6-luna",
+    "label": "OpenAI · GPT-6 Luna",
+    "provider": "openai",
+    "parameters": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["max_completion_tokens"],
+      "properties": {
+        "max_completion_tokens": {"type": "integer", "title": "Max output tokens", "minimum": 1, "maximum": 128000, "default": 1024}
+      }
+    }
+  },
+  {
+    "id": "deepseek/deepseek-flash",
+    "label": "DeepSeek · DeepSeek Flash",
+    "provider": "deepseek",
+    "parameters": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["max_completion_tokens"],
+      "properties": {
+        "reasoning_effort": {"title": "Reasoning", "enum": ["none", "low", "high", "max"], "default": "none"},
+        "temperature": {"type": "number", "title": "Temperature", "minimum": 0, "maximum": 2, "default": 1},
+        "max_completion_tokens": {"type": "integer", "title": "Max output tokens", "minimum": 1, "maximum": 384000, "default": 1024}
+      },
+      "if": {"properties": {"reasoning_effort": {"const": "none"}}},
+      "else": {"properties": {"temperature": false}}
+    }
+  }
+]

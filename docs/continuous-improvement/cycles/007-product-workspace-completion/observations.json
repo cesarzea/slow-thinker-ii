@@ -1,0 +1,48 @@
+{
+  "schema_version": "1",
+  "cycle": "C07",
+  "scope": "S06 product completion",
+  "owner": "Cesar Zea",
+  "timezone": "UTC",
+  "observations": [
+    {
+      "at": "2026-10-02T11:18:13.798711+00:00",
+      "phase": "analysis and specification",
+      "source": "saved local activity observation; earlier preparation excluded"
+    },
+    {
+      "at": "2026-10-02T11:23:21.117395+00:00",
+      "phase": "implementation handoff",
+      "source": "saved checkpoint; three exclusive module groups"
+    },
+    {
+      "at": "2026-10-02T11:42:16+00:00",
+      "phase": "test preparation",
+      "source": "coordinator checkpoint after whole-source review"
+    },
+    {
+      "at": "2026-10-02T12:00:03+00:00",
+      "phase": "shared verification",
+      "source": "clock observation after unchanged runner restart"
+    },
+    {
+      "at": "2026-10-02T12:09:58+00:00",
+      "phase": "final verification confirmed",
+      "source": "unchanged make verify completed with exit code 0"
+    }
+  ],
+  "measurement_kind": "checkpoint observations, not active-time or accumulated-participant audit",
+  "verification_status": "passed",
+  "new_paid_calls": 0,
+  "credential_changes": false,
+  "method_changed": false,
+  "efficiency_improvement_claimed": false,
+  "observed_span_seconds": 3104.201289,
+  "active_elapsed_seconds": null,
+  "accumulated_participant_seconds": null,
+  "scope_exclusions": [
+    "preparation before first saved timestamp",
+    "closing documentation and delivery after final verification confirmation",
+    "publication"
+  ]
+}

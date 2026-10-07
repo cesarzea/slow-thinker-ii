@@ -1,6 +1,6 @@
 # Shared value contracts
 
-Defines JSON values and operation envelopes shared across backend boundaries.
+Defines JSON values and JSON Pointers shared across backend boundaries.
 
 Use the [public entry point](__init__.py); private implementation files are not an integration API.
 

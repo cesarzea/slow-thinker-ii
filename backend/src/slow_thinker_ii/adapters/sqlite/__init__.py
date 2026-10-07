@@ -1,21 +1,8 @@
-"""Public construction of SQLite persistence adapters."""
+"""SQLite persistence behind the application ports `GraphStore`, `RunStore` and `Ledger`."""
 
 from ._database import SqliteDatabase
-from ._definition_repository import SqliteDefinitionRepository
-from ._operator_queries import SqliteOperatorQueries
-from ._operator_store import SqliteOperatorStore
-from ._process_journal import SqliteProcessJournal
-from ._run_store import SqliteRunStore
-from ._store import SqliteLedgerStore
-from ._tariffs import SqliteTariffStore
+from ._graphs import SqliteGraphStore
+from ._ledger import SqliteLedger
+from ._runs import SqliteRunStore
 
-__all__ = [
-    "SqliteDefinitionRepository",
-    "SqliteProcessJournal",
-    "SqliteOperatorQueries",
-    "SqliteOperatorStore",
-    "SqliteRunStore",
-    "SqliteDatabase",
-    "SqliteLedgerStore",
-    "SqliteTariffStore",
-]
+__all__ = ["SqliteDatabase", "SqliteGraphStore", "SqliteLedger", "SqliteRunStore"]

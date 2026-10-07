@@ -1,6 +1,6 @@
 # ADR 0007: Define a current MCP profile with explicit call directions
 
-- Status: Proposed
+- Status: Accepted on 2026-10-07 with S06, as amended by [ADR 0023](0023-container-ready-component-boundary.md) and [ADR 0026](0026-memory-position.md)
 - Recorded: 2026-09-27
 - Decision-maker: Cesar Zea
 - Requirements: R05–R08, R11, R13
@@ -26,9 +26,9 @@ Current protocol semantics, independently authored components, no managed-call b
 
 Recommend the first option for the initial local profile. Use MCP `2026-07-28`, verified as the current revision on the recorded date. This does not approve an SDK version or claim implementation of every extension.
 
-The [profile contract](../contracts/mcp-profile.md) identifies required base behavior and proposes an initial tool-oriented surface. Optional capabilities and older-protocol compatibility must have explicit support decisions. There is no silent fallback to older behavior.
+The [profile contract](../archive/previous-implementation/contracts/mcp-profile.md) identifies required base behavior and proposes an initial tool-oriented surface. Optional capabilities and older-protocol compatibility must have explicit support decisions. There is no silent fallback to older behavior.
 
-The profile's [SDK candidate and conformance plan](../contracts/mcp-profile.md#sdk-candidate-and-conformance-work), recorded 2026-09-28, proposes Python SDK 2.2.0. Subsequent [temporary feasibility probes](../contracts/sdk-compatibility.md) exercised stdio, loopback HTTP and familiar client shapes. Pinned mode and its cached discovery helper sent no discovery request; readiness must explicitly request and validate the peer's response. This is SDK evidence, not an implemented platform integration.
+The profile's [SDK candidate and conformance plan](../archive/previous-implementation/contracts/mcp-profile.md#sdk-candidate-and-conformance-work), recorded 2026-09-28, proposes Python SDK 2.2.0. Subsequent [temporary feasibility probes](../archive/previous-implementation/contracts/sdk-compatibility.md) exercised stdio, loopback HTTP and familiar client shapes. Pinned mode and its cached discovery helper sent no discovery request; readiness must explicitly request and validate the peer's response. This is SDK evidence, not an implemented platform integration.
 
 ## Consequences
 

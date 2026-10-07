@@ -1,0 +1,75 @@
+{
+  "schema_version": "0.1-draft",
+  "type_id": "redirector",
+  "type_version": "0.1.0",
+  "roles": [
+    "resource"
+  ],
+  "operations": {
+    "route": {
+      "mcp_tool": "route",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "value": {}
+        },
+        "required": [
+          "value"
+        ],
+        "additionalProperties": false
+      },
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "port": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "port"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "config_schema": {
+    "type": "object",
+    "properties": {
+      "outputs": {
+        "title": "Output names",
+        "description": "Declare every exit the routing function may select. The function returns one of these names.",
+        "type": "array",
+        "items": {
+          "type": "string",
+          "minLength": 1
+        },
+        "minItems": 1,
+        "uniqueItems": true
+      },
+      "selector": {
+        "title": "Routing function",
+        "description": "Installed deterministic Python function in module:callable form. It receives the input and returns an output name. Code is installed on the server, not executed from this field.",
+        "type": "string",
+        "pattern": "^[A-Za-z_]\\w*(?:\\.[A-Za-z_]\\w*)*:[A-Za-z_]\\w*$"
+      },
+      "input_schema": {
+        "title": "Input schema",
+        "description": "The JSON Schema used to validate the value passed to the routing function.",
+        "type": "object"
+      }
+    },
+    "required": [
+      "outputs",
+      "selector",
+      "input_schema"
+    ],
+    "additionalProperties": false
+  },
+  "resource_slots": {},
+  "execution": {
+    "state_scope": "none",
+    "concurrency": "independent"
+  },
+  "billing": "none"
+}

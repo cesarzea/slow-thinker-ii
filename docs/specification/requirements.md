@@ -1,89 +1,121 @@
 # Requirements and scope
 
-**Status: First-cycle scope approved 2026-09-28 and extended 2026-09-29; implementation in progress.**
+| Document control | Value                                                                                   |
+| ---------------- | --------------------------------------------------------------------------------------- |
+| Document ID      | REQ-CORE                                                                                |
+| Revision         | 3                                                                                       |
+| Owner            | Cesar Zea                                                                               |
+| Date             | 2026-10-07                                                                              |
+| Status           | Approved by the owner on 2026-10-07 after the [scope review](scope-review-2026-10-06.md) |
+| Previous edition | Revision 2 in the git history; [revision 1](../archive/previous-implementation/specification/requirements.md) (R01–R31) |
 
 ## Purpose
 
-Create a flexible, extensible platform for investigating and improving collaboration between agents. Users should be able to identify the configurations that work best for a task according to their chosen priorities: result quality, execution time, cost, or other criteria.
+Slow Thinker II is a laboratory and an execution platform for systems of collaborating
+agents: it designs them, shows what happens inside them, improves them against each
+client's objectives and puts them to work.
 
-The intended progression is: define and evaluate collaborative systems; create and compare variants; automate the proposal and evaluation of further variants. Deep analysis supplies evidence for this improvement loop. There is no universal definition of the best graph or a promise to find a global optimum.
+- **Design graphs.** A graph can be proposed by the platform, imported by the user or
+  designed by them, and the three paths are on the same level: any of them is edited,
+  run, analysed and improved the same way. On any graph, the platform suggests
+  optimizations according to the client's particular objectives.
+- **Run under supervision.** Every run records what happens inside and outside each
+  agent, with time and spending limits.
+- **Understand how agents collaborate.** What information flows, how ideas evolve, who
+  may have influenced whom, and what each step costs in quality, time and money.
+- **Test configurations.** Batches of tasks with criteria, weights and repetitions, to
+  compare graph variants with data.
+- **Improve automatically.** From the analysis, propose variants, run them, evaluate
+  them and keep those that best meet the client's objectives.
+- **Put graphs to work.** Through the API, with or without supervision, in isolated
+  containers, or exported as standalone, readable Python code.
 
-A later Export as Python capability should turn a selected graph into a complete, independently executable Python application. Its primary optimization removes platform logging, intermediation and supervision while preserving functional graph logic and explicit dependencies. It is a future deployment path for experiment results, not a first-cycle feature.
+The platform is a multi-user service paid by subscription and usage. Users belong to
+companies; each company's data and runs are isolated from the others, and each user
+opens only the workspaces they have access to. A workspace holds what is common to its
+work, such as storage, databases, API connections and their credentials, and its Labs,
+one per objective, hold graphs, experiments, work sessions, runs and results. In a Lab,
+experimentation is manual, supervised or automatic. A marketplace offers graphs and
+components from the platform, from backed companies or professionals and from the
+community.
+
+### Why
+
+- LLMs already outperform most people at technical work, and much faster: designing a
+  graph, writing its prompts, creating synthetic test sets and searching for
+  optimizations can all be done by LLMs.
+- Knowing what happens inside the collaboration, including the agents' reasoning where
+  the provider exposes it, makes optimization far easier.
+- Every improvement is demonstrated empirically on incremental test sets the optimizer
+  has never seen. Some analyses and optimizations can be checked before running them;
+  many can only be proved by running them, which is why this is an experimentation lab:
+  each one is a hypothesis, tested by experiment, and its result is recorded.
+- Optimizing a graph that runs millions of times is an investment, not a cost, and it
+  gives engineers a laboratory rather than replacing them.
 
 ## Stakeholders
 
-| Stakeholder         | Need                                                                                                  |
-| ------------------- | ----------------------------------------------------------------------------------------------------- |
-| Experiment designer | Express a collaboration process and choose its evaluation criteria.                                   |
-| Component author    | Add agents, resources, control mechanisms, and collaboration techniques through documented contracts. |
-| Experiment analyst  | Inspect what happened, compare versions, and distinguish evidence from interpretation.                |
-| Maintainer          | Develop an inspectable, modular system with the engineering controls required from the outset.        |
+| Stakeholder         | Need                                                                                       |
+| ------------------- | ------------------------------------------------------------------------------------------ |
+| Graph designer      | Build, configure, import or ask for graphs and run them without technical plumbing.         |
+| Analyst             | See exactly what happened in a run and compare variants against chosen objectives.          |
+| Company and workspace member | Work only with the workspaces and data their company gives them access to.          |
+| Component author    | Publish components that behave and configure like the platform's own.                       |
+| Marketplace publisher | Offer graphs and components free, for a one-off payment or per use, with or without support. |
+| Platform operator   | Configure model providers, infrastructure, credits and spending limits once for all users.  |
+| Maintainer          | Evolve an inspectable, modular system under the mandatory engineering standards.            |
 
-## Recorded requirements
+## Requirements
 
-Identifiers below describe requirements, not implementation completion. “Boundary now” means the design must accommodate later capabilities without pretending to implement them in the first cycle.
+Identifiers describe requirements, not implementation. The sprint column names where a
+requirement is delivered, following the [roadmap](roadmap.md); a design boundary holds
+from S06 even when delivery comes later.
 
-| ID  | Requirement                                                                                                                                                                                                                                                 | Delivery boundary                                                                                                                         |
-| --- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
-| R01 | Define experiments, run them, and inspect behavior and results.                                                                                                                                                                                             | First cycle                                                                                                                               |
-| R02 | Use independent, user-defined component types and configured instances, packaged separately and executed in local processes outside the backend.                                                                                                            | Independent processes from the first cycle; detailed packaging contract pending                                                           |
-| R03 | Support agents, resources, memory/context providers, flow controllers, and collaboration techniques as extension roles.                                                                                                                                     | Boundary now; expand implementations in cycles                                                                                            |
-| R04 | Define a graph per experiment; ultimately support arbitrary topology, conditions, parallelism, deliberate loops, and runtime changes.                                                                                                                       | Finite sequences and bounded conditional review loops in the first cycle; no universal DAG restriction                                    |
-| R05 | Route managed component interactions through the platform, including access to model providers.                                                                                                                                                             | First cycle                                                                                                                               |
-| R06 | Expose component MCP capabilities through a platform proxy, filtered by graph permissions.                                                                                                                                                                  | First cycle; precise profile pending                                                                                                      |
-| R07 | Use the current stable MCP revision, with explicit compatibility and capability support.                                                                                                                                                                    | Protocol contract before implementation                                                                                                   |
-| R08 | Let components call LLMs, agents, tools and resources through the orchestrator using familiar client interfaces; preserve supported OpenAI and LangChain call signatures and their use inside LangGraph nodes. Apply the same controls to external clients. | Chat Completions and basic model/tool invocation from component processes first; exact SDK, parameter and error coverage must be explicit |
-| R09 | Make memory and context optional, private or explicitly shared; agents choose the information sent in their calls. Keep resource sharing, state retention and host-process lifetime distinct.                                                               | Binding model now; tools and memory are near-term extensions; concrete memory implementations later                                       |
-| R10 | Distinguish independent calls, serialized stateful execution, and other declared concurrency modes.                                                                                                                                                         | Stateless agents first; reject unsupported modes                                                                                          |
-| R11 | Record managed calls and available internal instrumentation, including exposed reasoning and state.                                                                                                                                                         | First cycle; internal reporting is component-dependent                                                                                    |
-| R12 | Keep observed, component-reported, and inferred evidence distinguishable. Recording does not grant agents access to the trace.                                                                                                                              | First cycle                                                                                                                               |
-| R13 | Enforce configurable deadlines per call and per run, including waiting and retries.                                                                                                                                                                         | First cycle                                                                                                                               |
-| R14 | Account for managed billable attempts and enforce budgets per run, saved work session, and month.                                                                                                                                                           | First cycle                                                                                                                               |
-| R15 | Stop the whole run when further work cannot be authorized by a budget; preserve evidence and outstanding costs.                                                                                                                                             | First cycle                                                                                                                               |
-| R16 | Persist work sessions, run configurations, history, and results across interface restarts.                                                                                                                                                                  | First cycle                                                                                                                               |
-| R17 | Store graph definitions as editable JSON. Start with bundled example graphs; later provide an editing tool and manual JSON upload, with prompt-based and full graphical authoring in the intended evolution.                                                | Select bundled examples first; user editing and upload later                                                                              |
-| R18 | Represent graphs visually from the first functional version, live and after execution.                                                                                                                                                                      | First cycle                                                                                                                               |
-| R19 | Distinguish logical participants, activations, permitted connections, control flow, and actual communications. Preserve positions while readable; reflow when needed.                                                                                       | Basic linked views first                                                                                                                  |
-| R20 | Start locally, with one user and one active workflow; keep history inspectable.                                                                                                                                                                             | First cycle                                                                                                                               |
-| R21 | Use Python/FastAPI and React/TypeScript/React Flow/Vite, with a graph format independent of the UI library.                                                                                                                                                 | First cycle                                                                                                                               |
-| R22 | Close the first-cycle specification before implementation; engineering requirements apply from the first implementation.                                                                                                                                    | Immediate                                                                                                                                 |
-| R23 | Preserve the original project independently. Run, session and monthly budgets cover only managed Slow Thinker II calls, with no runtime or accounting dependency on the original executor.                                                                  | Accepted scope: Q12, explicit owner selection 2026-09-28                                                                                  |
-| R24 | Create graph variants, compare their executions, then automate proposal and evaluation of variants.                                                                                                                                                         | Later cycles; identities and provenance needed now                                                                                        |
-| R25 | Analyze information exchange, idea evolution, possible influence, outcome quality, time, and cost.                                                                                                                                                          | Trace foundation first; automated analysis later                                                                                          |
-| R26 | Allow multiple plausible sources of an adopted idea; do not equate convergence with correctness or similarity with proven causality.                                                                                                                        | Analysis contract later; evidence semantics now                                                                                           |
-| R27 | Support optional component implementation inheritance through code, with an exact base version or a compatible range bounded by a major version; retain the exact dependency resolution used by each run.                                                   | Basic single inheritance in the first cycle; Q20 closed, implementation evidence in the verification record                               |
-| R28 | Export a complete supported graph as readable standalone Python code with direct calls and resolved component dependencies, removing platform logging, intermediation and supervision while retaining functional graph logic.                               | Later cycle; export direction selected; portability and generation details pending Q21                                                    |
-| R29 | LLMCall supports text or schema-validated JSON output. On invalid output return a structured failure, retain the received response and make no implicit repair call. Further calls require explicit configuration and normal accounting.                    | First cycle; accepted ADR 0010 and LLMCall contract, implementation evidence in the verification record                                   |
-| R30 | Provide a redirector component usable independently or inside another component. A user-authored deterministic Python script selects among explicitly declared outputs; the containing graph or agent binds their destinations.                             | First cycle, added by owner agreement 2026-09-29; extension contracts closed, implementation evidence in the verification record          |
+| ID   | Requirement                                                                                                                                                                                                 | Sprint                                         | Revision 1 origin  |
+| ---- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------- | ------------------ |
+| CR01 | A graph consists of nodes, named ports and connections, in any topology including loops. Every change is saved; changes can be activated as versions on branches.                                           | S06                                            | R04, R16, R17, R19 |
+| CR02 | Every interaction is mediated, supervised and recorded by default. A mode without supervision skips the detailed record but still meters every billable call.                                               | S06; mode without supervision S21              | R05, R11, R12      |
+| CR03 | Nodes exchange asynchronous messages. A node activates once per received message. One output connected to several inputs delivers to all of them concurrently. Joins and conversation threads are added later. | S06; joins and threads S14                     | R04, R10           |
+| CR04 | Resources and platform services are called synchronously, through the platform, and recorded.                                                                                                               | S06 (LLM service); tools S13                   | R05, R08, R09      |
+| CR05 | Connections and declared service uses are the authorization. Users never author permissions; the platform may impose further restrictions.                                                                 | S06                                            | R06                |
+| CR06 | A node does not know where its output goes. Components may know the tools, resources and services assigned to them.                                                                                         | S06                                            | R09                |
+| CR07 | Stateless components may run concurrent activations; a stateful node takes one activation at a time until ordered queues at node inputs hold further messages.                                               | S06; queues S14                                | R10                |
+| CR08 | Components are packaged independently, run in their own process or thread behind the component protocol, and declare their ports, configuration and configuration screens; the platform renders them with generic controls and runs no component interface code. | S06                                            | R02, R03, R31      |
+| CR09 | Components can be embedded in another node at declared positions (output, memory); the user sees one node.                                                                                                 | S06                                            | R30                |
+| CR10 | Model providers are platform services configured by the operator; credentials stay on the server. Each provider declares its invocation parameters as JSON Schema, validated when a graph is saved and before each call. | S06                                            | R08, R23           |
+| CR11 | Components report the internal activity they want analysed. Recorded evidence distinguishes what the platform observed from what a component reported. Predefined components report their internals.         | S06                                            | R11, R12           |
+| CR12 | Runs have limits on activations, running nodes, time and budget; daily and monthly budgets apply to all runs and work sessions have their own budget. Deadlines per call and per run include waits and retries. | S06; session budgets S07; deadlines S15        | R13–R15            |
+| CR13 | Token usage and cost are recorded for every model call. Tariffs are updated automatically and each run keeps the tariff revision it used.                                                                   | S06; automatic tariffs S10                     | R14, Q03           |
+| CR14 | Users build, configure and run graphs visually and inspect each run's activity; experts edit, import and export graphs as JSON; graphs can be created and changed with a prompt, with visible changes and explicit acceptance. | S06; JSON S09; prompt S12                      | R17–R19, R31       |
+| CR15 | Tools and MCP servers assigned to nodes through a permission-filtered proxy; shared context and variables; memory as private or shared persistent resources, validated first with mem0.                    | mem0 S09; the rest S13                         | R06, R09           |
+| CR16 | Evaluation: task sets, including synthetic ones; criteria and weights; repetitions; batch runs; comparisons proved on incremental test sets never seen by the optimizer; calibration of LLM evaluators; an experiment log of hypotheses and results. | S10–S11                                        | R24, Q15           |
+| CR17 | Execution of graphs through the platform API in production, with API triggers.                                                                                                                              | S21                                            | R20, R28           |
+| CR18 | The mandatory [engineering standards](../../README.md#engineering-standards) apply to all code. Product text and documentation are in English.                                                            | Always                                         | R21, R22           |
+| CR19 | Companies, users and workspaces: every request is authorized against the user's access, each company's data and runs are isolated, and a user may access several workspaces. Self-service registration and member management come later. | S07; registration S19                          | R20                |
+| CR20 | Workspaces hold shared resources: storage, databases, API connections and their credentials. A resources view shows what a workspace offers.                                                               | S07; resources view S09                        | R09, R31           |
+| CR21 | Labs, one per objective, hold graphs, experiments, variants with provenance and work sessions; experimentation is manual, supervised or automatic.                                                          | S07                                            | R16, R24           |
+| CR22 | Runs execute in isolated containers that never mix workspaces, without losing monitoring. By default the nodes of a run share a container; the user can give any node its own, and third-party code always runs apart. | Local S08; AWS S17–S18                         | Q16                |
+| CR23 | Design and automatic improvement: the platform proposes graphs and optimizations against the client's objectives; manual, supervised and automatic improvement cycles; interchangeable optimizers.           | S12                                            | R24                |
+| CR24 | Execution control: pause and resume runs; graphs that change while they run; reusable subgraphs.                                                                                                            | Pause S15; dynamic graphs and subgraphs S16    | R04, Q16           |
+| CR25 | Prepaid credits per user or workspace, priced per call and per compute time; subscriptions and payments; infrastructure cost control per workspace.                                                       | S19–S20                                        | R14                |
+| CR26 | Teams bring their own agents: OpenAI, LangChain and LangGraph clients work under the same supervision; users publish components; a component can build on another with recorded versions.               | S22                                            | R08, R27           |
+| CR27 | Deep analysis: an analysis plan per graph, proposed by an LLM and validated by the user, executed by interchangeable analyzer components and linked to evidence; its findings feed the optimizer. An idea may have several sources; convergence is not correctness; similarity does not prove causality. | S23                                            | R25, R26           |
+| CR28 | Standalone export as readable, professional, reviewable Python code without platform supervision.                                                                                                          | S24                                            | R28                |
+| CR29 | A marketplace of graphs and components, horizontal and vertical, official, backed or from the community, free, one-off or paid per use, with reviews and ratings; a library of collaboration patterns.    | S25                                            | R03                |
 
-Platform mediation, recording and supervisory requirements apply to platform-managed runs. R28 defines a separate future standalone profile that deliberately omits those services, including platform accounting, budget enforcement and watchdogs. Its build metadata identifies the source graph and dependencies without requiring runtime logging.
+## Changes from revision 2
 
-## First functional cycle
-
-A configurable finite sequence uses two stateless LLM agent instances: one proposes, another reviews, and the first revises. This produces three distinct activations. The revised proposal receives the problem, original proposal, and review explicitly.
-
-The executor must support other finite sequences and repeated use of components. It must not hardcode this example. The first UI offers [four bundled examples](../contracts/examples/README.md): single agent, handoff, review cycle and repeated review. Model access, costs, errors, and stops remain platform-managed.
-
-On 2026-09-29 the owner added a redirector and a bounded conditional review experiment to this cycle. Proposer and reviewer use independently configured `LLMCall` functionality. The reviewer contains the redirector, returning observations to the proposer for revision or selecting an accepted exit. The main graph presents agents and their outgoing routes. Iteration limits, deadlines and budgets prevent indefinite execution. This extends the scope beyond finite sequences and is implemented in the first-cycle delivery. The [closure register](open-questions.md#first-cycle-extension-review-with-conditional-routing) records the accepted contracts; the [verification record](../verification.md#first-cycle-delivery) records their execution evidence.
-
-The reference `LLMCall` component supports configurable instructions, model inputs/options and text/JSON output with explicit validation errors. Basic code inheritance lets a separately packaged component specialize its public extension points. The [LLMCall contract](../contracts/llm-call.md) and [Python component API](../contracts/python-component-api.md) define these boundaries. Q13 and Q20 are closed; implemented SDK, loader and installed-component acceptance evidence is recorded in the [verification record](../verification.md#first-cycle-delivery).
-
-The owner selected a very inexpensive OpenAI model for the initial integration on 2026-09-28. The [provider profile](../contracts/openai-initial-profile.md) defines the initial GPT-6 Luna integration; models remain configurable and other providers can be added through resource adapters.
-
-This cycle includes selection and validation of bundled JSON graphs, live graph status, generic text/JSON inspection, saved history, and deadlines and budgets. Call outputs arrive complete; token streaming is not required. Closing the browser does not stop the backend. A backend restart marks unfinished runs interrupted; it does not imply automatic resumption.
-
-## Deferred functional capabilities
-
-Graph editing tools and manual JSON upload, parallel execution and control profiles beyond the bounded conditional review loop, runtime graph mutation, reusable subgraphs, memory-provider implementations, interactive pause/resume, historical navigation during a live run, automatic influence analysis, variant comparison, automatic graph improvement, standalone Python export, server/container deployment, and multiple users remain later work. These are functional deferrals; the engineering requirements are not deferred.
-
-The owner clarified on 2026-09-28 that tools, memory and other resources must follow soon after the starting profile. Their extension boundaries belong in the initial design: components declare their own operations and bindings, managed calls remain mediated, and closing a run-owned process does not imply deleting persistent resource data. The first concrete additions and their acceptance examples remain to be selected; this clarification does not authorize application implementation or move every future capability into the first cycle.
+No requirement is removed. Changed: CR01 (every change saved, versions and branches);
+CR02 (metering without supervision); CR07, CR08, CR09, CR12, CR13, CR14 (recovered or
+extended scope); CR15 and CR16 (split from the former "later" items and made concrete);
+CR17 (now execution through the API; users, containers and export moved to CR19, CR22
+and CR28). Added: CR19–CR29. The [scope review](scope-review-2026-10-06.md) lists every
+item that revision 2 had dropped or reduced and the owner's decision on each.
 
 ## Evidence limits
 
-Exposed reasoning can explain a component's reported rationale, including reliance on repeated endorsements. It is not a complete record of internal computation or conclusive causal proof. Independent arrival at the same idea remains possible. Missing internal evidence must be represented as unavailable, not reconstructed as fact.
-
-The initial trust model requires cooperating local components. Complete mediation of their declared interactions does not establish OS-level containment of malicious code.
-
-## Traceability
-
-See [ADRs](../adr/README.md), [quality scenarios](../architecture/quality.md), [proposed contracts](../contracts/README.md), and [open questions](open-questions.md). The first-cycle closure is approved; acceptance still requires implementation and verification of the agreed behavior.
+Recorded explanations or reasoning are reported evidence, not a complete account of a
+component's internal computation. The platform does not promise the best graph or
+guarantee finding a better one; it lets the client search for one with demonstrated
+comparisons. Mediation does not contain malicious code until components run in isolated
+containers; S06 runs trusted local components.

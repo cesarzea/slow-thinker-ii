@@ -1,99 +1,72 @@
-# Browser API client: specification
+# api: specification
 
-Provides typed, validated HTTP access to catalog, operator commands and execution evidence.
+Validated access to the [operator API](../../../docs/contracts/operator-api.md).
 
-## Public boundary
+## Public interface (`api/index.ts`)
 
-The [public entry point](index.ts) is authoritative for exported names and signatures.
+- `OperatorClient(credential: string | null)`: a `null` credential sends no
+  Authorization header, for a server without operator authentication. `access()`
+  reads `GET /access` as `Access {authentication: "token" | "none"}` and never sends
+  the token. Graphs (ADR 0024), in `GraphClient`, which `OperatorClient` extends:
+  `validate(document)`, `graphs()`, `createGraph(document)` → `{id, branch, change}`,
+  `graph(id)`, `branches(id)`, `createBranch(id, name, {version} | {change})`,
+  `saveChange(id, branch, document)` → `{change, at}` (a 200 for an unchanged document
+  is accepted like the 201), `changes(id, {branch?, before?, limit?})`,
+  `change(id, n)`, `activate(id, change)` → `{version, branch, change}` and
+  `version(id, n)`. Runs and the rest: `catalog()`, `startRun(graphId, source, input)`
+  with a `RunSource` `{version}` or `{change}`, `runs(graphId?)`, `run(runId)`,
+  `runDocument(run)` (the document a run executed: its version's, or its change's when
+  never activated), `events(runId, after)`, `stopRun(runId)`, `usage()`.
+  Every method takes an optional `AbortSignal` and returns parsed, validated data or
+  throws `ApiError`. There is no version-from-document save.
+- `ApiError { status: number; code: string; message: string; diagnostics: Diagnostic[] }`
+  and `errorMessage(error)`, the text to show for any thrown value.
+- Wire types, each with a zod schema: `Access`, `ComponentDeclaration`, `UiSection`,
+  `UiField`, `LlmEntry`, `Catalog`, `GraphDocument`, `GraphNode`, `Connection`,
+  `Limits`, `Diagnostic`, `GraphSummary`, `GraphDetail`, `Branch`, `VersionSummary`,
+  `ChangeSummary`, `ChangeRecord`, `Activation`, `RunSummary` (with `change`, and
+  `version` null for a change never activated),
+  `RunDetail`, `RunEvent`, `Usage`, and `BranchOrigin` for requests; the other reply
+  types are the methods' return types. Shapes follow the contracts exactly; unknown
+  fields are rejected. Change documents are read with the graph document schema.
+- Observation points (ADR 0025): `PointId`, `NodeFacet`, `RUN_POINT`, `nodePoint(id,
+facet)`, `connectionPoint(from, to)`, `isPoint(value)`, `nodeFacets(node, catalog)`,
+  `documentPoints(document, catalog)` and `eventPoint(event)`, which places each recorded
+  event at its connection (`message.sent`), its node's facet or the run.
+- `observeAuthentication(credential, onInvalidated)` registers the connection told when
+  the credential, or `null` for a connection without one, stops being accepted;
+  `captureAuthentication`, used by the transport, stays internal.
+- `EVENT_PAGE_LIMIT` (500), the page size of `events`.
 
-- loadGraphs returns validated GraphSummary values.
-- OperatorClient exposes workspace, run, history, result and command operations.
-- events, call, payload and activation fetch bounded inspection projections.
-- Public response types are derived from the module validation schemas.
-- DefinitionClient validates personal library, detail/source, draft, validation and save replies.
+## Behaviour
 
-## Required behavior
+Port from `archive/s06-c11-wip`: `frontend/src/api/transport.ts`, `authentication.ts` and
+`response-body.ts` (bounded reading for every response, including commands), and the
+error-code table pattern of `definition-errors.ts`. Requests use `credentials: 'omit'`
+and `cache: 'no-store'`; a 401 or 403 invalidates the credential.
 
-- Validate untrusted responses before exposing them to UI features.
-- Support aborted reads and bounded failures; keep credentials out of durable browser storage.
-- Recover uncertain commands through their identity rather than blindly resubmitting effects.
+- Base path `/api/v2`; bearer credential unless it is `null`; JSON bodies;
+  `POST /runs/{id}/stop` sends `{}`.
+- Each method expects the documented success status (200; `201` for creation,
+  branches, changes and activation, where a change also accepts 200; `202` for runs and
+  stop); any other status or a reply that fails its schema is `invalid_response`.
+- Error replies must use the envelope `{"error": {"code", "message", "diagnostics"?}}`.
+  Codes the operator API documents must arrive with their status (`graph_exists` and
+  `too_many_runs` 409, `graph_not_found`, `version_not_found` and `run_not_found` 404,
+  `invalid_document` 422); other codes keep the server's status and message. A 401 or
+  403 without an envelope is `access_denied`.
+- Transport failures are `network_error`, `timeout` (30 s) or `aborted` (status 0).
+  Replies are read up to 4 MiB, event pages up to 64 MiB; larger replies are
+  `response_too_large`. Malformed JSON or UTF-8 is `invalid_response`.
+- A run summary's `totals` is `null` while the run has none; an empty object is read
+  as `null`. Statuses and reasons are those of the execution contract.
+- Event `data` is validated per kind as listed in the recording contract. Where the
+  contract leaves a type open, the interface accepts: `llm.called.status` as an integer
+  or a string, `usage` as `null` when unknown, `response`/`error` and `result`/`error`
+  as optional alternatives, error objects as `{code, message, type?}`, `rates` as a map
+  of decimal strings and `run.finished.dropped` as a count or a list of message ids.
 
-## Dependencies and ownership
+## Acceptance
 
-Browser fetch and Zod schemas; features use index.ts rather than private schemas.
-
-## Acceptance criteria
-
-- Malformed server data produces a visible failure rather than partially trusted state.
-- Paging and cancellation cannot combine evidence from different selected runs.
-
-## Shared contracts
-
-- [operator-api](../../../docs/contracts/operator-api.md)
-
-## Sprint additions
-
-- [inspection-projections](../../../docs/contracts/inspection-projections.md) defines the implemented cross-package boundary; existing supported behavior remains compatible.
-
-## Graph and execution projections
-
-`OperatorClient.graph(id, revision, signal)` validates an exact catalog definition;
-`definition(run, signal)` validates the saved definition envelope and returns its
-GraphDetail fields. `execution(run, signal, cursor?)` validates a bounded page.
-The public records are GraphDetail, GraphStructure, ComponentView, PlannedNodeView,
-RelationshipView, ExecutionPage, ActivationView and CommunicationView.
-
-Definitions are checked against the canonical graph JSON schema with Ajv2020.
-Structural identities, relationship endpoints and containment are checked before
-exposure. Reports retain `reported` provenance and nullable captured payloads.
-Catalog summaries and detail reports accept omitted additive fields for existing
-consumers; the graph-detail and execution endpoints require their full contract.
-
-## Verification
-
-Current local gate results are recorded in the shared verification record.
-The 2026-09-30 delivery preserves the module acceptance criteria above.
-
-S03 targeted API tests cover raw source fidelity, exact source/draft identity and
-wire checks, strict stable error envelopes, bounded issues, explicit timeouts,
-cancellation and uncertain-save recovery. Whole-system and mandatory verification
-remain coordinator-owned.
-
-## Agent canvas and English delivery
-
-Follow the approved [sprint contract](../../../docs/specification/agent-canvas-sprint.md) for presentation,
-configuration provenance, identity, ownership and acceptance tests. It supersedes
-earlier canvas-layer and separate activation-card presentation requirements.
-
-## English presentation contract
-
-`GraphDetail.execution` is an optional JSON object. Catalog details may omit it; `OperatorClient.definition` still requires it in saved-definition responses. Validation preserves this metadata without altering backend or wire contracts. Client-authored validation and transport messages are English; server evidence and protocol values remain unchanged.
-
-## S03 personal experiment library
-
-Follow the [shared contract](../../../docs/contracts/personal-experiments.md) for wire values, data origins,
-public interfaces, validation scope, errors, immutable identity, paging and failure
-handling. Implementation owner: B.
-
-`DefinitionClient` implements the reviewed interface with validated library,
-detail, validation and save replies. Validate/save send source strings directly;
-exact detail identity uses query parameters and is checked against the reply.
-Recognized error envelopes/statuses produce `DefinitionError` with bounded issues;
-unconfirmed replies produce fixed transport errors suitable for exact-source save
-recovery. Save also treats `response_too_large` and `operator_service_unavailable`
-as uncertain because insertion may precede those errors.
-Reads/validation have a 10-second timeout; saves have a 65-second timeout,
-combined with the caller's abort signal. `index.ts` exports the public client/types.
-`OperatorClient.graph` and `loadGraphs` remain available for viewer reads. There is
-no client persistence or unchecked response cast.
-
-`source(reference, signal)` and `draft(reference, target, signal)` return the
-original successful response text after requiring status 200, JSON content type
-and exact source/target identity. Parsing supports those sanity checks only; it
-never becomes returned authoring text. Draft serializes explicitly selected
-identity strings, excluding any additional fields from structural arguments.
-Both operations use the existing 10-second read timeout and cancellation/error
-behavior; draft generation has no insertion effect.
-
-Acceptance follows the shared S03 scenarios. Development delivery does not claim
-testing is complete. Keep module-private choices within these public contracts.
+Unit tests against a fake fetch cover every method, schema rejection, bounded bodies,
+error mapping and authentication invalidation.

@@ -15,6 +15,7 @@ afterEach(() => {
 it('declares English as the document language', () => {
   const page = new DOMParser().parseFromString(documentHtml, 'text/html');
   expect(page.documentElement.lang).toBe('en');
+  expect(page.querySelector('script')?.getAttribute('src')).toBe('/src/main.tsx');
 });
 
 it('mounts the application in the document container', async () => {
